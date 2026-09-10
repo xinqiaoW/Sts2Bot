@@ -1,0 +1,13 @@
+__pycache__/
+.pytest_cache/
+*.pyc
+.runtime/
+.local/
+data/
+logs/
+checkpoints/
+**/bin/
+**/obj/
+catalogs/*.raw.json
+catalogs/counter-inspection.txt
+.venv/
