@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "scenarioId": "ANGER-REQUIRED-LETHAL-0170",
+  "characterId": "IRONCLAD",
+  "encounterId": "FUZZY_WURM_CRAWLER_WEAK",
+  "seed": "ANGERREQUIRED0170",
+  "enemyCurrentHp": 6,
+  "initialPlayerEnergy": 0,
+  "clearPlayerHand": true,
+  "clearPlayerPiles": true,
+  "cards": [{ "cardId": "ANGER", "pile": "Hand" }],
+  "forceShortSearchOnly": true,
+  "shortSearchBudgetOverrideMilliseconds": 5000,
+  "expectedInitialFirstActionCardId": "ANGER",
+  "expectedInitialProjectedBattleHpLost": 0,
+  "expectedInitialCombatEndedTurn": 1,
+  "stopAfterInitialSolverResultAssertion": true,
+  "timeoutSeconds": 150
+}

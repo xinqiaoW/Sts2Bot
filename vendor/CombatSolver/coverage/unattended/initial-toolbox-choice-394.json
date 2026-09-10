@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "runId": "initial-toolbox-choice-394",
+  "scenarioId": "INITIAL-TOOLBOX-CHOICE-394",
+  "characterId": "IRONCLAD",
+  "encounterId": "FUZZY_WURM_CRAWLER_WEAK",
+  "seed": "INITIAL-TOOLBOX-CHOICE-394",
+  "relics": [
+    {
+      "relicId": "TOOLBOX",
+      "addWithoutObtainedEffects": true
+    }
+  ],
+  "forceShortSearchOnly": true,
+  "shortSearchBudgetOverrideMilliseconds": 1500,
+  "holdAfterInitialSearch": true,
+  "expectedInitialSetupChoiceCountAtLeast": 1,
+  "expectedInitialSetupChoiceSourceId": "TOOLBOX",
+  "expectedInitialChoiceBranchesEvaluatedAtLeast": 3,
+  "verifyTurnSetupManualRefresh": true,
+  "stopAfterInitialSetupAssertion": true,
+  "timeoutSeconds": 120
+}

@@ -1,0 +1,32 @@
+[
+  {
+    "coveredEnchantmentHooks": [{ "enchantmentId": "GOOPY", "hook": "OnEnchant" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "clearPlayerPilesBeforeMove": true,
+    "cardAfterMove": { "cardId": "DEFEND_IRONCLAD", "pile": "Hand", "enchantmentId": "GOOPY", "enchantmentAmount": 1 }
+  },
+  {
+    "coveredEnchantmentHooks": [{ "enchantmentId": "ROYALLY_APPROVED", "hook": "OnEnchant" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "clearPlayerPilesBeforeMove": true,
+    "cardAfterMove": { "cardId": "DEFEND_IRONCLAD", "pile": "Hand", "enchantmentId": "ROYALLY_APPROVED", "enchantmentAmount": 1 }
+  },
+  {
+    "coveredEnchantmentHooks": [{ "enchantmentId": "SOULS_POWER", "hook": "OnEnchant" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "clearPlayerPilesBeforeMove": true,
+    "cardAfterMove": { "cardId": "APPARITION", "pile": "Hand", "enchantmentId": "SOULS_POWER", "enchantmentAmount": 1 }
+  },
+  {
+    "coveredEnchantmentHooks": [{ "enchantmentId": "STEADY", "hook": "OnEnchant" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "clearPlayerPilesBeforeMove": true,
+    "cardAfterMove": { "cardId": "STRIKE_IRONCLAD", "pile": "Hand", "enchantmentId": "STEADY", "enchantmentAmount": 1 }
+  },
+  {
+    "coveredEnchantmentHooks": [{ "enchantmentId": "TEZCATARAS_EMBER", "hook": "OnEnchant" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "clearPlayerPilesBeforeMove": true,
+    "cardAfterMove": { "cardId": "STRIKE_IRONCLAD", "pile": "Hand", "enchantmentId": "TEZCATARAS_EMBER", "enchantmentAmount": 1 }
+  }
+]

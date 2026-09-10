@@ -1,0 +1,44 @@
+[
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearAllPowersBeforeMove": true,
+    "clearPlayerPilesBeforeMove": true,
+    "powersBeforeMove": [
+      {
+        "powerId": "FOREGONE_CONCLUSION_POWER",
+        "target": "Player",
+        "amount": 3
+      },
+      {
+        "powerId": "DRAW_CARDS_NEXT_TURN_POWER",
+        "target": "Player",
+        "amount": 1
+      }
+    ],
+    "cardsBeforeMove": [
+      { "cardId": "STRIKE_IRONCLAD", "pile": "Draw" },
+      { "cardId": "DEFEND_IRONCLAD", "pile": "Draw" },
+      { "cardId": "BASH", "pile": "Draw" },
+      { "cardId": "ANGER", "pile": "Draw" },
+      { "cardId": "IRON_WAVE", "pile": "Draw" },
+      { "cardId": "INFLAME", "pile": "Draw" },
+      { "cardId": "ARMAMENTS", "pile": "Draw" },
+      { "cardId": "SHRUG_IT_OFF", "pile": "Draw" },
+      { "cardId": "UPPERCUT", "pile": "Draw" },
+      { "cardId": "THUNDERCLAP", "pile": "Draw" }
+    ],
+    "triggerPlayerSetupAfterMove": true,
+    "playerSetupChoiceCardIds": [
+      "STRIKE_IRONCLAD",
+      "DEFEND_IRONCLAD",
+      "BASH"
+    ],
+    "expectedPlayerHandCount": 8,
+    "expectedAbsentPlayerPowers": [
+      "FOREGONE_CONCLUSION_POWER",
+      "DRAW_CARDS_NEXT_TURN_POWER"
+    ]
+  }
+]

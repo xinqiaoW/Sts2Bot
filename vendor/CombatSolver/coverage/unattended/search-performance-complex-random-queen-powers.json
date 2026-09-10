@@ -1,0 +1,4 @@
+[
+  { "powerId": "SPECTRUM_SHIFT_POWER", "target": "Player", "amount": 2 },
+  { "powerId": "ENTROPY_POWER", "target": "Player", "amount": 2 }
+]

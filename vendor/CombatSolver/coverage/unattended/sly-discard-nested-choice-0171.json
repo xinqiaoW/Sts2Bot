@@ -1,0 +1,21 @@
+[
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "clearPlayerHandBeforeMove": true,
+    "clearPlayerPilesBeforeMove": true,
+    "clearAllPowersBeforeMove": true,
+    "playerEnergyBefore": 20,
+    "cardsBeforeMove": [
+      { "cardId": "HAND_TRICK", "pile": "Hand" },
+      { "cardId": "SURVIVOR", "pile": "Hand" },
+      { "cardId": "ACROBATICS", "pile": "Hand" },
+      { "cardId": "STRIKE_IRONCLAD", "pile": "Hand", "count": 2 },
+      { "cardId": "DEFEND_IRONCLAD", "pile": "Draw", "count": 4 }
+    ],
+    "cardPlayChecksAfterMove": [
+      { "cardId": "HAND_TRICK", "target": "None", "useChoice": true, "choiceCardIds": ["ACROBATICS"] },
+      { "cardId": "SURVIVOR", "target": "None", "useChoice": true, "choiceCardIds": ["__FIRST__"] }
+    ]
+  }
+]

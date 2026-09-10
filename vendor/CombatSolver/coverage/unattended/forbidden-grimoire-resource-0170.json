@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "scenarioId": "FORBIDDEN-GRIMOIRE-RESOURCE-0170",
+  "characterId": "REGENT",
+  "encounterId": "FUZZY_WURM_CRAWLER_WEAK",
+  "seed": "GRIMOIRE0170",
+  "enemyCurrentHp": 6,
+  "initialPlayerEnergy": 3,
+  "clearPlayerHand": true,
+  "clearPlayerPiles": true,
+  "cards": [
+    { "cardId": "FORBIDDEN_GRIMOIRE", "pile": "Hand", "treatAsDeckCard": true },
+    { "cardId": "STRIKE_REGENT", "pile": "Hand" }
+  ],
+  "forceShortSearchOnly": true,
+  "shortSearchBudgetOverrideMilliseconds": 5000,
+  "expectedInitialFirstActionCardId": "FORBIDDEN_GRIMOIRE",
+  "expectedInitialLongTermResourceValueAtLeast": 50,
+  "expectedInitialProjectedBattleHpLost": 0,
+  "expectedInitialCombatEndedTurn": 1,
+  "stopAfterInitialSolverResultAssertion": true,
+  "timeoutSeconds": 150
+}

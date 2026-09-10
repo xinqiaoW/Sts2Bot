@@ -1,0 +1,12 @@
+[
+  { "cardId": "STRIKE_SILENT", "pile": "Hand", "count": 1 },
+  { "cardId": "OUTBREAK", "pile": "Hand", "count": 1 },
+  { "cardId": "DEFEND_SILENT", "pile": "Hand", "count": 3 },
+  { "cardId": "SURVIVOR", "pile": "Draw", "count": 1 },
+  { "cardId": "PIERCING_WAIL", "pile": "Draw", "count": 1, "upgradeLevels": 1 },
+  { "cardId": "BLADE_OF_INK", "pile": "Draw", "count": 1 },
+  { "cardId": "NEUTRALIZE", "pile": "Draw", "count": 1, "upgradeLevels": 1 },
+  { "cardId": "BACKFLIP", "pile": "Draw", "count": 1 },
+  { "cardId": "DEFEND_SILENT", "pile": "Draw", "count": 3 },
+  { "cardId": "STRIKE_SILENT", "pile": "Draw", "count": 3 }
+]

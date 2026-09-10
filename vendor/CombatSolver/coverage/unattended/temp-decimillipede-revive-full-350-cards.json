@@ -1,0 +1,8 @@
+[
+  { "cardId": "DEFEND_REGENT", "pile": "Hand", "count": 3 },
+  {
+    "cardId": "SOVEREIGN_BLADE",
+    "pile": "Draw",
+    "dynamicVars": { "Damage": 100, "Repeat": 1, "CalculationBase": 0, "CalculationExtra": 1, "CalculatedBlock": 0 }
+  }
+]

@@ -1,0 +1,18 @@
+[
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 2,
+    "cardsBeforeMove": [
+      { "cardId": "PALE_BLUE_DOT", "pile": "Hand" }
+    ],
+    "cardPlayChecksAfterMove": [
+      { "cardId": "PALE_BLUE_DOT", "target": "None" }
+    ],
+    "expectedPlayerEnergy": 1,
+    "expectedPlayerPowers": {
+      "PALE_BLUE_DOT_POWER": 1
+    }
+  }
+]

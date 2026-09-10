@@ -1,0 +1,18 @@
+[
+  {
+    "monsterId": "TheLost",
+    "moveId": "DEBILITATING_SMOG",
+    "enemyHpBefore": 999,
+    "killMonsterAfterMove": true,
+    "expectedSimulatedDynamicResolution": false,
+    "expectedAbsentPlayerPowers": ["STRENGTH_POWER"]
+  },
+  {
+    "monsterId": "TheForgotten",
+    "moveId": "MIASMA",
+    "enemyHpBefore": 999,
+    "killMonsterAfterMove": true,
+    "expectedSimulatedDynamicResolution": false,
+    "expectedAbsentPlayerPowers": ["DEXTERITY_POWER"]
+  }
+]

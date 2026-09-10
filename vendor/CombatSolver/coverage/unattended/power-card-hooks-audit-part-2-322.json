@@ -1,0 +1,108 @@
+[
+  {
+    "coveredPowerHooks": [{ "powerId": "BLACK_HOLE_POWER", "hook": "AfterCardPlayed" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "playerEnergyBefore": 3, "playerStarsBefore": 1, "clearPlayerPilesBeforeMove": true,
+    "powerBeforeMove": { "powerId": "BLACK_HOLE_POWER", "target": "Player", "amount": 4 },
+    "cardBeforeMove": { "cardId": "CLOAK_OF_STARS", "pile": "Hand" },
+    "cardPlayChecksAfterMove": [{ "cardId": "CLOAK_OF_STARS", "target": "None" }]
+  },
+  {
+    "coveredPowerHooks": [
+      { "powerId": "CURL_UP_POWER", "hook": "AfterDamageReceived" },
+      { "powerId": "CURL_UP_POWER", "hook": "AfterCardPlayed" }
+    ],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "playerEnergyBefore": 99, "clearPlayerPilesBeforeMove": true,
+    "powerBeforeMove": { "powerId": "CURL_UP_POWER", "target": "CheckedEnemy", "amount": 5 },
+    "cardBeforeMove": { "cardId": "STRIKE_IRONCLAD", "pile": "Hand" },
+    "cardPlayChecksAfterMove": [{ "cardId": "STRIKE_IRONCLAD", "target": "Enemy" }]
+  },
+  {
+    "coveredPowerHooks": [{ "powerId": "ENRAGE_POWER", "hook": "AfterCardPlayed" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "playerEnergyBefore": 99, "clearPlayerPilesBeforeMove": true,
+    "powerBeforeMove": { "powerId": "ENRAGE_POWER", "target": "CheckedEnemy", "amount": 3 },
+    "cardBeforeMove": { "cardId": "DEFEND_IRONCLAD", "pile": "Hand" },
+    "cardPlayChecksAfterMove": [{ "cardId": "DEFEND_IRONCLAD", "target": "None" }]
+  },
+  {
+    "coveredPowerHooks": [{ "powerId": "GALVANIC_POWER", "hook": "AfterCardPlayed" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "playerHpBefore": 50, "playerEnergyBefore": 99, "clearPlayerPilesBeforeMove": true,
+    "powerBeforeMove": { "powerId": "GALVANIC_POWER", "target": "Player", "amount": 3 },
+    "cardBeforeMove": { "cardId": "DEFEND_IRONCLAD", "pile": "Hand", "afflictionId": "GALVANIZED" },
+    "cardPlayChecksAfterMove": [{ "cardId": "DEFEND_IRONCLAD", "target": "None" }]
+  },
+  {
+    "coveredPowerHooks": [{ "powerId": "HAUNT_POWER", "hook": "AfterCardPlayed" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "playerEnergyBefore": 99, "clearPlayerPilesBeforeMove": true,
+    "powerBeforeMove": { "powerId": "HAUNT_POWER", "target": "Player", "amount": 4 },
+    "cardBeforeMove": { "cardId": "SOUL", "pile": "Hand" },
+    "cardPlayChecksAfterMove": [{ "cardId": "SOUL", "target": "None" }]
+  },
+  {
+    "coveredPowerHooks": [{ "powerId": "MASTER_PLANNER_POWER", "hook": "AfterCardPlayed" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "playerEnergyBefore": 99, "clearPlayerPilesBeforeMove": true,
+    "powerBeforeMove": { "powerId": "MASTER_PLANNER_POWER", "target": "Player", "amount": 1 },
+    "cardBeforeMove": { "cardId": "DEFEND_IRONCLAD", "pile": "Hand" },
+    "cardPlayChecksAfterMove": [{ "cardId": "DEFEND_IRONCLAD", "target": "None" }]
+  },
+  {
+    "coveredPowerHooks": [{ "powerId": "PANACHE_POWER", "hook": "AfterCardPlayed" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "playerEnergyBefore": 99, "clearPlayerPilesBeforeMove": true,
+    "powerBeforeMove": { "powerId": "PANACHE_POWER", "target": "Player", "amount": 10, "dynamicVars": { "CardsLeft": 1 } },
+    "cardBeforeMove": { "cardId": "DEFEND_IRONCLAD", "pile": "Hand", "count": 2 },
+    "cardPlayChecksAfterMove": [
+      { "cardId": "DEFEND_IRONCLAD", "target": "None" },
+      { "cardId": "DEFEND_IRONCLAD", "target": "None" }
+    ]
+  },
+  {
+    "coveredPowerHooks": [{ "powerId": "RAGE_POWER", "hook": "AfterCardPlayed" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "playerEnergyBefore": 99, "playerBlockBefore": 0, "clearPlayerPilesBeforeMove": true,
+    "powerBeforeMove": { "powerId": "RAGE_POWER", "target": "Player", "amount": 4 },
+    "cardBeforeMove": { "cardId": "STRIKE_IRONCLAD", "pile": "Hand" },
+    "cardPlayChecksAfterMove": [{ "cardId": "STRIKE_IRONCLAD", "target": "Enemy" }]
+  },
+  {
+    "coveredPowerHooks": [{ "powerId": "SLOW_POWER", "hook": "AfterCardPlayed" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "playerEnergyBefore": 99, "clearPlayerPilesBeforeMove": true,
+    "powerBeforeMove": { "powerId": "SLOW_POWER", "target": "CheckedEnemy", "amount": 1 },
+    "cardBeforeMove": { "cardId": "DEFEND_IRONCLAD", "pile": "Hand" },
+    "cardPlayChecksAfterMove": [{ "cardId": "DEFEND_IRONCLAD", "target": "None" }]
+  },
+  {
+    "coveredPowerHooks": [{ "powerId": "JUGGLING_POWER", "hook": "BeforeCardPlayed" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "playerEnergyBefore": 99, "clearPlayerPilesBeforeMove": true,
+    "powerBeforeMove": { "powerId": "JUGGLING_POWER", "target": "Player", "amount": 1 },
+    "cardBeforeMove": { "cardId": "STRIKE_IRONCLAD", "pile": "Hand", "count": 3 },
+    "cardPlayChecksAfterMove": [
+      { "cardId": "STRIKE_IRONCLAD", "target": "Enemy" },
+      { "cardId": "STRIKE_IRONCLAD", "target": "Enemy" },
+      { "cardId": "STRIKE_IRONCLAD", "target": "Enemy" }
+    ]
+  },
+  {
+    "coveredPowerHooks": [{ "powerId": "SNEAKY_POWER", "hook": "AfterCardPlayed" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "playerEnergyBefore": 99, "enemyBlockBefore": 0, "clearPlayerPilesBeforeMove": true,
+    "powerBeforeMove": { "powerId": "SNEAKY_POWER", "target": "CheckedEnemy", "amount": 5 },
+    "cardBeforeMove": { "cardId": "STRIKE_IRONCLAD", "pile": "Hand" },
+    "cardPlayChecksAfterMove": [{ "cardId": "STRIKE_IRONCLAD", "target": "Enemy" }]
+  },
+  {
+    "coveredPowerHooks": [{ "powerId": "WITHERING_PRESENCE_POWER", "hook": "AfterCardPlayed" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "playerEnergyBefore": 99, "clearPlayerPilesBeforeMove": true,
+    "powerBeforeMove": { "powerId": "WITHERING_PRESENCE_POWER", "target": "CheckedEnemy", "powerTarget": "Player", "amount": 1, "dynamicVars": { "CardsLeft": 1 } },
+    "cardBeforeMove": { "cardId": "DEFEND_IRONCLAD", "pile": "Hand" },
+    "cardPlayChecksAfterMove": [{ "cardId": "DEFEND_IRONCLAD", "target": "None" }]
+  }
+]

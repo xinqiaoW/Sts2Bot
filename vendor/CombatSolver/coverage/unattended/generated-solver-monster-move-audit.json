@@ -1,0 +1,401 @@
+[
+  {
+    "monsterId": "Aeonglass",
+    "moveId": "EBB_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "Aeonglass",
+    "moveId": "EYE_LASERS_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "Architect",
+    "moveId": "NOTHING",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "AssassinRubyRaider",
+    "moveId": "KILLSHOT_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "AxeRubyRaider",
+    "moveId": "BIG_SWING",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "AxeRubyRaider",
+    "moveId": "SWING_1",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "AxeRubyRaider",
+    "moveId": "SWING_2",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "Axebot",
+    "moveId": "BOOT_UP_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "Axebot",
+    "moveId": "ONE_TWO_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "BattleFriendV1",
+    "moveId": "NOTHING_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "BattleFriendV2",
+    "moveId": "NOTHING_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "BattleFriendV3",
+    "moveId": "NOTHING_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "BruteRubyRaider",
+    "moveId": "BEAT_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "BruteRubyRaider",
+    "moveId": "ROAR_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "BygoneEffigy",
+    "moveId": "SLEEP_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "BygoneEffigy",
+    "moveId": "SLEEP_MOVE_2",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "BygoneEffigy",
+    "moveId": "WAKE_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "Byrdonis",
+    "moveId": "PECK_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "Byrdonis",
+    "moveId": "SWOOP_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "Byrdpip",
+    "moveId": "NOTHING_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "CalcifiedCultist",
+    "moveId": "DARK_STRIKE_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "CrossbowRubyRaider",
+    "moveId": "FIRE_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "CrossbowRubyRaider",
+    "moveId": "RELOAD_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "DampCultist",
+    "moveId": "DARK_STRIKE_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "DampCultist",
+    "moveId": "INCANTATION_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "DevotedSculptor",
+    "moveId": "FORBIDDEN_INCANTATION_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "DevotedSculptor",
+    "moveId": "SAVAGE_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "Entomancer",
+    "moveId": "BEES_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "Entomancer",
+    "moveId": "PHEROMONE_SPIT_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "Entomancer",
+    "moveId": "SPEAR_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "Exoskeleton",
+    "moveId": "ENRAGE_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "Exoskeleton",
+    "moveId": "MANDIBLES_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "Exoskeleton",
+    "moveId": "SKITTER_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "Fabricator",
+    "moveId": "DISINTEGRATE_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "FakeMerchantMonster",
+    "moveId": "ENRAGE_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "FakeMerchantMonster",
+    "moveId": "SPEW_COINS_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "FakeMerchantMonster",
+    "moveId": "SWIPE_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "FakeMerchantMonster",
+    "moveId": "THROW_RELIC_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "FlailKnight",
+    "moveId": "FLAIL_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "FlailKnight",
+    "moveId": "RAM_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "FlailKnight",
+    "moveId": "WAR_CHANT",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "Flyconid",
+    "moveId": "FRAIL_SPORES_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "Flyconid",
+    "moveId": "SMASH_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "Flyconid",
+    "moveId": "VULNERABLE_SPORES_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "Fogmog",
+    "moveId": "HEADBUTT_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "Fogmog",
+    "moveId": "SWIPE_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "Fogmog",
+    "moveId": "SWIPE_RANDOM_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "FossilStalker",
+    "moveId": "LASH_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "FossilStalker",
+    "moveId": "LATCH_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "FossilStalker",
+    "moveId": "TACKLE_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "ACID_GOOP",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "WaterfallGiant",
+    "moveId": "PRESSURE_GUN_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "WaterfallGiant",
+    "moveId": "PRESSURE_UP_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "WaterfallGiant",
+    "moveId": "PRESSURIZE_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "WaterfallGiant",
+    "moveId": "RAM_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "WaterfallGiant",
+    "moveId": "SIPHON_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "WaterfallGiant",
+    "moveId": "STOMP_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  }
+]

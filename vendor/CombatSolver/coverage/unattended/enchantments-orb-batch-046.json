@@ -1,0 +1,191 @@
+[
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "playerEnergyBefore": 10,
+    "cardBeforeMove": {
+      "cardId": "DEFEND_IRONCLAD",
+      "pile": "Hand",
+      "count": 1,
+      "enchantmentId": "ADROIT",
+      "enchantmentAmount": 3
+    },
+    "cardPlayChecksAfterMove": [
+      { "cardId": "DEFEND_IRONCLAD", "target": "None" }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "playerEnergyBefore": 10,
+    "cardBeforeMove": {
+      "cardId": "STRIKE_IRONCLAD",
+      "pile": "Hand",
+      "count": 1,
+      "enchantmentId": "CORRUPTED"
+    },
+    "cardPlayChecksAfterMove": [
+      { "cardId": "STRIKE_IRONCLAD", "target": "Enemy" }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "playerEnergyBefore": 10,
+    "cardBeforeMove": {
+      "cardId": "STRIKE_IRONCLAD",
+      "pile": "Hand",
+      "count": 1,
+      "enchantmentId": "GLAM"
+    },
+    "cardPlayChecksAfterMove": [
+      { "cardId": "STRIKE_IRONCLAD", "target": "Enemy" }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "playerEnergyBefore": 10,
+    "cardBeforeMove": {
+      "cardId": "DEFEND_IRONCLAD",
+      "pile": "Hand",
+      "count": 1,
+      "enchantmentId": "GOOPY",
+      "enchantmentAmount": 2
+    },
+    "cardPlayChecksAfterMove": [
+      { "cardId": "DEFEND_IRONCLAD", "target": "None" }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "cardBeforeMove": {
+      "cardId": "DEFEND_IRONCLAD",
+      "pile": "Hand",
+      "count": 1,
+      "enchantmentId": "IMBUED"
+    },
+    "triggerAutoPrePlayAfterPlayerSetup": true
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "playerEnergyBefore": 10,
+    "cardBeforeMove": {
+      "cardId": "STRIKE_IRONCLAD",
+      "pile": "Hand",
+      "count": 1,
+      "enchantmentId": "INSTINCT"
+    },
+    "cardPlayChecksAfterMove": [
+      { "cardId": "STRIKE_IRONCLAD", "target": "Enemy" }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "playerEnergyBefore": 10,
+    "cardBeforeMove": {
+      "cardId": "STRIKE_IRONCLAD",
+      "pile": "Hand",
+      "count": 1,
+      "enchantmentId": "MOMENTUM",
+      "enchantmentAmount": 2
+    },
+    "cardPlayChecksAfterMove": [
+      { "cardId": "STRIKE_IRONCLAD", "target": "Enemy" }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "playerEnergyBefore": 10,
+    "cardBeforeMove": {
+      "cardId": "DEFEND_IRONCLAD",
+      "pile": "Hand",
+      "count": 1,
+      "enchantmentId": "NIMBLE",
+      "enchantmentAmount": 3
+    },
+    "cardPlayChecksAfterMove": [
+      { "cardId": "DEFEND_IRONCLAD", "target": "None" }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "playerEnergyBefore": 10,
+    "cardBeforeMove": {
+      "cardId": "STRIKE_IRONCLAD",
+      "pile": "Hand",
+      "count": 1,
+      "enchantmentId": "SHARP",
+      "enchantmentAmount": 3
+    },
+    "cardPlayChecksAfterMove": [
+      { "cardId": "STRIKE_IRONCLAD", "target": "Enemy" }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "cardBeforeMove": {
+      "cardId": "DEFEND_IRONCLAD",
+      "pile": "Hand",
+      "count": 1,
+      "enchantmentId": "SLUMBERING_ESSENCE"
+    },
+    "triggerPlayerTurnEndAfterMove": true
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "playerEnergyBefore": 10,
+    "cardBeforeMove": {
+      "cardId": "STRIKE_IRONCLAD",
+      "pile": "Hand",
+      "count": 1,
+      "enchantmentId": "SPIRAL"
+    },
+    "cardPlayChecksAfterMove": [
+      { "cardId": "STRIKE_IRONCLAD", "target": "Enemy" }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "playerEnergyBefore": 10,
+    "cardBeforeMove": {
+      "cardId": "STRIKE_IRONCLAD",
+      "pile": "Hand",
+      "count": 1,
+      "enchantmentId": "TEZCATARAS_EMBER"
+    },
+    "cardPlayChecksAfterMove": [
+      { "cardId": "STRIKE_IRONCLAD", "target": "Enemy" }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "playerEnergyBefore": 10,
+    "cardBeforeMove": {
+      "cardId": "STRIKE_IRONCLAD",
+      "pile": "Hand",
+      "count": 1,
+      "enchantmentId": "VIGOROUS",
+      "enchantmentAmount": 3
+    },
+    "cardPlayChecksAfterMove": [
+      { "cardId": "STRIKE_IRONCLAD", "target": "Enemy" }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "playerEnergyBefore": 2,
+    "triggerPlayerSideTurnStartAfterMove": true,
+    "expectedPlayerEnergy": 3
+  }
+]

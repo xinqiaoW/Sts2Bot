@@ -1,0 +1,18 @@
+[
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "expectedSearchBoundary": "DynamicResolution",
+    "powersBeforeMove": [
+      { "powerId": "STRATAGEM_POWER", "target": "Player", "amount": 1 }
+    ],
+    "cardsBeforeMove": [
+      { "cardId": "FLASH_OF_STEEL", "pile": "Hand" },
+      { "cardId": "DEFEND_IRONCLAD", "pile": "Discard", "count": 2 }
+    ]
+  }
+]

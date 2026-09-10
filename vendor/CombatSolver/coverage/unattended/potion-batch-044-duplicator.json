@@ -1,0 +1,1 @@
+{ "potionId": "Duplicator", "target": "Player", "expectedPlayerPowers": { "DUPLICATION_POWER": 1 } }

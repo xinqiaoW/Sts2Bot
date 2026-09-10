@@ -1,0 +1,23 @@
+[
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 10,
+    "cardsBeforeMove": [
+      { "cardId": "PROWESS", "pile": "Hand", "upgradeLevels": 1 },
+      { "cardId": "SHIV", "pile": "Hand", "count": 3 }
+    ],
+    "cardPlayChecksAfterMove": [
+      { "cardId": "PROWESS", "target": "None" },
+      { "cardId": "SHIV", "target": "Enemy" },
+      { "cardId": "SHIV", "target": "Enemy" },
+      { "cardId": "SHIV", "target": "Enemy" }
+    ],
+    "expectedPlayerEnergy": 9,
+    "expectedPlayerPowers": {
+      "DEXTERITY_POWER": 2,
+      "STRENGTH_POWER": 2
+    }
+  }
+]

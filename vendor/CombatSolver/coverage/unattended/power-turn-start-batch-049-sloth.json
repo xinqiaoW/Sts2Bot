@@ -1,0 +1,29 @@
+[
+  {
+    "coveredPowerHooks": [
+      { "powerId": "SLOTH_POWER", "hook": "ShouldPlay" },
+      { "powerId": "SLOTH_POWER", "hook": "BeforeCardPlayed" }
+    ],
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 10,
+    "powerBeforeMove": {
+      "powerId": "SLOTH_POWER",
+      "target": "Player",
+      "amount": 1
+    },
+    "cardsBeforeMove": [
+      { "cardId": "ANGER", "pile": "Hand", "count": 2 }
+    ],
+    "cardPlayChecksAfterMove": [
+      { "cardId": "ANGER", "target": "Enemy" }
+    ],
+    "triggerPlayerSetupAfterMove": true,
+    "cardPlayChecksAfterPlayerSetup": [
+      { "cardId": "ANGER", "target": "Enemy" }
+    ],
+    "expectedPlayerEnergy": 3,
+    "expectedEnemyHpGain": -12
+  }
+]

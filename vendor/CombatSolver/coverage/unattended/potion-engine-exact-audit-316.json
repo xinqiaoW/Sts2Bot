@@ -1,0 +1,116 @@
+[
+  {
+    "coveredPotionHooks": [{ "potionId": "DISTILLED_CHAOS", "hook": "OnUse" }],
+    "potionId": "DISTILLED_CHAOS",
+    "target": "Player",
+    "clearPlayerHandBeforeUse": true,
+    "cards": [
+      { "cardId": "BASH", "pile": "Draw" },
+      { "cardId": "STRIKE_IRONCLAD", "pile": "Draw" },
+      { "cardId": "DEFEND_IRONCLAD", "pile": "Draw" }
+    ]
+  },
+  {
+    "coveredPotionHooks": [{ "potionId": "ATTACK_POTION", "hook": "OnUse" }],
+    "potionId": "ATTACK_POTION", "target": "Player", "choiceCardIds": ["__FIRST__"], "clearPlayerHandBeforeUse": true
+  },
+  {
+    "coveredPotionHooks": [{ "potionId": "COLORLESS_POTION", "hook": "OnUse" }],
+    "potionId": "COLORLESS_POTION", "target": "Player", "choiceCardIds": ["__FIRST__"], "clearPlayerHandBeforeUse": true
+  },
+  {
+    "coveredPotionHooks": [{ "potionId": "POWER_POTION", "hook": "OnUse" }],
+    "potionId": "POWER_POTION", "target": "Player", "choiceCardIds": ["__FIRST__"], "clearPlayerHandBeforeUse": true
+  },
+  {
+    "coveredPotionHooks": [{ "potionId": "SKILL_POTION", "hook": "OnUse" }],
+    "potionId": "SKILL_POTION", "target": "Player", "choiceCardIds": ["__FIRST__"], "clearPlayerHandBeforeUse": true
+  },
+  {
+    "coveredPotionHooks": [{ "potionId": "BOTTLED_POTENTIAL", "hook": "OnUse" }],
+    "potionId": "BOTTLED_POTENTIAL",
+    "target": "Player",
+    "clearPlayerHandBeforeUse": true,
+    "cards": [
+      { "cardId": "STRIKE_IRONCLAD", "pile": "Hand" },
+      { "cardId": "DEFEND_IRONCLAD", "pile": "Hand" },
+      { "cardId": "BASH", "pile": "Hand" }
+    ]
+  },
+  {
+    "coveredPotionHooks": [{ "potionId": "CLARITY", "hook": "OnUse" }],
+    "potionId": "CLARITY",
+    "target": "Player",
+    "clearPlayerHandBeforeUse": true,
+    "cards": [
+      { "cardId": "STRIKE_IRONCLAD", "pile": "Draw" },
+      { "cardId": "DEFEND_IRONCLAD", "pile": "Draw" }
+    ]
+  },
+  {
+    "coveredPotionHooks": [{ "potionId": "COSMIC_CONCOCTION", "hook": "OnUse" }],
+    "potionId": "COSMIC_CONCOCTION", "target": "Player", "clearPlayerHandBeforeUse": true
+  },
+  {
+    "coveredPotionHooks": [{ "potionId": "CURE_ALL", "hook": "OnUse" }],
+    "potionId": "CURE_ALL",
+    "target": "Player",
+    "playerEnergyBefore": 3,
+    "clearPlayerHandBeforeUse": true,
+    "cards": [{ "cardId": "STRIKE_IRONCLAD", "pile": "Draw" }]
+  },
+  {
+    "coveredPotionHooks": [{ "potionId": "POTION_OF_CAPACITY", "hook": "OnUse" }],
+    "potionId": "POTION_OF_CAPACITY", "target": "Player"
+  },
+  {
+    "coveredPotionHooks": [{ "potionId": "ESSENCE_OF_DARKNESS", "hook": "OnUse" }],
+    "potionId": "ESSENCE_OF_DARKNESS", "target": "Player"
+  },
+  {
+    "coveredPotionHooks": [{ "potionId": "GLOWWATER_POTION", "hook": "OnUse" }],
+    "potionId": "GLOWWATER_POTION",
+    "target": "Player",
+    "clearPlayerHandBeforeUse": true,
+    "cards": [
+      { "cardId": "STRIKE_IRONCLAD", "pile": "Hand" },
+      { "cardId": "DEFEND_IRONCLAD", "pile": "Hand" }
+    ]
+  },
+  {
+    "coveredPotionHooks": [{ "potionId": "OROBIC_ACID", "hook": "OnUse" }],
+    "potionId": "OROBIC_ACID", "target": "Player", "clearPlayerHandBeforeUse": true
+  },
+  {
+    "coveredPotionHooks": [{ "potionId": "SNECKO_OIL", "hook": "OnUse" }],
+    "potionId": "SNECKO_OIL",
+    "target": "Player",
+    "clearPlayerHandBeforeUse": true,
+    "cards": [
+      { "cardId": "STRIKE_IRONCLAD", "pile": "Hand" },
+      { "cardId": "BASH", "pile": "Hand" },
+      { "cardId": "DEFEND_IRONCLAD", "pile": "Draw" }
+    ]
+  },
+  {
+    "coveredPotionHooks": [{ "potionId": "SWIFT_POTION", "hook": "OnUse" }],
+    "potionId": "SWIFT_POTION",
+    "target": "Player",
+    "clearPlayerHandBeforeUse": true,
+    "cards": [
+      { "cardId": "STRIKE_IRONCLAD", "pile": "Draw" },
+      { "cardId": "DEFEND_IRONCLAD", "pile": "Draw" }
+    ]
+  },
+  {
+    "coveredPotionHooks": [{ "potionId": "ENTROPIC_BREW", "hook": "OnUse" }],
+    "potionId": "ENTROPIC_BREW", "target": "Player"
+  },
+  {
+    "coveredPotionHooks": [
+      { "potionId": "FAIRY_IN_A_BOTTLE", "hook": "ShouldDie" },
+      { "potionId": "FAIRY_IN_A_BOTTLE", "hook": "AfterPreventingDeath" }
+    ],
+    "potionId": "FAIRY_IN_A_BOTTLE", "target": "Player", "playerHpBefore": 20, "triggerAutomaticDeath": true
+  }
+]

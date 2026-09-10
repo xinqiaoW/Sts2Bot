@@ -1,0 +1,6 @@
+{
+  "potionId": "BeetleJuice",
+  "target": "Enemy",
+  "expectedEnemyPowers": { "ARTIFACT_POWER": 1 },
+  "expectedAbsentEnemyPowers": ["SHRINK_POWER"]
+}

@@ -1,0 +1,58 @@
+[
+  {
+    "monsterId": "CeremonialBeast",
+    "moveId": "BEAST_CRY_MOVE",
+    "enemyHpBefore": 20,
+    "cardsBeforeMove": [
+      {
+        "cardId": "STRIKE_IRONCLAD",
+        "pile": "Hand",
+        "count": 1
+      },
+      {
+        "cardId": "ARMAMENTS",
+        "pile": "Hand",
+        "count": 1
+      }
+    ],
+    "cardsAfterMove": [
+      {
+        "cardId": "BODY_SLAM",
+        "pile": "Hand",
+        "count": 1
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "STRIKE_IRONCLAD",
+        "expectedPlayable": true
+      },
+      {
+        "cardId": "BODY_SLAM",
+        "expectedPlayable": false
+      }
+    ],
+    "expectedEnemyHpGain": -6,
+    "expectedPlayerPowers": {
+      "RINGING_POWER": 1
+    },
+    "expectedPlayerCardStates": {
+      "Discard:STRIKE_IRONCLAD:RINGING:1:-:R0:XFalse:SFalse:TFalse:DTrue:MFalse": 1,
+      "Hand:ARMAMENTS:RINGING:1:-:R0:XFalse:SFalse:TFalse:DFalse:MFalse": 1,
+      "Hand:BODY_SLAM:RINGING:1:-:R0:XFalse:SFalse:TFalse:DFalse:MFalse": 1
+    }
+  },
+  {
+    "monsterId": "CeremonialBeast",
+    "moveId": "BEAST_CRY_MOVE",
+    "triggerPlayerSideTurnEndAfterMove": true,
+    "expectedAbsentPlayerPowers": [
+      "RINGING_POWER"
+    ],
+    "expectedPlayerCardStates": {
+      "Discard:STRIKE_IRONCLAD:-:0:-:R0:XFalse:SFalse:TFalse:DTrue:MFalse": 1,
+      "Hand:ARMAMENTS:-:0:-:R0:XFalse:SFalse:TFalse:DFalse:MFalse": 1,
+      "Hand:BODY_SLAM:-:0:-:R0:XFalse:SFalse:TFalse:DFalse:MFalse": 1
+    }
+  }
+]

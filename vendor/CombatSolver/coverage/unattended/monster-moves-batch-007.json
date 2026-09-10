@@ -1,0 +1,105 @@
+[
+  {
+    "monsterId": "KinFollower",
+    "moveId": "QUICK_SLASH_MOVE",
+    "expectedPlayerHpLoss": 5,
+    "expectedPlayerPowers": {},
+    "expectedEnemyPowers": {
+      "MINION_POWER": 1
+    }
+  },
+  {
+    "monsterId": "KinFollower",
+    "moveId": "BOOMERANG_MOVE",
+    "expectedPlayerHpLoss": 4,
+    "expectedPlayerPowers": {},
+    "expectedEnemyPowers": {
+      "MINION_POWER": 1
+    }
+  },
+  {
+    "monsterId": "KinFollower",
+    "moveId": "POWER_DANCE_MOVE",
+    "expectedPlayerHpLoss": 0,
+    "expectedPlayerPowers": {},
+    "expectedEnemyPowers": {
+      "MINION_POWER": 1,
+      "STRENGTH_POWER": 2
+    }
+  },
+  {
+    "monsterId": "KinPriest",
+    "moveId": "ORB_OF_FRAILTY_MOVE",
+    "expectedPlayerHpLoss": 8,
+    "expectedPlayerPowers": {
+      "FRAIL_POWER": 1
+    },
+    "expectedEnemyPowers": {}
+  },
+  {
+    "monsterId": "KinPriest",
+    "moveId": "ORB_OF_WEAKNESS_MOVE",
+    "expectedPlayerHpLoss": 8,
+    "expectedPlayerPowers": {
+      "FRAIL_POWER": 1,
+      "WEAK_POWER": 1
+    },
+    "expectedEnemyPowers": {}
+  },
+  {
+    "monsterId": "KinPriest",
+    "moveId": "BEAM_MOVE",
+    "expectedPlayerHpLoss": 9,
+    "expectedPlayerPowers": {
+      "FRAIL_POWER": 1,
+      "WEAK_POWER": 1
+    },
+    "expectedEnemyPowers": {}
+  },
+  {
+    "monsterId": "KinPriest",
+    "moveId": "RITUAL_MOVE",
+    "expectedPlayerHpLoss": 0,
+    "expectedPlayerPowers": {
+      "FRAIL_POWER": 1,
+      "WEAK_POWER": 1
+    },
+    "expectedEnemyPowers": {
+      "STRENGTH_POWER": 2
+    }
+  },
+  {
+    "monsterId": "KnowledgeDemon",
+    "moveId": "SLAP_MOVE",
+    "expectedPlayerHpLoss": 17,
+    "expectedPlayerPowers": {
+      "FRAIL_POWER": 1,
+      "WEAK_POWER": 1
+    },
+    "expectedEnemyPowers": {}
+  },
+  {
+    "monsterId": "KnowledgeDemon",
+    "moveId": "KNOWLEDGE_OVERWHELMING_MOVE",
+    "expectedPlayerHpLoss": 24,
+    "expectedPlayerPowers": {
+      "FRAIL_POWER": 1,
+      "WEAK_POWER": 1
+    },
+    "expectedEnemyPowers": {}
+  },
+  {
+    "monsterId": "KnowledgeDemon",
+    "moveId": "PONDER_MOVE",
+    "liveEndTurnRiskKnowledgeChoiceCardId": "MIND_ROT",
+    "expectedPlayerHpLoss": 11,
+    "expectedEnemyHpGain": 30,
+    "expectedPlayerPowers": {
+      "FRAIL_POWER": 1,
+      "WEAK_POWER": 1
+    },
+    "expectedEnemyPowers": {
+      "STRENGTH_POWER": 2
+    }
+  }
+]

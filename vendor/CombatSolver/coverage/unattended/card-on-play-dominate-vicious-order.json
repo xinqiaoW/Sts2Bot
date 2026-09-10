@@ -1,0 +1,40 @@
+[
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 100,
+    "playerEnergyBefore": 3,
+    "clearAllPowersBeforeMove": true,
+    "clearPlayerPilesBeforeMove": true,
+    "powersBeforeMove": [
+      {
+        "powerId": "VICIOUS_POWER",
+        "target": "Player",
+        "applier": "Player",
+        "amount": 1
+      },
+      {
+        "powerId": "HELLRAISER_POWER",
+        "target": "Player",
+        "applier": "Player",
+        "amount": 1
+      }
+    ],
+    "cardsBeforeMove": [
+      { "cardId": "DOMINATE", "pile": "Hand" },
+      { "cardId": "STRIKE_IRONCLAD", "pile": "Draw" }
+    ],
+    "cardPlayChecksAfterMove": [
+      { "cardId": "DOMINATE", "target": "Enemy" }
+    ],
+    "expectedPlayerEnergy": 2,
+    "expectedPlayerPowers": {
+      "HELLRAISER_POWER": 1,
+      "STRENGTH_POWER": 1,
+      "VICIOUS_POWER": 1
+    },
+    "expectedEnemyPowers": {
+      "VULNERABLE_POWER": 1
+    }
+  }
+]

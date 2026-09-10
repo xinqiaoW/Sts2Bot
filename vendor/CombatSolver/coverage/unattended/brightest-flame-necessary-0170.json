@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "scenarioId": "BRIGHTEST-FLAME-NECESSARY-0170",
+  "characterId": "IRONCLAD",
+  "encounterId": "FUZZY_WURM_CRAWLER_WEAK",
+  "seed": "BRIGHTNECESSARY0170",
+  "enemyCurrentHp": 24,
+  "initialPlayerHp": 80,
+  "initialPlayerMaxHp": 80,
+  "initialPlayerEnergy": 3,
+  "clearPlayerHand": true,
+  "clearPlayerPiles": true,
+  "cards": [
+    { "cardId": "BRIGHTEST_FLAME", "pile": "Hand" },
+    { "cardId": "STRIKE_IRONCLAD", "pile": "Hand", "count": 4 }
+  ],
+  "forceShortSearchOnly": true,
+  "shortSearchBudgetOverrideMilliseconds": 5000,
+  "expectedInitialActionCardId": "BRIGHTEST_FLAME",
+  "expectedInitialActionTitle": "至亮之焰",
+  "expectedInitialFinalMaxHp": 78,
+  "expectedInitialProjectedBattleHpLost": 2,
+  "expectedInitialCombatEndedTurn": 1,
+  "stopAfterInitialSolverResultAssertion": true,
+  "timeoutSeconds": 150
+}

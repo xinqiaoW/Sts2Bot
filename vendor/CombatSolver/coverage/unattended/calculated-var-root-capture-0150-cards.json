@@ -1,0 +1,11 @@
+[
+  {
+    "cardId": "EXPECT_A_FIGHT",
+    "pile": "Exhaust",
+    "dynamicVars": {
+      "CalculatedBlock": 16,
+      "CalculationBase": 15,
+      "CalculationExtra": 5
+    }
+  }
+]

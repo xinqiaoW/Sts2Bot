@@ -1,0 +1,30 @@
+[
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearAllPowersBeforeMove": true,
+    "clearPlayerPilesBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "powerBeforeMove": {
+      "powerId": "FRAIL_POWER",
+      "target": "Player",
+      "amount": 1
+    },
+    "cardBeforeMove": {
+      "cardId": "TORIC_TOUGHNESS",
+      "pile": "Hand"
+    },
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "TORIC_TOUGHNESS",
+        "target": "None"
+      }
+    ],
+    "expectedPlayerBlock": 3,
+    "expectedPlayerPowers": {
+      "FRAIL_POWER": 1,
+      "TORIC_TOUGHNESS_POWER": 2
+    }
+  }
+]

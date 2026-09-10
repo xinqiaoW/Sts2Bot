@@ -1,0 +1,189 @@
+[
+  {
+    "coveredRelicHooks": [{ "relicId": "BIIIG_HUG", "hook": "AfterShuffle" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999, "playerEnergyBefore": 99,
+    "clearAllRelicsBeforeMove": true,
+    "relicsBeforeMove": [{ "relicId": "BIIIG_HUG", "addWithoutObtainedEffects": true }],
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true,
+    "cardsBeforeMove": [
+      { "cardId": "POMMEL_STRIKE", "pile": "Hand" },
+      { "cardId": "DEFEND_IRONCLAD", "pile": "Discard" }
+    ],
+    "cardPlayChecksAfterMove": [{ "cardId": "POMMEL_STRIKE", "target": "Enemy" }]
+  },
+  {
+    "coveredRelicHooks": [{ "relicId": "THE_ABACUS", "hook": "AfterShuffle" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999, "playerEnergyBefore": 99,
+    "clearAllRelicsBeforeMove": true, "relicsBeforeMove": [{ "relicId": "THE_ABACUS" }],
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true,
+    "cardsBeforeMove": [
+      { "cardId": "POMMEL_STRIKE", "pile": "Hand" },
+      { "cardId": "DEFEND_IRONCLAD", "pile": "Discard" }
+    ],
+    "cardPlayChecksAfterMove": [{ "cardId": "POMMEL_STRIKE", "target": "Enemy" }]
+  },
+  {
+    "coveredRelicHooks": [{ "relicId": "BURNING_STICKS", "hook": "AfterCardExhausted" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999, "playerEnergyBefore": 99,
+    "clearAllRelicsBeforeMove": true, "relicsBeforeMove": [{ "relicId": "BURNING_STICKS" }],
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true,
+    "cardsBeforeMove": [
+      { "cardId": "BURNING_PACT", "pile": "Hand" },
+      { "cardId": "DEFEND_IRONCLAD", "pile": "Hand" }
+    ],
+    "cardPlayChecksAfterMove": [
+      { "cardId": "BURNING_PACT", "target": "None", "useChoice": true, "choiceCardIds": ["DEFEND_IRONCLAD"] }
+    ]
+  },
+  {
+    "coveredRelicHooks": [{ "relicId": "CHARONS_ASHES", "hook": "AfterCardExhausted" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999, "playerEnergyBefore": 99,
+    "clearAllRelicsBeforeMove": true, "relicsBeforeMove": [{ "relicId": "CHARONS_ASHES" }],
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true,
+    "cardsBeforeMove": [
+      { "cardId": "BURNING_PACT", "pile": "Hand" },
+      { "cardId": "STRIKE_IRONCLAD", "pile": "Hand" }
+    ],
+    "cardPlayChecksAfterMove": [
+      { "cardId": "BURNING_PACT", "target": "None", "useChoice": true, "choiceCardIds": ["STRIKE_IRONCLAD"] }
+    ]
+  },
+  {
+    "coveredRelicHooks": [{ "relicId": "FORGOTTEN_SOUL", "hook": "AfterCardExhausted" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999, "playerEnergyBefore": 99,
+    "clearAllRelicsBeforeMove": true, "relicsBeforeMove": [{ "relicId": "FORGOTTEN_SOUL" }],
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true,
+    "cardsBeforeMove": [
+      { "cardId": "BURNING_PACT", "pile": "Hand" },
+      { "cardId": "STRIKE_IRONCLAD", "pile": "Hand" }
+    ],
+    "cardPlayChecksAfterMove": [
+      { "cardId": "BURNING_PACT", "target": "None", "useChoice": true, "choiceCardIds": ["STRIKE_IRONCLAD"] }
+    ]
+  },
+  {
+    "coveredRelicHooks": [{ "relicId": "JOSS_PAPER", "hook": "AfterCardExhausted" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999, "playerEnergyBefore": 99,
+    "clearAllRelicsBeforeMove": true,
+    "relicsBeforeMove": [{ "relicId": "JOSS_PAPER", "integerMembers": { "CardsExhausted": 4 } }],
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true,
+    "cardsBeforeMove": [
+      { "cardId": "BURNING_PACT", "pile": "Hand" },
+      { "cardId": "DEFEND_IRONCLAD", "pile": "Hand" },
+      { "cardId": "STRIKE_IRONCLAD", "pile": "Draw" }
+    ],
+    "cardPlayChecksAfterMove": [
+      { "cardId": "BURNING_PACT", "target": "None", "useChoice": true, "choiceCardIds": ["DEFEND_IRONCLAD"] }
+    ]
+  },
+  {
+    "coveredRelicHooks": [{ "relicId": "TINGSHA", "hook": "AfterCardDiscarded" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999, "playerEnergyBefore": 99,
+    "clearAllRelicsBeforeMove": true, "relicsBeforeMove": [{ "relicId": "TINGSHA" }],
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true,
+    "cardsBeforeMove": [
+      { "cardId": "SURVIVOR", "pile": "Hand" },
+      { "cardId": "DEFEND_IRONCLAD", "pile": "Hand" }
+    ],
+    "cardPlayChecksAfterMove": [
+      { "cardId": "SURVIVOR", "target": "None", "useChoice": true, "choiceCardIds": ["DEFEND_IRONCLAD"] }
+    ]
+  },
+  {
+    "coveredRelicHooks": [{ "relicId": "TOUGH_BANDAGES", "hook": "AfterCardDiscarded" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999, "playerEnergyBefore": 99,
+    "clearAllRelicsBeforeMove": true, "relicsBeforeMove": [{ "relicId": "TOUGH_BANDAGES" }],
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true,
+    "cardsBeforeMove": [
+      { "cardId": "SURVIVOR", "pile": "Hand" },
+      { "cardId": "DEFEND_IRONCLAD", "pile": "Hand" }
+    ],
+    "cardPlayChecksAfterMove": [
+      { "cardId": "SURVIVOR", "target": "None", "useChoice": true, "choiceCardIds": ["DEFEND_IRONCLAD"] }
+    ]
+  },
+  {
+    "coveredRelicHooks": [{ "relicId": "FIDDLE", "hook": "ShouldDraw" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999, "playerEnergyBefore": 99,
+    "clearAllRelicsBeforeMove": true, "relicsBeforeMove": [{ "relicId": "FIDDLE" }],
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true,
+    "cardsBeforeMove": [
+      { "cardId": "POMMEL_STRIKE", "pile": "Hand" },
+      { "cardId": "DEFEND_IRONCLAD", "pile": "Draw" }
+    ],
+    "cardPlayChecksAfterMove": [{ "cardId": "POMMEL_STRIKE", "target": "Enemy" }]
+  },
+  {
+    "coveredRelicHooks": [{ "relicId": "CLOAK_CLASP", "hook": "BeforeSideTurnEnd" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "clearAllRelicsBeforeMove": true, "relicsBeforeMove": [{ "relicId": "CLOAK_CLASP" }],
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true,
+    "cardsBeforeMove": [
+      { "cardId": "STRIKE_IRONCLAD", "pile": "Hand" },
+      { "cardId": "DEFEND_IRONCLAD", "pile": "Hand" }
+    ],
+    "triggerPlayerTurnEndAfterMove": true
+  },
+  {
+    "coveredRelicHooks": [
+      { "relicId": "ORICHALCUM", "hook": "BeforeSideTurnEndVeryEarly" },
+      { "relicId": "ORICHALCUM", "hook": "BeforeSideTurnEnd" }
+    ],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999, "playerBlockBefore": 0,
+    "clearAllRelicsBeforeMove": true, "relicsBeforeMove": [{ "relicId": "ORICHALCUM" }],
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true,
+    "triggerPlayerTurnEndAfterMove": true
+  },
+  {
+    "coveredRelicHooks": [
+      { "relicId": "FAKE_ORICHALCUM", "hook": "BeforeSideTurnEndVeryEarly" },
+      { "relicId": "FAKE_ORICHALCUM", "hook": "BeforeSideTurnEnd" }
+    ],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999, "playerBlockBefore": 0,
+    "clearAllRelicsBeforeMove": true, "relicsBeforeMove": [{ "relicId": "FAKE_ORICHALCUM" }],
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true,
+    "triggerPlayerTurnEndAfterMove": true
+  },
+  {
+    "coveredRelicHooks": [{ "relicId": "PAELS_EYE", "hook": "BeforeSideTurnEndEarly" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "clearAllRelicsBeforeMove": true, "relicsBeforeMove": [{ "relicId": "PAELS_EYE" }],
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true,
+    "cardBeforeMove": { "cardId": "DEFEND_IRONCLAD", "pile": "Hand" },
+    "triggerPlayerTurnEndAfterMove": true
+  },
+  {
+    "coveredRelicHooks": [{ "relicId": "SCREAMING_FLAGON", "hook": "BeforeSideTurnEnd" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "clearAllRelicsBeforeMove": true, "relicsBeforeMove": [{ "relicId": "SCREAMING_FLAGON" }],
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true,
+    "triggerPlayerTurnEndAfterMove": true
+  },
+  {
+    "coveredRelicHooks": [{ "relicId": "GOLD_PLATED_CABLES", "hook": "ModifyOrbPassiveTriggerCounts" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "clearAllRelicsBeforeMove": true, "relicsBeforeMove": [{ "relicId": "GOLD_PLATED_CABLES" }],
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true,
+    "clearPlayerOrbsBeforeMove": true,
+    "orbsBeforeMove": [{ "orbId": "LIGHTNING_ORB" }],
+    "triggerPlayerTurnEndAfterMove": true
+  },
+  {
+    "coveredRelicHooks": [{ "relicId": "METRONOME", "hook": "AfterOrbChanneled" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999, "playerEnergyBefore": 99,
+    "clearAllRelicsBeforeMove": true,
+    "relicsBeforeMove": [{ "relicId": "METRONOME", "integerMembers": { "_orbsChanneled": 6 } }],
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true,
+    "clearPlayerOrbsBeforeMove": true,
+    "cardBeforeMove": { "cardId": "ZAP", "pile": "Hand" },
+    "cardPlayChecksAfterMove": [{ "cardId": "ZAP", "target": "None" }]
+  },
+  {
+    "coveredRelicHooks": [{ "relicId": "STONE_CALENDAR", "hook": "BeforeSideTurnEnd" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "playerTurnNumberBefore": 7,
+    "clearAllRelicsBeforeMove": true, "relicsBeforeMove": [{ "relicId": "STONE_CALENDAR" }],
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true,
+    "triggerPlayerTurnEndAfterMove": true
+  }
+]

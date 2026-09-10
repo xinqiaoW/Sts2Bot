@@ -1,0 +1,16 @@
+[
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "clearPlayerHandBeforeMove": true,
+    "cardsBeforeMove": [
+      { "cardId": "DAZED", "pile": "Hand", "count": 5 }
+    ],
+    "triggerPlayerTurnEndAfterMove": true,
+    "expectedPlayerHandCount": 1,
+    "expectedPlayerPileCards": {
+      "Exhaust:DAZED": 5
+    },
+    "expectedMirrorRelicState": ";mirrorRelics=JOSS_PAPER/0"
+  }
+]

@@ -1,0 +1,1864 @@
+[
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "ABUNDANCE",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "ABUNDANCE",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "AFTERIMAGE",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "AFTERIMAGE",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "AGGRESSION",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "AGGRESSION",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "ALCHEMIZE",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "ALCHEMIZE",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "ANOINTED",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "ANOINTED",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "APOTHEOSIS",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "APOTHEOSIS",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "APPARITION",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "APPARITION",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "ARSENAL",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "ARSENAL",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "AUTOMATION",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "AUTOMATION",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "BANSHEES_CRY",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "BANSHEES_CRY",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "BARRICADE",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "BARRICADE",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "BIG_BANG",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "BIG_BANG",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "BODY_SLAM",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "BODY_SLAM",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "BULLET_TIME",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "BULLET_TIME",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "CALAMITY",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "CALAMITY",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "CALCULATED_GAMBLE",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "CALCULATED_GAMBLE",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "CALL_OF_THE_VOID",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "CALL_OF_THE_VOID",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "CHILL",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "CHILL",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "CORRUPTION",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "CORRUPTION",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "CREATIVE_AI",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "CREATIVE_AI",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "DARK_EMBRACE",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "DARK_EMBRACE",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "DEMESNE",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "DEMESNE",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "DISCOVERY",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "DISCOVERY",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "DISTRACTION",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "DISTRACTION",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "DOUBLE_ENERGY",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "DOUBLE_ENERGY",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "DREDGE",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "DREDGE",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "DUALCAST",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "DUALCAST",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "ECHO_FORM",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "ECHO_FORM",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "EIDOLON",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "EIDOLON",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "ENTRENCH",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "ENTRENCH",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "ENTROPY",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "ENTROPY",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "FERAL",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "FERAL",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "FORBIDDEN_GRIMOIRE",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "FORBIDDEN_GRIMOIRE",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "FUSION",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "FUSION",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "GOLD_AXE",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "GOLD_AXE",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "GRAVEBLAST",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "GRAVEBLAST",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "HAVOC",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "HAVOC",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "HELLO_WORLD",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "HELLO_WORLD",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "HELLRAISER",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "HELLRAISER",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "HOLOGRAM",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "HOLOGRAM",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "HOTFIX",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "HOTFIX",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "INFERNAL_BLADE",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "INFERNAL_BLADE",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "INFINITE_BLADES",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "INFINITE_BLADES",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "JUGGLING",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "JUGGLING",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "KNOW_THY_PLACE",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "KNOW_THY_PLACE",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "MACHINE_LEARNING",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "MACHINE_LEARNING",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "MAD_SCIENCE",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "MAD_SCIENCE",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "MASTER_PLANNER",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "MASTER_PLANNER",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "MAYHEM",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "MAYHEM",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "MIND_BLAST",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "MIND_BLAST",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "MIRAGE",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "MIRAGE",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "MISERY",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "MISERY",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "MONARCHS_GAZE",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "MONARCHS_GAZE",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "MONOLOGUE",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "MONOLOGUE",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "MURDER",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "MURDER",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "NIGHTMARE",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "NIGHTMARE",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "NOSTALGIA",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "NOSTALGIA",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "ORBIT",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "ORBIT",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "PAGESTORM",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "PAGESTORM",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "PROLONG",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "PROLONG",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "PROTECTOR",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "PROTECTOR",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "QUADCAST",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "QUADCAST",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "RAINBOW",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "RAINBOW",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "REAPER_FORM",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "REAPER_FORM",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "ROYAL_GAMBLE",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "ROYAL_GAMBLE",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "SACRIFICE",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "SACRIFICE",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "SCRAWL",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "SCRAWL",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "SEANCE",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "SEANCE",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "SECRET_TECHNIQUE",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "SECRET_TECHNIQUE",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "SECRET_WEAPON",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "SECRET_WEAPON",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "SENTRY_MODE",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "SENTRY_MODE",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "SEVEN_STARS",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "SEVEN_STARS",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "SHADOW_STEP",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "SHADOW_STEP",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "SHADOWMELD",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "SHADOWMELD",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "SIGNAL_BOOST",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "SIGNAL_BOOST",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "SOVEREIGN_BLADE",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "SOVEREIGN_BLADE",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "SPECTRUM_SHIFT",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "SPECTRUM_SHIFT",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "SPEEDSTER",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "SPEEDSTER",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "STAMPEDE",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "STAMPEDE",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "STRATAGEM",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "STRATAGEM",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "SUBROUTINE",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "SUBROUTINE",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "SWORD_SAGE",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "SWORD_SAGE",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "THE_SEALED_THRONE",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "THE_SEALED_THRONE",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "THINKING_AHEAD",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "THINKING_AHEAD",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "TIMES_UP",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "TIMES_UP",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "TOOLS_OF_THE_TRADE",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "TOOLS_OF_THE_TRADE",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "TRACKING",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "TRACKING",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "TRANSFIGURE",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "TRANSFIGURE",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "TRASH_TO_TREASURE",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "TRASH_TO_TREASURE",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "TYRANNY",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "TYRANNY",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "UNMOVABLE",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "UNMOVABLE",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "VOID_FORM",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "VOID_FORM",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "VOLTAIC",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "VOLTAIC",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "WELL_LAID_PLANS",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "WELL_LAID_PLANS",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "WHITE_NOISE",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "WHITE_NOISE",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "WISH",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "WISH",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "WISP",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "WISP",
+        "hook": "OnUpgrade"
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "ZAP",
+      "pile": "Hand",
+      "enumMembers": {},
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "coveredCardHooks": [
+      {
+        "cardId": "ZAP",
+        "hook": "OnUpgrade"
+      }
+    ]
+  }
+]

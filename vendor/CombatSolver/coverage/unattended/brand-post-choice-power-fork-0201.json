@@ -1,0 +1,24 @@
+[
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "playerEnergyBefore": 99,
+    "clearAllPowersBeforeMove": true,
+    "clearPlayerPilesBeforeMove": true,
+    "cardsBeforeMove": [
+      { "cardId": "BRAND", "pile": "Hand", "upgradeLevels": 1 },
+      { "cardId": "STRIKE_IRONCLAD", "pile": "Hand" }
+    ],
+    "cardPlayChecksBeforeMove": [
+      {
+        "cardId": "BRAND",
+        "target": "None",
+        "expectedPlayable": true,
+        "useChoice": true,
+        "choiceCardIds": ["STRIKE_IRONCLAD"],
+        "assertForkableAfterPlay": true
+      }
+    ]
+  }
+]

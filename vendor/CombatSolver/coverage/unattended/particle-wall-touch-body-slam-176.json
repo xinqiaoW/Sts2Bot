@@ -1,0 +1,24 @@
+{
+  "scenarioId": "PARTICLE-WALL-TOUCH-BODY-SLAM-176",
+  "characterId": "IRONCLAD",
+  "encounterId": "FUZZY_WURM_CRAWLER_WEAK",
+  "seed": "PARTICLEWALLBODYSLAM",
+  "enemyCurrentHp": 80,
+  "clearPlayerPiles": true,
+  "cards": [
+    { "cardId": "PARTICLE_WALL", "pile": "Hand" },
+    { "cardId": "BODY_SLAM", "pile": "Hand" }
+  ],
+  "potions": [
+    { "potionId": "TouchOfInsanity" }
+  ],
+  "performancePresetForTest": "Medium",
+  "forceShortSearchOnly": true,
+  "expectedInitialCombatEndedTurn": 1,
+  "expectedInitialPotionCount": 1,
+  "expectedInitialExecutableActionCountAtLeast": 9,
+  "expectedFinishedTurn": 1,
+  "expectedInitialTotalElapsedMillisecondsAtMost": 10000,
+  "expectedInitialTotalAllocatedBytesAtMost": 1200000000,
+  "exitOnComplete": true
+}

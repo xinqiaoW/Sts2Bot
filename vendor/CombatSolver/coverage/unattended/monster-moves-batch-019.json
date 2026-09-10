@@ -1,0 +1,104 @@
+[
+  {
+    "monsterId": "TheForgotten",
+    "moveId": "MIASMA",
+    "expectedPlayerHpLoss": 0,
+    "expectedEnemyBlockGain": 8,
+    "expectedPlayerPowers": {
+      "DEXTERITY_POWER": -2
+    }
+  },
+  {
+    "monsterId": "TheForgotten",
+    "moveId": "DREAD",
+    "expectedPlayerHpLoss": 15
+  },
+  {
+    "monsterId": "OwlMagistrate",
+    "moveId": "MAGISTRATE_SCRUTINY",
+    "expectedPlayerHpLoss": 16
+  },
+  {
+    "monsterId": "OwlMagistrate",
+    "moveId": "PECK_ASSAULT",
+    "expectedPlayerHpLoss": 24
+  },
+  {
+    "monsterId": "Queen",
+    "moveId": "OFF_WITH_YOUR_HEAD_MOVE",
+    "expectedPlayerHpLoss": 15
+  },
+  {
+    "monsterId": "Queen",
+    "moveId": "EXECUTION_MOVE",
+    "expectedPlayerHpLoss": 15
+  },
+  {
+    "monsterId": "OwlMagistrate",
+    "moveId": "JUDICIAL_FLIGHT",
+    "expectedPlayerHpLoss": 0,
+    "expectedEnemyPowers": {
+      "SOAR_POWER": 1
+    }
+  },
+  {
+    "monsterId": "OwlMagistrate",
+    "moveId": "VERDICT",
+    "expectedPlayerHpLoss": 33,
+    "expectedPlayerPowers": {
+      "VULNERABLE_POWER": 4
+    }
+  },
+  {
+    "monsterId": "CeremonialBeast",
+    "moveId": "STAMP_MOVE",
+    "expectedPlayerHpLoss": 0,
+    "expectedEnemyPowers": {
+      "PLOW_POWER": 150
+    }
+  },
+  {
+    "monsterId": "CeremonialBeast",
+    "moveId": "BEAST_CRY_MOVE",
+    "expectedPlayerHpLoss": 0,
+    "expectedPlayerPowers": {
+      "RINGING_POWER": 1
+    }
+  },
+  {
+    "monsterId": "Queen",
+    "moveId": "PUPPET_STRINGS_MOVE",
+    "expectedPlayerHpLoss": 0,
+    "expectedPlayerPowers": {
+      "CHAINS_OF_BINDING_POWER": 3
+    }
+  },
+  {
+    "monsterId": "Queen",
+    "moveId": "YOU_ARE_MINE_MOVE",
+    "expectedPlayerHpLoss": 0,
+    "expectedPlayerPowers": {
+      "CHAINS_OF_BINDING_POWER": 3,
+      "FRAIL_POWER": 99,
+      "WEAK_POWER": 99,
+      "VULNERABLE_POWER": 103
+    }
+  },
+  {
+    "monsterId": "Queen",
+    "moveId": "ENRAGE_MOVE",
+    "expectedPlayerHpLoss": 0,
+    "expectedEnemyPowers": {
+      "STRENGTH_POWER": 2
+    }
+  },
+  {
+    "monsterId": "Queen",
+    "moveId": "BURN_BRIGHT_FOR_ME_MOVE",
+    "expectedPlayerHpLoss": 0,
+    "expectedEnemyBlockGain": 20,
+    "expectedEnemyPowers": {
+      "STRENGTH_POWER": 2
+    }
+  }
+]

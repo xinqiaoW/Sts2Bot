@@ -1,0 +1,24 @@
+[
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "playerEnergyBefore": 99,
+    "clearAllRelicsBeforeMove": true,
+    "relicsBeforeMove": [
+      { "relicId": "POCKETWATCH" }
+    ],
+    "clearAllPowersBeforeMove": true,
+    "clearPlayerPilesBeforeMove": true,
+    "cardsBeforeMove": [
+      { "cardId": "BACKFLIP", "pile": "Hand", "upgradeLevels": 1, "enchantmentId": "GLAM" },
+      { "cardId": "STRIKE_SILENT", "pile": "Draw", "count": 4 }
+    ],
+    "cardPlayChecksAfterMove": [
+      { "cardId": "BACKFLIP", "target": "None" }
+    ],
+    "triggerPlayerTurnEndAfterMove": true,
+    "triggerPlayerSetupAfterMove": true,
+    "expectedStatefulRelicStateAfterPlayerSetup": ";relicCounters=POCKETWATCH/0/2"
+  }
+]

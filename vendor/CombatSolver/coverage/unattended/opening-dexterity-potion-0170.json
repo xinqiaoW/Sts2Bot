@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "scenarioId": "OPENING-DEXTERITY-POTION-0170",
+  "characterId": "SILENT",
+  "encounterId": "FUZZY_WURM_CRAWLER_WEAK",
+  "seed": "OPENDEX0170",
+  "enemyCurrentHp": 12,
+  "initialPlayerEnergy": 1,
+  "clearPlayerHand": true,
+  "clearPlayerPiles": true,
+  "cards": [
+    { "cardId": "STRIKE_SILENT", "pile": "Hand" },
+    { "cardId": "STRIKE_SILENT", "pile": "Draw" }
+  ],
+  "potions": [{ "potionId": "DEXTERITY_POTION" }],
+  "potionPolicyForTest": "RequireAtLeastOne",
+  "forceShortSearchOnly": true,
+  "shortSearchBudgetOverrideMilliseconds": 5000,
+  "expectedInitialFirstActionPotionId": "DEXTERITY_POTION",
+  "expectedInitialPotionCount": 1,
+  "stopAfterInitialSolverResultAssertion": true,
+  "timeoutSeconds": 150
+}

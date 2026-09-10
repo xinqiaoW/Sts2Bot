@@ -1,0 +1,21 @@
+[
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "cardsBeforeMove": [
+      { "cardId": "SEEKER_STRIKE", "pile": "Hand" },
+      { "cardId": "BODY_SLAM", "pile": "Draw" }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "SEEKER_STRIKE",
+        "target": "Enemy",
+        "useChoice": true,
+        "choiceCardIds": ["BODY_SLAM"]
+      }
+    ]
+  }
+]

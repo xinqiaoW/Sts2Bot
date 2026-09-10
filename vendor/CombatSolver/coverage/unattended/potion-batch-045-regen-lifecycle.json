@@ -1,0 +1,8 @@
+{
+  "potionId": "RegenPotion",
+  "target": "Player",
+  "playerHpBefore": 40,
+  "triggerPlayerSideTurnEndAfterUse": true,
+  "expectedPlayerHp": 45,
+  "expectedPlayerPowers": { "REGEN_POWER": 4 }
+}

@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "scenarioId": "INITIAL-MULTI-CHOICE-CHAIN-399",
+  "characterId": "IRONCLAD",
+  "encounterId": "FUZZY_WURM_CRAWLER_WEAK",
+  "seed": "INITIAL-MULTI-CHOICE-CHAIN-399",
+  "relics": [
+    { "relicId": "TOOLBOX", "addWithoutObtainedEffects": true },
+    { "relicId": "TOASTY_MITTENS", "addWithoutObtainedEffects": true }
+  ],
+  "runCards": [
+    {
+      "cardId": "SURVIVOR",
+      "pile": "Deck",
+      "count": 1,
+      "enchantmentId": "IMBUED"
+    }
+  ],
+  "forceShortSearchOnly": true,
+  "shortSearchBudgetOverrideMilliseconds": 1500,
+  "expectedInitialSetupChoiceCountAtLeast": 3,
+  "stopAfterInitialSetupAssertion": true,
+  "timeoutSeconds": 120
+}

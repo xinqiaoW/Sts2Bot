@@ -1,0 +1,7 @@
+[
+  { "cardId": "UPROAR", "pile": "Hand", "count": 1 },
+  { "cardId": "DAZED", "pile": "Hand", "count": 1 },
+  { "cardId": "SEEKER_STRIKE", "pile": "Draw", "count": 1 },
+  { "cardId": "DEFEND_IRONCLAD", "pile": "Draw", "count": 1 },
+  { "cardId": "STRIKE_IRONCLAD", "pile": "Discard", "count": 3 }
+]

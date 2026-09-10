@@ -1,0 +1,30 @@
+[
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "powerBeforeMove": {
+      "powerId": "RITUAL_POWER",
+      "target": "CheckedEnemy",
+      "amount": 2
+    },
+    "enemySideTurnEndTriggerCount": 2,
+    "expectedEnemyPowers": {
+      "RITUAL_POWER": 2,
+      "STRENGTH_POWER": 9
+    }
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "powerBeforeMove": {
+      "powerId": "RITUAL_POWER",
+      "target": "Player",
+      "amount": 3
+    },
+    "triggerPlayerSideTurnEndAfterMove": true,
+    "expectedPlayerPowers": {
+      "RITUAL_POWER": 3,
+      "STRENGTH_POWER": 3
+    }
+  }
+]

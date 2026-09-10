@@ -1,0 +1,50 @@
+[
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "playerEnergyBefore": 99,
+    "clearAllPowersBeforeMove": true,
+    "powersBeforeMove": [
+      { "powerId": "STRATAGEM_POWER", "target": "Player", "amount": 1 }
+    ],
+    "clearPlayerPilesBeforeMove": true,
+    "cardsBeforeMove": [
+      { "cardId": "THINKING_AHEAD", "pile": "Hand" },
+      { "cardId": "STRIKE_SILENT", "pile": "Discard" },
+      { "cardId": "DEFEND_SILENT", "pile": "Discard", "count": 2 }
+    ],
+    "cardPlayChecksBeforeMove": [
+      {
+        "cardId": "THINKING_AHEAD",
+        "target": "None",
+        "useChoice": true,
+        "choiceCardIds": ["STRIKE_SILENT"]
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "playerEnergyBefore": 99,
+    "clearAllPowersBeforeMove": true,
+    "powersBeforeMove": [
+      { "powerId": "STRATAGEM_POWER", "target": "Player", "amount": 1 }
+    ],
+    "clearPlayerPilesBeforeMove": true,
+    "cardsBeforeMove": [
+      { "cardId": "ACROBATICS", "pile": "Hand", "upgradeLevels": 1 },
+      { "cardId": "STRIKE_SILENT", "pile": "Discard" },
+      { "cardId": "DEFEND_SILENT", "pile": "Discard", "count": 4 }
+    ],
+    "cardPlayChecksBeforeMove": [
+      {
+        "cardId": "ACROBATICS",
+        "target": "None",
+        "useChoice": true,
+        "choiceCardIds": ["STRIKE_SILENT"]
+      }
+    ]
+  }
+]

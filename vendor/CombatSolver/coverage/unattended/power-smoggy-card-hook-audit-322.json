@@ -1,0 +1,13 @@
+[
+  {
+    "coveredPowerHooks": [{ "powerId": "SMOGGY_POWER", "hook": "AfterCardPlayed" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "playerEnergyBefore": 99, "clearPlayerPilesBeforeMove": true,
+    "powerBeforeMove": { "powerId": "SMOGGY_POWER", "target": "Player", "amount": 1 },
+    "cardsBeforeMove": [
+      { "cardId": "DEFEND_IRONCLAD", "pile": "Hand" },
+      { "cardId": "SHRUG_IT_OFF", "pile": "Draw" }
+    ],
+    "cardPlayChecksAfterMove": [{ "cardId": "DEFEND_IRONCLAD", "target": "None" }]
+  }
+]

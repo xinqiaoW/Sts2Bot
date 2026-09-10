@@ -1,0 +1,5 @@
+{
+  "potionId": "ATTACK_POTION",
+  "target": "Player",
+  "choiceCardIds": ["__FIRST__"]
+}

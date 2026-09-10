@@ -1,0 +1,16 @@
+[
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "playerEnergyBefore": 99,
+    "clearPlayerHandBeforeMove": true,
+    "cardsBeforeMove": [
+      { "cardId": "SPINNER", "pile": "Hand", "upgradeLevels": 1 }
+    ],
+    "cardPlayChecksAfterMove": [
+      { "cardId": "SPINNER", "target": "None" }
+    ],
+    "triggerPlayerTurnEndAfterMove": true
+  }
+]

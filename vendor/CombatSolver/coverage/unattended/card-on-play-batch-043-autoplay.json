@@ -1,0 +1,29 @@
+[
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 10,
+    "cardsBeforeMove": [
+      { "cardId": "KNIFE_TRAP", "pile": "Hand" },
+      { "cardId": "EIDOLON", "pile": "Hand" },
+      { "cardId": "SHIV", "pile": "Exhaust" },
+      { "cardId": "SHIV", "pile": "Exhaust" },
+      { "cardId": "APPARITION", "pile": "Exhaust" }
+    ],
+    "cardPlayChecksAfterMove": [
+      { "cardId": "KNIFE_TRAP", "target": "Enemy" },
+      { "cardId": "EIDOLON", "target": "None" }
+    ],
+    "expectedEnemyHpGain": -8,
+    "expectedPlayerEnergy": 6,
+    "expectedPlayerPowers": {
+      "INTANGIBLE_POWER": 1
+    },
+    "expectedPlayerPileCards": {
+      "Exhaust:SHIV": 2,
+      "Exhaust:APPARITION": 1,
+      "Exhaust:EIDOLON": 1
+    }
+  }
+]

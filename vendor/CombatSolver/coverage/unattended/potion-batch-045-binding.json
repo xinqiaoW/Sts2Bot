@@ -1,0 +1,5 @@
+{
+  "potionId": "PotionOfBinding",
+  "target": "None",
+  "expectedEnemyPowers": { "WEAK_POWER": 1, "VULNERABLE_POWER": 1 }
+}

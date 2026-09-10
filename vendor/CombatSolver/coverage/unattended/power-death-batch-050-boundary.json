@@ -1,0 +1,6 @@
+[
+  {
+    "useCurrentMove": true,
+    "expectedSearchBoundary": "DynamicResolution"
+  }
+]

@@ -1,0 +1,4 @@
+[
+  { "cardId": "DEFEND_SILENT", "pile": "Hand", "count": 5 },
+  { "cardId": "STRIKE_SILENT", "pile": "Draw", "count": 5 }
+]

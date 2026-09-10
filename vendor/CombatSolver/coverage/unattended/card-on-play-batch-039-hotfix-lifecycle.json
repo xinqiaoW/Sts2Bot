@@ -1,0 +1,20 @@
+[
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 3,
+    "cardsBeforeMove": [
+      { "cardId": "HOTFIX", "pile": "Hand" }
+    ],
+    "cardPlayChecksAfterMove": [
+      { "cardId": "HOTFIX", "target": "None" }
+    ],
+    "triggerPlayerSideTurnEndAfterMove": true,
+    "expectedPlayerEnergy": 3,
+    "expectedAbsentPlayerPowers": [
+      "HOTFIX_POWER",
+      "FOCUS_POWER"
+    ]
+  }
+]

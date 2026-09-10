@@ -1,0 +1,18 @@
+[
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "monsterOccurrence": 0,
+    "moveId": "INHALE",
+    "playerHpBefore": 50,
+    "enemyHpBefore": 5,
+    "powersBeforeMove": [
+      {
+        "powerId": "DOOM_POWER",
+        "target": "CheckedEnemy",
+        "amount": 5
+      }
+    ],
+    "triggerEnemySideTurnEndAfterMove": true,
+    "expectedPlayerHp": 53
+  }
+]

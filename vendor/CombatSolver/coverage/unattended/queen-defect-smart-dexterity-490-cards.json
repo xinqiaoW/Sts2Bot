@@ -1,0 +1,39 @@
+[
+  {
+    "cardId": "MAD_SCIENCE",
+    "pile": "Hand",
+    "upgradeLevels": 1,
+    "enumMembers": {
+      "TinkerTimeType": "Power",
+      "TinkerTimeRider": "Curious"
+    }
+  },
+  { "cardId": "CHARGE_BATTERY", "pile": "Hand" },
+  { "cardId": "COMPILE_DRIVER", "pile": "Hand" },
+  { "cardId": "HOTFIX", "pile": "Hand", "upgradeLevels": 1 },
+  { "cardId": "SCAVENGE", "pile": "Hand", "upgradeLevels": 1 },
+  { "cardId": "LIGHTNING_ROD", "pile": "Hand", "upgradeLevels": 1, "enchantmentId": "NIMBLE", "enchantmentAmount": 2 },
+  { "cardId": "CHILL", "pile": "Hand" },
+  { "cardId": "STRIKE_DEFECT", "pile": "Hand", "enchantmentId": "SPIRAL", "enchantmentAmount": 1 },
+
+  { "cardId": "DEFEND_DEFECT", "pile": "Draw", "upgradeLevels": 1 },
+  { "cardId": "DEFEND_DEFECT", "pile": "Draw" },
+  { "cardId": "ZAP", "pile": "Draw", "upgradeLevels": 1, "enchantmentId": "SWIFT", "enchantmentAmount": 2 },
+  { "cardId": "ASCENDERS_BANE", "pile": "Draw" },
+  { "cardId": "ECHO_FORM", "pile": "Draw" },
+  { "cardId": "EQUILIBRIUM", "pile": "Draw" },
+  { "cardId": "COOLHEADED", "pile": "Draw" },
+  { "cardId": "DUALCAST", "pile": "Draw", "upgradeLevels": 1 },
+  { "cardId": "COMPILE_DRIVER", "pile": "Draw" },
+  { "cardId": "SCRAWL", "pile": "Draw", "upgradeLevels": 1 },
+  { "cardId": "BUFFER", "pile": "Draw", "upgradeLevels": 1 },
+  { "cardId": "DEFRAGMENT", "pile": "Draw", "upgradeLevels": 1, "enchantmentId": "SWIFT", "enchantmentAmount": 2 },
+  { "cardId": "DEFEND_DEFECT", "pile": "Draw", "enchantmentId": "SWIFT", "enchantmentAmount": 2 },
+  { "cardId": "THUNDER", "pile": "Draw" },
+  { "cardId": "MODDED", "pile": "Draw" },
+  { "cardId": "HOTFIX", "pile": "Draw", "upgradeLevels": 1 },
+  { "cardId": "TURBO", "pile": "Draw" },
+  { "cardId": "THUNDER", "pile": "Draw", "upgradeLevels": 1, "enchantmentId": "SWIFT", "enchantmentAmount": 2 },
+  { "cardId": "GREED", "pile": "Draw" },
+  { "cardId": "SCAVENGE", "pile": "Draw" }
+]

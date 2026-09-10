@@ -1,0 +1,23 @@
+# Godot / .NET build output
+.godot/
+bin/
+obj/
+
+# Machine-local dependency paths
+local.props
+
+# IDE and OS files
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+.DS_Store
+Thumbs.db
+
+# Runtime logs and temporary files
+*.log
+*.tmp
+*.bak
+.local/
+releases/*.zip

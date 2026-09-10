@@ -1,0 +1,1 @@
+{ "potionId": "ShacklingPotion", "target": "None", "expectedEnemyPowers": { "SHACKLING_POTION_POWER": 7, "STRENGTH_POWER": -7 } }

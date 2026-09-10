@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "scenarioId": "HAND-OF-GREED-FATAL-0170",
+  "characterId": "IRONCLAD",
+  "encounterId": "FUZZY_WURM_CRAWLER_WEAK",
+  "seed": "GREED0170",
+  "enemyCurrentHp": 6,
+  "initialPlayerEnergy": 3,
+  "clearPlayerHand": true,
+  "clearPlayerPiles": true,
+  "cards": [
+    { "cardId": "HAND_OF_GREED", "pile": "Hand", "treatAsDeckCard": true },
+    { "cardId": "STRIKE_IRONCLAD", "pile": "Hand" }
+  ],
+  "forceShortSearchOnly": true,
+  "shortSearchBudgetOverrideMilliseconds": 5000,
+  "expectedInitialFirstActionCardId": "HAND_OF_GREED",
+  "expectedInitialLongTermResourceValueAtLeast": 20,
+  "expectedInitialProjectedBattleHpLost": 0,
+  "expectedInitialCombatEndedTurn": 1,
+  "stopAfterInitialSolverResultAssertion": true,
+  "timeoutSeconds": 150
+}

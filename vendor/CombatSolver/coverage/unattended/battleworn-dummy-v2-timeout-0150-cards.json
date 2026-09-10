@@ -1,0 +1,154 @@
+[
+  {
+    "cardId": "DEBILITATE",
+    "pile": "Hand",
+    "upgradeLevels": 1
+  },
+  {
+    "cardId": "RELAX",
+    "pile": "Hand"
+  },
+  {
+    "cardId": "HIGH_FIVE",
+    "pile": "Hand",
+    "upgradeLevels": 1
+  },
+  {
+    "cardId": "UNLEASH",
+    "pile": "Hand"
+  },
+  {
+    "cardId": "RIGHT_HAND_HAND",
+    "pile": "Hand"
+  },
+  {
+    "cardId": "ENFEEBLING_TOUCH",
+    "pile": "Hand"
+  },
+  {
+    "cardId": "DEFEND_NECROBINDER",
+    "pile": "Hand"
+  },
+  {
+    "cardId": "POKE",
+    "pile": "Draw"
+  },
+  {
+    "cardId": "FLATTEN",
+    "pile": "Draw"
+  },
+  {
+    "cardId": "CAPTURE_SPIRIT",
+    "pile": "Draw",
+    "upgradeLevels": 1
+  },
+  {
+    "cardId": "PULL_FROM_BELOW",
+    "pile": "Draw",
+    "upgradeLevels": 1
+  },
+  {
+    "cardId": "DEFEND_NECROBINDER",
+    "pile": "Draw"
+  },
+  {
+    "cardId": "POKE",
+    "pile": "Draw"
+  },
+  {
+    "cardId": "FRIENDSHIP",
+    "pile": "Draw",
+    "upgradeLevels": 1
+  },
+  {
+    "cardId": "GRAVE_WARDEN",
+    "pile": "Draw"
+  },
+  {
+    "cardId": "DEATHBRINGER",
+    "pile": "Draw",
+    "upgradeLevels": 1
+  },
+  {
+    "cardId": "TRANSFIGURE",
+    "pile": "Draw",
+    "upgradeLevels": 1
+  },
+  {
+    "cardId": "RELAX",
+    "pile": "Draw"
+  },
+  {
+    "cardId": "DEFY",
+    "pile": "Draw"
+  },
+  {
+    "cardId": "RIGHT_HAND_HAND",
+    "pile": "Draw"
+  },
+  {
+    "cardId": "CALCIFY",
+    "pile": "Draw"
+  },
+  {
+    "cardId": "CALCIFY",
+    "pile": "Draw",
+    "upgradeLevels": 1
+  },
+  {
+    "cardId": "DEFEND_NECROBINDER",
+    "pile": "Draw"
+  },
+  {
+    "cardId": "BORROWED_TIME",
+    "pile": "Draw",
+    "upgradeLevels": 1
+  },
+  {
+    "cardId": "BODYGUARD",
+    "pile": "Draw"
+  },
+  {
+    "cardId": "SNAP",
+    "pile": "Draw"
+  },
+  {
+    "cardId": "SHARED_FATE",
+    "pile": "Draw"
+  },
+  {
+    "cardId": "CALCIFY",
+    "pile": "Draw",
+    "upgradeLevels": 1
+  },
+  {
+    "cardId": "DEFY",
+    "pile": "Draw",
+    "upgradeLevels": 1
+  },
+  {
+    "cardId": "DEFEND_NECROBINDER",
+    "pile": "Draw"
+  },
+  {
+    "cardId": "FLATTEN",
+    "pile": "Draw"
+  },
+  {
+    "cardId": "HAUNT",
+    "pile": "Draw"
+  },
+  {
+    "cardId": "INVOKE",
+    "pile": "Draw",
+    "upgradeLevels": 1
+  },
+  {
+    "cardId": "FLATTEN",
+    "pile": "Draw"
+  },
+  {
+    "cardId": "ASCENDERS_BANE",
+    "pile": "Draw"
+  }
+]

@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "scenarioId": "TUNNELER-IMBUED-GLACIER-VAMBRACE-0150",
+  "characterId": "DEFECT",
+  "encounterId": "TUNNELER_WEAK",
+  "seed": "TUNNELER-IMBUED-GLACIER-VAMBRACE-0150",
+  "relics": [
+    {
+      "relicId": "VAMBRACE",
+      "addWithoutObtainedEffects": true
+    }
+  ],
+  "runCards": [
+    {
+      "cardId": "GLACIER",
+      "pile": "Deck",
+      "count": 1,
+      "enchantmentId": "IMBUED"
+    }
+  ],
+  "forceShortSearchOnly": true,
+  "shortSearchBudgetOverrideMilliseconds": 1500,
+  "stopAfterInitialSolverResultAssertion": true,
+  "expectedInitialUnmirroredCount": 0,
+  "timeoutSeconds": 120
+}

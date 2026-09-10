@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "scenarioId": "INITIAL-TOASTY-MITTENS-SEARCH-CONTROLS-NEXT",
+  "characterId": "SILENT",
+  "encounterId": "GREMLIN_MERC_NORMAL",
+  "seed": "INITIAL-TOASTY-MITTENS-SEARCH-CONTROLS-NEXT",
+  "relics": [
+    {
+      "relicId": "TOASTY_MITTENS",
+      "addWithoutObtainedEffects": true
+    }
+  ],
+  "forceShortSearchOnly": true,
+  "shortSearchBudgetOverrideMilliseconds": 1500,
+  "searchMaxDegreeOfParallelismForTest": 4,
+  "verifyTurnSetupControlsDuringInitialSearch": true,
+  "timeoutSeconds": 120
+}

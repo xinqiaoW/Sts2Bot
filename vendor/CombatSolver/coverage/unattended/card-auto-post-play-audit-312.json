@@ -1,0 +1,17 @@
+[
+  {
+    "coveredCardHooks": [
+      { "cardId": "HOWL_FROM_BEYOND", "hook": "AfterAutoPostPlayPhaseEntered" },
+      { "cardId": "I_AM_INVINCIBLE", "hook": "AfterAutoPostPlayPhaseEntered" }
+    ],
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardsBeforeMove": [
+      { "cardId": "HOWL_FROM_BEYOND", "pile": "Exhaust" },
+      { "cardId": "I_AM_INVINCIBLE", "pile": "Draw" }
+    ],
+    "triggerPlayerTurnEndAfterMove": true
+  }
+]

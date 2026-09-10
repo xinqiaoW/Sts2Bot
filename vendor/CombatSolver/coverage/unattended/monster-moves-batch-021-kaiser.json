@@ -1,0 +1,62 @@
+[
+  {
+    "monsterId": "Crusher",
+    "moveId": "THRASH_MOVE"
+  },
+  {
+    "monsterId": "Crusher",
+    "moveId": "ENLARGING_STRIKE_MOVE"
+  },
+  {
+    "monsterId": "Crusher",
+    "moveId": "BUG_STING_MOVE",
+    "expectedPlayerPowers": {
+      "WEAK_POWER": 2,
+      "FRAIL_POWER": 2
+    }
+  },
+  {
+    "monsterId": "Crusher",
+    "moveId": "ADAPT_MOVE",
+    "expectedEnemyPowers": {
+      "STRENGTH_POWER": 2
+    }
+  },
+  {
+    "monsterId": "Crusher",
+    "moveId": "GUARDED_STRIKE_MOVE",
+    "expectedEnemyBlockGain": 18,
+    "expectedEnemyPowers": {
+      "STRENGTH_POWER": 2
+    }
+  },
+  {
+    "monsterId": "Rocket",
+    "moveId": "TARGETING_RETICLE_MOVE"
+  },
+  {
+    "monsterId": "Rocket",
+    "moveId": "PRECISION_BEAM_MOVE"
+  },
+  {
+    "monsterId": "Rocket",
+    "moveId": "CHARGE_UP_MOVE",
+    "expectedEnemyPowers": {
+      "STRENGTH_POWER": 2
+    }
+  },
+  {
+    "monsterId": "Rocket",
+    "moveId": "LASER_MOVE",
+    "expectedEnemyPowers": {
+      "STRENGTH_POWER": 2
+    }
+  },
+  {
+    "monsterId": "Rocket",
+    "moveId": "RECHARGE_MOVE",
+    "expectedEnemyPowers": {
+      "STRENGTH_POWER": 2
+    }
+  }
+]

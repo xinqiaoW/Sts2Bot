@@ -1,0 +1,26 @@
+[
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "powersBeforeMove": [
+      {
+        "powerId": "NOXIOUS_FUMES_POWER",
+        "target": "Player",
+        "amount": 2
+      },
+      {
+        "powerId": "RAMPART_POWER",
+        "target": "Enemy",
+        "targetIndex": 1,
+        "amount": 4
+      }
+    ],
+    "triggerPlayerSetupAfterMove": true,
+    "expectedEnemyPowers": {
+      "POISON_POWER": 2
+    },
+    "expectedEnemyBlocksByModel": {
+      "TURRET_OPERATOR": 4
+    }
+  }
+]

@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "scenarioId": "BECKON-CROSS-TURN-DEPLOY-0170",
+  "characterId": "IRONCLAD",
+  "encounterId": "FUZZY_WURM_CRAWLER_WEAK",
+  "seed": "BECKON0170",
+  "enemyCurrentHp": 20,
+  "initialPlayerHp": 20,
+  "initialPlayerEnergy": 1,
+  "clearPlayerHand": true,
+  "clearPlayerPiles": true,
+  "cards": [
+    { "cardId": "BECKON", "pile": "Hand" },
+    { "cardId": "DEFEND_IRONCLAD", "pile": "Hand" },
+    { "cardId": "BLUDGEON", "pile": "Draw" }
+  ],
+  "forceShortSearchOnly": true,
+  "shortSearchBudgetOverrideMilliseconds": 5000,
+  "expectedInitialFirstActionCardId": "BECKON",
+  "expectedInitialProjectedBattleHpLost": 4,
+  "expectedInitialCombatEndedTurn": 2,
+  "expectedPlayedCardId": "BECKON",
+  "expectedFinishedTurn": 2,
+  "expectedUnexpectedReplansAtMost": 0,
+  "deploymentFastModeForTest": "Instant",
+  "deploymentInterActionDelaySecondsForTest": 0,
+  "timeoutSeconds": 150
+}

@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "scenarioId": "BRIGHTEST-FLAME-TERMINAL-RESOURCE-0170",
+  "characterId": "IRONCLAD",
+  "encounterId": "FUZZY_WURM_CRAWLER_WEAK",
+  "seed": "BRIGHTEST0170",
+  "enemyCurrentHp": 12,
+  "initialPlayerEnergy": 3,
+  "clearPlayerHand": true,
+  "clearPlayerPiles": true,
+  "cards": [
+    { "cardId": "BRIGHTEST_FLAME", "pile": "Hand", "count": 1 },
+    { "cardId": "STRIKE_IRONCLAD", "pile": "Hand", "count": 2 }
+  ],
+  "forceShortSearchOnly": true,
+  "shortSearchBudgetOverrideMilliseconds": 5000,
+  "expectedInitialAbsentActionCardId": "BRIGHTEST_FLAME",
+  "expectedInitialProjectedBattleHpLost": 0,
+  "expectedInitialCombatEndedTurn": 1,
+  "stopAfterInitialSolverResultAssertion": true,
+  "timeoutSeconds": 150
+}

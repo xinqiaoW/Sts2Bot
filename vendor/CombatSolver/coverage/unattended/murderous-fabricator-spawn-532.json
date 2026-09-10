@@ -1,0 +1,7 @@
+[
+  {
+    "monsterId": "Fabricator",
+    "moveId": "FABRICATE_MOVE",
+    "expectedSimulatedDynamicResolution": false
+  }
+]

@@ -1,0 +1,44 @@
+[
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "clearPlayerHandBeforeMove": true,
+    "playerHpBefore": 50,
+    "playerBlockBefore": 0,
+    "playerEnergyBefore": 10,
+    "cardBeforeMove": {
+      "cardId": "CRIMSON_MANTLE",
+      "pile": "Hand",
+      "count": 1
+    },
+    "cardPlayChecksAfterMove": [
+      { "cardId": "CRIMSON_MANTLE", "target": "None" }
+    ],
+    "triggerPlayerSetupAfterMove": true,
+    "expectedPlayerHpLoss": 1,
+    "expectedPlayerBlock": 7,
+    "expectedPlayerEnergy": 3,
+    "expectedPlayerPowers": {
+      "CRIMSON_MANTLE_POWER": 7
+    }
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 10,
+    "cardsBeforeMove": [
+      { "cardId": "ANGER", "pile": "Hand", "count": 1 },
+      { "cardId": "FERAL", "pile": "Hand", "count": 1 },
+      { "cardId": "ANGER", "pile": "Hand", "count": 1 }
+    ],
+    "cardPlayChecksAfterMove": [
+      { "cardId": "ANGER", "target": "Enemy" },
+      { "cardId": "FERAL", "target": "None" },
+      { "cardId": "ANGER", "target": "Enemy" }
+    ],
+    "expectedPlayerPowers": {
+      "FERAL_POWER": 1
+    }
+  }
+]

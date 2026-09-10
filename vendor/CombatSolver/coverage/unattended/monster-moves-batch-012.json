@@ -1,0 +1,81 @@
+[
+  {
+    "monsterId": "BowlbugSilk",
+    "moveId": "THRASH_MOVE",
+    "expectedPlayerHpLoss": 8
+  },
+  {
+    "monsterId": "BowlbugNectar",
+    "moveId": "THRASH_MOVE",
+    "expectedPlayerHpLoss": 3
+  },
+  {
+    "monsterId": "BowlbugNectar",
+    "moveId": "THRASH2_MOVE",
+    "expectedPlayerHpLoss": 3
+  },
+  {
+    "monsterId": "CorpseSlug",
+    "moveId": "WHIP_SLAP_MOVE",
+    "expectedPlayerHpLoss": 6
+  },
+  {
+    "monsterId": "CorpseSlug",
+    "moveId": "GLOMP_MOVE",
+    "expectedPlayerHpLoss": 8
+  },
+  {
+    "monsterId": "TheLost",
+    "moveId": "EYE_LASERS",
+    "expectedPlayerHpLoss": 8
+  },
+  {
+    "monsterId": "BowlbugSilk",
+    "moveId": "TOXIC_SPIT_MOVE",
+    "expectedPlayerHpLoss": 0,
+    "expectedPlayerPowers": {
+      "WEAK_POWER": 1
+    }
+  },
+  {
+    "monsterId": "BowlbugNectar",
+    "moveId": "BUFF_MOVE",
+    "expectedPlayerHpLoss": 0,
+    "expectedEnemyPowers": {
+      "STRENGTH_POWER": 15
+    }
+  },
+  {
+    "monsterId": "CorpseSlug",
+    "moveId": "GOOP_MOVE",
+    "expectedPlayerHpLoss": 0,
+    "expectedPlayerPowers": {
+      "WEAK_POWER": 1,
+      "FRAIL_POWER": 2
+    }
+  },
+  {
+    "monsterId": "SoulFysh",
+    "moveId": "SCREAM_MOVE",
+    "expectedPlayerHpLoss": 13,
+    "expectedPlayerPowers": {
+      "WEAK_POWER": 1,
+      "FRAIL_POWER": 2,
+      "VULNERABLE_POWER": 3
+    }
+  },
+  {
+    "monsterId": "TheLost",
+    "moveId": "DEBILITATING_SMOG",
+    "expectedPlayerHpLoss": 0,
+    "expectedPlayerPowers": {
+      "WEAK_POWER": 1,
+      "FRAIL_POWER": 2,
+      "VULNERABLE_POWER": 3,
+      "STRENGTH_POWER": -2
+    },
+    "expectedEnemyPowers": {
+      "STRENGTH_POWER": 2
+    }
+  }
+]

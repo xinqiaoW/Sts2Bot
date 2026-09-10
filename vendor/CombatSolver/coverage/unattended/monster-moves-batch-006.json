@@ -1,0 +1,92 @@
+[
+  {
+    "monsterId": "Guardbot",
+    "moveId": "GUARD_MOVE",
+    "expectedPlayerHpLoss": 0,
+    "expectedPlayerPowers": {},
+    "expectedEnemyPowers": {},
+    "expectedPlayerPileCards": {},
+    "expectedEnemyBlocksByModel": {
+      "FABRICATOR": 15
+    }
+  },
+  {
+    "monsterId": "InfestedPrism",
+    "moveId": "JAB_MOVE",
+    "expectedPlayerHpLoss": 15,
+    "expectedPlayerPowers": {},
+    "expectedEnemyPowers": {},
+    "expectedPlayerPileCards": {},
+    "expectedEnemyBlocksByModel": {}
+  },
+  {
+    "monsterId": "InfestedPrism",
+    "moveId": "WHIRLWIND_MOVE",
+    "expectedPlayerHpLoss": 15,
+    "expectedPlayerPowers": {},
+    "expectedEnemyPowers": {},
+    "expectedPlayerPileCards": {},
+    "expectedEnemyBlocksByModel": {}
+  },
+  {
+    "monsterId": "InfestedPrism",
+    "moveId": "RADIATE_MOVE",
+    "expectedPlayerHpLoss": 11,
+    "expectedEnemyBlockGain": 11,
+    "expectedPlayerPowers": {},
+    "expectedEnemyPowers": {
+      "VITAL_SPARK_POWER": 2
+    },
+    "expectedPlayerPileCards": {},
+    "expectedEnemyBlocksByModel": {
+      "INFESTED_PRISM": 11
+    }
+  },
+  {
+    "monsterId": "InfestedPrism",
+    "moveId": "PULSATE_MOVE",
+    "expectedPlayerHpLoss": 8,
+    "expectedEnemyBlockGain": 20,
+    "expectedPlayerPowers": {},
+    "expectedEnemyPowers": {
+      "VITAL_SPARK_POWER": 4
+    },
+    "expectedPlayerPileCards": {},
+    "expectedEnemyBlocksByModel": {
+      "INFESTED_PRISM": 31
+    }
+  },
+  {
+    "monsterId": "Inklet",
+    "moveId": "JAB_MOVE",
+    "expectedPlayerHpLoss": 3,
+    "expectedPlayerPowers": {},
+    "expectedEnemyPowers": {
+      "SLIPPERY_POWER": 1
+    },
+    "expectedPlayerPileCards": {},
+    "expectedEnemyBlocksByModel": {}
+  },
+  {
+    "monsterId": "Inklet",
+    "moveId": "WHIRLWIND_MOVE",
+    "expectedPlayerHpLoss": 6,
+    "expectedPlayerPowers": {},
+    "expectedEnemyPowers": {
+      "SLIPPERY_POWER": 1
+    },
+    "expectedPlayerPileCards": {},
+    "expectedEnemyBlocksByModel": {}
+  },
+  {
+    "monsterId": "Inklet",
+    "moveId": "PIERCING_GAZE_MOVE",
+    "expectedPlayerHpLoss": 10,
+    "expectedPlayerPowers": {},
+    "expectedEnemyPowers": {
+      "SLIPPERY_POWER": 1
+    },
+    "expectedPlayerPileCards": {},
+    "expectedEnemyBlocksByModel": {}
+  }
+]

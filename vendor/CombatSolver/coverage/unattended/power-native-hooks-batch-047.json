@@ -1,0 +1,30 @@
+[
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "powersBeforeMove": [
+      { "powerId": "DEMESNE_POWER", "target": "Player", "amount": 2 },
+      { "powerId": "MIND_ROT_POWER", "target": "Player", "amount": 1 },
+      { "powerId": "FRIENDSHIP_POWER", "target": "Player", "amount": 1 },
+      { "powerId": "PYRE_POWER", "target": "Player", "amount": 1 },
+      { "powerId": "WASTE_AWAY_POWER", "target": "Player", "amount": 1 },
+      { "powerId": "TOOLS_OF_THE_TRADE_POWER", "target": "Player", "amount": 1 },
+      { "powerId": "TYRANNY_POWER", "target": "Player", "amount": 1 },
+      { "powerId": "WELL_LAID_PLANS_POWER", "target": "Player", "amount": 1 },
+      { "powerId": "BARRICADE_POWER", "target": "Player", "amount": 1 }
+    ],
+    "expectedModifiedHandDraw": 8,
+    "expectedModifiedMaxEnergy": 6,
+    "expectedShouldClearBlock": false,
+    "expectedShouldFlush": false
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "powersBeforeMove": [
+      { "powerId": "BURROWED_POWER", "target": "CheckedEnemy", "amount": 1 }
+    ],
+    "derivedHookTarget": "Enemy",
+    "expectedShouldClearBlock": false
+  }
+]

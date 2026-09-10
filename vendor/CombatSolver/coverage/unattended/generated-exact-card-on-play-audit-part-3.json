@@ -1,0 +1,266 @@
+[
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "ostyHpBefore": null,
+    "cardsBeforeMove": [
+      {
+        "cardId": "DARKNESS",
+        "pile": "Hand",
+        "enumMembers": {}
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "DARKNESS",
+        "target": "None"
+      }
+    ]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "ostyHpBefore": null,
+    "cardsBeforeMove": [
+      {
+        "cardId": "DASH",
+        "pile": "Hand",
+        "enumMembers": {}
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "DASH",
+        "target": "Enemy"
+      }
+    ]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "ostyHpBefore": null,
+    "cardsBeforeMove": [
+      {
+        "cardId": "DEFEND_DEFECT",
+        "pile": "Hand",
+        "enumMembers": {}
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "DEFEND_DEFECT",
+        "target": "None"
+      }
+    ]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "ostyHpBefore": null,
+    "cardsBeforeMove": [
+      {
+        "cardId": "DEFEND_NECROBINDER",
+        "pile": "Hand",
+        "enumMembers": {}
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "DEFEND_NECROBINDER",
+        "target": "None"
+      }
+    ]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "ostyHpBefore": null,
+    "cardsBeforeMove": [
+      {
+        "cardId": "DEFEND_REGENT",
+        "pile": "Hand",
+        "enumMembers": {}
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "DEFEND_REGENT",
+        "target": "None"
+      }
+    ]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "ostyHpBefore": null,
+    "cardsBeforeMove": [
+      {
+        "cardId": "DEFEND_SILENT",
+        "pile": "Hand",
+        "enumMembers": {}
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "DEFEND_SILENT",
+        "target": "None"
+      }
+    ]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "ostyHpBefore": null,
+    "cardsBeforeMove": [
+      {
+        "cardId": "DEFILE",
+        "pile": "Hand",
+        "enumMembers": {}
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "DEFILE",
+        "target": "Enemy"
+      }
+    ]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "ostyHpBefore": null,
+    "cardsBeforeMove": [
+      {
+        "cardId": "DEFLECT",
+        "pile": "Hand",
+        "enumMembers": {}
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "DEFLECT",
+        "target": "None"
+      }
+    ]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "ostyHpBefore": null,
+    "cardsBeforeMove": [
+      {
+        "cardId": "DEVASTATE",
+        "pile": "Hand",
+        "enumMembers": {}
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "DEVASTATE",
+        "target": "Enemy"
+      }
+    ]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "ostyHpBefore": null,
+    "cardsBeforeMove": [
+      {
+        "cardId": "DISTRACTION",
+        "pile": "Hand",
+        "enumMembers": {}
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "DISTRACTION",
+        "target": "None"
+      }
+    ]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "ostyHpBefore": null,
+    "cardsBeforeMove": [
+      {
+        "cardId": "DRAIN_POWER",
+        "pile": "Hand",
+        "enumMembers": {}
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "DRAIN_POWER",
+        "target": "Enemy"
+      }
+    ]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "ostyHpBefore": null,
+    "cardsBeforeMove": [
+      {
+        "cardId": "DRAMATIC_ENTRANCE",
+        "pile": "Hand",
+        "enumMembers": {}
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "DRAMATIC_ENTRANCE",
+        "target": "None"
+      }
+    ]
+  }
+]

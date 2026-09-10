@@ -1,0 +1,29 @@
+[
+  {
+    "coveredPowerHooks": [
+      { "powerId": "HARDENED_SHELL_POWER", "hook": "ModifyHpLostBeforeOstyLate" },
+      { "powerId": "HARDENED_SHELL_POWER", "hook": "AfterDamageReceived" }
+    ],
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "clearPlayerHandBeforeMove": true,
+    "playerHpBefore": 50,
+    "playerEnergyBefore": 10,
+    "powerBeforeMove": {
+      "powerId": "HARDENED_SHELL_POWER",
+      "target": "Player",
+      "amount": 2
+    },
+    "cardsBeforeMove": [
+      { "cardId": "BLOODLETTING", "pile": "Hand", "count": 2 }
+    ],
+    "cardPlayChecksAfterMove": [
+      { "cardId": "BLOODLETTING", "target": "None" }
+    ],
+    "triggerPlayerSetupAfterMove": true,
+    "cardPlayChecksAfterPlayerSetup": [
+      { "cardId": "BLOODLETTING", "target": "None" }
+    ],
+    "expectedPlayerHpLoss": 4
+  }
+]

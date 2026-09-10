@@ -1,0 +1,18 @@
+[
+  { "cardId": "BUNDLE_OF_JOY", "pile": "Hand", "count": 1, "upgradeLevels": 1, "treatAsDeckCard": true },
+  { "cardId": "SPECTRUM_SHIFT", "pile": "Hand", "count": 1, "upgradeLevels": 1, "treatAsDeckCard": true },
+  { "cardId": "ENTROPY", "pile": "Hand", "count": 1, "upgradeLevels": 1, "treatAsDeckCard": true },
+  { "cardId": "JACK_OF_ALL_TRADES", "pile": "Hand", "count": 1, "upgradeLevels": 1, "treatAsDeckCard": true },
+
+  { "cardId": "STRIKE_REGENT", "pile": "Draw", "count": 6, "treatAsDeckCard": true },
+  { "cardId": "SOLAR_STRIKE", "pile": "Draw", "count": 6, "treatAsDeckCard": true },
+  { "cardId": "SHINING_STRIKE", "pile": "Draw", "count": 6, "treatAsDeckCard": true },
+  { "cardId": "CRESCENT_SPEAR", "pile": "Draw", "count": 6, "treatAsDeckCard": true },
+  { "cardId": "COMET", "pile": "Draw", "count": 6, "treatAsDeckCard": true },
+
+  { "cardId": "DEFEND_REGENT", "pile": "Draw", "count": 6, "treatAsDeckCard": true },
+  { "cardId": "CLOAK_OF_STARS", "pile": "Draw", "count": 6, "treatAsDeckCard": true },
+  { "cardId": "BULWARK", "pile": "Draw", "count": 6, "treatAsDeckCard": true },
+  { "cardId": "PARTICLE_WALL", "pile": "Draw", "count": 6, "treatAsDeckCard": true },
+  { "cardId": "COSMIC_INDIFFERENCE", "pile": "Draw", "count": 6, "treatAsDeckCard": true }
+]

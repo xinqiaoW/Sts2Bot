@@ -1,0 +1,23 @@
+[
+  {
+    "monsterId": "ThievingHopper",
+    "moveId": "THIEVERY_MOVE",
+    "playerEnergyBefore": 3,
+    "clearAllRelicsBeforeMove": true,
+    "clearAllPowersBeforeMove": true,
+    "clearPlayerPilesBeforeMove": true,
+    "cardsBeforeMove": [
+      { "cardId": "FRIENDSHIP", "pile": "Draw", "treatAsDeckCard": true },
+      { "cardId": "SLEIGHT_OF_FLESH", "pile": "Draw", "treatAsDeckCard": true },
+      { "cardId": "DEBILITATE", "pile": "Hand", "treatAsDeckCard": true }
+    ],
+    "cardPlayChecksBeforeMove": [
+      {
+        "cardId": "DEBILITATE",
+        "target": "Enemy",
+        "expectedPlayable": true
+      }
+    ],
+    "expectedSimulatedDynamicResolution": false
+  }
+]

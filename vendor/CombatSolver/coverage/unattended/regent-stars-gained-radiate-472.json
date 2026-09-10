@@ -1,0 +1,24 @@
+[
+  {
+    "monsterId": "KnowledgeDemon",
+    "moveId": "SLAP_MOVE",
+    "enemyHpBefore": 399,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 3,
+    "clearAllRelicsBeforeMove": true,
+    "clearAllPowersBeforeMove": true,
+    "clearPlayerPilesBeforeMove": true,
+    "cardsBeforeMove": [
+      { "cardId": "VENERATE", "pile": "Hand", "upgradeLevels": 1 },
+      { "cardId": "ROYAL_GAMBLE", "pile": "Hand", "upgradeLevels": 1 },
+      { "cardId": "GLOW", "pile": "Hand", "upgradeLevels": 1 },
+      { "cardId": "RADIATE", "pile": "Hand", "upgradeLevels": 1 }
+    ],
+    "cardPlayChecksAfterMove": [
+      { "cardId": "VENERATE", "target": "None" },
+      { "cardId": "ROYAL_GAMBLE", "target": "None" },
+      { "cardId": "GLOW", "target": "None" },
+      { "cardId": "RADIATE", "target": "None" }
+    ]
+  }
+]

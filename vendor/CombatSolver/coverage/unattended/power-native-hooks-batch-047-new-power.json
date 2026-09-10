@@ -1,0 +1,22 @@
+[
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 10,
+    "cardBeforeMove": {
+      "cardId": "FRIENDSHIP",
+      "pile": "Hand",
+      "count": 1
+    },
+    "cardPlayChecksAfterMove": [
+      { "cardId": "FRIENDSHIP", "target": "None" }
+    ],
+    "triggerPlayerSetupAfterMove": true,
+    "expectedPlayerEnergy": 4,
+    "expectedPlayerPowers": {
+      "FRIENDSHIP_POWER": 1,
+      "STRENGTH_POWER": -2
+    }
+  }
+]

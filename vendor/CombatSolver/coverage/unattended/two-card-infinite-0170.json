@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "scenarioId": "TWO-CARD-INFINITE-DEPLOY-0170",
+  "characterId": "IRONCLAD",
+  "encounterId": "FUZZY_WURM_CRAWLER_WEAK",
+  "seed": "INFINITE0170",
+  "enemyCurrentHp": 50,
+  "initialPlayerEnergy": 0,
+  "clearPlayerHand": true,
+  "clearPlayerPiles": true,
+  "cards": [
+    { "cardId": "FLASH_OF_STEEL", "pile": "Hand" },
+    { "cardId": "FINESSE", "pile": "Discard" }
+  ],
+  "forceShortSearchOnly": true,
+  "shortSearchBudgetOverrideMilliseconds": 5000,
+  "expectedInitialExecutableActionCountAtLeast": 19,
+  "expectedInitialProjectedBattleHpLost": 0,
+  "expectedFinishedTurn": 1,
+  "expectedPlayedCardId": "FLASH_OF_STEEL",
+  "expectedUnexpectedReplansAtMost": 0,
+  "deploymentFastModeForTest": "Instant",
+  "deploymentInterActionDelaySecondsForTest": 0,
+  "timeoutSeconds": 150
+}

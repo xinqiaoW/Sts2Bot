@@ -1,0 +1,13 @@
+[
+  {
+    "useCurrentMove": true,
+    "triggerPlayerTurnEndAfterMove": true,
+    "expectedPlayerHandCount": 1,
+    "expectedPlayerPileCards": {
+      "Hand:STRIKE_IRONCLAD": 1,
+      "Exhaust:DAZED": 5
+    },
+    "expectedMirrorRelicState": ";mirrorRelics=JOSS_PAPER/0",
+    "expectedSimulatedDynamicResolution": false
+  }
+]

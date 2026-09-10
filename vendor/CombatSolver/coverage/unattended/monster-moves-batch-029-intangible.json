@@ -1,0 +1,25 @@
+[
+  {
+    "monsterId": "ShrinkerBeetle",
+    "moveId": "CHOMP_MOVE",
+    "powerBeforeMove": {
+      "powerId": "INTANGIBLE_POWER",
+      "target": "Player",
+      "amount": 2
+    },
+    "triggerEnemySideTurnEndAfterMove": true,
+    "expectedPlayerHpLoss": 1,
+    "expectedPlayerPowers": {
+      "INTANGIBLE_POWER": 1
+    }
+  },
+  {
+    "monsterId": "ShrinkerBeetle",
+    "moveId": "CHOMP_MOVE",
+    "triggerEnemySideTurnEndAfterMove": true,
+    "expectedPlayerHpLoss": 1,
+    "expectedAbsentPlayerPowers": [
+      "INTANGIBLE_POWER"
+    ]
+  }
+]

@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "scenarioId": "SMART-POTION-FREE-AUDIT-461",
+  "characterId": "NECROBINDER",
+  "encounterId": "SLUDGE_SPINNER_WEAK",
+  "seed": "9R4CY7ZZZ0VM",
+  "ascension": 10,
+  "runSnapshotPath": "necrobinder-sludge-smart-potion-461.save",
+  "enemyCurrentHp": 999,
+  "initialEnemyMoveIds": ["OIL_SPRAY_MOVE"],
+  "potionPolicyForTest": "Smart",
+  "shortSearchBudgetOverrideMilliseconds": 5000,
+  "deepSearchBudgetOverrideMilliseconds": 60000,
+  "expectedInitialPotionCount": 0,
+  "expectedInitialProjectedBattleHpLostAtMost": 2,
+  "expectedInitialCombatEndedTurn": 5,
+  "expectedFinishedTurn": 5,
+  "expectedReusedTurn": 2,
+  "expectedUnexpectedReplansAtMost": 0,
+  "deploymentFastModeForTest": "Instant",
+  "deploymentInterActionDelaySecondsForTest": 0,
+  "timeoutSeconds": 240
+}

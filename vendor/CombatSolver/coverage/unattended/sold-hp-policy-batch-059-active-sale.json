@@ -1,0 +1,10 @@
+[
+  { "cardId": "DEFEND_IRONCLAD", "pile": "Hand", "count": 3 },
+  { "cardId": "BLUDGEON", "pile": "Hand", "count": 1 },
+  { "cardId": "STRIKE_IRONCLAD", "pile": "Hand", "count": 1 },
+  { "cardId": "STRIKE_IRONCLAD", "pile": "Draw", "count": 4 },
+  { "cardId": "DEFEND_IRONCLAD", "pile": "Draw", "count": 1 },
+  { "cardId": "PANACHE", "pile": "Draw", "count": 1 },
+  { "cardId": "BASH", "pile": "Draw", "count": 1 },
+  { "cardId": "SWORD_BOOMERANG", "pile": "Draw", "count": 1 }
+]

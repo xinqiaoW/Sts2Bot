@@ -1,0 +1,53 @@
+[
+  {
+    "monsterId": "LagavulinMatriarch",
+    "moveId": "SLEEP_MOVE",
+    "enemyHpBefore": 999,
+    "enemyBlockBefore": 0,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "cardBeforeMove": { "cardId": "STRIKE_IRONCLAD", "pile": "Hand", "count": 1 },
+    "cardPlayChecksAfterMove": [
+      { "cardId": "STRIKE_IRONCLAD", "target": "Enemy" }
+    ],
+    "expectedSimulatedDynamicResolution": false,
+    "expectedAbsentEnemyPowers": ["ASLEEP_POWER", "PLATING_POWER"]
+  },
+  {
+    "monsterId": "SlumberingBeetle",
+    "moveId": "SNORE_MOVE",
+    "enemyHpBefore": 999,
+    "enemyBlockBefore": 0,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "cardsBeforeMove": [
+      { "cardId": "STRIKE_IRONCLAD", "pile": "Hand", "count": 3 }
+    ],
+    "cardPlayChecksAfterMove": [
+      { "cardId": "STRIKE_IRONCLAD", "occurrence": 0, "target": "Enemy" },
+      { "cardId": "STRIKE_IRONCLAD", "occurrence": 0, "target": "Enemy" },
+      { "cardId": "STRIKE_IRONCLAD", "occurrence": 0, "target": "Enemy" }
+    ],
+    "expectedSimulatedDynamicResolution": false,
+    "expectedAbsentEnemyPowers": ["SLUMBER_POWER"]
+  },
+  {
+    "monsterId": "Tunneler",
+    "moveId": "BITE_MOVE",
+    "enemyHpBefore": 999,
+    "enemyBlockBefore": 5,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "powerBeforeMove": {
+      "powerId": "BURROWED_POWER",
+      "target": "CheckedEnemy",
+      "amount": 1
+    },
+    "cardBeforeMove": { "cardId": "STRIKE_IRONCLAD", "pile": "Hand", "count": 1 },
+    "cardPlayChecksAfterMove": [
+      { "cardId": "STRIKE_IRONCLAD", "target": "Enemy" }
+    ],
+    "expectedSimulatedDynamicResolution": false,
+    "expectedAbsentEnemyPowers": ["BURROWED_POWER"]
+  }
+]

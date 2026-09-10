@@ -1,0 +1,124 @@
+[
+  {
+    "coveredCardHooks": [
+      { "cardId": "BANSHEES_CRY", "hook": "AfterCardPlayed" },
+      { "cardId": "PINPOINT", "hook": "AfterCardPlayed" },
+      { "cardId": "STOMP", "hook": "BeforeCardPlayed" }
+    ],
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "cardsBeforeMove": [
+      { "cardId": "BANSHEES_CRY", "pile": "Hand" },
+      { "cardId": "PINPOINT", "pile": "Hand" },
+      { "cardId": "STOMP", "pile": "Hand" },
+      { "cardId": "APPARITION", "pile": "Hand" },
+      { "cardId": "DEFEND_IRONCLAD", "pile": "Hand" },
+      { "cardId": "STRIKE_IRONCLAD", "pile": "Hand" }
+    ],
+    "cardPlayChecksAfterMove": [
+      { "cardId": "APPARITION", "target": "None" },
+      { "cardId": "DEFEND_IRONCLAD", "target": "None" },
+      { "cardId": "STRIKE_IRONCLAD", "target": "Enemy" }
+    ]
+  },
+  {
+    "coveredCardHooks": [
+      { "cardId": "MAKE_IT_SO", "hook": "AfterCardPlayedLate" }
+    ],
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "cardsBeforeMove": [
+      { "cardId": "MAKE_IT_SO", "pile": "Discard" },
+      { "cardId": "DEFEND_IRONCLAD", "pile": "Hand" },
+      { "cardId": "DEFEND_SILENT", "pile": "Hand" },
+      { "cardId": "DEFEND_REGENT", "pile": "Hand" }
+    ],
+    "cardPlayChecksAfterMove": [
+      { "cardId": "DEFEND_IRONCLAD", "target": "None" },
+      { "cardId": "DEFEND_SILENT", "target": "None" },
+      { "cardId": "DEFEND_REGENT", "target": "None" }
+    ]
+  },
+  {
+    "coveredCardHooks": [
+      { "cardId": "RIGHT_HAND_HAND", "hook": "AfterCardPlayedLate" }
+    ],
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "cardsBeforeMove": [
+      { "cardId": "RIGHT_HAND_HAND", "pile": "Discard" },
+      { "cardId": "BASH", "pile": "Hand" }
+    ],
+    "cardPlayChecksAfterMove": [
+      { "cardId": "BASH", "target": "Enemy" }
+    ]
+  },
+  {
+    "coveredCardHooks": [
+      { "cardId": "DRUM_OF_BATTLE", "hook": "AfterCardExhausted" }
+    ],
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 10,
+    "cardsBeforeMove": [
+      { "cardId": "DRUM_OF_BATTLE", "pile": "Hand" },
+      { "cardId": "TRUE_GRIT", "pile": "Hand" }
+    ],
+    "cardPlayChecksAfterMove": [
+      { "cardId": "TRUE_GRIT", "target": "None" }
+    ]
+  },
+  {
+    "coveredCardHooks": [
+      { "cardId": "FLATTEN", "hook": "AfterAttack" }
+    ],
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "ostyHpBefore": 12,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "cardsBeforeMove": [
+      { "cardId": "FLATTEN", "pile": "Hand" }
+    ],
+    "cardPlayChecksAfterMove": [
+      { "cardId": "FLATTEN", "target": "Enemy" }
+    ]
+  },
+  {
+    "coveredCardHooks": [
+      { "cardId": "ROCKET_PUNCH", "hook": "AfterCardGeneratedForCombat" }
+    ],
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "clearPlayerHandBeforeMove": true,
+    "cardsBeforeMove": [
+      { "cardId": "ROCKET_PUNCH", "pile": "Hand" }
+    ],
+    "cardAfterMove": { "cardId": "DAZED", "pile": "Hand" }
+  },
+  {
+    "coveredCardHooks": [
+      { "cardId": "MELANCHOLY", "hook": "AfterDeath" }
+    ],
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardsBeforeMove": [
+      { "cardId": "MELANCHOLY", "pile": "Hand" }
+    ],
+    "killMonsterAfterMove": true
+  }
+]

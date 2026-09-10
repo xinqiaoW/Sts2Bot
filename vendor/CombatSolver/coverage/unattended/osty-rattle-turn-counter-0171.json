@@ -1,0 +1,28 @@
+[
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "ostyHpBefore": 12,
+    "playerEnergyBefore": 99,
+    "clearPlayerPilesBeforeMove": true,
+    "cardsBeforeMove": [
+      { "cardId": "SNAP", "pile": "Hand" },
+      { "cardId": "RATTLE", "pile": "Hand" },
+      { "cardId": "RATTLE", "pile": "Draw", "count": 5 }
+    ],
+    "cardPlayChecksBeforeMove": [
+      {
+        "cardId": "SNAP",
+        "target": "Enemy",
+        "useChoice": true,
+        "choiceCardIds": ["RATTLE"]
+      }
+    ],
+    "triggerPlayerTurnEndAfterMove": true,
+    "triggerPlayerSetupAfterMove": true,
+    "cardPlayChecksAfterPlayerSetup": [
+      { "cardId": "RATTLE", "target": "Enemy" }
+    ]
+  }
+]

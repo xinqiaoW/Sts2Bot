@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "scenarioId": "INITIAL-IMBUED-CHOICE-398",
+  "characterId": "IRONCLAD",
+  "encounterId": "FUZZY_WURM_CRAWLER_WEAK",
+  "seed": "INITIAL-IMBUED-CHOICE-398",
+  "runCards": [
+    {
+      "cardId": "SURVIVOR",
+      "pile": "Deck",
+      "count": 1,
+      "enchantmentId": "IMBUED"
+    }
+  ],
+  "forceShortSearchOnly": true,
+  "shortSearchBudgetOverrideMilliseconds": 1500,
+  "expectedInitialSetupChoiceCountAtLeast": 1,
+  "expectedInitialSetupChoiceSourceId": "IMBUED",
+  "stopAfterInitialSetupAssertion": true,
+  "timeoutSeconds": 120
+}

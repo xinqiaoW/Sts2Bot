@@ -1,0 +1,14 @@
+{
+  "name": "real_run_mutation_v1",
+  "seed": 20260908,
+  "map_weights": {"GLORY": 0.6, "HIVE": 0.4},
+  "small_probability": 0.6,
+  "axes_weights": {"cards": 1, "relics": 1, "both": 1},
+  "small": {"cards": [1, 2], "relics": [1, 2]},
+  "large": {"cards": [3, 6], "relics": [1, 4]},
+  "generation_depth": 1,
+  "queue_low_water": 600,
+  "refill_builds": 100,
+  "parent_refresh_seconds": 300,
+  "evidence_directory": "evidence/native-failures-mutations-v1"
+}

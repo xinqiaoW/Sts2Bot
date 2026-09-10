@@ -1,0 +1,36 @@
+[
+  {
+    "enemyIndex": 0,
+    "monsterId": "CorpseSlug",
+    "moveId": "GOOP_MOVE",
+    "enemyHpBefore": 999,
+    "clearAllPowersBeforeMove": true,
+    "monsterStateLogBefore": ["GOOP_MOVE"],
+    "powersBeforeMove": [
+      { "powerId": "RAVENOUS_POWER", "target": "Enemy", "targetIndex": 0, "amount": 5 }
+    ],
+    "killEnemyIndexAfterMove": 1,
+    "expectedSimulatedSkipNextMove": false,
+    "expectedNextMoveId": "STUNNED",
+    "expectedEnemyPowers": {
+      "RAVENOUS_POWER": 5,
+      "STRENGTH_POWER": 5
+    }
+  },
+  {
+    "enemyIndex": 0,
+    "monsterId": "CorpseSlug",
+    "moveId": "STUNNED",
+    "useCurrentMove": true,
+    "enemyHpBefore": 999,
+    "playerHpBefore": 50,
+    "rollNextMoveAfterActual": true,
+    "expectedSimulatedSkipNextMove": false,
+    "expectedNextMoveId": "GOOP_MOVE",
+    "expectedPlayerHpLoss": 0,
+    "expectedEnemyPowers": {
+      "RAVENOUS_POWER": 5,
+      "STRENGTH_POWER": 5
+    }
+  }
+]

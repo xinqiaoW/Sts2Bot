@@ -1,0 +1,25 @@
+[
+  {
+    "coveredPowerHooks": [{ "powerId": "SKITTISH_POWER", "hook": "AfterAttack" }],
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 10,
+    "powerBeforeMove": {
+      "powerId": "SKITTISH_POWER",
+      "target": "CheckedEnemy",
+      "amount": 5
+    },
+    "cardsBeforeMove": [
+      { "cardId": "STRIKE_IRONCLAD", "pile": "Hand", "count": 2 }
+    ],
+    "cardPlayChecksAfterMove": [
+      { "cardId": "STRIKE_IRONCLAD", "target": "Enemy" }
+    ],
+    "triggerPlayerSideTurnEndAfterMove": true,
+    "cardPlayChecksAfterPlayerSideTurnEnd": [
+      { "cardId": "STRIKE_IRONCLAD", "target": "Enemy" }
+    ],
+    "expectedEnemyBlockGain": 5
+  }
+]

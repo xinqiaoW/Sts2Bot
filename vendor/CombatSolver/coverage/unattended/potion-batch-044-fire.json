@@ -1,0 +1,1 @@
+{ "potionId": "FirePotion", "target": "Enemy", "enemyHpBefore": 50, "expectedEnemyHp": 30 }

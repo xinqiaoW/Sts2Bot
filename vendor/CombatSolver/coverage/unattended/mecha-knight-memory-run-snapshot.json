@@ -1,0 +1,518 @@
+{
+  "rng": {
+    "rngs": {
+      "up_front": {
+        "counter": 419,
+        "s0": 16289012828701114346,
+        "s1": 13616322720515788645,
+        "s2": 8043504128154534121,
+        "s3": 1032945489955686824
+      },
+      "shuffle": {
+        "counter": 931,
+        "s0": 9739848697898722076,
+        "s1": 17856251466037220503,
+        "s2": 2891492123129706537,
+        "s3": 9057441873070768638
+      },
+      "unknown_map_point": {
+        "counter": 7,
+        "s0": 5496886079046472643,
+        "s1": 6567207701657365056,
+        "s2": 15362552399905652129,
+        "s3": 569466128467535912
+      },
+      "combat_card_generation": {
+        "counter": 1,
+        "s0": 6170009968393078137,
+        "s1": 3175490964912911719,
+        "s2": 15322213348147933370,
+        "s3": 12712353896014178047
+      },
+      "combat_potion_generation": {
+        "counter": 0,
+        "s0": 17737693761073652031,
+        "s1": 5338721824763617497,
+        "s2": 1718498707265421298,
+        "s3": 11718923839334242207
+      },
+      "combat_card_selection": {
+        "counter": 0,
+        "s0": 3756953957457768725,
+        "s1": 10675861532695962485,
+        "s2": 11434777877996073390,
+        "s3": 17066588376732450216
+      },
+      "combat_energy_costs": {
+        "counter": 30,
+        "s0": 2462933643034427085,
+        "s1": 2321427384750135440,
+        "s2": 10734736443723982916,
+        "s3": 9740883946464748290
+      },
+      "combat_targets": {
+        "counter": 0,
+        "s0": 14141494358645498711,
+        "s1": 4176778396830344337,
+        "s2": 2710884950328391378,
+        "s3": 15870998421896113236
+      },
+      "monster_ai": {
+        "counter": 23,
+        "s0": 9924779476693402905,
+        "s1": 6799680071173895087,
+        "s2": 13853565952902914507,
+        "s3": 13892272543378684722
+      },
+      "niche": {
+        "counter": 41,
+        "s0": 13482775951743144723,
+        "s1": 13640042375096139764,
+        "s2": 13233058103906473109,
+        "s3": 4704752986393119519
+      },
+      "combat_orbs": {
+        "counter": 0,
+        "s0": 3709022698924259919,
+        "s1": 14251216879026800885,
+        "s2": 17282912234510058014,
+        "s3": 14169899933289687463
+      },
+      "treasure_room_relics": {
+        "counter": 3,
+        "s0": 8865612946717000527,
+        "s1": 818688383327022271,
+        "s2": 13961201481817721317,
+        "s3": 7166659730076981244
+      }
+    },
+    "seed": "BJCZX3J13PZJ"
+  },
+  "players": [
+    {
+      "deck": [
+        {
+          "floor_added_to_deck": 1,
+          "id": "CARD.STRIKE_SILENT"
+        },
+        {
+          "floor_added_to_deck": 1,
+          "id": "CARD.STRIKE_SILENT"
+        },
+        {
+          "floor_added_to_deck": 1,
+          "id": "CARD.STRIKE_SILENT"
+        },
+        {
+          "floor_added_to_deck": 1,
+          "id": "CARD.DEFEND_SILENT"
+        },
+        {
+          "floor_added_to_deck": 1,
+          "id": "CARD.DEFEND_SILENT"
+        },
+        {
+          "floor_added_to_deck": 1,
+          "id": "CARD.DEFEND_SILENT"
+        },
+        {
+          "floor_added_to_deck": 1,
+          "id": "CARD.SURVIVOR"
+        },
+        {
+          "current_upgrade_level": 1,
+          "enchantment": {
+            "amount": 1,
+            "id": "ENCHANTMENT.SLITHER"
+          },
+          "floor_added_to_deck": 1,
+          "id": "CARD.OUTBREAK"
+        },
+        {
+          "current_upgrade_level": 1,
+          "floor_added_to_deck": 2,
+          "id": "CARD.FOOTWORK"
+        },
+        {
+          "current_upgrade_level": 1,
+          "floor_added_to_deck": 4,
+          "id": "CARD.BACKFLIP"
+        },
+        {
+          "current_upgrade_level": 1,
+          "floor_added_to_deck": 5,
+          "id": "CARD.ESCAPE_PLAN"
+        },
+        {
+          "floor_added_to_deck": 7,
+          "id": "CARD.BLADE_OF_INK"
+        },
+        {
+          "current_upgrade_level": 1,
+          "floor_added_to_deck": 8,
+          "id": "CARD.SNAKEBITE"
+        },
+        {
+          "current_upgrade_level": 1,
+          "floor_added_to_deck": 11,
+          "id": "CARD.PIERCING_WAIL"
+        },
+        {
+          "current_upgrade_level": 1,
+          "floor_added_to_deck": 13,
+          "id": "CARD.CALCULATED_GAMBLE"
+        },
+        {
+          "current_upgrade_level": 1,
+          "floor_added_to_deck": 14,
+          "id": "CARD.CLOAK_AND_DAGGER"
+        },
+        {
+          "current_upgrade_level": 1,
+          "floor_added_to_deck": 17,
+          "id": "CARD.MALAISE"
+        },
+        {
+          "current_upgrade_level": 1,
+          "floor_added_to_deck": 18,
+          "id": "CARD.SUPPRESS"
+        },
+        {
+          "current_upgrade_level": 1,
+          "floor_added_to_deck": 19,
+          "id": "CARD.BUBBLE_BUBBLE"
+        },
+        {
+          "current_upgrade_level": 1,
+          "floor_added_to_deck": 21,
+          "id": "CARD.PREPARED"
+        },
+        {
+          "current_upgrade_level": 1,
+          "floor_added_to_deck": 21,
+          "id": "CARD.HAZE"
+        },
+        {
+          "current_upgrade_level": 1,
+          "floor_added_to_deck": 22,
+          "id": "CARD.DEADLY_POISON"
+        },
+        {
+          "current_upgrade_level": 1,
+          "floor_added_to_deck": 24,
+          "id": "CARD.DODGE_AND_ROLL"
+        },
+        {
+          "current_upgrade_level": 1,
+          "floor_added_to_deck": 25,
+          "id": "CARD.MIRAGE"
+        },
+        {
+          "current_upgrade_level": 1,
+          "floor_added_to_deck": 25,
+          "id": "CARD.TOOLS_OF_THE_TRADE"
+        },
+        {
+          "current_upgrade_level": 1,
+          "floor_added_to_deck": 28,
+          "id": "CARD.CALCULATED_GAMBLE"
+        },
+        {
+          "current_upgrade_level": 1,
+          "floor_added_to_deck": 28,
+          "id": "CARD.MALAISE"
+        },
+        {
+          "current_upgrade_level": 1,
+          "floor_added_to_deck": 30,
+          "id": "CARD.ULTIMATE_DEFEND"
+        },
+        {
+          "current_upgrade_level": 1,
+          "floor_added_to_deck": 31,
+          "id": "CARD.PIERCING_WAIL"
+        },
+        {
+          "current_upgrade_level": 1,
+          "floor_added_to_deck": 35,
+          "id": "CARD.FOOTWORK"
+        },
+        {
+          "floor_added_to_deck": 38,
+          "id": "CARD.STRIKE_SILENT"
+        },
+        {
+          "floor_added_to_deck": 38,
+          "id": "CARD.STRIKE_SILENT"
+        },
+        {
+          "floor_added_to_deck": 38,
+          "id": "CARD.STRIKE_SILENT"
+        },
+        {
+          "current_upgrade_level": 1,
+          "floor_added_to_deck": 38,
+          "id": "CARD.DEFEND_SILENT"
+        },
+        {
+          "current_upgrade_level": 1,
+          "floor_added_to_deck": 38,
+          "id": "CARD.DEFEND_SILENT"
+        },
+        {
+          "current_upgrade_level": 1,
+          "floor_added_to_deck": 38,
+          "id": "CARD.DEFEND_SILENT"
+        },
+        {
+          "current_upgrade_level": 1,
+          "floor_added_to_deck": 38,
+          "id": "CARD.SURVIVOR"
+        },
+        {
+          "current_upgrade_level": 1,
+          "enchantment": {
+            "amount": 1,
+            "id": "ENCHANTMENT.SLITHER"
+          },
+          "floor_added_to_deck": 38,
+          "id": "CARD.OUTBREAK"
+        },
+        {
+          "current_upgrade_level": 1,
+          "floor_added_to_deck": 38,
+          "id": "CARD.FOOTWORK"
+        },
+        {
+          "current_upgrade_level": 1,
+          "floor_added_to_deck": 38,
+          "id": "CARD.BACKFLIP"
+        },
+        {
+          "current_upgrade_level": 1,
+          "floor_added_to_deck": 38,
+          "id": "CARD.ESCAPE_PLAN"
+        },
+        {
+          "current_upgrade_level": 1,
+          "floor_added_to_deck": 38,
+          "id": "CARD.BLADE_OF_INK"
+        },
+        {
+          "current_upgrade_level": 1,
+          "floor_added_to_deck": 38,
+          "id": "CARD.SNAKEBITE"
+        },
+        {
+          "current_upgrade_level": 1,
+          "floor_added_to_deck": 38,
+          "id": "CARD.PIERCING_WAIL"
+        },
+        {
+          "current_upgrade_level": 1,
+          "floor_added_to_deck": 38,
+          "id": "CARD.CALCULATED_GAMBLE"
+        },
+        {
+          "current_upgrade_level": 1,
+          "floor_added_to_deck": 38,
+          "id": "CARD.CLOAK_AND_DAGGER"
+        },
+        {
+          "current_upgrade_level": 1,
+          "floor_added_to_deck": 38,
+          "id": "CARD.MALAISE"
+        },
+        {
+          "current_upgrade_level": 1,
+          "floor_added_to_deck": 38,
+          "id": "CARD.SUPPRESS"
+        },
+        {
+          "current_upgrade_level": 1,
+          "floor_added_to_deck": 38,
+          "id": "CARD.BUBBLE_BUBBLE"
+        },
+        {
+          "current_upgrade_level": 1,
+          "floor_added_to_deck": 38,
+          "id": "CARD.PREPARED"
+        },
+        {
+          "current_upgrade_level": 1,
+          "floor_added_to_deck": 38,
+          "id": "CARD.HAZE"
+        },
+        {
+          "current_upgrade_level": 1,
+          "floor_added_to_deck": 38,
+          "id": "CARD.DEADLY_POISON"
+        },
+        {
+          "current_upgrade_level": 1,
+          "floor_added_to_deck": 38,
+          "id": "CARD.DODGE_AND_ROLL"
+        },
+        {
+          "current_upgrade_level": 1,
+          "floor_added_to_deck": 38,
+          "id": "CARD.MIRAGE"
+        },
+        {
+          "current_upgrade_level": 1,
+          "floor_added_to_deck": 38,
+          "id": "CARD.TOOLS_OF_THE_TRADE"
+        },
+        {
+          "current_upgrade_level": 1,
+          "floor_added_to_deck": 38,
+          "id": "CARD.CALCULATED_GAMBLE"
+        },
+        {
+          "current_upgrade_level": 1,
+          "floor_added_to_deck": 38,
+          "id": "CARD.MALAISE"
+        },
+        {
+          "current_upgrade_level": 1,
+          "floor_added_to_deck": 38,
+          "id": "CARD.ULTIMATE_DEFEND"
+        },
+        {
+          "current_upgrade_level": 1,
+          "floor_added_to_deck": 38,
+          "id": "CARD.PIERCING_WAIL"
+        },
+        {
+          "current_upgrade_level": 1,
+          "floor_added_to_deck": 38,
+          "id": "CARD.FOOTWORK"
+        },
+        {
+          "floor_added_to_deck": 38,
+          "id": "CARD.BAD_LUCK"
+        },
+        {
+          "current_upgrade_level": 1,
+          "floor_added_to_deck": 39,
+          "id": "CARD.THINKING_AHEAD"
+        },
+        {
+          "current_upgrade_level": 1,
+          "floor_added_to_deck": 40,
+          "id": "CARD.BURST"
+        },
+        {
+          "current_upgrade_level": 1,
+          "floor_added_to_deck": 40,
+          "id": "CARD.KNIFE_TRAP"
+        }
+      ],
+      "relics": [
+        {
+          "floor_added_to_deck": 1,
+          "id": "RELIC.RING_OF_THE_SNAKE"
+        },
+        {
+          "floor_added_to_deck": 1,
+          "id": "RELIC.ARCANE_SCROLL"
+        },
+        {
+          "floor_added_to_deck": 8,
+          "id": "RELIC.TOXIC_EGG"
+        },
+        {
+          "floor_added_to_deck": 10,
+          "id": "RELIC.BRONZE_SCALES"
+        },
+        {
+          "floor_added_to_deck": 18,
+          "id": "RELIC.ARCHAIC_TOOTH",
+          "props": {
+            "cards": [
+              {
+                "name": "AncientCard",
+                "value": {
+                  "current_upgrade_level": 1,
+                  "id": "CARD.SUPPRESS"
+                }
+              },
+              {
+                "name": "StarterCard",
+                "value": {
+                  "current_upgrade_level": 1,
+                  "floor_added_to_deck": 1,
+                  "id": "CARD.NEUTRALIZE"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "floor_added_to_deck": 20,
+          "id": "RELIC.WHITE_STAR"
+        },
+        {
+          "floor_added_to_deck": 25,
+          "id": "RELIC.JUZU_BRACELET"
+        },
+        {
+          "floor_added_to_deck": 26,
+          "id": "RELIC.JOSS_PAPER",
+          "props": {
+            "ints": [
+              {
+                "name": "CardsExhausted",
+                "value": 3
+              }
+            ]
+          }
+        },
+        {
+          "floor_added_to_deck": 27,
+          "id": "RELIC.ANCHOR"
+        },
+        {
+          "floor_added_to_deck": 28,
+          "id": "RELIC.LUCKY_FYSH"
+        },
+        {
+          "floor_added_to_deck": 34,
+          "id": "RELIC.MUSIC_BOX"
+        },
+        {
+          "floor_added_to_deck": 39,
+          "id": "RELIC.ICE_CREAM"
+        },
+        {
+          "floor_added_to_deck": 39,
+          "id": "RELIC.VENERABLE_TEA_SET",
+          "props": {
+            "bools": [
+              {
+                "name": "GainEnergyInNextCombat",
+                "value": true
+              }
+            ]
+          }
+        },
+        {
+          "floor_added_to_deck": 40,
+          "id": "RELIC.PEN_NIB",
+          "props": {
+            "ints": [
+              {
+                "name": "AttacksPlayed",
+                "value": 0
+              }
+            ]
+          }
+        },
+        {
+          "floor_added_to_deck": 43,
+          "id": "RELIC.POTION_BELT"
+        }
+      ]
+    }
+  ]
+}

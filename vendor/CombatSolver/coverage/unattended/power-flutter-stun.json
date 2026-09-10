@@ -1,0 +1,26 @@
+[
+  {
+    "monsterId": "ThievingHopper",
+    "moveId": "NAB_MOVE",
+    "playerEnergyBefore": 3,
+    "clearAllRelicsBeforeMove": true,
+    "clearAllPowersBeforeMove": true,
+    "clearPlayerPilesBeforeMove": true,
+    "powersBeforeMove": [
+      { "powerId": "FLUTTER_POWER", "target": "Enemy", "amount": 1 }
+    ],
+    "cardsBeforeMove": [
+      { "cardId": "STRIKE_NECROBINDER", "pile": "Hand" }
+    ],
+    "cardPlayChecksBeforeMove": [
+      {
+        "cardId": "STRIKE_NECROBINDER",
+        "target": "Enemy",
+        "expectedPlayable": true
+      }
+    ],
+    "rollNextMoveAfterActual": true,
+    "expectedNextMoveId": "FLUTTER_MOVE",
+    "expectedSimulatedDynamicResolution": false
+  }
+]

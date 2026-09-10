@@ -1,0 +1,23 @@
+[
+  {
+    "coveredRelicHooks": [{ "relicId": "MUMMIFIED_HAND", "hook": "AfterCardPlayed" }],
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "playerEnergyBefore": 99,
+    "clearAllRelicsBeforeMove": true,
+    "relicsBeforeMove": [{ "relicId": "MUMMIFIED_HAND" }],
+    "clearAllPowersBeforeMove": true,
+    "clearPlayerPilesBeforeMove": true,
+    "cardsBeforeMove": [
+      { "cardId": "SWORD_SAGE", "pile": "Hand" },
+      { "cardId": "PARRY", "pile": "Hand" },
+      { "cardId": "COSMIC_INDIFFERENCE", "pile": "Hand" },
+      { "cardId": "BEGONE", "pile": "Hand" }
+    ],
+    "cardPlayChecksAfterMove": [
+      { "cardId": "SWORD_SAGE", "target": "None" },
+      { "cardId": "PARRY", "target": "None" }
+    ]
+  }
+]

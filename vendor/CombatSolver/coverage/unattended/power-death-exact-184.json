@@ -1,0 +1,14 @@
+[
+  {
+    "monsterId": "TestSubject",
+    "useCurrentMove": true,
+    "killMonsterAfterMove": true,
+    "expectedSimulatedDynamicResolution": false
+  },
+  {
+    "monsterId": "Parafright",
+    "useCurrentMove": true,
+    "killMonsterAfterMove": true,
+    "expectedSimulatedDynamicResolution": false
+  }
+]

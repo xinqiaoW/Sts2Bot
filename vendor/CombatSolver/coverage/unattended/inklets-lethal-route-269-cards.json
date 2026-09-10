@@ -1,0 +1,19 @@
+[
+  { "cardId": "CONVERGENCE", "pile": "Hand", "count": 1, "upgradeLevels": 1 },
+  { "cardId": "CRUSH_UNDER", "pile": "Hand", "count": 1, "upgradeLevels": 1 },
+  { "cardId": "GLITTERSTREAM", "pile": "Hand", "count": 1, "upgradeLevels": 1 },
+  { "cardId": "KNOW_THY_PLACE", "pile": "Hand", "count": 1, "upgradeLevels": 1 },
+  { "cardId": "ASCENDERS_BANE", "pile": "Hand", "count": 1 },
+  { "cardId": "STRIKE_REGENT", "pile": "Hand", "count": 1 },
+  { "cardId": "DEFEND_REGENT", "pile": "Hand", "count": 1 },
+  { "cardId": "STRIKE_REGENT", "pile": "Draw", "count": 1 },
+  { "cardId": "DEFEND_REGENT", "pile": "Draw", "count": 1 },
+  { "cardId": "FALLING_STAR", "pile": "Draw", "count": 1 },
+  { "cardId": "SPECTRUM_SHIFT", "pile": "Draw", "count": 1 },
+  { "cardId": "DEFEND_REGENT", "pile": "Draw", "count": 1 },
+  { "cardId": "GUIDING_STAR", "pile": "Draw", "count": 1 },
+  { "cardId": "STRIKE_REGENT", "pile": "Draw", "count": 1 },
+  { "cardId": "VENERATE", "pile": "Draw", "count": 1, "upgradeLevels": 1 },
+  { "cardId": "DEFEND_REGENT", "pile": "Draw", "count": 1 },
+  { "cardId": "STRIKE_REGENT", "pile": "Draw", "count": 1 }
+]

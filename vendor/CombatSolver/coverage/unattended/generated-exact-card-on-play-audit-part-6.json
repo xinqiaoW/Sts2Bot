@@ -1,0 +1,269 @@
+[
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "ostyHpBefore": null,
+    "cardsBeforeMove": [
+      {
+        "cardId": "IRON_WAVE",
+        "pile": "Hand",
+        "enumMembers": {}
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "IRON_WAVE",
+        "target": "Enemy"
+      }
+    ]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "ostyHpBefore": null,
+    "cardsBeforeMove": [
+      {
+        "cardId": "JACK_OF_ALL_TRADES",
+        "pile": "Hand",
+        "enumMembers": {}
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "JACK_OF_ALL_TRADES",
+        "target": "None"
+      }
+    ]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "ostyHpBefore": null,
+    "cardsBeforeMove": [
+      {
+        "cardId": "JACKPOT",
+        "pile": "Hand",
+        "enumMembers": {}
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "JACKPOT",
+        "target": "Enemy"
+      }
+    ]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "ostyHpBefore": null,
+    "cardsBeforeMove": [
+      {
+        "cardId": "KINGLY_KICK",
+        "pile": "Hand",
+        "enumMembers": {}
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "KINGLY_KICK",
+        "target": "Enemy"
+      }
+    ]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "ostyHpBefore": null,
+    "cardsBeforeMove": [
+      {
+        "cardId": "KINGLY_PUNCH",
+        "pile": "Hand",
+        "enumMembers": {}
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "KINGLY_PUNCH",
+        "target": "Enemy"
+      }
+    ]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "ostyHpBefore": null,
+    "cardsBeforeMove": [
+      {
+        "cardId": "LEAP",
+        "pile": "Hand",
+        "enumMembers": {}
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "LEAP",
+        "target": "None"
+      }
+    ]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "ostyHpBefore": null,
+    "cardsBeforeMove": [
+      {
+        "cardId": "MAD_SCIENCE",
+        "pile": "Hand",
+        "enumMembers": {
+          "TinkerTimeType": "Attack",
+          "TinkerTimeRider": "Sapping"
+        }
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "MAD_SCIENCE",
+        "target": "Enemy"
+      }
+    ]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "ostyHpBefore": null,
+    "cardsBeforeMove": [
+      {
+        "cardId": "MAKE_IT_SO",
+        "pile": "Hand",
+        "enumMembers": {}
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "MAKE_IT_SO",
+        "target": "Enemy"
+      }
+    ]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "ostyHpBefore": null,
+    "cardsBeforeMove": [
+      {
+        "cardId": "MANIFEST_AUTHORITY",
+        "pile": "Hand",
+        "enumMembers": {}
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "MANIFEST_AUTHORITY",
+        "target": "None"
+      }
+    ]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "ostyHpBefore": null,
+    "cardsBeforeMove": [
+      {
+        "cardId": "MASTER_OF_STRATEGY",
+        "pile": "Hand",
+        "enumMembers": {}
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "MASTER_OF_STRATEGY",
+        "target": "None"
+      }
+    ]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "ostyHpBefore": null,
+    "cardsBeforeMove": [
+      {
+        "cardId": "MELANCHOLY",
+        "pile": "Hand",
+        "enumMembers": {}
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "MELANCHOLY",
+        "target": "None"
+      }
+    ]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "ostyHpBefore": null,
+    "cardsBeforeMove": [
+      {
+        "cardId": "METAMORPHOSIS",
+        "pile": "Hand",
+        "enumMembers": {}
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "METAMORPHOSIS",
+        "target": "None"
+      }
+    ]
+  }
+]

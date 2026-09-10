@@ -1,0 +1,266 @@
+[
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "ostyHpBefore": null,
+    "cardsBeforeMove": [
+      {
+        "cardId": "GIANT_ROCK",
+        "pile": "Hand",
+        "enumMembers": {}
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "GIANT_ROCK",
+        "target": "Enemy"
+      }
+    ]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "ostyHpBefore": null,
+    "cardsBeforeMove": [
+      {
+        "cardId": "GLACIER",
+        "pile": "Hand",
+        "enumMembers": {}
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "GLACIER",
+        "target": "None"
+      }
+    ]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "ostyHpBefore": null,
+    "cardsBeforeMove": [
+      {
+        "cardId": "GLASSWORK",
+        "pile": "Hand",
+        "enumMembers": {}
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "GLASSWORK",
+        "target": "None"
+      }
+    ]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "ostyHpBefore": null,
+    "cardsBeforeMove": [
+      {
+        "cardId": "HAVOC",
+        "pile": "Hand",
+        "enumMembers": {}
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "HAVOC",
+        "target": "None"
+      }
+    ]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "ostyHpBefore": null,
+    "cardsBeforeMove": [
+      {
+        "cardId": "HEAVENLY_DRILL",
+        "pile": "Hand",
+        "enumMembers": {}
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "HEAVENLY_DRILL",
+        "target": "Enemy"
+      }
+    ]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "ostyHpBefore": null,
+    "cardsBeforeMove": [
+      {
+        "cardId": "HIDDEN_GEM",
+        "pile": "Hand",
+        "enumMembers": {}
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "HIDDEN_GEM",
+        "target": "None"
+      }
+    ]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "ostyHpBefore": null,
+    "cardsBeforeMove": [
+      {
+        "cardId": "HOWL_FROM_BEYOND",
+        "pile": "Hand",
+        "enumMembers": {}
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "HOWL_FROM_BEYOND",
+        "target": "None"
+      }
+    ]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "ostyHpBefore": null,
+    "cardsBeforeMove": [
+      {
+        "cardId": "I_AM_INVINCIBLE",
+        "pile": "Hand",
+        "enumMembers": {}
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "I_AM_INVINCIBLE",
+        "target": "None"
+      }
+    ]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "ostyHpBefore": null,
+    "cardsBeforeMove": [
+      {
+        "cardId": "ICE_LANCE",
+        "pile": "Hand",
+        "enumMembers": {}
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "ICE_LANCE",
+        "target": "Enemy"
+      }
+    ]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "ostyHpBefore": null,
+    "cardsBeforeMove": [
+      {
+        "cardId": "IMPATIENCE",
+        "pile": "Hand",
+        "enumMembers": {}
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "IMPATIENCE",
+        "target": "None"
+      }
+    ]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "ostyHpBefore": null,
+    "cardsBeforeMove": [
+      {
+        "cardId": "IMPERVIOUS",
+        "pile": "Hand",
+        "enumMembers": {}
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "IMPERVIOUS",
+        "target": "None"
+      }
+    ]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "ostyHpBefore": null,
+    "cardsBeforeMove": [
+      {
+        "cardId": "INFERNAL_BLADE",
+        "pile": "Hand",
+        "enumMembers": {}
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "INFERNAL_BLADE",
+        "target": "None"
+      }
+    ]
+  }
+]

@@ -1,0 +1,37 @@
+[
+  {
+    "coveredOrbHooks": [
+      { "orbId": "LIGHTNING_ORB", "hook": "Passive" },
+      { "orbId": "LIGHTNING_ORB", "hook": "Evoke" }
+    ],
+    "orbId": "LIGHTNING_ORB"
+  },
+  {
+    "coveredOrbHooks": [
+      { "orbId": "FROST_ORB", "hook": "Passive" },
+      { "orbId": "FROST_ORB", "hook": "Evoke" }
+    ],
+    "orbId": "FROST_ORB"
+  },
+  {
+    "coveredOrbHooks": [
+      { "orbId": "DARK_ORB", "hook": "Passive" },
+      { "orbId": "DARK_ORB", "hook": "Evoke" }
+    ],
+    "orbId": "DARK_ORB"
+  },
+  {
+    "coveredOrbHooks": [
+      { "orbId": "GLASS_ORB", "hook": "Passive" },
+      { "orbId": "GLASS_ORB", "hook": "Evoke" }
+    ],
+    "orbId": "GLASS_ORB"
+  },
+  {
+    "coveredOrbHooks": [
+      { "orbId": "PLASMA_ORB", "hook": "Passive" },
+      { "orbId": "PLASMA_ORB", "hook": "Evoke" }
+    ],
+    "orbId": "PLASMA_ORB"
+  }
+]

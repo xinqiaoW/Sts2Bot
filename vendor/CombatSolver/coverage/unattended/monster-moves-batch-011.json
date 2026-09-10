@@ -1,0 +1,87 @@
+[
+  {
+    "monsterId": "Seapunk",
+    "moveId": "SEA_KICK_MOVE",
+    "expectedPlayerHpLoss": 11
+  },
+  {
+    "monsterId": "Seapunk",
+    "moveId": "SPINNING_KICK_MOVE",
+    "expectedPlayerHpLoss": 8
+  },
+  {
+    "monsterId": "Seapunk",
+    "moveId": "BUBBLE_BURP_MOVE",
+    "expectedPlayerHpLoss": 0,
+    "expectedEnemyBlockGain": 7,
+    "expectedEnemyPowers": {
+      "STRENGTH_POWER": 1
+    }
+  },
+  {
+    "monsterId": "SewerClam",
+    "moveId": "JET_MOVE",
+    "expectedPlayerHpLoss": 10
+  },
+  {
+    "monsterId": "SewerClam",
+    "moveId": "PRESSURIZE_MOVE",
+    "expectedPlayerHpLoss": 0,
+    "expectedEnemyPowers": {
+      "STRENGTH_POWER": 4
+    }
+  },
+  {
+    "monsterId": "ShrinkerBeetle",
+    "moveId": "CHOMP_MOVE",
+    "expectedPlayerHpLoss": 7
+  },
+  {
+    "monsterId": "ShrinkerBeetle",
+    "moveId": "STOMP_MOVE",
+    "expectedPlayerHpLoss": 13
+  },
+  {
+    "monsterId": "SludgeSpinner",
+    "moveId": "OIL_SPRAY_MOVE",
+    "expectedPlayerHpLoss": 8,
+    "expectedPlayerPowers": {
+      "WEAK_POWER": 1
+    }
+  },
+  {
+    "monsterId": "SludgeSpinner",
+    "moveId": "SLAM_MOVE",
+    "expectedPlayerHpLoss": 11
+  },
+  {
+    "monsterId": "SludgeSpinner",
+    "moveId": "RAGE_MOVE",
+    "expectedPlayerHpLoss": 6,
+    "expectedEnemyPowers": {
+      "STRENGTH_POWER": 3
+    }
+  },
+  {
+    "monsterId": "Wriggler",
+    "spawnInitialMoveId": "NASTY_BITE_MOVE",
+    "moveId": "NASTY_BITE_MOVE",
+    "expectedPlayerHpLoss": 6
+  },
+  {
+    "monsterId": "Wriggler",
+    "moveId": "SPAWNED_MOVE",
+    "expectedPlayerHpLoss": 0
+  },
+  {
+    "monsterId": "Wriggler",
+    "moveId": "WRIGGLE_MOVE",
+    "expectedPlayerHpLoss": 0,
+    "expectedEnemyPowers": {
+      "STRENGTH_POWER": 2
+    },
+    "expectedPlayerPileCards": {
+      "Discard:INFECTION": 1
+    }
+  }
+]

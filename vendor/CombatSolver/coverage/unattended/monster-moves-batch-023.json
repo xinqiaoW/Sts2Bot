@@ -1,0 +1,30 @@
+[
+  {
+    "monsterId": "BowlbugRock",
+    "moveId": "HEADBUTT_MOVE",
+    "playerBlockBefore": 15,
+    "expectedPlayerHpLoss": 0,
+    "expectedSimulatedSkipNextMove": true,
+    "rollNextMoveAfterActual": true,
+    "expectedNextMoveId": "STUNNED"
+  },
+  {
+    "monsterId": "BowlbugRock",
+    "moveId": "STUNNED",
+    "useCurrentMove": true,
+    "playerBlockBefore": 0,
+    "expectedPlayerHpLoss": 0,
+    "expectedSimulatedSkipNextMove": false,
+    "rollNextMoveAfterActual": true,
+    "expectedNextMoveId": "HEADBUTT_MOVE"
+  },
+  {
+    "monsterId": "BowlbugRock",
+    "moveId": "HEADBUTT_MOVE",
+    "playerBlockBefore": 14,
+    "expectedPlayerHpLoss": 1,
+    "expectedSimulatedSkipNextMove": false,
+    "rollNextMoveAfterActual": true,
+    "expectedNextMoveId": "HEADBUTT_MOVE"
+  }
+]

@@ -1,0 +1,8 @@
+[
+  { "cardId": "BASH", "pile": "Hand", "count": 1 },
+  { "cardId": "STRIKE_IRONCLAD", "pile": "Hand", "count": 2 },
+  { "cardId": "DEFEND_IRONCLAD", "pile": "Hand", "count": 2 },
+  { "cardId": "STRIKE_IRONCLAD", "pile": "Draw", "count": 3 },
+  { "cardId": "DEFEND_IRONCLAD", "pile": "Draw", "count": 2 },
+  { "cardId": "PANACHE", "pile": "Draw", "count": 1 }
+]

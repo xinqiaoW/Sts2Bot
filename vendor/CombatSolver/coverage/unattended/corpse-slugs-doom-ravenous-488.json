@@ -1,0 +1,19 @@
+[
+  {
+    "enemyIndex": 0,
+    "monsterId": "CorpseSlug",
+    "moveId": "GOOP_MOVE",
+    "enemyHpBefore": 999,
+    "clearAllPowersBeforeMove": true,
+    "powersBeforeMove": [
+      { "powerId": "RAVENOUS_POWER", "target": "Enemy", "targetIndex": 0, "amount": 5 },
+      { "powerId": "DOOM_POWER", "target": "Enemy", "targetIndex": 1, "amount": 999 }
+    ],
+    "triggerEnemySideTurnEndAfterMove": true,
+    "expectedNextMoveId": "STUNNED",
+    "expectedEnemyPowers": {
+      "RAVENOUS_POWER": 5,
+      "STRENGTH_POWER": 5
+    }
+  }
+]

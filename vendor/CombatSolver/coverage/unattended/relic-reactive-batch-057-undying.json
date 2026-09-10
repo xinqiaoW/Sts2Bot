@@ -1,0 +1,13 @@
+[
+  {
+    "monsterId": "ToughEgg",
+    "moveId": "NIBBLE_MOVE",
+    "playerHpBefore": 50,
+    "powerBeforeMove": {
+      "powerId": "DOOM_POWER",
+      "target": "CheckedEnemy",
+      "amount": 50
+    },
+    "expectedPlayerHpLoss": 2
+  }
+]

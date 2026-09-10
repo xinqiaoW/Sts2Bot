@@ -1,0 +1,10 @@
+[
+  {
+    "monsterId": "DecimillipedeSegmentFront",
+    "useCurrentMove": true,
+    "killMonsterAfterMove": true,
+    "rollNextMoveAfterActual": true,
+    "expectedNextMoveId": "REATTACH_MOVE",
+    "expectedSimulatedDynamicResolution": false
+  }
+]

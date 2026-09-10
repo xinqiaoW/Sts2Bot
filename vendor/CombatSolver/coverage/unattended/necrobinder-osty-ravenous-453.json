@@ -1,0 +1,37 @@
+[
+  {
+    "enemyIndex": 0,
+    "monsterId": "CorpseSlug",
+    "moveId": "WHIP_SLAP_MOVE",
+    "playerHpBefore": 50,
+    "playerEnergyBefore": 99,
+    "enemyHpBefore": 999,
+    "clearAllPowersBeforeMove": true,
+    "clearPlayerPilesBeforeMove": true,
+    "ostyHpBefore": 3,
+    "powersBeforeMove": [
+      { "powerId": "DIE_FOR_YOU_POWER", "target": "Osty", "amount": 1 }
+    ],
+    "cardBeforeMove": { "cardId": "BODYGUARD", "pile": "Hand", "count": 1 },
+    "cardPlayChecksAfterMove": [
+      { "cardId": "BODYGUARD", "target": "None" }
+    ],
+    "expectedOstyPowers": { "DIE_FOR_YOU_POWER": 1 }
+  },
+  {
+    "enemyIndex": 0,
+    "monsterId": "CorpseSlug",
+    "moveId": "GOOP_MOVE",
+    "enemyHpBefore": 999,
+    "clearAllPowersBeforeMove": true,
+    "powersBeforeMove": [
+      { "powerId": "RAVENOUS_POWER", "target": "Enemy", "targetIndex": 0, "amount": 5 }
+    ],
+    "killEnemyIndexAfterMove": 1,
+    "expectedNextMoveId": "STUNNED",
+    "expectedEnemyPowers": {
+      "RAVENOUS_POWER": 5,
+      "STRENGTH_POWER": 5
+    }
+  }
+]

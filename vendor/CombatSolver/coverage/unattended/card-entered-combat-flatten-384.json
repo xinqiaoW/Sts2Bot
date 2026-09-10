@@ -1,0 +1,16 @@
+[
+  {
+    "coveredCardHooks": [{ "cardId": "FLATTEN", "hook": "AfterCardEnteredCombat" }],
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "ostyHpBefore": 12,
+    "clearPlayerPilesBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "cardBeforeMove": { "cardId": "MINION_STRIKE", "pile": "Hand", "count": 1 },
+    "cardPlayChecksBeforeMove": [
+      { "cardId": "MINION_STRIKE", "target": "Enemy" }
+    ],
+    "cardAfterMove": { "cardId": "FLATTEN", "pile": "Hand", "count": 1 }
+  }
+]

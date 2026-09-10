@@ -1,0 +1,9 @@
+{
+  "potionId": "DISTILLED_CHAOS",
+  "target": "Player",
+  "cards": [
+    { "cardId": "DAZED", "pile": "Hand", "count": 1 },
+    { "cardId": "SURVIVOR", "pile": "Draw", "count": 1 }
+  ],
+  "nestedChoiceCardIds": ["DAZED"]
+}

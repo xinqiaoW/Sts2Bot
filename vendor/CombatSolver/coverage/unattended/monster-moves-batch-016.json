@@ -1,0 +1,73 @@
+[
+  {
+    "monsterId": "SneakyGremlin",
+    "moveId": "SPAWNED_MOVE",
+    "expectedPlayerHpLoss": 0
+  },
+  {
+    "monsterId": "SneakyGremlin",
+    "moveId": "TACKLE_MOVE",
+    "expectedPlayerHpLoss": 9
+  },
+  {
+    "monsterId": "TwigSlimeM",
+    "moveId": "POKEY_POUNCE_MOVE",
+    "expectedPlayerHpLoss": 11
+  },
+  {
+    "monsterId": "TwigSlimeM",
+    "moveId": "STICKY_SHOT_MOVE",
+    "expectedPlayerHpLoss": 0,
+    "expectedPlayerPileCards": {
+      "Discard:SLIMED": 1
+    }
+  },
+  {
+    "monsterId": "TwigSlimeS",
+    "moveId": "TACKLE_MOVE",
+    "expectedPlayerHpLoss": 4
+  },
+  {
+    "monsterId": "TorchHeadAmalgam",
+    "moveId": "STRONG_TACKLE_MOVE",
+    "expectedPlayerHpLoss": 26
+  },
+  {
+    "monsterId": "TorchHeadAmalgam",
+    "moveId": "TACKLE_2_MOVE",
+    "expectedPlayerHpLoss": 18
+  },
+  {
+    "monsterId": "TorchHeadAmalgam",
+    "moveId": "BEAM_MOVE",
+    "expectedPlayerHpLoss": 24
+  },
+  {
+    "monsterId": "TorchHeadAmalgam",
+    "moveId": "TACKLE_3_MOVE",
+    "expectedPlayerHpLoss": 14
+  },
+  {
+    "monsterId": "TorchHeadAmalgam",
+    "moveId": "TACKLE_4_MOVE",
+    "expectedPlayerHpLoss": 14
+  },
+  {
+    "monsterId": "TurretOperator",
+    "moveId": "UNLOAD_MOVE",
+    "expectedPlayerHpLoss": 15
+  },
+  {
+    "monsterId": "TurretOperator",
+    "moveId": "UNLOAD_MOVE_2",
+    "expectedPlayerHpLoss": 15
+  },
+  {
+    "monsterId": "TurretOperator",
+    "moveId": "RELOAD_MOVE",
+    "expectedPlayerHpLoss": 0,
+    "expectedEnemyPowers": {
+      "STRENGTH_POWER": 1
+    }
+  }
+]

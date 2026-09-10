@@ -1,0 +1,18 @@
+[
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 3,
+    "cardsBeforeMove": [
+      { "cardId": "MASTER_PLANNER", "pile": "Hand" }
+    ],
+    "cardPlayChecksAfterMove": [
+      { "cardId": "MASTER_PLANNER", "target": "None" }
+    ],
+    "expectedPlayerEnergy": 1,
+    "expectedPlayerPowers": {
+      "MASTER_PLANNER_POWER": 1
+    }
+  }
+]

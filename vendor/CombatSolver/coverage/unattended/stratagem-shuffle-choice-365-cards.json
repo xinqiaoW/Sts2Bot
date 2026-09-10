@@ -1,0 +1,6 @@
+[
+  { "cardId": "DEFEND_REGENT", "pile": "Hand", "count": 1 },
+  { "cardId": "STRIKE_REGENT", "pile": "Draw", "count": 1 },
+  { "cardId": "STRIKE_REGENT", "pile": "Discard", "count": 2 },
+  { "cardId": "DEFEND_REGENT", "pile": "Discard", "count": 1 }
+]

@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "scenarioId": "INITIAL-NATIVE-START-EFFECTS-400",
+  "characterId": "IRONCLAD",
+  "encounterId": "FUZZY_WURM_CRAWLER_WEAK",
+  "seed": "INITIAL-NATIVE-START-EFFECTS-400",
+  "relics": [
+    { "relicId": "TOOLBOX", "addWithoutObtainedEffects": true },
+    { "relicId": "JEWELED_MASK", "addWithoutObtainedEffects": true },
+    { "relicId": "FESTIVE_POPPER", "addWithoutObtainedEffects": true },
+    { "relicId": "VEXING_PUZZLEBOX", "addWithoutObtainedEffects": true },
+    { "relicId": "POWER_CELL", "addWithoutObtainedEffects": true },
+    { "relicId": "TWISTED_FUNNEL", "addWithoutObtainedEffects": true },
+    { "relicId": "PETRIFIED_TOAD", "addWithoutObtainedEffects": true },
+    { "relicId": "WHISPERING_EARRING", "addWithoutObtainedEffects": true }
+  ],
+  "runCards": [
+    { "cardId": "INFLAME", "pile": "Deck", "count": 1 },
+    { "cardId": "ANGER", "pile": "Deck", "count": 1 }
+  ],
+  "forceShortSearchOnly": true,
+  "shortSearchBudgetOverrideMilliseconds": 1500,
+  "expectedInitialSetupChoiceCountAtLeast": 1,
+  "expectedInitialSetupChoiceSourceId": "TOOLBOX",
+  "stopAfterInitialSetupAssertion": true,
+  "timeoutSeconds": 120
+}

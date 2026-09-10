@@ -1,0 +1,7 @@
+[
+  { "powerId": "VIGOR_POWER", "target": "Player", "amount": 10 },
+  { "powerId": "STRENGTH_POWER", "target": "Player", "amount": 3 },
+  { "powerId": "DEXTERITY_POWER", "target": "Player", "amount": 2 },
+  { "powerId": "CHAINS_OF_BINDING_POWER", "target": "Player", "amount": 3 },
+  { "powerId": "MINION_POWER", "target": "Enemy", "targetIndex": 0, "amount": 1 }
+]

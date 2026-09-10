@@ -1,0 +1,21 @@
+[
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearAllPowersBeforeMove": true,
+    "clearPlayerPilesBeforeMove": true,
+    "powerBeforeMove": {
+      "powerId": "STAMPEDE_POWER",
+      "target": "Player",
+      "amount": 1
+    },
+    "cardsBeforeMove": [
+      { "cardId": "HEADBUTT", "pile": "Hand" },
+      { "cardId": "RAGE", "pile": "Discard" }
+    ],
+    "liveEndTurnRiskCardId": "HEADBUTT",
+    "liveEndTurnRiskChoiceSourceId": "STAMPEDE_POWER",
+    "liveEndTurnRiskChoiceCardIds": ["RAGE"]
+  }
+]

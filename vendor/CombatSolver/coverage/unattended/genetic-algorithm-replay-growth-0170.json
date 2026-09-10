@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "scenarioId": "GENETIC-ALGORITHM-REPLAY-GROWTH-0170",
+  "characterId": "DEFECT",
+  "encounterId": "FUZZY_WURM_CRAWLER_WEAK",
+  "seed": "GENREPLAY0170",
+  "enemyCurrentHp": 6,
+  "initialPlayerEnergy": 2,
+  "clearPlayerHand": true,
+  "clearPlayerPiles": true,
+  "cards": [
+    { "cardId": "GENETIC_ALGORITHM", "pile": "Hand", "treatAsDeckCard": true, "enchantmentId": "GLAM" },
+    { "cardId": "STRIKE_DEFECT", "pile": "Hand" }
+  ],
+  "forceShortSearchOnly": true,
+  "shortSearchBudgetOverrideMilliseconds": 5000,
+  "expectedInitialFirstActionCardId": "GENETIC_ALGORITHM",
+  "expectedInitialActionCardId": "GENETIC_ALGORITHM",
+  "expectedInitialActionTitle": "遗传算法",
+  "expectedInitialActionReplayCount": 1,
+  "expectedInitialLongTermResourceValueAtLeast": 6,
+  "expectedInitialProjectedBattleHpLost": 0,
+  "expectedInitialCombatEndedTurn": 1,
+  "stopAfterInitialSolverResultAssertion": true,
+  "timeoutSeconds": 150
+}

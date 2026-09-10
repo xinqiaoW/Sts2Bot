@@ -1,0 +1,90 @@
+[
+  {
+    "coveredEnchantmentHooks": [{ "enchantmentId": "ADROIT", "hook": "OnPlay" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "playerEnergyBefore": 99, "clearPlayerPilesBeforeMove": true,
+    "cardBeforeMove": { "cardId": "DEFEND_IRONCLAD", "pile": "Hand", "enchantmentId": "ADROIT", "enchantmentAmount": 3 },
+    "cardPlayChecksAfterMove": [{ "cardId": "DEFEND_IRONCLAD", "target": "None" }]
+  },
+  {
+    "coveredEnchantmentHooks": [{ "enchantmentId": "CORRUPTED", "hook": "OnPlay" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "playerEnergyBefore": 99, "clearPlayerPilesBeforeMove": true,
+    "cardBeforeMove": { "cardId": "STRIKE_IRONCLAD", "pile": "Hand", "enchantmentId": "CORRUPTED" },
+    "cardPlayChecksAfterMove": [{ "cardId": "STRIKE_IRONCLAD", "target": "Enemy" }]
+  },
+  {
+    "coveredEnchantmentHooks": [{ "enchantmentId": "GLAM", "hook": "AfterCardPlayed" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "playerEnergyBefore": 99, "clearPlayerPilesBeforeMove": true,
+    "cardBeforeMove": { "cardId": "STRIKE_IRONCLAD", "pile": "Hand", "enchantmentId": "GLAM" },
+    "cardPlayChecksAfterMove": [{ "cardId": "STRIKE_IRONCLAD", "target": "Enemy" }]
+  },
+  {
+    "coveredEnchantmentHooks": [{ "enchantmentId": "GOOPY", "hook": "AfterCardPlayed" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "playerEnergyBefore": 99, "clearPlayerPilesBeforeMove": true,
+    "cardBeforeMove": { "cardId": "DEFEND_IRONCLAD", "pile": "Hand", "enchantmentId": "GOOPY", "enchantmentAmount": 2 },
+    "cardPlayChecksAfterMove": [{ "cardId": "DEFEND_IRONCLAD", "target": "None" }]
+  },
+  {
+    "coveredEnchantmentHooks": [{ "enchantmentId": "INKY", "hook": "OnPlay" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "playerEnergyBefore": 99, "clearPlayerPilesBeforeMove": true,
+    "cardBeforeMove": { "cardId": "STRIKE_IRONCLAD", "pile": "Hand", "enchantmentId": "INKY", "enchantmentAmount": 2 },
+    "cardPlayChecksAfterMove": [{ "cardId": "STRIKE_IRONCLAD", "target": "Enemy" }]
+  },
+  {
+    "coveredEnchantmentHooks": [{ "enchantmentId": "MOMENTUM", "hook": "OnPlay" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "playerEnergyBefore": 99, "clearPlayerPilesBeforeMove": true,
+    "cardBeforeMove": { "cardId": "STRIKE_IRONCLAD", "pile": "Hand", "enchantmentId": "MOMENTUM", "enchantmentAmount": 2 },
+    "cardPlayChecksAfterMove": [{ "cardId": "STRIKE_IRONCLAD", "target": "Enemy" }]
+  },
+  {
+    "coveredEnchantmentHooks": [{ "enchantmentId": "PERFECT_FIT", "hook": "ModifyShuffleOrder" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "playerEnergyBefore": 99, "clearPlayerPilesBeforeMove": true,
+    "cardsBeforeMove": [
+      { "cardId": "POMMEL_STRIKE", "pile": "Hand" },
+      { "cardId": "STRIKE_IRONCLAD", "pile": "Discard", "enchantmentId": "PERFECT_FIT" },
+      { "cardId": "DEFEND_IRONCLAD", "pile": "Discard" }
+    ],
+    "cardPlayChecksAfterMove": [{ "cardId": "POMMEL_STRIKE", "target": "Enemy" }]
+  },
+  {
+    "coveredEnchantmentHooks": [{ "enchantmentId": "SLITHER", "hook": "AfterCardDrawn" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "playerEnergyBefore": 99, "clearPlayerPilesBeforeMove": true,
+    "cardsBeforeMove": [
+      { "cardId": "SKIM", "pile": "Hand" },
+      { "cardId": "STRIKE_IRONCLAD", "pile": "Draw", "enchantmentId": "SLITHER" },
+      { "cardId": "DEFEND_IRONCLAD", "pile": "Draw" }
+    ],
+    "cardPlayChecksAfterMove": [{ "cardId": "SKIM", "target": "None" }]
+  },
+  {
+    "coveredEnchantmentHooks": [{ "enchantmentId": "SOWN", "hook": "OnPlay" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "playerEnergyBefore": 99, "clearPlayerPilesBeforeMove": true,
+    "cardBeforeMove": { "cardId": "DEFEND_IRONCLAD", "pile": "Hand", "enchantmentId": "SOWN", "enchantmentAmount": 2 },
+    "cardPlayChecksAfterMove": [{ "cardId": "DEFEND_IRONCLAD", "target": "None" }]
+  },
+  {
+    "coveredEnchantmentHooks": [{ "enchantmentId": "SWIFT", "hook": "OnPlay" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "playerEnergyBefore": 99, "clearPlayerPilesBeforeMove": true,
+    "cardsBeforeMove": [
+      { "cardId": "DEFEND_IRONCLAD", "pile": "Hand", "enchantmentId": "SWIFT", "enchantmentAmount": 2 },
+      { "cardId": "BASH", "pile": "Draw" }
+    ],
+    "cardPlayChecksAfterMove": [{ "cardId": "DEFEND_IRONCLAD", "target": "None" }]
+  },
+  {
+    "coveredEnchantmentHooks": [{ "enchantmentId": "VIGOROUS", "hook": "AfterCardPlayed" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "playerEnergyBefore": 99, "clearPlayerPilesBeforeMove": true,
+    "cardBeforeMove": { "cardId": "STRIKE_IRONCLAD", "pile": "Hand", "enchantmentId": "VIGOROUS", "enchantmentAmount": 3 },
+    "cardPlayChecksAfterMove": [{ "cardId": "STRIKE_IRONCLAD", "target": "Enemy" }]
+  }
+]

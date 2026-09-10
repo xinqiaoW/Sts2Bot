@@ -1,0 +1,19 @@
+[
+  {
+    "coveredCardHooks": [
+      { "cardId": "KINGLY_KICK", "hook": "AfterCardDrawn" },
+      { "cardId": "KINGLY_PUNCH", "hook": "AfterCardDrawn" },
+      { "cardId": "VOID", "hook": "AfterCardDrawn" }
+    ],
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "playerEnergyBefore": 10,
+    "clearPlayerHandBeforeMove": true,
+    "cardsBeforeMove": [
+      { "cardId": "KINGLY_KICK", "pile": "Draw" },
+      { "cardId": "KINGLY_PUNCH", "pile": "Draw" },
+      { "cardId": "VOID", "pile": "Draw" }
+    ],
+    "triggerPlayerSetupAfterMove": true
+  }
+]

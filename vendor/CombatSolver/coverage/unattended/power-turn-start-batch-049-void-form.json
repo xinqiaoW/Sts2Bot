@@ -1,0 +1,30 @@
+[
+  {
+    "coveredPowerHooks": [
+      { "powerId": "VOID_FORM_POWER", "hook": "TryModifyEnergyCostInCombatLate" },
+      { "powerId": "VOID_FORM_POWER", "hook": "TryModifyStarCost" },
+      { "powerId": "VOID_FORM_POWER", "hook": "AfterCardPlayed" }
+    ],
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 10,
+    "powerBeforeMove": {
+      "powerId": "VOID_FORM_POWER",
+      "target": "Player",
+      "amount": 1
+    },
+    "cardsBeforeMove": [
+      { "cardId": "STRIKE_IRONCLAD", "pile": "Hand", "count": 2 }
+    ],
+    "cardPlayChecksAfterMove": [
+      { "cardId": "STRIKE_IRONCLAD", "target": "Enemy" }
+    ],
+    "triggerPlayerSetupAfterMove": true,
+    "cardPlayChecksAfterPlayerSetup": [
+      { "cardId": "STRIKE_IRONCLAD", "target": "Enemy" }
+    ],
+    "expectedPlayerEnergy": 3,
+    "expectedEnemyHpGain": -12
+  }
+]

@@ -1,0 +1,72 @@
+[
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "clearPlayerHandBeforeMove": true,
+    "ostyHpBefore": 10,
+    "playerEnergyBefore": 30,
+    "cardsBeforeMove": [
+      { "cardId": "AFTERLIFE", "pile": "Hand", "upgradeLevels": 1 },
+      { "cardId": "BODYGUARD", "pile": "Hand", "upgradeLevels": 1 },
+      { "cardId": "REANIMATE", "pile": "Hand", "upgradeLevels": 1 },
+      { "cardId": "SPUR", "pile": "Hand", "upgradeLevels": 1 },
+      { "cardId": "NECRO_MASTERY", "pile": "Hand", "upgradeLevels": 1 }
+    ],
+    "cardPlayChecksAfterMove": [
+      { "cardId": "AFTERLIFE", "target": "None" },
+      { "cardId": "BODYGUARD", "target": "None" },
+      { "cardId": "REANIMATE", "target": "None" },
+      { "cardId": "SPUR", "target": "None" },
+      { "cardId": "NECRO_MASTERY", "target": "None" }
+    ],
+    "expectedOstyHp": 64,
+    "expectedOstyMaxHp": 64,
+    "expectedPlayerEnergy": 22,
+    "expectedPlayerPowers": {
+      "NECRO_MASTERY_POWER": 1
+    }
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "clearPlayerHandBeforeMove": true,
+    "ostyHpBefore": 10,
+    "playerEnergyBefore": 3,
+    "cardsBeforeMove": [
+      { "cardId": "DIRGE", "pile": "Hand", "upgradeLevels": 1 }
+    ],
+    "cardPlayChecksAfterMove": [
+      { "cardId": "DIRGE", "target": "None" }
+    ],
+    "expectedOstyHp": 22,
+    "expectedOstyMaxHp": 22,
+    "expectedPlayerEnergy": 0,
+    "expectedPlayerPileCards": {
+      "Draw:SOUL": 3,
+      "Exhaust:DIRGE": 1
+    },
+    "expectedPlayerCardUpgrades": {
+      "Draw:SOUL:1": 3,
+      "Exhaust:DIRGE:1": 1
+    }
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 10,
+    "cardsBeforeMove": [
+      { "cardId": "KNIFE_TRAP", "pile": "Hand", "upgradeLevels": 1 },
+      { "cardId": "SHIV", "pile": "Exhaust" },
+      { "cardId": "SHIV", "pile": "Exhaust" }
+    ],
+    "cardPlayChecksAfterMove": [
+      { "cardId": "KNIFE_TRAP", "target": "Enemy" }
+    ],
+    "expectedEnemyHpGain": -12,
+    "expectedPlayerEnergy": 8,
+    "expectedPlayerCardUpgrades": {
+      "Exhaust:SHIV:1": 2
+    }
+  }
+]

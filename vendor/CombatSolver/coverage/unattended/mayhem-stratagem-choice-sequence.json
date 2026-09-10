@@ -1,0 +1,35 @@
+[
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearAllPowersBeforeMove": true,
+    "clearPlayerPilesBeforeMove": true,
+    "powersBeforeMove": [
+      { "powerId": "MAYHEM_POWER", "amount": 1, "target": "Player" },
+      { "powerId": "STRATAGEM_POWER", "amount": 1, "target": "Player" }
+    ],
+    "cardsBeforeMove": [
+      { "cardId": "GLIMMER", "pile": "Draw" },
+      { "cardId": "DEFEND_IRONCLAD", "pile": "Discard", "count": 3 },
+      { "cardId": "STRIKE_IRONCLAD", "pile": "Hand", "count": 2 }
+    ],
+    "triggerAutoPrePlayAfterPlayerSetup": true,
+    "autoPrePlayChoiceCardIds": ["__FIRST__"]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearAllPowersBeforeMove": true,
+    "clearPlayerPilesBeforeMove": true,
+    "powersBeforeMove": [
+      { "powerId": "MAYHEM_POWER", "amount": 1, "target": "Player" }
+    ],
+    "cardsBeforeMove": [
+      { "cardId": "SCAVENGE", "pile": "Draw" }
+    ],
+    "triggerAutoPrePlayAfterPlayerSetup": true,
+    "autoPrePlayChoiceCardIds": ["__FIRST__"]
+  }
+]

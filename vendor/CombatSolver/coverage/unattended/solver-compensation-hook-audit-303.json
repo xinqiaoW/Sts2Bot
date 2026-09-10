@@ -1,0 +1,45 @@
+[
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "powerBeforeMove": {
+      "powerId": "HELLRAISER_POWER",
+      "target": "Player",
+      "amount": 1,
+      "internalIntegerMembers": {
+        "infiniteAutoPlaysThisTurn": 7
+      }
+    },
+    "triggerPlayerSideTurnEndAfterMove": true
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "powerBeforeMove": {
+      "powerId": "VOID_FORM_POWER",
+      "target": "Player",
+      "amount": 1
+    },
+    "powersAfterMove": [
+      {
+        "powerId": "VOID_FORM_POWER",
+        "target": "Player",
+        "amount": 2
+      }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "clearPlayerHandBeforeMove": true,
+    "cardAfterMove": {
+      "cardId": "STRIKE_IRONCLAD",
+      "pile": "Hand",
+      "afflictionId": "HEXED",
+      "afflictionAmount": 2
+    },
+    "expectedPlayerCardStates": {
+      "Hand:STRIKE_IRONCLAD:-:0:-:R0:XFalse:SFalse:TFalse:DFalse:MFalse": 1
+    }
+  }
+]

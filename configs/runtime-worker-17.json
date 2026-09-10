@@ -1,0 +1,22 @@
+{
+  "game_dir": "/data2/pl/ImageTask/wxq/Projects/Sts2Bot/.runtime/game-windows",
+  "data_dir": "/data2/pl/ImageTask/wxq/Projects/Sts2Bot/.runtime/prefix-worker-17/drive_c/users/pl/AppData/Roaming/SlayTheSpire2",
+  "command": [
+    "/data2/pl/ImageTask/wxq/Projects/Sts2Bot/.runtime/wine/root/opt/wine-stable/bin/wine",
+    "SlayTheSpire2.slim.exe",
+    "--main-pack",
+    "SlayTheSpire2.pck",
+    "--headless",
+    "--disable-vsync",
+    "--max-fps",
+    "0",
+    "--force-steam=off"
+  ],
+  "env": {
+    "WINEPREFIX": "/data2/pl/ImageTask/wxq/Projects/Sts2Bot/.runtime/prefix-worker-17",
+    "WINEDEBUG": "-all",
+    "WINEDLLOVERRIDES": "mshtml=",
+    "COMBATSOLVER_HEADLESS": "1"
+  },
+  "log_path": "/data2/pl/ImageTask/wxq/Projects/Sts2Bot/logs/worker-17-game.log"
+}

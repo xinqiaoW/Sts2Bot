@@ -1,0 +1,38 @@
+[
+  {
+    "coveredCardHooks": [
+      { "cardId": "MAKE_IT_SO", "hook": "AfterCardPlayedLate" }
+    ],
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "cardsBeforeMove": [
+      { "cardId": "MAKE_IT_SO", "pile": "Discard" },
+      { "cardId": "DEFEND_IRONCLAD", "pile": "Hand" },
+      { "cardId": "DEFEND_SILENT", "pile": "Hand" },
+      { "cardId": "DEFEND_REGENT", "pile": "Hand" }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "DEFEND_IRONCLAD",
+        "target": "None",
+        "expectedCardIdAfterPlay": "MAKE_IT_SO",
+        "expectedCardPileAfterPlay": "Discard"
+      },
+      {
+        "cardId": "DEFEND_SILENT",
+        "target": "None",
+        "expectedCardIdAfterPlay": "MAKE_IT_SO",
+        "expectedCardPileAfterPlay": "Discard"
+      },
+      {
+        "cardId": "DEFEND_REGENT",
+        "target": "None",
+        "expectedCardIdAfterPlay": "MAKE_IT_SO",
+        "expectedCardPileAfterPlay": "Hand"
+      }
+    ]
+  }
+]

@@ -1,0 +1,18 @@
+[
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 3,
+    "cardsBeforeMove": [
+      { "cardId": "STORM", "pile": "Hand" }
+    ],
+    "cardPlayChecksAfterMove": [
+      { "cardId": "STORM", "target": "None" }
+    ],
+    "expectedPlayerEnergy": 2,
+    "expectedPlayerPowers": {
+      "STORM_POWER": 1
+    }
+  }
+]

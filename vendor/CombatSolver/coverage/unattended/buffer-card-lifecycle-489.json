@@ -1,0 +1,23 @@
+[
+  {
+    "enemyIndex": 0,
+    "monsterId": "CorpseSlug",
+    "moveId": "WHIP_SLAP_MOVE",
+    "playerHpBefore": 50,
+    "playerEnergyBefore": 99,
+    "enemyHpBefore": 999,
+    "clearAllPowersBeforeMove": true,
+    "clearPlayerPilesBeforeMove": true,
+    "cardBeforeMove": {
+      "cardId": "BUFFER",
+      "pile": "Hand",
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "cardPlayChecksBeforeMove": [
+      { "cardId": "BUFFER", "target": "None" }
+    ],
+    "expectedPlayerHp": 50,
+    "expectedAbsentPlayerPowers": ["BUFFER_POWER"]
+  }
+]

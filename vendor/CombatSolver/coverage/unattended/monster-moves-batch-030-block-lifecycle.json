@@ -1,0 +1,49 @@
+[
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "playerBlockBefore": 7,
+    "powerBeforeMove": {
+      "powerId": "BLUR_POWER",
+      "target": "Player",
+      "amount": 1
+    },
+    "triggerPlayerSideTurnStartAfterMove": true,
+    "expectedPlayerBlock": 7,
+    "expectedPlayerBlockGain": 0,
+    "expectedAbsentPlayerPowers": [
+      "BLUR_POWER"
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "roundNumberBefore": 2,
+    "powerBeforeMove": {
+      "powerId": "PLATING_POWER",
+      "target": "CheckedEnemy",
+      "amount": 2
+    },
+    "triggerEnemySideTurnEndAfterMove": true,
+    "expectedEnemyBlockGain": 2,
+    "expectedEnemyPowers": {
+      "PLATING_POWER": 2
+    },
+    "expectedEnemyPowerStates": {
+      "PLATING_POWER.Decrement=1": 1
+    }
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "roundNumberBefore": 2,
+    "triggerEnemySideTurnStartAfterMove": true,
+    "expectedEnemyBlockGain": -2,
+    "expectedEnemyPowers": {
+      "PLATING_POWER": 1
+    },
+    "expectedEnemyPowerStates": {
+      "PLATING_POWER.Decrement=1": 1
+    }
+  }
+]

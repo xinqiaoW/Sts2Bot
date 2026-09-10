@@ -1,0 +1,86 @@
+[
+  {
+    "monsterId": "FakeMerchantMonster",
+    "moveId": "SWIPE_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "FakeMerchantMonster",
+    "moveId": "THROW_RELIC_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "FlailKnight",
+    "moveId": "FLAIL_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "FlailKnight",
+    "moveId": "RAM_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "FlailKnight",
+    "moveId": "WAR_CHANT",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "Flyconid",
+    "moveId": "FRAIL_SPORES_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "Flyconid",
+    "moveId": "SMASH_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "Flyconid",
+    "moveId": "VULNERABLE_SPORES_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "Fogmog",
+    "moveId": "HEADBUTT_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "Fogmog",
+    "moveId": "SWIPE_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "Fogmog",
+    "moveId": "SWIPE_RANDOM_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "FossilStalker",
+    "moveId": "LASH_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  }
+]

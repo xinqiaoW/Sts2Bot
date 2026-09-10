@@ -1,0 +1,26 @@
+[
+  {
+    "coveredPowerHooks": [
+      { "powerId": "OBLIVION_POWER", "hook": "BeforeCardPlayed" },
+      { "powerId": "OBLIVION_POWER", "hook": "AfterCardPlayed" }
+    ],
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "playerEnergyBefore": 99,
+    "clearPlayerPilesBeforeMove": true,
+    "cardsBeforeMove": [
+      { "cardId": "OBLIVION", "pile": "Hand", "count": 2 },
+      { "cardId": "DEFEND_IRONCLAD", "pile": "Hand" }
+    ],
+    "cardPlayChecksAfterMove": [
+      { "cardId": "OBLIVION", "target": "Enemy" },
+      { "cardId": "DEFEND_IRONCLAD", "target": "None" },
+      { "cardId": "OBLIVION", "target": "Enemy" }
+    ],
+    "expectedEnemyPowers": {
+      "OBLIVION_POWER": 6,
+      "DOOM_POWER": 6
+    }
+  }
+]

@@ -1,0 +1,21 @@
+[
+  {
+    "monsterId": "MagiKnight",
+    "moveId": "DAMPEN_MOVE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "cardsBeforeMove": [
+      { "cardId": "STRIKE_IRONCLAD", "pile": "Hand", "count": 1, "upgradeLevels": 1 },
+      { "cardId": "DEFEND_IRONCLAD", "pile": "Draw", "count": 1, "upgradeLevels": 1 },
+      { "cardId": "BASH", "pile": "Discard", "count": 1, "upgradeLevels": 1 }
+    ],
+    "killMonsterAfterMove": true,
+    "expectedSimulatedDynamicResolution": false,
+    "expectedPlayerCardUpgrades": {
+      "Hand:STRIKE_IRONCLAD:1": 1,
+      "Draw:DEFEND_IRONCLAD:1": 1,
+      "Discard:BASH:1": 1
+    },
+    "expectedAbsentPlayerPowers": ["DAMPEN_POWER"]
+  }
+]

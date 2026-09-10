@@ -1,0 +1,49 @@
+[
+  {
+    "monsterId": "TerrorEel",
+    "moveId": "THRASH_MOVE",
+    "expectedPlayerHpLoss": 9,
+    "expectedEnemyPowers": {
+      "VIGOR_POWER": 6
+    }
+  },
+  {
+    "monsterId": "TerrorEel",
+    "moveId": "CRASH_MOVE",
+    "expectedPlayerHpLoss": 22
+  },
+  {
+    "monsterId": "TheObscura",
+    "moveId": "SAIL_MOVE",
+    "expectedPlayerHpLoss": 0,
+    "expectedEnemyPowers": {
+      "STRENGTH_POWER": 3
+    }
+  },
+  {
+    "monsterId": "TheObscura",
+    "moveId": "PIERCING_GAZE_MOVE",
+    "expectedPlayerHpLoss": 13,
+    "expectedEnemyPowers": {
+      "STRENGTH_POWER": 3
+    }
+  },
+  {
+    "monsterId": "Zapbot",
+    "moveId": "ZAP",
+    "expectedPlayerHpLoss": 17,
+    "expectedEnemyPowers": {
+      "HIGH_VOLTAGE_POWER": 2,
+      "STRENGTH_POWER": 3
+    }
+  },
+  {
+    "monsterId": "ToughEgg",
+    "moveId": "NIBBLE_MOVE",
+    "expectedPlayerHpLoss": 7,
+    "expectedEnemyPowers": {
+      "HATCH_POWER": 1,
+      "STRENGTH_POWER": 3
+    }
+  }
+]

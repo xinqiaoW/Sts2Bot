@@ -1,0 +1,61 @@
+[
+  {
+    "monsterId": "ShrinkerBeetle",
+    "moveId": "CHOMP_MOVE",
+    "powersBeforeMove": [
+      {
+        "powerId": "STRENGTH_POWER",
+        "target": "CheckedEnemy",
+        "amount": 3
+      },
+      {
+        "powerId": "WEAK_POWER",
+        "target": "CheckedEnemy",
+        "amount": 1
+      },
+      {
+        "powerId": "VULNERABLE_POWER",
+        "target": "Player",
+        "amount": 1
+      }
+    ],
+    "triggerEnemySideTurnEndAfterMove": true,
+    "expectedPlayerHpLoss": 11,
+    "expectedPlayerPowers": {
+      "VULNERABLE_POWER": 1
+    },
+    "expectedEnemyPowers": {
+      "STRENGTH_POWER": 3
+    }
+  },
+  {
+    "monsterId": "ShrinkerBeetle",
+    "moveId": "CHOMP_MOVE",
+    "enemyHpBefore": 30,
+    "powerBeforeMove": {
+      "powerId": "DOUBLE_DAMAGE_POWER",
+      "target": "Player",
+      "amount": 1
+    },
+    "cardBeforeMove": {
+      "cardId": "STRIKE_IRONCLAD",
+      "pile": "Hand",
+      "count": 1
+    },
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "STRIKE_IRONCLAD",
+        "target": "Enemy",
+        "expectedPlayable": true
+      }
+    ],
+    "triggerPlayerSideTurnEndAfterMove": true,
+    "triggerEnemySideTurnEndAfterMove": true,
+    "expectedPlayerHpLoss": 15,
+    "expectedEnemyHpGain": -12,
+    "expectedAbsentPlayerPowers": [
+      "DOUBLE_DAMAGE_POWER",
+      "VULNERABLE_POWER"
+    ]
+  }
+]

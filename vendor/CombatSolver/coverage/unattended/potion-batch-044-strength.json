@@ -1,0 +1,7 @@
+{
+  "potionId": "StrengthPotion",
+  "target": "Player",
+  "expectedPlayerPowers": {
+    "STRENGTH_POWER": 2
+  }
+}

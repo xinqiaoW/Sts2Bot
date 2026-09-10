@@ -1,0 +1,16 @@
+[
+  {
+    "enemyIndex": 0,
+    "useCurrentMove": true,
+    "triggerPlayerSetupAfterMove": true,
+    "expectedModifiedHandDrawAfterPlayerSetup": 7,
+    "expectedModifiedMaxEnergyAfterPlayerSetup": 4
+  },
+  {
+    "enemyIndex": 0,
+    "useCurrentMove": true,
+    "triggerPlayerSetupAfterMove": true,
+    "expectedModifiedHandDrawAfterPlayerSetup": 7,
+    "expectedModifiedMaxEnergyAfterPlayerSetup": 5
+  }
+]

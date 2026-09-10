@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "scenarioId": "GENETIC-ALGORITHM-REPLAY-DEPLOY-FINAL-0170",
+  "characterId": "DEFECT",
+  "encounterId": "FUZZY_WURM_CRAWLER_WEAK",
+  "seed": "GAREPLAYFINAL0170",
+  "enemyCurrentHp": 20,
+  "initialPlayerEnergy": 1,
+  "initialEnemyMoveIds": ["INHALE"],
+  "clearPlayerHand": true,
+  "clearPlayerPiles": true,
+  "cards": [
+    {
+      "cardId": "GENETIC_ALGORITHM",
+      "pile": "Hand",
+      "treatAsDeckCard": true,
+      "enchantmentId": "GLAM"
+    },
+    { "cardId": "BLUDGEON", "pile": "Draw" }
+  ],
+  "forceShortSearchOnly": true,
+  "shortSearchBudgetOverrideMilliseconds": 5000,
+  "expectedInitialFirstActionCardId": "GENETIC_ALGORITHM",
+  "expectedInitialActionCardId": "GENETIC_ALGORITHM",
+  "expectedInitialActionTitle": "遗传算法",
+  "expectedInitialActionReplayCount": 1,
+  "expectedInitialLongTermResourceValueAtLeast": 6,
+  "expectedInitialProjectedBattleHpLost": 0,
+  "expectedInitialCombatEndedTurn": 2,
+  "expectedPlayedCardId": "GENETIC_ALGORITHM",
+  "expectedFinishedTurn": 2,
+  "expectedUnexpectedReplansAtMost": 0,
+  "deploymentFastModeForTest": "Instant",
+  "deploymentInterActionDelaySecondsForTest": 0,
+  "timeoutSeconds": 180,
+  "exitOnComplete": true
+}

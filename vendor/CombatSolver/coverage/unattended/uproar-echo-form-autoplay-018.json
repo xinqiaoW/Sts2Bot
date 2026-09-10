@@ -1,0 +1,22 @@
+[
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "playerEnergyBefore": 5,
+    "clearAllPowersBeforeMove": true,
+    "clearPlayerPilesBeforeMove": true,
+    "powersBeforeMove": [
+      { "powerId": "STRENGTH_POWER", "target": "Player", "amount": 1 },
+      { "powerId": "ECHO_FORM_POWER", "target": "Player", "amount": 1 },
+      { "powerId": "VULNERABLE_POWER", "target": "Enemy", "amount": 3 }
+    ],
+    "cardsBeforeMove": [
+      { "cardId": "UPROAR", "pile": "Hand" },
+      { "cardId": "FOCUSED_STRIKE", "pile": "Draw" }
+    ],
+    "cardPlayChecksAfterMove": [
+      { "cardId": "UPROAR", "target": "Enemy" }
+    ]
+  }
+]

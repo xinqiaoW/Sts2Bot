@@ -1,0 +1,6 @@
+{
+  "potionId": "ShacklingPotion",
+  "target": "None",
+  "triggerEnemySideTurnEndAfterUse": true,
+  "expectedAbsentEnemyPowers": ["SHACKLING_POTION_POWER", "STRENGTH_POWER"]
+}

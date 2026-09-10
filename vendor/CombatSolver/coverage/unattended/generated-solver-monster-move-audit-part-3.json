@@ -1,0 +1,86 @@
+[
+  {
+    "monsterId": "DampCultist",
+    "moveId": "INCANTATION_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "DevotedSculptor",
+    "moveId": "FORBIDDEN_INCANTATION_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "DevotedSculptor",
+    "moveId": "SAVAGE_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "Entomancer",
+    "moveId": "BEES_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "Entomancer",
+    "moveId": "PHEROMONE_SPIT_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "Entomancer",
+    "moveId": "SPEAR_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "Exoskeleton",
+    "moveId": "ENRAGE_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "Exoskeleton",
+    "moveId": "MANDIBLES_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "Exoskeleton",
+    "moveId": "SKITTER_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "Fabricator",
+    "moveId": "DISINTEGRATE_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "FakeMerchantMonster",
+    "moveId": "ENRAGE_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "FakeMerchantMonster",
+    "moveId": "SPEW_COINS_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  }
+]

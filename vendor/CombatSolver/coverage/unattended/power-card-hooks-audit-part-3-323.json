@@ -1,0 +1,160 @@
+[
+  {
+    "coveredPowerHooks": [{ "powerId": "CORRUPTION_POWER", "hook": "AfterModifyingCardPlayResultLocation" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true, "playerEnergyBefore": 99,
+    "powerBeforeMove": { "powerId": "CORRUPTION_POWER", "target": "Player", "amount": 1 },
+    "cardBeforeMove": { "cardId": "DEFEND_IRONCLAD", "pile": "Hand" },
+    "cardPlayChecksAfterMove": [{ "cardId": "DEFEND_IRONCLAD", "target": "None" }]
+  },
+  {
+    "coveredPowerHooks": [
+      { "powerId": "FERAL_POWER", "hook": "ModifyCardPlayResultLocation" },
+      { "powerId": "FERAL_POWER", "hook": "AfterModifyingCardPlayResultLocation" }
+    ],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true, "playerEnergyBefore": 99,
+    "powerBeforeMove": { "powerId": "FERAL_POWER", "target": "Player", "amount": 1 },
+    "cardBeforeMove": { "cardId": "ANGER", "pile": "Hand" },
+    "cardPlayChecksAfterMove": [{ "cardId": "ANGER", "target": "Enemy" }]
+  },
+  {
+    "coveredPowerHooks": [
+      { "powerId": "NOSTALGIA_POWER", "hook": "ModifyCardPlayResultLocation" },
+      { "powerId": "NOSTALGIA_POWER", "hook": "AfterModifyingCardPlayResultLocation" }
+    ],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true, "playerEnergyBefore": 99,
+    "powerBeforeMove": { "powerId": "NOSTALGIA_POWER", "target": "Player", "amount": 1 },
+    "cardBeforeMove": { "cardId": "STRIKE_IRONCLAD", "pile": "Hand" },
+    "cardPlayChecksAfterMove": [{ "cardId": "STRIKE_IRONCLAD", "target": "Enemy" }]
+  },
+  {
+    "coveredPowerHooks": [
+      { "powerId": "REBOUND_POWER", "hook": "ModifyCardPlayResultLocation" },
+      { "powerId": "REBOUND_POWER", "hook": "AfterModifyingCardPlayResultLocation" }
+    ],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true, "playerEnergyBefore": 99,
+    "powerBeforeMove": { "powerId": "REBOUND_POWER", "target": "Player", "amount": 1 },
+    "cardBeforeMove": { "cardId": "STRIKE_IRONCLAD", "pile": "Hand" },
+    "cardPlayChecksAfterMove": [{ "cardId": "STRIKE_IRONCLAD", "target": "Enemy" }]
+  },
+  {
+    "coveredPowerHooks": [{ "powerId": "AUTOMATION_POWER", "hook": "AfterCardDrawn" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true, "playerEnergyBefore": 10,
+    "powerBeforeMove": { "powerId": "AUTOMATION_POWER", "target": "Player", "amount": 2, "internalIntegerMembers": { "cardsLeft": 1 } },
+    "cardsBeforeMove": [
+      { "cardId": "POMMEL_STRIKE", "pile": "Hand" },
+      { "cardId": "DEFEND_IRONCLAD", "pile": "Draw" }
+    ],
+    "cardPlayChecksAfterMove": [{ "cardId": "POMMEL_STRIKE", "target": "Enemy" }]
+  },
+  {
+    "coveredPowerHooks": [{ "powerId": "CONFUSED_POWER", "hook": "AfterCardDrawn" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true, "playerEnergyBefore": 99,
+    "powerBeforeMove": { "powerId": "CONFUSED_POWER", "target": "Player", "amount": 1 },
+    "cardsBeforeMove": [
+      { "cardId": "POMMEL_STRIKE", "pile": "Hand" },
+      { "cardId": "DEFEND_IRONCLAD", "pile": "Draw" }
+    ],
+    "cardPlayChecksAfterMove": [{ "cardId": "POMMEL_STRIKE", "target": "Enemy" }]
+  },
+  {
+    "coveredPowerHooks": [{ "powerId": "ITERATION_POWER", "hook": "AfterCardDrawn" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true, "playerEnergyBefore": 99,
+    "powerBeforeMove": { "powerId": "ITERATION_POWER", "target": "Player", "amount": 1 },
+    "cardsBeforeMove": [
+      { "cardId": "POMMEL_STRIKE", "pile": "Hand" },
+      { "cardId": "DAZED", "pile": "Draw" },
+      { "cardId": "STRIKE_IRONCLAD", "pile": "Draw" }
+    ],
+    "cardPlayChecksAfterMove": [{ "cardId": "POMMEL_STRIKE", "target": "Enemy" }]
+  },
+  {
+    "coveredPowerHooks": [{ "powerId": "PAGESTORM_POWER", "hook": "AfterCardDrawn" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true, "playerEnergyBefore": 99,
+    "powerBeforeMove": { "powerId": "PAGESTORM_POWER", "target": "Player", "amount": 1 },
+    "cardsBeforeMove": [
+      { "cardId": "POMMEL_STRIKE", "pile": "Hand" },
+      { "cardId": "APPARITION", "pile": "Draw" },
+      { "cardId": "STRIKE_IRONCLAD", "pile": "Draw" }
+    ],
+    "cardPlayChecksAfterMove": [{ "cardId": "POMMEL_STRIKE", "target": "Enemy" }]
+  },
+  {
+    "coveredPowerHooks": [{ "powerId": "SPEEDSTER_POWER", "hook": "AfterCardDrawn" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true, "playerEnergyBefore": 99,
+    "powerBeforeMove": { "powerId": "SPEEDSTER_POWER", "target": "Player", "amount": 4 },
+    "cardsBeforeMove": [
+      { "cardId": "POMMEL_STRIKE", "pile": "Hand" },
+      { "cardId": "DEFEND_IRONCLAD", "pile": "Draw" }
+    ],
+    "cardPlayChecksAfterMove": [{ "cardId": "POMMEL_STRIKE", "target": "Enemy" }]
+  },
+  {
+    "coveredPowerHooks": [
+      { "powerId": "CHAINS_OF_BINDING_POWER", "hook": "AfterCardDrawn" },
+      { "powerId": "CHAINS_OF_BINDING_POWER", "hook": "ShouldPlay" },
+      { "powerId": "CHAINS_OF_BINDING_POWER", "hook": "BeforeCardPlayed" },
+      { "powerId": "CHAINS_OF_BINDING_POWER", "hook": "BeforeSideTurnEnd" }
+    ],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true, "playerEnergyBefore": 99,
+    "powerBeforeMove": { "powerId": "CHAINS_OF_BINDING_POWER", "target": "Player", "amount": 2 },
+    "cardsBeforeMove": [
+      { "cardId": "SKIM", "pile": "Hand" },
+      { "cardId": "STRIKE_IRONCLAD", "pile": "Draw", "count": 2 }
+    ],
+    "cardPlayChecksAfterMove": [
+      { "cardId": "SKIM", "target": "None" },
+      { "cardId": "STRIKE_IRONCLAD", "target": "Enemy" },
+      { "cardId": "STRIKE_IRONCLAD", "target": "Enemy", "expectedPlayable": false }
+    ],
+    "triggerPlayerSideTurnEndAfterMove": true
+  },
+  {
+    "coveredPowerHooks": [{ "powerId": "HELLRAISER_POWER", "hook": "AfterCardDrawnEarly" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true, "playerEnergyBefore": 99,
+    "powerBeforeMove": { "powerId": "HELLRAISER_POWER", "target": "Player", "amount": 1 },
+    "cardsBeforeMove": [
+      { "cardId": "POMMEL_STRIKE", "pile": "Hand" },
+      { "cardId": "STRIKE_IRONCLAD", "pile": "Draw" }
+    ],
+    "cardPlayChecksAfterMove": [{ "cardId": "POMMEL_STRIKE", "target": "Enemy" }]
+  },
+  {
+    "coveredPowerHooks": [{ "powerId": "NO_DRAW_POWER", "hook": "ShouldDraw" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true, "playerEnergyBefore": 99,
+    "powerBeforeMove": { "powerId": "NO_DRAW_POWER", "target": "Player", "amount": 1 },
+    "cardsBeforeMove": [
+      { "cardId": "POMMEL_STRIKE", "pile": "Hand" },
+      { "cardId": "STRIKE_IRONCLAD", "pile": "Draw" }
+    ],
+    "cardPlayChecksAfterMove": [{ "cardId": "POMMEL_STRIKE", "target": "Enemy" }]
+  },
+  {
+    "coveredPowerHooks": [
+      { "powerId": "DARK_EMBRACE_POWER", "hook": "AfterCardExhausted" },
+      { "powerId": "FEEL_NO_PAIN_POWER", "hook": "AfterCardExhausted" }
+    ],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true, "playerEnergyBefore": 99, "playerBlockBefore": 0,
+    "powersBeforeMove": [
+      { "powerId": "DARK_EMBRACE_POWER", "target": "Player", "amount": 1 },
+      { "powerId": "FEEL_NO_PAIN_POWER", "target": "Player", "amount": 3 }
+    ],
+    "cardsBeforeMove": [
+      { "cardId": "APPARITION", "pile": "Hand" },
+      { "cardId": "STRIKE_IRONCLAD", "pile": "Draw" }
+    ],
+    "cardPlayChecksAfterMove": [{ "cardId": "APPARITION", "target": "None" }]
+  }
+]

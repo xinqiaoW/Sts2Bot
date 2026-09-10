@@ -1,0 +1,86 @@
+[
+  {
+    "monsterId": "Aeonglass",
+    "moveId": "EBB_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "Aeonglass",
+    "moveId": "EYE_LASERS_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "Architect",
+    "moveId": "NOTHING",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "AssassinRubyRaider",
+    "moveId": "KILLSHOT_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "AxeRubyRaider",
+    "moveId": "BIG_SWING",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "AxeRubyRaider",
+    "moveId": "SWING_1",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "AxeRubyRaider",
+    "moveId": "SWING_2",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "Axebot",
+    "moveId": "BOOT_UP_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "Axebot",
+    "moveId": "ONE_TWO_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "BattleFriendV1",
+    "moveId": "NOTHING_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "BattleFriendV2",
+    "moveId": "NOTHING_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "BattleFriendV3",
+    "moveId": "NOTHING_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  }
+]

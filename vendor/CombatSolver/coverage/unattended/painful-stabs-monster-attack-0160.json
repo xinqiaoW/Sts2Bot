@@ -1,0 +1,18 @@
+[
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "FIRST_ACID_GOOP",
+    "enemyHpBefore": 999,
+    "clearAllPowersBeforeMove": true,
+    "clearPlayerPilesBeforeMove": true,
+    "playerHpBefore": 50,
+    "powerBeforeMove": {
+      "powerId": "PAINFUL_STABS_POWER",
+      "target": "CheckedEnemy",
+      "amount": 1
+    },
+    "expectedPlayerPileCards": {
+      "Discard:WOUND": 1
+    }
+  }
+]

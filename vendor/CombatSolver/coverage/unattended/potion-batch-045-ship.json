@@ -1,0 +1,7 @@
+{
+  "potionId": "ShipInABottle",
+  "target": "Player",
+  "playerBlockBefore": 0,
+  "expectedPlayerBlock": 10,
+  "expectedPlayerPowers": { "BLOCK_NEXT_TURN_POWER": 10 }
+}

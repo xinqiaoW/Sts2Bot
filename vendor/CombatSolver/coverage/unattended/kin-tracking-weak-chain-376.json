@@ -1,0 +1,27 @@
+[
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 10,
+    "cardsBeforeMove": [
+      { "cardId": "TRACKING", "pile": "Hand" },
+      { "cardId": "LEG_SWEEP", "pile": "Hand", "upgradeLevels": 1 },
+      { "cardId": "SHIV", "pile": "Hand", "count": 3 }
+    ],
+    "cardPlayChecksAfterMove": [
+      { "cardId": "TRACKING", "target": "None" },
+      { "cardId": "LEG_SWEEP", "target": "Enemy" },
+      { "cardId": "SHIV", "target": "Enemy" },
+      { "cardId": "SHIV", "target": "Enemy" },
+      { "cardId": "SHIV", "target": "Enemy" }
+    ],
+    "expectedPlayerEnergy": 6,
+    "expectedPlayerPowers": {
+      "TRACKING_POWER": 50
+    },
+    "expectedEnemyPowers": {
+      "WEAK_POWER": 3
+    }
+  }
+]

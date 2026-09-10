@@ -1,0 +1,20 @@
+[
+  {
+    "monsterId": "CeremonialBeast",
+    "moveId": "CRUSH_MOVE",
+    "playerHpBefore": 50,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 200,
+    "clearAllPowersBeforeMove": true,
+    "powersBeforeMove": [
+      { "powerId": "WEAK_POWER", "target": "Enemy", "amount": 1 },
+      { "powerId": "DEBILITATE_POWER", "target": "Enemy", "amount": 1 }
+    ],
+    "expectedPlayerHpLoss": 9,
+    "expectedEnemyPowers": {
+      "STRENGTH_POWER": 4
+    },
+    "rollNextMoveAfterActual": true,
+    "expectedNextMoveId": "BEAST_CRY_MOVE"
+  }
+]

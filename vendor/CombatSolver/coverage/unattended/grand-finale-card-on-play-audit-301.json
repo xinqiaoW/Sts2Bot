@@ -1,0 +1,16 @@
+[
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "cardsBeforeMove": [
+      { "cardId": "GRAND_FINALE", "pile": "Hand" }
+    ],
+    "cardPlayChecksAfterMove": [
+      { "cardId": "GRAND_FINALE", "target": "None" }
+    ]
+  }
+]

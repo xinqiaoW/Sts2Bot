@@ -1,0 +1,109 @@
+[
+  {
+    "monsterId": "LagavulinMatriarch",
+    "moveId": "SLEEP_MOVE",
+    "expectedPlayerHpLoss": 0,
+    "expectedPlayerPowers": {},
+    "expectedEnemyPowers": {
+      "ASLEEP_POWER": 3,
+      "PLATING_POWER": 12
+    }
+  },
+  {
+    "monsterId": "LagavulinMatriarch",
+    "moveId": "SLASH_MOVE",
+    "expectedPlayerHpLoss": 19,
+    "expectedPlayerPowers": {},
+    "expectedEnemyPowers": {
+      "ASLEEP_POWER": 3,
+      "PLATING_POWER": 12
+    }
+  },
+  {
+    "monsterId": "LagavulinMatriarch",
+    "moveId": "DISEMBOWEL_MOVE",
+    "expectedPlayerHpLoss": 18,
+    "expectedPlayerPowers": {},
+    "expectedEnemyPowers": {
+      "ASLEEP_POWER": 3,
+      "PLATING_POWER": 12
+    }
+  },
+  {
+    "monsterId": "LagavulinMatriarch",
+    "moveId": "SLASH2_MOVE",
+    "expectedPlayerHpLoss": 12,
+    "expectedEnemyBlockGain": 12,
+    "expectedPlayerPowers": {},
+    "expectedEnemyPowers": {
+      "ASLEEP_POWER": 3,
+      "PLATING_POWER": 12
+    },
+    "expectedEnemyBlocksByModel": {
+      "LAGAVULIN_MATRIARCH": 12
+    }
+  },
+  {
+    "monsterId": "LagavulinMatriarch",
+    "moveId": "SOUL_SIPHON_MOVE",
+    "expectedPlayerHpLoss": 0,
+    "expectedPlayerPowers": {
+      "DEXTERITY_POWER": -2,
+      "STRENGTH_POWER": -2
+    },
+    "expectedEnemyPowers": {
+      "ASLEEP_POWER": 3,
+      "PLATING_POWER": 12,
+      "STRENGTH_POWER": 2
+    }
+  },
+  {
+    "monsterId": "LeafSlimeM",
+    "moveId": "CLUMP_SHOT",
+    "expectedPlayerHpLoss": 8,
+    "expectedPlayerPowers": {
+      "DEXTERITY_POWER": -2,
+      "STRENGTH_POWER": -2
+    },
+    "expectedEnemyPowers": {}
+  },
+  {
+    "monsterId": "LeafSlimeM",
+    "moveId": "STICKY_SHOT",
+    "expectedPlayerHpLoss": 0,
+    "expectedPlayerPowers": {
+      "DEXTERITY_POWER": -2,
+      "STRENGTH_POWER": -2
+    },
+    "expectedEnemyPowers": {},
+    "expectedPlayerPileCards": {
+      "Discard:SLIMED": 2
+    }
+  },
+  {
+    "monsterId": "LeafSlimeS",
+    "moveId": "TACKLE_MOVE",
+    "expectedPlayerHpLoss": 3,
+    "expectedPlayerPowers": {
+      "DEXTERITY_POWER": -2,
+      "STRENGTH_POWER": -2
+    },
+    "expectedEnemyPowers": {},
+    "expectedPlayerPileCards": {
+      "Discard:SLIMED": 2
+    }
+  },
+  {
+    "monsterId": "LeafSlimeS",
+    "moveId": "GOOP_MOVE",
+    "expectedPlayerHpLoss": 0,
+    "expectedPlayerPowers": {
+      "DEXTERITY_POWER": -2,
+      "STRENGTH_POWER": -2
+    },
+    "expectedEnemyPowers": {},
+    "expectedPlayerPileCards": {
+      "Discard:SLIMED": 3
+    }
+  }
+]

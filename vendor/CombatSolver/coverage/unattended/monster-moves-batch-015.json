@@ -1,0 +1,114 @@
+[
+  {
+    "monsterId": "SpectralKnight",
+    "moveId": "SOUL_SLASH",
+    "expectedPlayerHpLoss": 15
+  },
+  {
+    "monsterId": "SpectralKnight",
+    "moveId": "SOUL_FLAME",
+    "expectedPlayerHpLoss": 9
+  },
+  {
+    "monsterId": "SoulNexus",
+    "moveId": "SOUL_BURN_MOVE",
+    "expectedPlayerHpLoss": 29
+  },
+  {
+    "monsterId": "SoulNexus",
+    "moveId": "MAELSTROM_MOVE",
+    "expectedPlayerHpLoss": 24
+  },
+  {
+    "monsterId": "SkulkingColony",
+    "moveId": "ZOOM_MOVE",
+    "expectedPlayerHpLoss": 14
+  },
+  {
+    "monsterId": "SkulkingColony",
+    "moveId": "ZOOM_MOVE_2",
+    "expectedPlayerHpLoss": 14
+  },
+  {
+    "monsterId": "SkulkingColony",
+    "moveId": "PIERCING_STABS_MOVE",
+    "expectedPlayerHpLoss": 14
+  },
+  {
+    "monsterId": "SkulkingColony",
+    "moveId": "INERTIA_MOVE",
+    "expectedPlayerHpLoss": 9,
+    "expectedEnemyPowers": {
+      "STRENGTH_POWER": 2
+    }
+  },
+  {
+    "monsterId": "SlimedBerserker",
+    "moveId": "FURIOUS_PUMMELING_MOVE",
+    "expectedPlayerHpLoss": 16
+  },
+  {
+    "monsterId": "SlimedBerserker",
+    "moveId": "SMOTHER_MOVE",
+    "expectedPlayerHpLoss": 30
+  },
+  {
+    "monsterId": "TerrorEel",
+    "moveId": "CRASH_MOVE",
+    "expectedPlayerHpLoss": 16
+  },
+  {
+    "monsterId": "SoulNexus",
+    "moveId": "DRAIN_LIFE_MOVE",
+    "expectedPlayerHpLoss": 18,
+    "expectedPlayerPowers": {
+      "VULNERABLE_POWER": 2,
+      "WEAK_POWER": 2
+    }
+  },
+  {
+    "monsterId": "SlimedBerserker",
+    "moveId": "VOMIT_ICHOR_MOVE",
+    "expectedPlayerHpLoss": 0,
+    "expectedPlayerPowers": {
+      "VULNERABLE_POWER": 2,
+      "WEAK_POWER": 2
+    },
+    "expectedPlayerPileCards": {
+      "Discard:SLIMED": 10
+    }
+  },
+  {
+    "monsterId": "SlimedBerserker",
+    "moveId": "LEECHING_HUG_MOVE",
+    "expectedPlayerHpLoss": 0,
+    "expectedPlayerPowers": {
+      "VULNERABLE_POWER": 2,
+      "WEAK_POWER": 5
+    },
+    "expectedEnemyPowers": {
+      "STRENGTH_POWER": 3
+    },
+    "expectedPlayerPileCards": {
+      "Discard:SLIMED": 10
+    }
+  },
+  {
+    "monsterId": "TerrorEel",
+    "moveId": "STUN_MOVE",
+    "expectedPlayerHpLoss": 0,
+    "expectedPlayerPowers": {
+      "VULNERABLE_POWER": 2,
+      "WEAK_POWER": 5
+    }
+  },
+  {
+    "monsterId": "TerrorEel",
+    "moveId": "TERROR_MOVE",
+    "expectedPlayerHpLoss": 0,
+    "expectedPlayerPowers": {
+      "VULNERABLE_POWER": 101,
+      "WEAK_POWER": 5
+    }
+  }
+]

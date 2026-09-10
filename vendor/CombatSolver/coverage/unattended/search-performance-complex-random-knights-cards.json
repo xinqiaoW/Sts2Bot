@@ -1,0 +1,17 @@
+[
+  { "cardId": "INFERNAL_BLADE", "pile": "Hand", "count": 1, "upgradeLevels": 1, "treatAsDeckCard": true },
+  { "cardId": "STOKE", "pile": "Hand", "count": 1, "upgradeLevels": 1, "treatAsDeckCard": true },
+  { "cardId": "CATASTROPHE", "pile": "Hand", "count": 1, "upgradeLevels": 1, "treatAsDeckCard": true },
+
+  { "cardId": "ANGER", "pile": "Draw", "count": 6, "treatAsDeckCard": true },
+  { "cardId": "ASHEN_STRIKE", "pile": "Draw", "count": 6, "treatAsDeckCard": true },
+  { "cardId": "POMMEL_STRIKE", "pile": "Draw", "count": 6, "treatAsDeckCard": true },
+  { "cardId": "TWIN_STRIKE", "pile": "Draw", "count": 6, "treatAsDeckCard": true },
+  { "cardId": "HEADBUTT", "pile": "Draw", "count": 6, "treatAsDeckCard": true },
+
+  { "cardId": "DEFEND_IRONCLAD", "pile": "Draw", "count": 6, "treatAsDeckCard": true },
+  { "cardId": "SHRUG_IT_OFF", "pile": "Draw", "count": 6, "treatAsDeckCard": true },
+  { "cardId": "FLAME_BARRIER", "pile": "Draw", "count": 6, "treatAsDeckCard": true },
+  { "cardId": "COLOSSUS", "pile": "Draw", "count": 6, "treatAsDeckCard": true },
+  { "cardId": "IMPERVIOUS", "pile": "Draw", "count": 6, "treatAsDeckCard": true }
+]

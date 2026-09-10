@@ -1,0 +1,131 @@
+[
+  {
+    "coveredPowerHooks": [
+      { "powerId": "BUFFER_POWER", "hook": "ModifyHpLostAfterOstyLate" },
+      { "powerId": "BUFFER_POWER", "hook": "AfterModifyingHpLostAfterOsty" }
+    ],
+    "monsterId": "FuzzyWurmCrawler", "moveId": "FIRST_ACID_GOOP", "enemyHpBefore": 999,
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true, "playerHpBefore": 50,
+    "powerBeforeMove": { "powerId": "BUFFER_POWER", "target": "Player", "amount": 1 }
+  },
+  {
+    "coveredPowerHooks": [
+      { "powerId": "FLAME_BARRIER_POWER", "hook": "AfterDamageReceived" },
+      { "powerId": "THORNS_POWER", "hook": "BeforeDamageReceived" }
+    ],
+    "monsterId": "FuzzyWurmCrawler", "moveId": "FIRST_ACID_GOOP", "enemyHpBefore": 999,
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true, "playerHpBefore": 50,
+    "powersBeforeMove": [
+      { "powerId": "FLAME_BARRIER_POWER", "target": "Player", "amount": 4 },
+      { "powerId": "THORNS_POWER", "target": "Player", "amount": 3 }
+    ]
+  },
+  {
+    "coveredPowerHooks": [
+      { "powerId": "FLUTTER_POWER", "hook": "ModifyDamageMultiplicative" },
+      { "powerId": "FLUTTER_POWER", "hook": "AfterDamageReceived" }
+    ],
+    "monsterId": "ThievingHopper", "moveId": "NAB_MOVE", "enemyHpBefore": 999,
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true, "playerEnergyBefore": 99,
+    "powerBeforeMove": { "powerId": "FLUTTER_POWER", "target": "CheckedEnemy", "amount": 2 },
+    "cardBeforeMove": { "cardId": "STRIKE_IRONCLAD", "pile": "Hand" },
+    "cardPlayChecksAfterMove": [{ "cardId": "STRIKE_IRONCLAD", "target": "Enemy" }]
+  },
+  {
+    "coveredPowerHooks": [{ "powerId": "INFERNO_POWER", "hook": "AfterDamageReceived" }],
+    "monsterId": "FuzzyWurmCrawler", "moveId": "FIRST_ACID_GOOP", "enemyHpBefore": 999,
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true, "playerHpBefore": 50,
+    "powerBeforeMove": { "powerId": "INFERNO_POWER", "target": "Player", "amount": 4 }
+  },
+  {
+    "coveredPowerHooks": [{ "powerId": "PAPER_CUTS_POWER", "hook": "AfterDamageGiven" }],
+    "monsterId": "FuzzyWurmCrawler", "moveId": "FIRST_ACID_GOOP", "enemyHpBefore": 999,
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true, "playerHpBefore": 50,
+    "powerBeforeMove": { "powerId": "PAPER_CUTS_POWER", "target": "CheckedEnemy", "amount": 2 }
+  },
+  {
+    "coveredPowerHooks": [{ "powerId": "REFLECT_POWER", "hook": "AfterDamageReceived" }],
+    "monsterId": "FuzzyWurmCrawler", "moveId": "FIRST_ACID_GOOP", "enemyHpBefore": 999,
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true, "playerHpBefore": 50, "playerBlockBefore": 10,
+    "powerBeforeMove": { "powerId": "REFLECT_POWER", "target": "Player", "amount": 1 }
+  },
+  {
+    "coveredPowerHooks": [
+      { "powerId": "SLIPPERY_POWER", "hook": "ModifyHpLostAfterOsty" },
+      { "powerId": "SLIPPERY_POWER", "hook": "AfterDamageReceived" }
+    ],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true, "playerEnergyBefore": 99,
+    "powerBeforeMove": { "powerId": "SLIPPERY_POWER", "target": "CheckedEnemy", "amount": 2 },
+    "cardBeforeMove": { "cardId": "STRIKE_IRONCLAD", "pile": "Hand" },
+    "cardPlayChecksAfterMove": [{ "cardId": "STRIKE_IRONCLAD", "target": "Enemy" }]
+  },
+  {
+    "coveredPowerHooks": [{ "powerId": "SLOW_POWER", "hook": "ModifyDamageMultiplicative" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true, "playerEnergyBefore": 99,
+    "powerBeforeMove": { "powerId": "SLOW_POWER", "target": "CheckedEnemy", "amount": 1, "dynamicVars": { "SlowAmount": 2, "DisplayAmount": 20 } },
+    "cardBeforeMove": { "cardId": "STRIKE_IRONCLAD", "pile": "Hand" },
+    "cardPlayChecksAfterMove": [{ "cardId": "STRIKE_IRONCLAD", "target": "Enemy" }]
+  },
+  {
+    "coveredPowerHooks": [
+      { "powerId": "GIGANTIFICATION_POWER", "hook": "BeforeAttack" },
+      { "powerId": "GIGANTIFICATION_POWER", "hook": "ModifyDamageMultiplicative" },
+      { "powerId": "GIGANTIFICATION_POWER", "hook": "AfterAttack" }
+    ],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true, "playerEnergyBefore": 99,
+    "powerBeforeMove": { "powerId": "GIGANTIFICATION_POWER", "target": "Player", "amount": 1 },
+    "cardBeforeMove": { "cardId": "STRIKE_IRONCLAD", "pile": "Hand" },
+    "cardPlayChecksAfterMove": [{ "cardId": "STRIKE_IRONCLAD", "target": "Enemy" }]
+  },
+  {
+    "coveredPowerHooks": [
+      { "powerId": "VIGOR_POWER", "hook": "BeforeAttack" },
+      { "powerId": "VIGOR_POWER", "hook": "ModifyDamageAdditive" },
+      { "powerId": "VIGOR_POWER", "hook": "AfterAttack" }
+    ],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true, "playerEnergyBefore": 99,
+    "powerBeforeMove": { "powerId": "VIGOR_POWER", "target": "Player", "amount": 5 },
+    "cardBeforeMove": { "cardId": "STRIKE_IRONCLAD", "pile": "Hand" },
+    "cardPlayChecksAfterMove": [{ "cardId": "STRIKE_IRONCLAD", "target": "Enemy" }]
+  },
+  {
+    "coveredPowerHooks": [{ "powerId": "PAINFUL_STABS_POWER", "hook": "AfterAttack" }],
+    "monsterId": "FuzzyWurmCrawler", "moveId": "FIRST_ACID_GOOP", "enemyHpBefore": 999,
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true, "playerHpBefore": 50,
+    "powerBeforeMove": { "powerId": "PAINFUL_STABS_POWER", "target": "CheckedEnemy", "amount": 1 }
+  },
+  {
+    "coveredPowerHooks": [{ "powerId": "PERSONAL_HIVE_POWER", "hook": "AfterDamageReceived" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true, "playerEnergyBefore": 99,
+    "powerBeforeMove": { "powerId": "PERSONAL_HIVE_POWER", "target": "CheckedEnemy", "amount": 2 },
+    "cardBeforeMove": { "cardId": "STRIKE_IRONCLAD", "pile": "Hand" },
+    "cardPlayChecksAfterMove": [{ "cardId": "STRIKE_IRONCLAD", "target": "Enemy" }]
+  },
+  {
+    "coveredPowerHooks": [{ "powerId": "SHRIEK_POWER", "hook": "AfterDamageReceived" }],
+    "monsterId": "TerrorEel", "moveId": "THRASH_MOVE", "enemyHpBefore": 7,
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true, "playerEnergyBefore": 99,
+    "powerBeforeMove": { "powerId": "SHRIEK_POWER", "target": "CheckedEnemy", "amount": 5 },
+    "cardBeforeMove": { "cardId": "STRIKE_IRONCLAD", "pile": "Hand" },
+    "cardPlayChecksAfterMove": [{ "cardId": "STRIKE_IRONCLAD", "target": "Enemy" }]
+  },
+  {
+    "coveredPowerHooks": [
+      { "powerId": "DANSE_MACABRE_POWER", "hook": "BeforeCardPlayed" },
+      { "powerId": "JUGGERNAUT_POWER", "hook": "AfterBlockGained" }
+    ],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true, "playerEnergyBefore": 99, "playerBlockBefore": 0,
+    "powersBeforeMove": [
+      { "powerId": "DANSE_MACABRE_POWER", "target": "Player", "amount": 4 },
+      { "powerId": "JUGGERNAUT_POWER", "target": "Player", "amount": 5 }
+    ],
+    "cardBeforeMove": { "cardId": "IMPERVIOUS", "pile": "Hand" },
+    "cardPlayChecksAfterMove": [{ "cardId": "IMPERVIOUS", "target": "None" }]
+  }
+]

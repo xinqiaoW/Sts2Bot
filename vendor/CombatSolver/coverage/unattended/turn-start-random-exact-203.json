@@ -1,0 +1,21 @@
+[
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "clearPlayerHandBeforeMove": true,
+    "powersBeforeMove": [
+      { "powerId": "AGGRESSION_POWER", "target": "Player", "amount": 2 },
+      { "powerId": "CALL_OF_THE_VOID_POWER", "target": "Player", "amount": 1 },
+      { "powerId": "CREATIVE_AI_POWER", "target": "Player", "amount": 1 },
+      { "powerId": "HELLO_WORLD_POWER", "target": "Player", "amount": 1 },
+      { "powerId": "SPECTRUM_SHIFT_POWER", "target": "Player", "amount": 1 }
+    ],
+    "cardsBeforeMove": [
+      { "cardId": "ANGER", "pile": "Discard", "count": 1 },
+      { "cardId": "STRIKE_IRONCLAD", "pile": "Discard", "count": 1 },
+      { "cardId": "DEFEND_IRONCLAD", "pile": "Draw", "count": 1 }
+    ],
+    "triggerPlayerSetupAfterMove": true,
+    "expectedSimulatedDynamicResolution": false
+  }
+]

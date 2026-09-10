@@ -1,0 +1,30 @@
+[
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "playerEnergyBefore": 30,
+    "clearAllPowersBeforeMove": true,
+    "clearPlayerPilesBeforeMove": true,
+    "cardsBeforeMove": [
+      { "cardId": "INVOKE", "pile": "Hand" },
+      { "cardId": "DEFEND_SILENT", "pile": "Draw", "count": 5 }
+    ],
+    "cardPlayChecksAfterMove": [
+      { "cardId": "INVOKE", "target": "None" }
+    ],
+    "triggerPlayerTurnEndAfterMove": true,
+    "triggerPlayerSetupAfterMove": true,
+    "expectedOstyHp": 2,
+    "expectedOstyMaxHp": 2,
+    "expectedOstyPowers": {
+      "DIE_FOR_YOU_POWER": 1
+    },
+    "expectedPlayerEnergy": 5,
+    "expectedPlayerHandCount": 5,
+    "expectedAbsentPlayerPowers": [
+      "SUMMON_NEXT_TURN_POWER",
+      "ENERGY_NEXT_TURN_POWER"
+    ]
+  }
+]

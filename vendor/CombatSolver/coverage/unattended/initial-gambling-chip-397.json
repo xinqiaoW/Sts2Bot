@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "scenarioId": "INITIAL-GAMBLING-CHIP-397",
+  "characterId": "IRONCLAD",
+  "encounterId": "FUZZY_WURM_CRAWLER_WEAK",
+  "seed": "INITIAL-GAMBLING-CHIP-397",
+  "relics": [
+    { "relicId": "GAMBLING_CHIP", "addWithoutObtainedEffects": true }
+  ],
+  "forceShortSearchOnly": true,
+  "shortSearchBudgetOverrideMilliseconds": 1500,
+  "expectedInitialSetupChoiceCountAtLeast": 1,
+  "expectedInitialSetupChoiceSourceId": "GAMBLING_CHIP",
+  "stopAfterInitialSetupAssertion": true,
+  "timeoutSeconds": 120
+}

@@ -1,0 +1,36 @@
+[
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "playerEnergyBefore": 10,
+    "cardBeforeMove": {
+      "cardId": "NEUTRALIZE",
+      "pile": "Hand",
+      "count": 1
+    },
+    "cardPlayChecksAfterMove": [
+      { "cardId": "NEUTRALIZE", "target": "Enemy" }
+    ],
+    "expectedEnemyPowers": {
+      "WEAK_POWER": 1
+    }
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "playerEnergyBefore": 10,
+    "cardBeforeMove": {
+      "cardId": "STRIKE_SILENT",
+      "pile": "Hand",
+      "count": 1,
+      "enchantmentId": "INKY",
+      "enchantmentAmount": 1
+    },
+    "cardPlayChecksAfterMove": [
+      { "cardId": "STRIKE_SILENT", "target": "Enemy" }
+    ],
+    "expectedEnemyPowers": {
+      "WEAK_POWER": 1
+    }
+  }
+]

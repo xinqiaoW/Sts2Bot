@@ -1,0 +1,92 @@
+[
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "powersBeforeMove": [
+      {
+        "powerId": "BIASED_COGNITION_POWER",
+        "target": "Player",
+        "amount": 2
+      },
+      {
+        "powerId": "DEMON_FORM_POWER",
+        "target": "Player",
+        "amount": 3
+      },
+      {
+        "powerId": "FERAL_POWER",
+        "target": "Player",
+        "amount": 1
+      },
+      {
+        "powerId": "FURNACE_POWER",
+        "target": "Player",
+        "amount": 4
+      },
+      {
+        "powerId": "NEUROSURGE_POWER",
+        "target": "Player",
+        "amount": 2
+      },
+      {
+        "powerId": "PREP_TIME_POWER",
+        "target": "Player",
+        "amount": 2
+      },
+      {
+        "powerId": "REFLECT_POWER",
+        "target": "Player",
+        "amount": 2
+      },
+      {
+        "powerId": "SHADOW_STEP_POWER",
+        "target": "Player",
+        "amount": 2
+      },
+      {
+        "powerId": "WRAITH_FORM_POWER",
+        "target": "Player",
+        "amount": 1
+      }
+    ],
+    "playCardAfterMove": {
+      "cardId": "ANGER",
+      "pile": "Hand",
+      "count": 1
+    },
+    "triggerPlayerSetupAfterMove": true,
+    "cardPlayChecksAfterPlayerSetup": [
+      {
+        "cardId": "ANGER",
+        "target": "Enemy",
+        "expectedPlayable": true
+      }
+    ],
+    "expectedPlayerPowers": {
+      "BIASED_COGNITION_POWER": 2,
+      "FOCUS_POWER": -2,
+      "DEMON_FORM_POWER": 3,
+      "STRENGTH_POWER": 3,
+      "FERAL_POWER": 1,
+      "FURNACE_POWER": 4,
+      "NEUROSURGE_POWER": 2,
+      "DOOM_POWER": 2,
+      "PREP_TIME_POWER": 2,
+      "REFLECT_POWER": 1,
+      "DOUBLE_DAMAGE_POWER": 2,
+      "WRAITH_FORM_POWER": 1,
+      "DEXTERITY_POWER": -1
+    },
+    "expectedAbsentPlayerPowers": [
+      "SHADOW_STEP_POWER",
+      "VIGOR_POWER"
+    ],
+    "expectedPlayerPileCards": {
+      "Hand:ANGER": 1,
+      "Discard:SOVEREIGN_BLADE": 1
+    },
+    "expectedPlayerPileCardDamageTotals": {
+      "Discard:SOVEREIGN_BLADE": 14
+    }
+  }
+]

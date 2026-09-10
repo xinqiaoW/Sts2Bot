@@ -1,0 +1,1 @@
+{ "potionId": "LuckyTonic", "target": "Player", "expectedPlayerPowers": { "BUFFER_POWER": 1 } }

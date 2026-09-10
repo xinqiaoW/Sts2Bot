@@ -1,0 +1,24 @@
+[
+  {
+    "useCurrentMove": true,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "cardsBeforeMove": [
+      { "cardId": "ARMAMENTS", "pile": "Hand" },
+      { "cardId": "DEFEND_IRONCLAD", "pile": "Hand" },
+      { "cardId": "DEFEND_IRONCLAD", "pile": "Hand" },
+      { "cardId": "STRIKE_IRONCLAD", "pile": "Discard" },
+      { "cardId": "BASH", "pile": "Discard" }
+    ],
+    "cardPlayChecksBeforeMove": [
+      {
+        "cardId": "ARMAMENTS",
+        "target": "None",
+        "useChoice": true,
+        "choiceCardIds": ["DEFEND_IRONCLAD"]
+      }
+    ],
+    "triggerPlayerTurnEndAfterMove": true,
+    "triggerPlayerSetupAfterMove": true
+  }
+]

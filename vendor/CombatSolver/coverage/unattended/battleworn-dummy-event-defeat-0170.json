@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "scenarioId": "BATTLEWORN-DUMMY-EVENT-DEFEAT-0170",
+  "characterId": "IRONCLAD",
+  "encounterId": "FUZZY_WURM_CRAWLER_WEAK",
+  "seed": "DUMMYTIMEOUT0170",
+  "monsterMoveChecks": [
+    {
+      "monsterId": "BigDummy",
+      "moveId": "NOTHING",
+      "enemyHpBefore": 999,
+      "clearPlayerHandBeforeMove": true,
+      "powerBeforeMove": {
+        "powerId": "BATTLEWORN_DUMMY_TIME_LIMIT_POWER",
+        "target": "CheckedEnemy",
+        "amount": 1
+      },
+      "expectedSearchBoundary": "EventDefeat"
+    }
+  ],
+  "timeoutSeconds": 150
+}

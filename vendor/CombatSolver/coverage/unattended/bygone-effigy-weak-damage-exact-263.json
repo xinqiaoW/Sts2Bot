@@ -1,0 +1,38 @@
+[
+  {
+    "monsterId": "BygoneEffigy",
+    "moveId": "SLASHES_MOVE",
+    "playerHpBefore": 38,
+    "playerBlockBefore": 13,
+    "playerEnergyBefore": 3,
+    "clearPlayerHandBeforeMove": true,
+    "powersBeforeMove": [
+      {
+        "powerId": "STRENGTH_POWER",
+        "target": "CheckedEnemy",
+        "amount": 10
+      }
+    ],
+    "cardBeforeMove": {
+      "cardId": "KNOW_THY_PLACE",
+      "pile": "Hand",
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    "cardPlayChecksBeforeMove": [
+      {
+        "cardId": "KNOW_THY_PLACE",
+        "target": "Enemy"
+      }
+    ],
+    "expectedPlayerHp": 33,
+    "expectedPlayerHpLoss": 5,
+    "expectedPlayerBlock": 0,
+    "expectedEnemyPowers": {
+      "SLOW_POWER": 1,
+      "STRENGTH_POWER": 10,
+      "WEAK_POWER": 1,
+      "VULNERABLE_POWER": 1
+    }
+  }
+]

@@ -1,0 +1,14 @@
+[
+  {
+    "monsterId": "TwoTailedRat",
+    "monsterOccurrence": 1,
+    "moveId": "DISEASE_BITE_MOVE",
+    "monsterStateLogBefore": [
+      "DISEASE_BITE_MOVE"
+    ],
+    "rollNextMoveAfterActual": true,
+    "expectedNextMoveId": "SCRATCH_MOVE",
+    "playerHpBefore": 50,
+    "playerBlockBefore": 99
+  }
+]

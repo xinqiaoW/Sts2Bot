@@ -1,0 +1,18 @@
+[
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "playerBlockBefore": 0,
+    "powerBeforeMove": {
+      "powerId": "COOLANT_POWER",
+      "target": "Player",
+      "amount": 3
+    },
+    "triggerPlayerSetupAfterMove": true,
+    "expectedPlayerBlock": 6,
+    "expectedPlayerOrbs": {
+      "LIGHTNING_ORB": 2,
+      "FROST_ORB": 1
+    }
+  }
+]

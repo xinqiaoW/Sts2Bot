@@ -1,0 +1,54 @@
+[
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearAllPowersBeforeMove": true,
+    "clearPlayerPilesBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "cardsBeforeMove": [
+      { "cardId": "ANGER", "pile": "Hand" },
+      { "cardId": "FERAL", "pile": "Hand" }
+    ],
+    "cardPlayChecksBeforeMove": [
+      { "cardId": "ANGER", "target": "Enemy" }
+    ],
+    "triggerPlayerSideTurnEndAfterMove": true,
+    "triggerPlayerSideTurnStartAfterMove": true,
+    "triggerPlayerSetupAfterMove": true,
+    "cardPlayChecksAfterPlayerSetup": [
+      { "cardId": "FERAL", "target": "None" },
+      { "cardId": "ANGER", "target": "Enemy" }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearAllPowersBeforeMove": true,
+    "clearPlayerPilesBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "powerBeforeMove": { "powerId": "ITERATION_POWER", "target": "Player", "amount": 1 },
+    "cardsBeforeMove": [
+      { "cardId": "POMMEL_STRIKE", "pile": "Hand" },
+      { "cardId": "DAZED", "pile": "Draw" },
+      { "cardId": "STRIKE_IRONCLAD", "pile": "Draw" }
+    ],
+    "cardPlayChecksBeforeMove": [
+      { "cardId": "POMMEL_STRIKE", "target": "Enemy" }
+    ],
+    "cardsAfterMove": [
+      { "cardId": "DAZED", "pile": "Draw" },
+      { "cardId": "STRIKE_IRONCLAD", "pile": "Draw" },
+      { "cardId": "STRIKE_IRONCLAD", "pile": "Draw" },
+      { "cardId": "STRIKE_IRONCLAD", "pile": "Draw" },
+      { "cardId": "STRIKE_IRONCLAD", "pile": "Draw" },
+      { "cardId": "STRIKE_IRONCLAD", "pile": "Draw" },
+      { "cardId": "STRIKE_IRONCLAD", "pile": "Draw" }
+    ],
+    "triggerPlayerSideTurnEndAfterMove": true,
+    "triggerPlayerSideTurnStartAfterMove": true,
+    "triggerPlayerSetupAfterMove": true,
+    "expectedPlayerHandCount": 8
+  }
+]

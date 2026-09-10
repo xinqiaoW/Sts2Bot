@@ -1,0 +1,86 @@
+[
+  {
+    "monsterId": "BruteRubyRaider",
+    "moveId": "BEAT_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "BruteRubyRaider",
+    "moveId": "ROAR_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "BygoneEffigy",
+    "moveId": "SLEEP_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "BygoneEffigy",
+    "moveId": "SLEEP_MOVE_2",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "BygoneEffigy",
+    "moveId": "WAKE_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "Byrdonis",
+    "moveId": "PECK_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "Byrdonis",
+    "moveId": "SWOOP_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "Byrdpip",
+    "moveId": "NOTHING_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "CalcifiedCultist",
+    "moveId": "DARK_STRIKE_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "CrossbowRubyRaider",
+    "moveId": "FIRE_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "CrossbowRubyRaider",
+    "moveId": "RELOAD_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  },
+  {
+    "monsterId": "DampCultist",
+    "moveId": "DARK_STRIKE_MOVE",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "enemyHpBefore": 999
+  }
+]

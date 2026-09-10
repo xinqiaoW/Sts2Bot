@@ -1,0 +1,14 @@
+[
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "clearPlayerHandBeforeMove": true,
+    "cardsBeforeMove": [
+      { "cardId": "SHIV", "pile": "Hand" }
+    ],
+    "cardPlayChecksAfterMove": [
+      { "cardId": "SHIV", "target": "Enemy" }
+    ],
+    "expectedEnemyHpGain": -5
+  }
+]

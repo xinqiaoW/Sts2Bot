@@ -1,0 +1,20 @@
+[
+  { "cardId": "FETCH", "pile": "Hand" },
+  { "cardId": "INVOKE", "pile": "Hand", "upgradeLevels": 1 },
+  { "cardId": "DEFEND_NECROBINDER", "pile": "Hand" },
+  { "cardId": "INJURY", "pile": "Hand" },
+  { "cardId": "STRIKE_NECROBINDER", "pile": "Hand" },
+  { "cardId": "STRIKE_NECROBINDER", "pile": "Draw" },
+  { "cardId": "REAVE", "pile": "Draw", "upgradeLevels": 1 },
+  { "cardId": "DEFEND_NECROBINDER", "pile": "Draw" },
+  { "cardId": "ASCENDERS_BANE", "pile": "Draw" },
+  { "cardId": "FLATTEN", "pile": "Draw" },
+  { "cardId": "UNLEASH", "pile": "Draw" },
+  { "cardId": "NO_ESCAPE", "pile": "Draw", "upgradeLevels": 1 },
+  { "cardId": "BODYGUARD", "pile": "Draw", "upgradeLevels": 1 },
+  { "cardId": "DEFILE", "pile": "Draw", "upgradeLevels": 1 },
+  { "cardId": "GRAVE_WARDEN", "pile": "Draw", "upgradeLevels": 1 },
+  { "cardId": "DEFEND_NECROBINDER", "pile": "Draw" },
+  { "cardId": "STRIKE_NECROBINDER", "pile": "Draw", "count": 2 },
+  { "cardId": "DEFEND_NECROBINDER", "pile": "Draw" }
+]

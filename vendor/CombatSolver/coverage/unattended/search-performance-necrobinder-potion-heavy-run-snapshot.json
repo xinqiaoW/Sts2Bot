@@ -1,0 +1,87 @@
+{
+  "players": [
+    {
+      "deck": [
+        { "id": "CARD.STRIKE_NECROBINDER" },
+        { "id": "CARD.DEFEND_NECROBINDER" },
+        { "current_upgrade_level": 1, "id": "CARD.DEFEND_NECROBINDER" },
+        { "id": "CARD.DEFEND_NECROBINDER" },
+        { "id": "CARD.DEFEND_NECROBINDER" },
+        { "current_upgrade_level": 1, "id": "CARD.BODYGUARD" },
+        { "id": "CARD.UNLEASH" },
+        { "id": "CARD.ASCENDERS_BANE" },
+        { "id": "CARD.STRIKE_NECROBINDER" },
+        { "id": "CARD.DEFEND_NECROBINDER" },
+        { "id": "CARD.CAPTURE_SPIRIT" },
+        { "current_upgrade_level": 1, "id": "CARD.GRAVEBLAST" },
+        { "id": "CARD.AFTERLIFE" },
+        { "id": "CARD.DIRGE" },
+        { "current_upgrade_level": 1, "id": "CARD.DEFILE" },
+        {
+          "enchantment": {
+            "amount": 2,
+            "id": "ENCHANTMENT.SWIFT"
+          },
+          "id": "CARD.SPIRIT_OF_ASH"
+        },
+        { "id": "CARD.DEFY" },
+        { "id": "CARD.SCULPTING_STRIKE" },
+        { "id": "CARD.FINESSE" },
+        { "id": "CARD.WISP" },
+        { "id": "CARD.DEFY" },
+        { "id": "CARD.HANG" },
+        { "id": "CARD.SNAP" },
+        { "current_upgrade_level": 1, "id": "CARD.BORROWED_TIME" },
+        { "id": "CARD.LETHALITY" },
+        { "id": "CARD.DANSE_MACABRE" },
+        { "id": "CARD.PAGESTORM" },
+        { "id": "CARD.SHARED_FATE" },
+        { "id": "CARD.GRAVEBLAST" },
+        { "id": "CARD.GRAVEBLAST" },
+        { "id": "CARD.PANACHE" },
+        { "id": "CARD.CALL_OF_THE_VOID" },
+        { "current_upgrade_level": 1, "id": "CARD.CLEANSE" },
+        { "id": "CARD.VEILPIERCER" },
+        { "current_upgrade_level": 1, "id": "CARD.GRAVEBLAST" },
+        { "current_upgrade_level": 1, "id": "CARD.NEUROSURGE" },
+        { "id": "CARD.LETHALITY" },
+        { "id": "CARD.CLEANSE" }
+      ],
+      "relics": [
+        { "id": "RELIC.BOUND_PHYLACTERY" },
+        { "id": "RELIC.NEOWS_BONES" },
+        { "id": "RELIC.LARGE_CAPSULE" },
+        { "id": "RELIC.ORNAMENTAL_FAN" },
+        { "id": "RELIC.CLOAK_CLASP" },
+        { "id": "RELIC.POMANDER" },
+        { "id": "RELIC.JOSS_PAPER" },
+        { "id": "RELIC.JUZU_BRACELET" },
+        { "id": "RELIC.CANDELABRA" },
+        { "id": "RELIC.GORGET" },
+        { "id": "RELIC.BONE_FLUTE" },
+        { "id": "RELIC.BIIIG_HUG" },
+        { "id": "RELIC.FESTIVE_POPPER" },
+        { "id": "RELIC.TINY_MAILBOX" },
+        { "id": "RELIC.VAJRA" },
+        { "id": "RELIC.BRILLIANT_SCARF" },
+        { "id": "RELIC.RIPPLE_BASIN" },
+        { "id": "RELIC.PRAYER_WHEEL" },
+        { "id": "RELIC.WAR_PAINT" },
+        { "id": "RELIC.FUNERARY_MASK" }
+      ],
+      "max_potion_slot_count": 2,
+      "potions": [
+        {
+          "id": "POTION.GAMBLERS_BREW",
+          "slot_index": 0
+        },
+        {
+          "id": "POTION.COLORLESS_POTION",
+          "slot_index": 1
+        }
+      ],
+      "max_hp": 76,
+      "current_hp": 41
+    }
+  ]
+}

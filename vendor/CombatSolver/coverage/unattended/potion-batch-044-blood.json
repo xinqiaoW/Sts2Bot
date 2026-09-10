@@ -1,0 +1,1 @@
+{ "potionId": "BloodPotion", "target": "Player", "playerHpBefore": 40, "expectedPlayerHp": 56 }

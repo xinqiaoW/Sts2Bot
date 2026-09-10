@@ -1,0 +1,17 @@
+[
+  { "cardId": "STRIKE_DEFECT", "pile": "Hand" },
+  { "cardId": "DEFEND_DEFECT", "pile": "Hand" },
+  { "cardId": "DARKNESS", "pile": "Hand", "upgradeLevels": 1 },
+  { "cardId": "STRIKE_DEFECT", "pile": "Hand" },
+  { "cardId": "DEFEND_DEFECT", "pile": "Hand" },
+  { "cardId": "CLUMSY", "pile": "Draw" },
+  { "cardId": "DUALCAST", "pile": "Draw" },
+  { "cardId": "STRIKE_DEFECT", "pile": "Draw" },
+  { "cardId": "ASCENDERS_BANE", "pile": "Draw" },
+  { "cardId": "BOOST_AWAY", "pile": "Draw" },
+  { "cardId": "DEFEND_DEFECT", "pile": "Draw" },
+  { "cardId": "STRIKE_DEFECT", "pile": "Draw" },
+  { "cardId": "DEFEND_DEFECT", "pile": "Draw" },
+  { "cardId": "ZAP", "pile": "Draw" },
+  { "cardId": "DEFEND_DEFECT", "pile": "Draw" }
+]

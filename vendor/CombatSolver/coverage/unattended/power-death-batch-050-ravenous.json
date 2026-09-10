@@ -1,0 +1,12 @@
+[
+  {
+    "monsterId": "CorpseSlug",
+    "useCurrentMove": true,
+    "killEnemyIndexAfterMove": 0,
+    "expectedSimulatedSkipNextMove": true,
+    "expectedEnemyPowers": {
+      "RAVENOUS_POWER": 4,
+      "STRENGTH_POWER": 4
+    }
+  }
+]

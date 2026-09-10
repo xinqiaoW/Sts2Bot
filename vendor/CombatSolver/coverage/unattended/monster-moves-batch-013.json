@@ -1,0 +1,72 @@
+[
+  {
+    "monsterId": "BowlbugEgg",
+    "moveId": "BITE_MOVE",
+    "expectedPlayerHpLoss": 7,
+    "expectedEnemyBlockGain": 7
+  },
+  {
+    "monsterId": "CeremonialBeast",
+    "moveId": "STOMP_MOVE",
+    "expectedPlayerHpLoss": 15
+  },
+  {
+    "monsterId": "CeremonialBeast",
+    "moveId": "CRUSH_MOVE",
+    "expectedPlayerHpLoss": 17,
+    "expectedEnemyPowers": {
+      "STRENGTH_POWER": 3
+    }
+  },
+  {
+    "monsterId": "CeremonialBeast",
+    "moveId": "PLOW_MOVE",
+    "expectedPlayerHpLoss": 21,
+    "expectedEnemyPowers": {
+      "STRENGTH_POWER": 5
+    }
+  },
+  {
+    "monsterId": "Ovicopter",
+    "moveId": "SMASH_MOVE",
+    "expectedPlayerHpLoss": 16
+  },
+  {
+    "monsterId": "Ovicopter",
+    "moveId": "TENDERIZER_MOVE",
+    "expectedPlayerHpLoss": 7,
+    "expectedPlayerPowers": {
+      "VULNERABLE_POWER": 2
+    }
+  },
+  {
+    "monsterId": "CalcifiedCultist",
+    "moveId": "INCANTATION_MOVE",
+    "expectedPlayerHpLoss": 0,
+    "expectedEnemyPowers": {
+      "RITUAL_POWER": 2
+    }
+  },
+  {
+    "monsterId": "EyeWithTeeth",
+    "moveId": "DISTRACT_MOVE",
+    "expectedPlayerHpLoss": 0,
+    "expectedPlayerPowers": {
+      "VULNERABLE_POWER": 2
+    },
+    "expectedPlayerPileCards": {
+      "Discard:DAZED": 3
+    }
+  },
+  {
+    "monsterId": "Ovicopter",
+    "moveId": "NUTRITIONAL_PASTE_MOVE",
+    "expectedPlayerHpLoss": 0,
+    "expectedPlayerPowers": {
+      "VULNERABLE_POWER": 2
+    },
+    "expectedEnemyPowers": {
+      "STRENGTH_POWER": 3
+    }
+  }
+]

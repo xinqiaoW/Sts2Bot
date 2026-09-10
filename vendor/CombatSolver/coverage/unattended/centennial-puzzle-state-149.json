@@ -1,0 +1,29 @@
+[
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "FIRST_ACID_GOOP",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 99,
+    "clearPlayerHandBeforeMove": true,
+    "expectedPlayerHandCount": 0,
+    "expectedMirrorRelicState": ";mirrorRelics=CENTENNIAL_PUZZLE/0"
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "FIRST_ACID_GOOP",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "clearPlayerHandBeforeMove": true,
+    "expectedPlayerHandCount": 3,
+    "expectedMirrorRelicState": ";mirrorRelics=CENTENNIAL_PUZZLE/1"
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "FIRST_ACID_GOOP",
+    "playerHpBefore": 80,
+    "playerBlockBefore": 0,
+    "clearPlayerHandBeforeMove": true,
+    "expectedPlayerHandCount": 0,
+    "expectedMirrorRelicState": ";mirrorRelics=CENTENNIAL_PUZZLE/1"
+  }
+]

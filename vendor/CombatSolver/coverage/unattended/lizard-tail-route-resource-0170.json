@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "scenarioId": "LIZARD-TAIL-LIVE-REUSE-0170",
+  "characterId": "IRONCLAD",
+  "encounterId": "FUZZY_WURM_CRAWLER_WEAK",
+  "seed": "LIZARDTAIL0170",
+  "enemyCurrentHp": 50,
+  "initialPlayerHp": 1,
+  "clearPlayerHand": true,
+  "clearPlayerPiles": true,
+  "cards": [
+    { "cardId": "BLUDGEON", "pile": "Hand", "count": 1 },
+    { "cardId": "BLUDGEON", "pile": "Draw", "count": 1 }
+  ],
+  "relics": [
+    { "relicId": "LIZARD_TAIL" }
+  ],
+  "expectedInitialProjectedBattleHpLost": 1,
+  "expectedInitialRelicEffectId": "LIZARD_TAIL",
+  "expectedReusedTurn": 2,
+  "expectedReusedProjectedBattleHpLost": 1,
+  "expectedUnexpectedReplansAtMost": 0,
+  "stopAfterExpectedReuse": true,
+  "timeoutSeconds": 150
+}

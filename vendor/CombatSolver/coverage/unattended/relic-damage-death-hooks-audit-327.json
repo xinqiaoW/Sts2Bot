@@ -1,0 +1,100 @@
+[
+  {
+    "coveredRelicHooks": [
+      { "relicId": "BEATING_REMNANT", "hook": "ModifyHpLostAfterOsty" },
+      { "relicId": "BEATING_REMNANT", "hook": "AfterDamageReceived" }
+    ],
+    "monsterId": "FuzzyWurmCrawler", "moveId": "FIRST_ACID_GOOP", "enemyHpBefore": 999,
+    "playerHpBefore": 50, "playerBlockBefore": 0,
+    "clearAllRelicsBeforeMove": true, "relicsBeforeMove": [{ "relicId": "BEATING_REMNANT" }],
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true
+  },
+  {
+    "coveredRelicHooks": [{ "relicId": "CENTENNIAL_PUZZLE", "hook": "AfterDamageReceived" }],
+    "monsterId": "FuzzyWurmCrawler", "moveId": "FIRST_ACID_GOOP", "enemyHpBefore": 999,
+    "playerHpBefore": 50, "playerBlockBefore": 0,
+    "clearAllRelicsBeforeMove": true, "relicsBeforeMove": [{ "relicId": "CENTENNIAL_PUZZLE" }],
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true,
+    "cardsBeforeMove": [{ "cardId": "DEFEND_IRONCLAD", "pile": "Draw", "count": 3 }]
+  },
+  {
+    "coveredRelicHooks": [{ "relicId": "DEMON_TONGUE", "hook": "AfterDamageReceived" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "playerHpBefore": 50, "playerEnergyBefore": 99,
+    "clearAllRelicsBeforeMove": true, "relicsBeforeMove": [{ "relicId": "DEMON_TONGUE" }],
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true,
+    "cardBeforeMove": { "cardId": "BLOODLETTING", "pile": "Hand" },
+    "cardPlayChecksAfterMove": [{ "cardId": "BLOODLETTING", "target": "None" }]
+  },
+  {
+    "coveredRelicHooks": [{ "relicId": "SELF_FORMING_CLAY", "hook": "AfterDamageReceived" }],
+    "monsterId": "FuzzyWurmCrawler", "moveId": "FIRST_ACID_GOOP", "enemyHpBefore": 999,
+    "playerHpBefore": 50, "playerBlockBefore": 0,
+    "clearAllRelicsBeforeMove": true, "relicsBeforeMove": [{ "relicId": "SELF_FORMING_CLAY" }],
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true
+  },
+  {
+    "coveredRelicHooks": [{ "relicId": "RED_SKULL", "hook": "AfterCurrentHpChanged" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "playerHpBefore": 42, "playerEnergyBefore": 99,
+    "clearAllRelicsBeforeMove": true, "relicsBeforeMove": [{ "relicId": "RED_SKULL" }],
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true,
+    "cardBeforeMove": { "cardId": "BLOODLETTING", "pile": "Hand" },
+    "cardPlayChecksAfterMove": [{ "cardId": "BLOODLETTING", "target": "None" }]
+  },
+  {
+    "coveredRelicHooks": [
+      { "relicId": "LIZARD_TAIL", "hook": "ShouldDieLate" },
+      { "relicId": "LIZARD_TAIL", "hook": "AfterPreventingDeath" }
+    ],
+    "monsterId": "FuzzyWurmCrawler", "moveId": "FIRST_ACID_GOOP", "enemyHpBefore": 999,
+    "playerHpBefore": 1, "playerBlockBefore": 0,
+    "clearAllRelicsBeforeMove": true, "relicsBeforeMove": [{ "relicId": "LIZARD_TAIL" }],
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true
+  },
+  {
+    "coveredRelicHooks": [{ "relicId": "THE_BOOT", "hook": "ModifyHpLostAfterOstyLate" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "playerEnergyBefore": 99,
+    "clearAllRelicsBeforeMove": true, "relicsBeforeMove": [{ "relicId": "THE_BOOT" }],
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true,
+    "cardBeforeMove": { "cardId": "SHIV", "pile": "Hand" },
+    "cardPlayChecksAfterMove": [{ "cardId": "SHIV", "target": "Enemy" }]
+  },
+  {
+    "coveredRelicHooks": [{ "relicId": "TUNGSTEN_ROD", "hook": "ModifyHpLostAfterOsty" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "playerHpBefore": 50, "playerEnergyBefore": 99,
+    "clearAllRelicsBeforeMove": true, "relicsBeforeMove": [{ "relicId": "TUNGSTEN_ROD" }],
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true,
+    "cardBeforeMove": { "cardId": "BLOODLETTING", "pile": "Hand" },
+    "cardPlayChecksAfterMove": [{ "cardId": "BLOODLETTING", "target": "None" }]
+  },
+  {
+    "coveredRelicHooks": [{ "relicId": "HAND_DRILL", "hook": "AfterBlockBroken" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999, "enemyBlockBefore": 5,
+    "playerEnergyBefore": 99,
+    "clearAllRelicsBeforeMove": true, "relicsBeforeMove": [{ "relicId": "HAND_DRILL" }],
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true,
+    "cardBeforeMove": { "cardId": "STRIKE_IRONCLAD", "pile": "Hand" },
+    "cardPlayChecksAfterMove": [{ "cardId": "STRIKE_IRONCLAD", "target": "Enemy" }]
+  },
+  {
+    "coveredRelicHooks": [{ "relicId": "BONE_FLUTE", "hook": "AfterAttack" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "playerEnergyBefore": 99, "ostyHpBefore": 12,
+    "clearAllRelicsBeforeMove": true, "relicsBeforeMove": [{ "relicId": "BONE_FLUTE" }],
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true,
+    "cardBeforeMove": { "cardId": "MINION_STRIKE", "pile": "Hand" },
+    "cardPlayChecksAfterMove": [{ "cardId": "MINION_STRIKE", "target": "Enemy" }]
+  },
+  {
+    "coveredRelicHooks": [{ "relicId": "GREMLIN_HORN", "hook": "AfterDeath" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "playerEnergyBefore": 10,
+    "clearAllRelicsBeforeMove": true, "relicsBeforeMove": [{ "relicId": "GREMLIN_HORN" }],
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true,
+    "cardsBeforeMove": [{ "cardId": "DEFEND_IRONCLAD", "pile": "Draw" }],
+    "killMonsterAfterMove": true
+  }
+]

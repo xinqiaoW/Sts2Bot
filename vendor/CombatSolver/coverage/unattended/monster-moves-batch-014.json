@@ -1,0 +1,83 @@
+[
+  {
+    "monsterId": "SpinyToad",
+    "moveId": "TONGUE_LASH_MOVE",
+    "expectedPlayerHpLoss": 17
+  },
+  {
+    "monsterId": "SpinyToad",
+    "moveId": "PROTRUDING_SPIKES_MOVE",
+    "expectedPlayerHpLoss": 0,
+    "expectedEnemyPowers": {
+      "THORNS_POWER": 5
+    }
+  },
+  {
+    "monsterId": "SpinyToad",
+    "moveId": "SPIKE_EXPLOSION_MOVE",
+    "expectedPlayerHpLoss": 23
+  },
+  {
+    "monsterId": "Stabbot",
+    "moveId": "STAB_MOVE",
+    "expectedPlayerHpLoss": 11,
+    "expectedPlayerPowers": {
+      "FRAIL_POWER": 1
+    }
+  },
+  {
+    "monsterId": "ScrollOfBiting",
+    "moveId": "CHOMP",
+    "expectedPlayerHpLoss": 14,
+    "expectedPlayerPowers": {
+      "FRAIL_POWER": 1
+    }
+  },
+  {
+    "monsterId": "ScrollOfBiting",
+    "moveId": "CHEW",
+    "expectedPlayerHpLoss": 10,
+    "expectedPlayerPowers": {
+      "FRAIL_POWER": 1
+    }
+  },
+  {
+    "monsterId": "ScrollOfBiting",
+    "moveId": "MORE_TEETH",
+    "expectedPlayerHpLoss": 0,
+    "expectedPlayerPowers": {
+      "FRAIL_POWER": 1
+    },
+    "expectedEnemyPowers": {
+      "STRENGTH_POWER": 2
+    }
+  },
+  {
+    "monsterId": "SlitheringStrangler",
+    "moveId": "LASH",
+    "expectedPlayerHpLoss": 12,
+    "expectedPlayerPowers": {
+      "FRAIL_POWER": 1
+    }
+  },
+  {
+    "monsterId": "SlitheringStrangler",
+    "moveId": "THWACK",
+    "expectedPlayerHpLoss": 7,
+    "expectedEnemyBlockGain": 5,
+    "expectedPlayerPowers": {
+      "FRAIL_POWER": 1
+    }
+  },
+  {
+    "monsterId": "SnappingJaxfruit",
+    "moveId": "ENERGY_ORB_MOVE",
+    "expectedPlayerHpLoss": 3,
+    "expectedPlayerPowers": {
+      "FRAIL_POWER": 1
+    },
+    "expectedEnemyPowers": {
+      "STRENGTH_POWER": 2
+    }
+  }
+]

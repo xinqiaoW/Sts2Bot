@@ -1,0 +1,99 @@
+[
+  {
+    "monsterId": "MagiKnight",
+    "moveId": "MAGIC_BOMB",
+    "expectedPlayerHpLoss": 35
+  },
+  {
+    "monsterId": "MagiKnight",
+    "moveId": "RAM_MOVE",
+    "expectedPlayerHpLoss": 10
+  },
+  {
+    "monsterId": "MagiKnight",
+    "moveId": "POWER_SHIELD_MOVE",
+    "expectedPlayerHpLoss": 6,
+    "expectedEnemyBlockGain": 5
+  },
+  {
+    "monsterId": "MagiKnight",
+    "moveId": "PREP_MOVE",
+    "expectedPlayerHpLoss": 0,
+    "expectedEnemyBlockGain": 5
+  },
+  {
+    "monsterId": "MechaKnight",
+    "moveId": "CHARGE_MOVE",
+    "expectedPlayerHpLoss": 25
+  },
+  {
+    "monsterId": "MechaKnight",
+    "moveId": "FLAMETHROWER_MOVE",
+    "expectedPlayerHpLoss": 8,
+    "expectedPlayerPileCards": {
+      "Hand:BURN": 4
+    }
+  },
+  {
+    "monsterId": "MechaKnight",
+    "moveId": "HEAVY_CLEAVE_MOVE",
+    "expectedPlayerHpLoss": 35
+  },
+  {
+    "monsterId": "MechaKnight",
+    "moveId": "WINDUP_MOVE",
+    "expectedPlayerHpLoss": 0,
+    "expectedEnemyBlockGain": 15,
+    "expectedEnemyPowers": {
+      "STRENGTH_POWER": 5
+    }
+  },
+  {
+    "monsterId": "PunchConstruct",
+    "moveId": "STRONG_PUNCH_MOVE",
+    "expectedPlayerHpLoss": 14
+  },
+  {
+    "monsterId": "PunchConstruct",
+    "moveId": "FAST_PUNCH_MOVE",
+    "expectedPlayerHpLoss": 10,
+    "expectedPlayerPowers": {
+      "FRAIL_POWER": 1
+    }
+  },
+  {
+    "monsterId": "PunchConstruct",
+    "moveId": "READY_MOVE",
+    "expectedPlayerHpLoss": 0,
+    "expectedEnemyBlockGain": 10
+  },
+  {
+    "monsterId": "Parafright",
+    "moveId": "SLAM_MOVE",
+    "expectedPlayerHpLoss": 16
+  },
+  {
+    "monsterId": "PhantasmalGardener",
+    "spawnInitialMoveId": "BITE_MOVE",
+    "moveId": "BITE_MOVE",
+    "expectedPlayerHpLoss": 5
+  },
+  {
+    "monsterId": "PhantasmalGardener",
+    "moveId": "LASH_MOVE",
+    "expectedPlayerHpLoss": 7
+  },
+  {
+    "monsterId": "PhantasmalGardener",
+    "moveId": "FLAIL_MOVE",
+    "expectedPlayerHpLoss": 3
+  },
+  {
+    "monsterId": "PhantasmalGardener",
+    "moveId": "ENLARGE_MOVE",
+    "expectedPlayerHpLoss": 0,
+    "expectedEnemyPowers": {
+      "STRENGTH_POWER": 2
+    }
+  }
+]

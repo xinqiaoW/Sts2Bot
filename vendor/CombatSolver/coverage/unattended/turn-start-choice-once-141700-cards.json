@@ -1,0 +1,4 @@
+[
+  { "cardId": "DEFEND_IRONCLAD", "pile": "Hand", "count": 1 },
+  { "cardId": "STRIKE_IRONCLAD", "pile": "Draw", "count": 5 }
+]

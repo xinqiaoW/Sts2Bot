@@ -1,0 +1,6 @@
+{
+  "potionId": "SpeedPotion",
+  "target": "Player",
+  "triggerPlayerSideTurnEndAfterUse": true,
+  "expectedAbsentPlayerPowers": ["SPEED_POTION_POWER", "DEXTERITY_POWER"]
+}

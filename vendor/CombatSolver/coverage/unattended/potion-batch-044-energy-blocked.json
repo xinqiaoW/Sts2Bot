@@ -1,0 +1,7 @@
+{
+  "potionId": "EnergyPotion",
+  "target": "Player",
+  "playerEnergyBefore": 1,
+  "expectedPlayerEnergy": 1,
+  "expectedPlayerPowers": { "NO_ENERGY_GAIN_POWER": 1 }
+}

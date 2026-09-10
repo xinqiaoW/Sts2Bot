@@ -1,0 +1,56 @@
+[
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 50,
+    "powerBeforeMove": {
+      "powerId": "SLOW_POWER",
+      "target": "CheckedEnemy",
+      "amount": 1
+    },
+    "cardsBeforeMove": [
+      {
+        "cardId": "STRIKE_IRONCLAD",
+        "pile": "Hand",
+        "count": 1
+      },
+      {
+        "cardId": "STRIKE_IRONCLAD",
+        "pile": "Hand",
+        "count": 1
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "STRIKE_IRONCLAD",
+        "target": "Enemy",
+        "expectedPlayable": true
+      },
+      {
+        "cardId": "STRIKE_IRONCLAD",
+        "target": "Enemy",
+        "expectedPlayable": true
+      }
+    ],
+    "expectedEnemyHpGain": -12,
+    "expectedEnemyPowers": {
+      "SLOW_POWER": 1
+    },
+    "expectedEnemyPowerStates": {
+      "SLOW_POWER.SlowAmount=2": 1,
+      "SLOW_POWER.DisplayAmount=20": 1
+    }
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "triggerEnemySideTurnStartAfterMove": true,
+    "expectedEnemyPowers": {
+      "SLOW_POWER": 1
+    },
+    "expectedEnemyPowerStates": {
+      "SLOW_POWER.SlowAmount=0": 1,
+      "SLOW_POWER.DisplayAmount=0": 1
+    }
+  }
+]

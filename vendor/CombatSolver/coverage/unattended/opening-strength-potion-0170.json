@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "scenarioId": "OPENING-STRENGTH-POTION-0170",
+  "characterId": "IRONCLAD",
+  "encounterId": "FUZZY_WURM_CRAWLER_WEAK",
+  "seed": "OPENPOTION0170",
+  "enemyCurrentHp": 12,
+  "initialPlayerEnergy": 1,
+  "clearPlayerHand": true,
+  "clearPlayerPiles": true,
+  "cards": [
+    { "cardId": "STRIKE_IRONCLAD", "pile": "Hand", "count": 1 },
+    { "cardId": "STRIKE_IRONCLAD", "pile": "Draw", "count": 1 }
+  ],
+  "potions": [
+    { "potionId": "STRENGTH_POTION" }
+  ],
+  "potionPolicyForTest": "RequireAtLeastOne",
+  "forceShortSearchOnly": true,
+  "shortSearchBudgetOverrideMilliseconds": 5000,
+  "expectedInitialFirstActionPotionId": "STRENGTH_POTION",
+  "expectedInitialPotionCount": 1,
+  "stopAfterInitialSolverResultAssertion": true,
+  "timeoutSeconds": 150
+}

@@ -1,0 +1,18 @@
+[
+  { "cardId": "CREATIVE_AI", "pile": "Hand", "count": 1, "upgradeLevels": 1, "treatAsDeckCard": true },
+  { "cardId": "AUTOMATION", "pile": "Hand", "count": 1, "upgradeLevels": 1, "treatAsDeckCard": true },
+  { "cardId": "MAYHEM", "pile": "Hand", "count": 1, "upgradeLevels": 1, "treatAsDeckCard": true },
+  { "cardId": "JACKPOT", "pile": "Hand", "count": 1, "upgradeLevels": 1, "treatAsDeckCard": true },
+
+  { "cardId": "STRIKE_DEFECT", "pile": "Draw", "count": 6, "treatAsDeckCard": true },
+  { "cardId": "COLD_SNAP", "pile": "Draw", "count": 6, "treatAsDeckCard": true },
+  { "cardId": "COMPILE_DRIVER", "pile": "Draw", "count": 6, "treatAsDeckCard": true },
+  { "cardId": "SWEEPING_BEAM", "pile": "Draw", "count": 6, "treatAsDeckCard": true },
+  { "cardId": "GO_FOR_THE_EYES", "pile": "Draw", "count": 6, "treatAsDeckCard": true },
+
+  { "cardId": "DEFEND_DEFECT", "pile": "Draw", "count": 6, "treatAsDeckCard": true },
+  { "cardId": "BOOT_SEQUENCE", "pile": "Draw", "count": 6, "treatAsDeckCard": true },
+  { "cardId": "CHARGE_BATTERY", "pile": "Draw", "count": 6, "treatAsDeckCard": true },
+  { "cardId": "LEAP", "pile": "Draw", "count": 6, "treatAsDeckCard": true },
+  { "cardId": "GLACIER", "pile": "Draw", "count": 6, "treatAsDeckCard": true }
+]

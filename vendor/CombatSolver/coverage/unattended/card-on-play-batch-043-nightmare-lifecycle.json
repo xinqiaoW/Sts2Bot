@@ -1,0 +1,23 @@
+[
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 10,
+    "cardsBeforeMove": [
+      { "cardId": "NIGHTMARE", "pile": "Hand" },
+      { "cardId": "ANGER", "pile": "Hand" }
+    ],
+    "cardPlayChecksAfterMove": [
+      { "cardId": "NIGHTMARE", "target": "None", "useChoice": true, "choiceCardIds": ["ANGER"] }
+    ],
+    "triggerPlayerTurnEndAfterMove": true,
+    "triggerPlayerSetupAfterMove": true,
+    "expectedPlayerEnergy": 3,
+    "expectedPlayerPileCards": {
+      "Discard:ANGER": 1,
+      "Exhaust:NIGHTMARE": 1,
+      "Hand:ANGER": 3
+    }
+  }
+]

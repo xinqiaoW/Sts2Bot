@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "scenarioId": "SMART-POTION-LETHAL-MINIMAL-463",
+  "characterId": "IRONCLAD",
+  "encounterId": "FUZZY_WURM_CRAWLER_WEAK",
+  "seed": "SMARTPOTIONLETHAL",
+  "enemyCurrentHp": 12,
+  "initialEnemyMoveIds": ["FIRST_ACID_GOOP"],
+  "initialPlayerHp": 1,
+  "initialPlayerMaxHp": 80,
+  "initialPlayerEnergy": 1,
+  "clearPlayerPiles": true,
+  "clearAllPowers": true,
+  "cards": [
+    { "cardId": "STRIKE_IRONCLAD", "pile": "Hand", "count": 1 },
+    { "cardId": "STRIKE_IRONCLAD", "pile": "Draw", "count": 1 }
+  ],
+  "potions": [
+    { "potionId": "BLOCK_POTION" }
+  ],
+  "forceShortSearchOnly": true,
+  "potionPolicyForTest": "Smart",
+  "shortSearchBudgetOverrideMilliseconds": 5000,
+  "expectedInitialPotionCount": 1,
+  "expectedInitialCombatEndedTurn": 2,
+  "expectedFinishedTurn": 2,
+  "expectedFinishedPlayerHpAtLeast": 1,
+  "expectedUsedPotionId": "BLOCK_POTION",
+  "expectedUnexpectedReplansAtMost": 0,
+  "deploymentFastModeForTest": "Instant",
+  "deploymentInterActionDelaySecondsForTest": 0,
+  "timeoutSeconds": 180
+}

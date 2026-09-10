@@ -1,0 +1,18 @@
+[
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "playerBlockBefore": 10,
+    "powerBeforeMove": {
+      "powerId": "DEMISE_POWER",
+      "target": "Player",
+      "amount": 3
+    },
+    "triggerPlayerSideTurnEndAfterMove": true,
+    "expectedPlayerHpLoss": 3,
+    "expectedPlayerBlock": 10,
+    "expectedPlayerPowers": {
+      "DEMISE_POWER": 3
+    }
+  }
+]

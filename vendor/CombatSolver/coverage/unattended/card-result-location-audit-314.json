@@ -1,0 +1,35 @@
+[
+  {
+    "coveredCardHooks": [
+      { "cardId": "PARTICLE_WALL", "hook": "GetResultLocationForCardPlay" }
+    ],
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "cardsBeforeMove": [
+      { "cardId": "PARTICLE_WALL", "pile": "Hand" }
+    ],
+    "cardPlayChecksAfterMove": [
+      { "cardId": "PARTICLE_WALL", "target": "None" }
+    ]
+  },
+  {
+    "coveredCardHooks": [
+      { "cardId": "SHINING_STRIKE", "hook": "GetResultLocationForCardPlay" }
+    ],
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "cardsBeforeMove": [
+      { "cardId": "SHINING_STRIKE", "pile": "Hand" }
+    ],
+    "cardPlayChecksAfterMove": [
+      { "cardId": "SHINING_STRIKE", "target": "Enemy" }
+    ]
+  }
+]

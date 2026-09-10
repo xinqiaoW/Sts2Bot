@@ -1,0 +1,22 @@
+[
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 10,
+    "cardsBeforeMove": [
+      { "cardId": "PIERCING_WAIL", "pile": "Hand" }
+    ],
+    "cardPlayChecksAfterMove": [
+      { "cardId": "PIERCING_WAIL", "target": "None" }
+    ],
+    "triggerEnemySideTurnEndAfterMove": true,
+    "expectedPlayerEnergy": 9,
+    "expectedEnemyPowers": {
+      "STRENGTH_POWER": 7
+    },
+    "expectedAbsentEnemyPowers": [
+      "PIERCING_WAIL_POWER"
+    ]
+  }
+]

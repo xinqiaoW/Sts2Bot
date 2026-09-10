@@ -1,0 +1,79 @@
+[
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "playerBlockBefore": 0,
+    "powersBeforeMove": [
+      {
+        "powerId": "DEXTERITY_POWER",
+        "target": "Player",
+        "amount": 2
+      },
+      {
+        "powerId": "FRAIL_POWER",
+        "target": "Player",
+        "amount": 1
+      }
+    ],
+    "cardBeforeMove": {
+      "cardId": "DEFEND_IRONCLAD",
+      "pile": "Hand",
+      "count": 1
+    },
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "DEFEND_IRONCLAD",
+        "target": "None",
+        "expectedPlayable": true
+      }
+    ],
+    "triggerEnemySideTurnEndAfterMove": true,
+    "expectedPlayerBlock": 5,
+    "expectedPlayerBlockGain": 5,
+    "expectedPlayerPowers": {
+      "DEXTERITY_POWER": 2,
+      "FRAIL_POWER": 1
+    }
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "playerBlockBefore": 0,
+    "powerBeforeMove": {
+      "powerId": "NO_BLOCK_POWER",
+      "target": "Player",
+      "amount": 1
+    },
+    "cardBeforeMove": {
+      "cardId": "DEFEND_IRONCLAD",
+      "pile": "Hand",
+      "count": 1
+    },
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "DEFEND_IRONCLAD",
+        "target": "None",
+        "expectedPlayable": true
+      }
+    ],
+    "triggerEnemySideTurnEndAfterMove": true,
+    "expectedPlayerBlock": 0,
+    "expectedPlayerBlockGain": 0,
+    "expectedPlayerPowers": {
+      "DEXTERITY_POWER": 2
+    },
+    "expectedAbsentPlayerPowers": [
+      "FRAIL_POWER",
+      "NO_BLOCK_POWER"
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "triggerEnemySideTurnEndAfterMove": true,
+    "expectedAbsentPlayerPowers": [
+      "NO_BLOCK_POWER",
+      "FRAIL_POWER"
+    ]
+  }
+]

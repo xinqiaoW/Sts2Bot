@@ -1,0 +1,27 @@
+[
+  {
+    "coveredRelicHooks": [
+      { "relicId": "UNDYING_SIGIL", "hook": "ModifyDamageMultiplicative" }
+    ],
+    "monsterId": "ShrinkerBeetle",
+    "moveId": "CHOMP_MOVE",
+    "enemyHpBefore": 10,
+    "playerHpBefore": 50,
+    "playerEnergyBefore": 99,
+    "clearAllPowersBeforeMove": true,
+    "clearPlayerPilesBeforeMove": true,
+    "relicsBeforeMove": [
+      { "relicId": "UNDYING_SIGIL" }
+    ],
+    "cardsBeforeMove": [
+      { "cardId": "SCOURGE", "pile": "Hand" }
+    ],
+    "cardPlayChecksBeforeMove": [
+      { "cardId": "SCOURGE", "target": "Enemy" }
+    ],
+    "expectedPlayerHpLoss": 3,
+    "expectedEnemyPowers": {
+      "DOOM_POWER": 13
+    }
+  }
+]

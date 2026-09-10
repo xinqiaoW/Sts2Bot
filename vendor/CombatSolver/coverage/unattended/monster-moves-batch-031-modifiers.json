@@ -1,0 +1,100 @@
+[
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "playerBlockBefore": 7,
+    "powerBeforeMove": {
+      "powerId": "BLOCK_NEXT_TURN_POWER",
+      "target": "Player",
+      "amount": 4
+    },
+    "triggerPlayerSideTurnStartAfterMove": true,
+    "expectedPlayerBlock": 4,
+    "expectedAbsentPlayerPowers": [
+      "BLOCK_NEXT_TURN_POWER"
+    ]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "playerBlockBefore": 0,
+    "powerBeforeMove": {
+      "powerId": "SHADOWMELD_POWER",
+      "target": "Player",
+      "amount": 1
+    },
+    "cardBeforeMove": {
+      "cardId": "DEFEND_IRONCLAD",
+      "pile": "Hand",
+      "count": 1
+    },
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "DEFEND_IRONCLAD",
+        "target": "None",
+        "expectedPlayable": true
+      }
+    ],
+    "triggerPlayerSideTurnEndAfterMove": true,
+    "expectedPlayerBlock": 10,
+    "expectedAbsentPlayerPowers": [
+      "SHADOWMELD_POWER"
+    ]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "playerBlockBefore": 0,
+    "playerEnergyBefore": 1,
+    "powerBeforeMove": {
+      "powerId": "BORROWED_TIME_POWER",
+      "target": "Player",
+      "amount": 1
+    },
+    "cardBeforeMove": {
+      "cardId": "STRIKE_IRONCLAD",
+      "pile": "Hand",
+      "count": 1
+    },
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "STRIKE_IRONCLAD",
+        "target": "Enemy",
+        "expectedPlayable": false
+      }
+    ],
+    "triggerPlayerSideTurnEndAfterMove": true,
+    "expectedPlayerEnergy": 1,
+    "expectedAbsentPlayerPowers": [
+      "BORROWED_TIME_POWER"
+    ]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 50,
+    "playerEnergyBefore": 3,
+    "powerBeforeMove": {
+      "powerId": "CONQUEROR_POWER",
+      "target": "CheckedEnemy",
+      "amount": 1
+    },
+    "cardBeforeMove": {
+      "cardId": "SOVEREIGN_BLADE",
+      "pile": "Hand",
+      "count": 1
+    },
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "SOVEREIGN_BLADE",
+        "target": "Enemy",
+        "expectedPlayable": true
+      }
+    ],
+    "triggerEnemySideTurnEndAfterMove": true,
+    "expectedEnemyHpGain": -20,
+    "expectedAbsentEnemyPowers": [
+      "CONQUEROR_POWER"
+    ]
+  }
+]

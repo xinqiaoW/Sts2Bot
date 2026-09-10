@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "scenarioId": "AEONGLASS-ANGER-MIDCOMBAT-0170",
+  "characterId": "IRONCLAD",
+  "encounterId": "AEONGLASS_BOSS",
+  "seed": "LAW0FXTW4BAN",
+  "ascension": 10,
+  "actIndexForTest": 2,
+  "enemyCurrentHp": 251,
+  "initialEnemyMoveIds": ["INCREASING_INTENSITY_MOVE"],
+  "initialEnemyStateLogs": [[
+    "EBB_MOVE",
+    "EYE_LASERS_MOVE",
+    "INCREASING_INTENSITY_MOVE",
+    "EBB_MOVE",
+    "EYE_LASERS_MOVE",
+    "INCREASING_INTENSITY_MOVE",
+    "EBB_MOVE",
+    "EYE_LASERS_MOVE",
+    "INCREASING_INTENSITY_MOVE"
+  ]],
+  "initialPlayerHp": 59,
+  "initialPlayerMaxHp": 105,
+  "initialPlayerBlock": 56,
+  "initialPlayerEnergy": 3,
+  "initialRoundNumber": 9,
+  "initialPlayerTurnNumber": 9,
+  "clearPlayerHand": true,
+  "clearPlayerPiles": true,
+  "clearAllPowers": true,
+  "cards": [
+    { "cardId": "ANGER", "pile": "Hand", "count": 2 },
+    { "cardId": "SECOND_WIND", "pile": "Hand" },
+    { "cardId": "WITHER", "pile": "Hand", "count": 2 },
+    { "cardId": "THUNDERCLAP", "pile": "Hand" },
+    {
+      "cardId": "MAD_SCIENCE",
+      "pile": "Hand",
+      "enumMembers": { "TinkerTimeType": "Skill", "TinkerTimeRider": "Energized" }
+    },
+    { "cardId": "THUNDERCLAP", "pile": "Discard" }
+  ],
+  "powers": [
+    { "powerId": "STRENGTH_POWER", "target": "Player", "amount": 1 },
+    { "powerId": "VICIOUS_POWER", "target": "Player", "amount": 3 },
+    { "powerId": "WITHERING_PRESENCE_POWER", "target": "Enemy", "targetIndex": 0, "amount": 6 },
+    { "powerId": "STRENGTH_POWER", "target": "Enemy", "targetIndex": 0, "amount": 9 },
+    { "powerId": "VULNERABLE_POWER", "target": "Enemy", "targetIndex": 0, "amount": 36 }
+  ],
+  "performancePresetForTest": "High",
+  "expectedInitialAbsentActionCardId": "ANGER",
+  "expectedInitialSearchedTurnsAtLeast": 1,
+  "stopAfterInitialSolverResultAssertion": true,
+  "timeoutSeconds": 240
+}

@@ -1,0 +1,27 @@
+[
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "playerStarsBefore": 0,
+    "powersBeforeMove": [
+      {
+        "powerId": "GENESIS_POWER",
+        "target": "Player",
+        "amount": 2
+      },
+      {
+        "powerId": "STAR_NEXT_TURN_POWER",
+        "target": "Player",
+        "amount": 3
+      }
+    ],
+    "triggerPlayerSetupAfterMove": true,
+    "expectedPlayerStars": 5,
+    "expectedPlayerPowers": {
+      "GENESIS_POWER": 2
+    },
+    "expectedAbsentPlayerPowers": [
+      "STAR_NEXT_TURN_POWER"
+    ]
+  }
+]

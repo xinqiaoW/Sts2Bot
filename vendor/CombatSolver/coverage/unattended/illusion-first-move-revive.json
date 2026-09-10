@@ -1,0 +1,8 @@
+[
+  {
+    "monsterId": "Fogmog",
+    "moveId": "ILLUSION_MOVE",
+    "enemyHpBefore": 999,
+    "killEnemyIndexAfterMove": 1
+  }
+]

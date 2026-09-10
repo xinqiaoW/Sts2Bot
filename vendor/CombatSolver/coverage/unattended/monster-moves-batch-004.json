@@ -1,0 +1,67 @@
+[
+  {
+    "monsterId": "FrogKnight",
+    "moveId": "STRIKE_DOWN_EVIL",
+    "expectedPlayerHpLoss": 21,
+    "expectedPlayerPowers": {},
+    "expectedEnemyPowers": {}
+  },
+  {
+    "monsterId": "FrogKnight",
+    "moveId": "TONGUE_LASH",
+    "expectedPlayerHpLoss": 13,
+    "expectedPlayerPowers": {
+      "FRAIL_POWER": 2
+    },
+    "expectedEnemyPowers": {}
+  },
+  {
+    "monsterId": "FrogKnight",
+    "moveId": "FOR_THE_QUEEN",
+    "expectedPlayerHpLoss": 0,
+    "expectedPlayerPowers": {
+      "FRAIL_POWER": 2
+    },
+    "expectedEnemyPowers": {
+      "STRENGTH_POWER": 5
+    }
+  },
+  {
+    "monsterId": "GlobeHead",
+    "moveId": "THUNDER_STRIKE",
+    "expectedPlayerHpLoss": 18,
+    "expectedPlayerPowers": {
+      "FRAIL_POWER": 2
+    },
+    "expectedEnemyPowers": {}
+  },
+  {
+    "monsterId": "GlobeHead",
+    "moveId": "SHOCKING_SLAP",
+    "expectedPlayerHpLoss": 13,
+    "expectedPlayerPowers": {
+      "FRAIL_POWER": 4
+    },
+    "expectedEnemyPowers": {}
+  },
+  {
+    "monsterId": "GlobeHead",
+    "moveId": "GALVANIC_BURST",
+    "expectedPlayerHpLoss": 16,
+    "expectedPlayerPowers": {
+      "FRAIL_POWER": 4
+    },
+    "expectedEnemyPowers": {
+      "STRENGTH_POWER": 2
+    }
+  },
+  {
+    "monsterId": "GasBomb",
+    "moveId": "EXPLODE_MOVE",
+    "expectedPlayerHpLoss": 8,
+    "expectedPlayerPowers": {
+      "FRAIL_POWER": 4
+    },
+    "expectedEnemyPowers": {}
+  }
+]

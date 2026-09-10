@@ -1,0 +1,27 @@
+[
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 20,
+    "powersBeforeMove": [
+      {
+        "powerId": "POISON_POWER",
+        "target": "CheckedEnemy",
+        "amount": 3
+      },
+      {
+        "powerId": "ACCELERANT_POWER",
+        "target": "Player",
+        "amount": 1
+      }
+    ],
+    "triggerEnemySideTurnStartAfterMove": true,
+    "expectedEnemyHpGain": -5,
+    "expectedPlayerPowers": {
+      "ACCELERANT_POWER": 1
+    },
+    "expectedEnemyPowers": {
+      "POISON_POWER": 1
+    }
+  }
+]

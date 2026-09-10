@@ -1,0 +1,7 @@
+[
+  {
+    "monsterId": "TorchHeadAmalgam",
+    "useCurrentMove": true,
+    "expectedSearchBoundary": "DynamicResolution"
+  }
+]

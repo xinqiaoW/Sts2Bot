@@ -1,0 +1,6 @@
+[
+  { "cardId": "CATASTROPHE", "pile": "Hand", "count": 1 },
+  { "cardId": "DAZED", "pile": "Hand", "count": 1 },
+  { "cardId": "SURVIVOR", "pile": "Draw", "count": 1 },
+  { "cardId": "STRIKE_IRONCLAD", "pile": "Discard", "count": 1 }
+]

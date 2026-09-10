@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "scenarioId": "INITIAL-GAMBLING-CHIP-NECROBINDER-465",
+  "characterId": "NECROBINDER",
+  "encounterId": "CORPSE_SLUGS_NORMAL",
+  "seed": "INITIAL-GAMBLING-CHIP-NECROBINDER-465",
+  "relics": [
+    { "relicId": "GAMBLING_CHIP", "addWithoutObtainedEffects": true }
+  ],
+  "forceShortSearchOnly": true,
+  "shortSearchBudgetOverrideMilliseconds": 1500,
+  "expectedInitialSetupChoiceCountAtLeast": 1,
+  "expectedInitialSetupChoiceSourceId": "GAMBLING_CHIP",
+  "stopAfterInitialSetupAssertion": true,
+  "timeoutSeconds": 120
+}

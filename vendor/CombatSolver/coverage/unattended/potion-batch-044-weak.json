@@ -1,0 +1,1 @@
+{ "potionId": "WeakPotion", "target": "Enemy", "expectedEnemyPowers": { "WEAK_POWER": 3 } }

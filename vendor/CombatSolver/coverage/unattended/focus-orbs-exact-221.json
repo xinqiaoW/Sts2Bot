@@ -1,0 +1,15 @@
+[
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "cardBeforeMove": { "cardId": "DEFRAGMENT", "pile": "Hand", "count": 1 },
+    "cardPlayChecksAfterMove": [
+      { "cardId": "DEFRAGMENT", "target": "None" }
+    ],
+    "expectedSimulatedDynamicResolution": false,
+    "expectedPlayerPowers": { "FOCUS_POWER": 1 }
+  }
+]

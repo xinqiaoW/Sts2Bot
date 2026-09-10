@@ -1,0 +1,4 @@
+[
+  { "monsterId": "Ovicopter", "moveId": "LAY_EGGS_MOVE", "expectedSimulatedDynamicResolution": false },
+  { "monsterId": "ToughEgg", "moveId": "HATCH_MOVE", "expectedSimulatedDynamicResolution": false }
+]

@@ -1,0 +1,8 @@
+[
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "triggerPlayerSideTurnStartAfterMove": true,
+    "expectedSimulatedDynamicResolution": false
+  }
+]

@@ -1,0 +1,22 @@
+[
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "clearPlayerHandBeforeMove": true,
+    "cardsBeforeMove": [
+      { "cardId": "BULLET_TIME", "pile": "Hand" },
+      { "cardId": "STRIKE_IRONCLAD", "pile": "Hand" }
+    ],
+    "cardPlayChecksAfterMove": [
+      { "cardId": "BULLET_TIME", "target": "None" }
+    ],
+    "triggerPlayerTurnEndAfterMove": true,
+    "expectedPlayerPileCards": {
+      "Discard:BULLET_TIME": 1,
+      "Discard:STRIKE_IRONCLAD": 4
+    },
+    "expectedPlayerCardCosts": {
+      "Discard:STRIKE_IRONCLAD:1": 4
+    }
+  }
+]

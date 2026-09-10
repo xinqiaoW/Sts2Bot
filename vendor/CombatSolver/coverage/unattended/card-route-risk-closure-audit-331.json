@@ -1,0 +1,33 @@
+[
+  {
+    "coveredCardHooks": [{ "cardId": "DEBRIS", "hook": "OnPlay" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true, "playerEnergyBefore": 99,
+    "cardBeforeMove": { "cardId": "DEBRIS", "pile": "Hand" },
+    "cardPlayChecksAfterMove": [{ "cardId": "DEBRIS", "target": "None" }]
+  },
+  {
+    "coveredCardHooks": [{ "cardId": "HIDDEN_CACHE", "hook": "OnPlay" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true,
+    "playerEnergyBefore": 99, "playerStarsBefore": 0,
+    "cardBeforeMove": { "cardId": "HIDDEN_CACHE", "pile": "Hand" },
+    "cardPlayChecksAfterMove": [{ "cardId": "HIDDEN_CACHE", "target": "None" }]
+  },
+  {
+    "coveredCardHooks": [{ "cardId": "NEUTRON_AEGIS", "hook": "OnPlay" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true,
+    "playerEnergyBefore": 99, "playerStarsBefore": 99,
+    "cardBeforeMove": { "cardId": "NEUTRON_AEGIS", "pile": "Hand" },
+    "cardPlayChecksAfterMove": [{ "cardId": "NEUTRON_AEGIS", "target": "None" }]
+  },
+  {
+    "coveredCardHooks": [{ "cardId": "RESONANCE", "hook": "OnPlay" }],
+    "monsterId": "BigDummy", "moveId": "NOTHING", "enemyHpBefore": 999,
+    "clearAllPowersBeforeMove": true, "clearPlayerPilesBeforeMove": true,
+    "playerEnergyBefore": 99, "playerStarsBefore": 99,
+    "cardBeforeMove": { "cardId": "RESONANCE", "pile": "Hand" },
+    "cardPlayChecksAfterMove": [{ "cardId": "RESONANCE", "target": "None" }]
+  }
+]

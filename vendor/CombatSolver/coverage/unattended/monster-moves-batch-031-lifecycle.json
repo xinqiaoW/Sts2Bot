@@ -1,0 +1,73 @@
+[
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "powerBeforeMove": {
+      "powerId": "RETAIN_HAND_POWER",
+      "target": "Player",
+      "amount": 1
+    },
+    "cardBeforeMove": {
+      "cardId": "ANGER",
+      "pile": "Hand",
+      "count": 1
+    },
+    "triggerPlayerTurnEndAfterMove": true,
+    "expectedPlayerHandCount": 6,
+    "expectedAbsentPlayerPowers": [
+      "RETAIN_HAND_POWER"
+    ]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "powersBeforeMove": [
+      {
+        "powerId": "BURST_POWER",
+        "target": "Player",
+        "amount": 1
+      },
+      {
+        "powerId": "DUPLICATION_POWER",
+        "target": "Player",
+        "amount": 1
+      },
+      {
+        "powerId": "ONE_TWO_PUNCH_POWER",
+        "target": "Player",
+        "amount": 1
+      },
+      {
+        "powerId": "RAGE_POWER",
+        "target": "Player",
+        "amount": 2
+      },
+      {
+        "powerId": "REBOUND_POWER",
+        "target": "Player",
+        "amount": 1
+      }
+    ],
+    "triggerPlayerSideTurnEndAfterMove": true,
+    "expectedAbsentPlayerPowers": [
+      "BURST_POWER",
+      "DUPLICATION_POWER",
+      "ONE_TWO_PUNCH_POWER",
+      "RAGE_POWER",
+      "REBOUND_POWER"
+    ]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "powerBeforeMove": {
+      "powerId": "FLAME_BARRIER_POWER",
+      "target": "Player",
+      "amount": 3
+    },
+    "triggerEnemySideTurnEndAfterMove": true,
+    "expectedAbsentPlayerPowers": [
+      "FLAME_BARRIER_POWER"
+    ]
+  }
+]

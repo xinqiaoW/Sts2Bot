@@ -1,0 +1,15 @@
+[
+  {
+    "monsterId": "ShrinkerBeetle",
+    "moveId": "SHRINKER_MOVE",
+    "powerBeforeMove": {
+      "powerId": "ARTIFACT_POWER",
+      "target": "Player",
+      "amount": 1
+    },
+    "expectedAbsentPlayerPowers": [
+      "SHRINK_POWER",
+      "ARTIFACT_POWER"
+    ]
+  }
+]

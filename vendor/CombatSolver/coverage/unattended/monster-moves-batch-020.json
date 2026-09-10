@@ -1,0 +1,96 @@
+[
+  {
+    "monsterId": "LouseProgenitor",
+    "moveId": "WEB_CANNON_MOVE",
+    "expectedPlayerHpLoss": 9,
+    "expectedPlayerPowers": {
+      "FRAIL_POWER": 2
+    }
+  },
+  {
+    "monsterId": "LouseProgenitor",
+    "moveId": "CURL_AND_GROW_MOVE",
+    "expectedPlayerHpLoss": 0,
+    "expectedEnemyBlockGain": 14,
+    "expectedEnemyPowers": {
+      "CURL_UP_POWER": 14,
+      "STRENGTH_POWER": 5
+    }
+  },
+  {
+    "monsterId": "LouseProgenitor",
+    "moveId": "POUNCE_MOVE",
+    "expectedPlayerHpLoss": 19
+  },
+  {
+    "monsterId": "Tunneler",
+    "moveId": "BITE_MOVE",
+    "expectedPlayerHpLoss": 13
+  },
+  {
+    "monsterId": "Tunneler",
+    "moveId": "BURROW_MOVE",
+    "expectedPlayerHpLoss": 0,
+    "expectedEnemyBlockGain": 32,
+    "expectedEnemyPowers": {
+      "BURROWED_POWER": 1
+    }
+  },
+  {
+    "monsterId": "Tunneler",
+    "moveId": "BELOW_MOVE",
+    "expectedPlayerHpLoss": 23
+  },
+  {
+    "monsterId": "Tunneler",
+    "moveId": "DIZZY_MOVE",
+    "expectedPlayerHpLoss": 0
+  },
+  {
+    "monsterId": "CubexConstruct",
+    "moveId": "EXPEL_MOVE",
+    "expectedPlayerHpLoss": 10
+  },
+  {
+    "monsterId": "CubexConstruct",
+    "moveId": "CHARGE_UP_MOVE",
+    "expectedPlayerHpLoss": 0,
+    "expectedEnemyPowers": {
+      "ARTIFACT_POWER": 1,
+      "STRENGTH_POWER": 2
+    }
+  },
+  {
+    "monsterId": "CubexConstruct",
+    "moveId": "REPEATER_BLAST_MOVE",
+    "expectedPlayerHpLoss": 9,
+    "expectedEnemyPowers": {
+      "ARTIFACT_POWER": 1,
+      "STRENGTH_POWER": 4
+    }
+  },
+  {
+    "monsterId": "CubexConstruct",
+    "moveId": "REPEATER_BLAST_MOVE_2",
+    "expectedPlayerHpLoss": 11,
+    "expectedEnemyPowers": {
+      "ARTIFACT_POWER": 1,
+      "STRENGTH_POWER": 6
+    }
+  },
+  {
+    "monsterId": "SlumberingBeetle",
+    "moveId": "SNORE_MOVE",
+    "expectedPlayerHpLoss": 0
+  },
+  {
+    "monsterId": "SlumberingBeetle",
+    "moveId": "ROLL_OUT_MOVE",
+    "expectedPlayerHpLoss": 16,
+    "expectedEnemyPowers": {
+      "PLATING_POWER": 15,
+      "SLUMBER_POWER": 3,
+      "STRENGTH_POWER": 2
+    }
+  }
+]

@@ -1,0 +1,43 @@
+[
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearAllPowersBeforeMove": true,
+    "clearPlayerPilesBeforeMove": true,
+    "powersBeforeMove": [
+      {
+        "powerId": "SPECTRUM_SHIFT_POWER",
+        "target": "Player",
+        "amount": 1
+      },
+      {
+        "powerId": "FOREGONE_CONCLUSION_POWER",
+        "target": "Player",
+        "amount": 3
+      }
+    ],
+    "cardsBeforeMove": [
+      { "cardId": "STRIKE_REGENT", "pile": "Draw" },
+      { "cardId": "DEFEND_REGENT", "pile": "Draw" },
+      { "cardId": "BOLAS", "pile": "Draw" },
+      { "cardId": "CONVERGENCE", "pile": "Draw" },
+      { "cardId": "GLOW", "pile": "Draw" },
+      { "cardId": "VENERATE", "pile": "Draw" },
+      { "cardId": "GATHER_LIGHT", "pile": "Draw" },
+      { "cardId": "SHINING_STRIKE", "pile": "Draw" },
+      { "cardId": "CLOAK_OF_STARS", "pile": "Draw" },
+      { "cardId": "HIDDEN_CACHE", "pile": "Draw" }
+    ],
+    "triggerPlayerSetupAfterMove": true,
+    "playerSetupChoiceCardIds": [
+      "STRIKE_REGENT",
+      "DEFEND_REGENT",
+      "BOLAS"
+    ],
+    "expectedPlayerHandCount": 9,
+    "expectedAbsentPlayerPowers": [
+      "FOREGONE_CONCLUSION_POWER"
+    ]
+  }
+]

@@ -1,0 +1,95 @@
+[
+  {
+    "monsterId": "MysteriousKnight",
+    "moveId": "FLAIL_MOVE",
+    "expectedPlayerHpLoss": 30
+  },
+  {
+    "monsterId": "MysteriousKnight",
+    "moveId": "RAM_MOVE",
+    "expectedPlayerHpLoss": 21
+  },
+  {
+    "monsterId": "MysteriousKnight",
+    "moveId": "WAR_CHANT",
+    "expectedPlayerHpLoss": 0,
+    "expectedEnemyPowers": {
+      "STRENGTH_POWER": 9,
+      "PLATING_POWER": 6
+    }
+  },
+  {
+    "monsterId": "PhrogParasite",
+    "moveId": "LASH_MOVE",
+    "expectedPlayerHpLoss": 16
+  },
+  {
+    "monsterId": "PhrogParasite",
+    "moveId": "INFECT_MOVE",
+    "expectedPlayerHpLoss": 0,
+    "expectedPlayerPileCards": {
+      "Discard:INFECTION": 3
+    }
+  },
+  {
+    "monsterId": "Vantom",
+    "moveId": "INK_BLOT_MOVE",
+    "expectedPlayerHpLoss": 7
+  },
+  {
+    "monsterId": "Vantom",
+    "moveId": "INKY_LANCE_MOVE",
+    "expectedPlayerHpLoss": 12
+  },
+  {
+    "monsterId": "Vantom",
+    "moveId": "DISMEMBER_MOVE",
+    "expectedPlayerHpLoss": 26,
+    "expectedPlayerPileCards": {
+      "Discard:WOUND": 3
+    }
+  },
+  {
+    "monsterId": "Vantom",
+    "moveId": "PREPARE_MOVE",
+    "expectedPlayerHpLoss": 0,
+    "expectedEnemyPowers": {
+      "SLIPPERY_POWER": 8,
+      "STRENGTH_POWER": 2
+    }
+  },
+  {
+    "monsterId": "TheInsatiable",
+    "moveId": "THRASH_MOVE",
+    "expectedPlayerHpLoss": 16
+  },
+  {
+    "monsterId": "TheInsatiable",
+    "moveId": "THRASH_MOVE_2",
+    "expectedPlayerHpLoss": 16
+  },
+  {
+    "monsterId": "TheInsatiable",
+    "moveId": "LUNGING_BITE_MOVE",
+    "expectedPlayerHpLoss": 28
+  },
+  {
+    "monsterId": "TheInsatiable",
+    "moveId": "SALIVATE_MOVE",
+    "expectedPlayerHpLoss": 0,
+    "expectedEnemyPowers": {
+      "STRENGTH_POWER": 2
+    }
+  },
+  {
+    "monsterId": "TheObscura",
+    "moveId": "PIERCING_GAZE_MOVE",
+    "expectedPlayerHpLoss": 10
+  },
+  {
+    "monsterId": "TheObscura",
+    "moveId": "HARDENING_STRIKE_MOVE",
+    "expectedPlayerHpLoss": 6,
+    "expectedEnemyBlock": 6
+  }
+]

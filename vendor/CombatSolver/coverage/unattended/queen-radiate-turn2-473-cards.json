@@ -1,0 +1,21 @@
+[
+  { "cardId": "GATHER_LIGHT", "pile": "Hand", "upgradeLevels": 1 },
+  { "cardId": "METEOR_SHOWER", "pile": "Hand", "upgradeLevels": 1 },
+  { "cardId": "ROYAL_GAMBLE", "pile": "Hand", "upgradeLevels": 1 },
+  { "cardId": "GLOW", "pile": "Hand", "upgradeLevels": 1, "afflictionId": "BOUND", "afflictionAmount": 3 },
+  { "cardId": "CONVERGENCE", "pile": "Hand", "upgradeLevels": 1, "afflictionId": "BOUND", "afflictionAmount": 3 },
+  { "cardId": "DEFEND_REGENT", "pile": "Hand", "afflictionId": "BOUND", "afflictionAmount": 3 },
+  { "cardId": "STARDUST", "pile": "Hand", "upgradeLevels": 1, "enchantmentId": "SHARP", "enchantmentAmount": 2 },
+  { "cardId": "VENERATE", "pile": "Hand", "upgradeLevels": 1 },
+  { "cardId": "COSMIC_INDIFFERENCE", "pile": "Hand" },
+  { "cardId": "CHILD_OF_THE_STARS", "pile": "Hand", "upgradeLevels": 1 },
+  { "cardId": "RADIATE", "pile": "Draw", "upgradeLevels": 1 },
+  { "cardId": "BOMBARDMENT", "pile": "Draw", "upgradeLevels": 1 },
+  { "cardId": "GENESIS", "pile": "Draw", "upgradeLevels": 1 },
+  { "cardId": "TERRAFORMING", "pile": "Discard", "upgradeLevels": 1 },
+  { "cardId": "RESONANCE", "pile": "Discard" },
+  { "cardId": "PECK", "pile": "Discard" },
+  { "cardId": "DEFEND_REGENT", "pile": "Discard", "count": 2 },
+  { "cardId": "ASTRAL_PULSE", "pile": "Discard", "upgradeLevels": 1 },
+  { "cardId": "ASCENDERS_BANE", "pile": "Exhaust" }
+]

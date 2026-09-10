@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "scenarioId": "GENERIC-SMART-POTION-SAME-LOSS-CONSERVE-V0111",
+  "description": "Smart must keep the zero-potion victory when a paid potion only ends the fight earlier without saving the required HP.",
+  "characterId": "IRONCLAD",
+  "encounterId": "AEONGLASS_BOSS",
+  "seed": "SMARTSAMELOSSFASTER0111",
+  "actIndexForTest": 2,
+  "markEncounterAsSecondBossForTest": true,
+  "enemyCurrentHp": 6,
+  "initialPlayerHp": 80,
+  "initialPlayerMaxHp": 80,
+  "initialPlayerBlock": 99,
+  "initialPlayerEnergy": 0,
+  "clearRunDeck": true,
+  "clearPlayerPiles": true,
+  "clearAllPowers": true,
+  "cards": [
+    {
+      "cardId": "BLOODLETTING",
+      "pile": "Hand",
+      "treatAsDeckCard": true
+    },
+    {
+      "cardId": "STRIKE_IRONCLAD",
+      "pile": "Hand",
+      "treatAsDeckCard": true
+    }
+  ],
+  "powers": [
+    {
+      "powerId": "BARRICADE_POWER",
+      "target": "Player",
+      "amount": 1
+    }
+  ],
+  "potions": [
+    {
+      "potionId": "EnergyPotion"
+    }
+  ],
+  "potionPolicyForTest": "Smart",
+  "forceShortSearchOnly": true,
+  "shortSearchBudgetOverrideMilliseconds": 5000,
+  "searchMaxDegreeOfParallelismForTest": 1,
+  "measureSearchPhases": true,
+  "expectedInitialBossHpRelief": "RunEnding",
+  "expectedInitialActEndingBoss": true,
+  "expectedInitialAbsentActionCardId": "BLOODLETTING",
+  "expectedInitialProjectedBattleHpLost": 0,
+  "expectedInitialPotionCount": 0,
+  "expectedInitialFinalEnemyHpAtMost": 0,
+  "stopAfterInitialSolverResultAssertion": true,
+  "timeoutSeconds": 120
+}

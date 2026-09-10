@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "scenarioId": "SOULS-POWER-GROWTH-0170",
+  "characterId": "DEFECT",
+  "encounterId": "FUZZY_WURM_CRAWLER_WEAK",
+  "seed": "SOULPOWER0170",
+  "enemyCurrentHp": 6,
+  "initialPlayerEnergy": 1,
+  "clearPlayerHand": true,
+  "clearPlayerPiles": true,
+  "cards": [
+    { "cardId": "GENETIC_ALGORITHM", "pile": "Hand", "treatAsDeckCard": true, "enchantmentId": "SOULS_POWER" },
+    { "cardId": "STRIKE_DEFECT", "pile": "Draw" }
+  ],
+  "forceShortSearchOnly": true,
+  "shortSearchBudgetOverrideMilliseconds": 5000,
+  "expectedInitialFirstActionCardId": "GENETIC_ALGORITHM",
+  "expectedInitialLongTermResourceValueAtLeast": 6,
+  "expectedInitialProjectedBattleHpLostAtMost": 4,
+  "expectedInitialCombatEndedTurn": 2,
+  "stopAfterInitialSolverResultAssertion": true,
+  "timeoutSeconds": 150
+}

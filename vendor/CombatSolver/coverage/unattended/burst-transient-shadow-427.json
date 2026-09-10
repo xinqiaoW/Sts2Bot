@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "scenarioId": "BURST-TRANSIENT-SHADOW-427",
+  "characterId": "IRONCLAD",
+  "encounterId": "FUZZY_WURM_CRAWLER_WEAK",
+  "seed": "BURST-TRANSIENT-SHADOW-427",
+  "enemyCurrentHp": 57,
+  "initialPlayerHp": 1,
+  "initialPlayerMaxHp": 80,
+  "clearPlayerPiles": true,
+  "cards": [
+    { "cardId": "DEFEND_IRONCLAD", "pile": "Hand", "count": 1, "upgradeLevel": 1 }
+  ],
+  "powers": [
+    { "powerId": "BURST_POWER", "target": "Player", "amount": 2 }
+  ],
+  "initialEnemyMoveIds": ["FIRST_ACID_GOOP"],
+  "forceShortSearchOnly": true,
+  "shortSearchBudgetOverrideMilliseconds": 1500,
+  "expectedPlayedCardId": "DEFEND_IRONCLAD",
+  "expectedReusedTurn": 2,
+  "expectedUnexpectedReplansAtMost": 0,
+  "stopAfterExpectedReuse": true,
+  "deploymentFastModeForTest": "Instant",
+  "deploymentInterActionDelaySecondsForTest": 0,
+  "timeoutSeconds": 120
+}

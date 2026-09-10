@@ -1,0 +1,88 @@
+[
+  {
+    "monsterId": "LivingShield",
+    "moveId": "SHIELD_SLAM_MOVE",
+    "expectedPlayerHpLoss": 6
+  },
+  {
+    "monsterId": "LivingShield",
+    "moveId": "SMASH_MOVE",
+    "expectedPlayerHpLoss": 16,
+    "expectedEnemyPowers": {
+      "STRENGTH_POWER": 3
+    }
+  },
+  {
+    "monsterId": "Mawler",
+    "moveId": "RIP_AND_TEAR_MOVE",
+    "expectedPlayerHpLoss": 14
+  },
+  {
+    "monsterId": "Mawler",
+    "moveId": "CLAW_MOVE",
+    "expectedPlayerHpLoss": 8
+  },
+  {
+    "monsterId": "Myte",
+    "spawnInitialMoveId": "BITE_MOVE",
+    "moveId": "BITE_MOVE",
+    "expectedPlayerHpLoss": 13
+  },
+  {
+    "monsterId": "Myte",
+    "moveId": "SUCK_MOVE",
+    "expectedPlayerHpLoss": 4,
+    "expectedEnemyPowers": {
+      "STRENGTH_POWER": 2
+    }
+  },
+  {
+    "monsterId": "Nibbit",
+    "moveId": "BUTT_MOVE",
+    "expectedPlayerHpLoss": 12
+  },
+  {
+    "monsterId": "Nibbit",
+    "moveId": "SLICE_MOVE",
+    "expectedPlayerHpLoss": 6,
+    "expectedEnemyBlockGain": 5
+  },
+  {
+    "monsterId": "Chomper",
+    "moveId": "CLAMP_MOVE",
+    "expectedPlayerHpLoss": 16
+  },
+  {
+    "monsterId": "Mawler",
+    "moveId": "ROAR_MOVE",
+    "expectedPlayerHpLoss": 0,
+    "expectedPlayerPowers": {
+      "VULNERABLE_POWER": 3
+    }
+  },
+  {
+    "monsterId": "Myte",
+    "moveId": "TOXIC_MOVE",
+    "expectedPlayerHpLoss": 0,
+    "expectedPlayerPileCards": {
+      "Hand:TOXIC": 2
+    }
+  },
+  {
+    "monsterId": "Nibbit",
+    "moveId": "HISS_MOVE",
+    "expectedPlayerHpLoss": 0,
+    "expectedEnemyPowers": {
+      "STRENGTH_POWER": 2
+    }
+  },
+  {
+    "monsterId": "Chomper",
+    "moveId": "SCREECH_MOVE",
+    "expectedPlayerHpLoss": 0,
+    "expectedPlayerPileCards": {
+      "Hand:TOXIC": 2,
+      "Discard:DAZED": 3
+    }
+  }
+]

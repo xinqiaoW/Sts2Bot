@@ -1,0 +1,17 @@
+[
+  { "cardId": "TRANSFIGURE", "pile": "Hand", "count": 1, "upgradeLevels": 1, "treatAsDeckCard": true },
+  { "cardId": "SEEKER_STRIKE", "pile": "Hand", "count": 1, "upgradeLevels": 1, "treatAsDeckCard": true },
+  { "cardId": "CALL_OF_THE_VOID", "pile": "Hand", "count": 1, "upgradeLevels": 1, "treatAsDeckCard": true },
+
+  { "cardId": "STRIKE_NECROBINDER", "pile": "Draw", "count": 6, "treatAsDeckCard": true },
+  { "cardId": "BLIGHT_STRIKE", "pile": "Draw", "count": 6, "treatAsDeckCard": true },
+  { "cardId": "DEFILE", "pile": "Draw", "count": 6, "treatAsDeckCard": true },
+  { "cardId": "SCULPTING_STRIKE", "pile": "Draw", "count": 6, "treatAsDeckCard": true },
+  { "cardId": "REAVE", "pile": "Draw", "count": 6, "treatAsDeckCard": true },
+
+  { "cardId": "DEFEND_NECROBINDER", "pile": "Draw", "count": 6, "treatAsDeckCard": true },
+  { "cardId": "DEFY", "pile": "Draw", "count": 6, "treatAsDeckCard": true },
+  { "cardId": "DELAY", "pile": "Draw", "count": 6, "treatAsDeckCard": true },
+  { "cardId": "GRAVE_WARDEN", "pile": "Draw", "count": 6, "treatAsDeckCard": true },
+  { "cardId": "MELANCHOLY", "pile": "Draw", "count": 6, "treatAsDeckCard": true }
+]

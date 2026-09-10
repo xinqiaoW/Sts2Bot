@@ -1,0 +1,12 @@
+[
+  {
+    "coveredMonsterHooks": [{ "monsterId": "QUEEN", "hook": "AfterDeath" }],
+    "monsterId": "TorchHeadAmalgam",
+    "useCurrentMove": true,
+    "enemyHpBefore": 1,
+    "playerEnergyBefore": 99,
+    "clearPlayerPilesBeforeMove": true,
+    "cardBeforeMove": { "cardId": "STRIKE_IRONCLAD", "pile": "Hand" },
+    "cardPlayChecksAfterMove": [{ "cardId": "STRIKE_IRONCLAD", "target": "Enemy" }]
+  }
+]

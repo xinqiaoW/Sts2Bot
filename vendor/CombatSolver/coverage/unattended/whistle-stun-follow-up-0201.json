@@ -1,0 +1,22 @@
+[
+  {
+    "monsterId": "SlimedBerserker",
+    "moveId": "VOMIT_ICHOR_MOVE",
+    "enemyHpBefore": 281,
+    "playerEnergyBefore": 99,
+    "clearAllPowersBeforeMove": true,
+    "clearPlayerPilesBeforeMove": true,
+    "cardsBeforeMove": [
+      { "cardId": "WHISTLE", "pile": "Hand" }
+    ],
+    "cardPlayChecksBeforeMove": [
+      {
+        "cardId": "WHISTLE",
+        "target": "Enemy",
+        "expectedPlayable": true
+      }
+    ],
+    "rollNextMoveAfterActual": true,
+    "expectedNextMoveId": "VOMIT_ICHOR_MOVE"
+  }
+]

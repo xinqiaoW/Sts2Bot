@@ -1,0 +1,30 @@
+[
+  {
+    "monsterId": "Axebot",
+    "monsterOccurrence": 1,
+    "moveId": "BOOT_UP_MOVE",
+    "enemyHpBefore": 50,
+    "clearAllPowersBeforeMove": true,
+    "clearPlayerPilesBeforeMove": true,
+    "clearPlayerOrbsBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "powerBeforeMove": { "powerId": "CRAB_RAGE_POWER", "target": "CheckedEnemy", "amount": 1 },
+    "orbsBeforeMove": [
+      { "orbId": "DARK_ORB", "decimalMembers": { "_evokeVal": 30 } }
+    ],
+    "cardBeforeMove": { "cardId": "DUALCAST", "pile": "Hand" },
+    "cardPlayChecksBeforeMove": [
+      { "cardId": "DUALCAST", "target": "None" }
+    ],
+    "expectedEnemyBlockGain": 79,
+    "expectedEnemyPowers": {
+      "STRENGTH_POWER": 6
+    },
+    "expectedAbsentEnemyPowers": [
+      "CRAB_RAGE_POWER"
+    ],
+    "expectedEnemyHpsByModel": {
+      "AXEBOT": 50
+    }
+  }
+]

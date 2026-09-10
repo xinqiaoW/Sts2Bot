@@ -1,0 +1,10 @@
+[
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "clearPlayerHandBeforeMove": true,
+    "ostyHpBefore": 5,
+    "triggerPlayerSideTurnStartAfterMove": true,
+    "expectedOstyHp": 7
+  }
+]

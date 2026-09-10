@@ -1,0 +1,49 @@
+[
+  {
+    "monsterId": "SpectralKnight",
+    "monsterOccurrence": 0,
+    "moveId": "HEX",
+    "cardBeforeMove": {
+      "cardId": "ARMAMENTS",
+      "pile": "Hand",
+      "count": 1
+    },
+    "expectedPlayerPowers": {
+      "HEX_POWER": 2
+    },
+    "expectedPlayerCardStates": {
+      "Hand:ARMAMENTS:HEXED:2:E:R0:XFalse:SFalse:TFalse:DFalse:MFalse": 1
+    }
+  },
+  {
+    "monsterId": "SpectralKnight",
+    "monsterOccurrence": 1,
+    "moveId": "HEX",
+    "cardAfterMove": {
+      "cardId": "BODY_SLAM",
+      "pile": "Hand",
+      "count": 1
+    },
+    "expectedPlayerPowers": {
+      "HEX_POWER": 4
+    },
+    "killMonsterAfterMove": true,
+    "expectedPlayerCardStates": {
+      "Hand:ARMAMENTS:HEXED:2:E:R0:XFalse:SFalse:TFalse:DFalse:MFalse": 1,
+      "Hand:BODY_SLAM:HEXED:4:E:R0:XFalse:SFalse:TFalse:DFalse:MFalse": 1
+    }
+  },
+  {
+    "monsterId": "SpectralKnight",
+    "monsterOccurrence": 0,
+    "moveId": "HEX",
+    "killMonsterAfterMove": true,
+    "expectedAbsentPlayerPowers": [
+      "HEX_POWER"
+    ],
+    "expectedPlayerCardStates": {
+      "Hand:ARMAMENTS:-:0:-:R0:XFalse:SFalse:TFalse:DFalse:MFalse": 1,
+      "Hand:BODY_SLAM:-:0:-:R0:XFalse:SFalse:TFalse:DFalse:MFalse": 1
+    }
+  }
+]

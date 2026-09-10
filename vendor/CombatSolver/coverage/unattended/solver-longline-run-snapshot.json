@@ -1,0 +1,50 @@
+{
+  "rng": {
+    "rngs": {
+      "up_front": { "counter": 419, "s0": 16289012828701114346, "s1": 13616322720515788645, "s2": 8043504128154534121, "s3": 1032945489955686824 },
+      "shuffle": { "counter": 163, "s0": 9559537184202801900, "s1": 8782393699912667667, "s2": 16560780152478076119, "s3": 2287317270427107038 },
+      "unknown_map_point": { "counter": 2, "s0": 15182921974558669012, "s1": 5336057093450484591, "s2": 17154423597834949166, "s3": 14716961858113142834 },
+      "combat_card_generation": { "counter": 0, "s0": 9349456005136500259, "s1": 1839281305657378269, "s2": 12981656834559243929, "s3": 14815091567542666887 },
+      "combat_potion_generation": { "counter": 0, "s0": 17737693761073652031, "s1": 5338721824763617497, "s2": 1718498707265421298, "s3": 11718923839334242207 },
+      "combat_card_selection": { "counter": 0, "s0": 3756953957457768725, "s1": 10675861532695962485, "s2": 11434777877996073390, "s3": 17066588376732450216 },
+      "combat_energy_costs": { "counter": 6, "s0": 12262767581390104251, "s1": 17836989152172616608, "s2": 6699081900403009212, "s3": 11493027322719775777 },
+      "combat_targets": { "counter": 0, "s0": 14141494358645498711, "s1": 4176778396830344337, "s2": 2710884950328391378, "s3": 15870998421896113236 },
+      "monster_ai": { "counter": 5, "s0": 983948681503460275, "s1": 5759855142319324473, "s2": 9130275787681192285, "s3": 14083609487486714285 },
+      "niche": { "counter": 9, "s0": 5079089801345849468, "s1": 18018078779895362013, "s2": 16291733025167920698, "s3": 2041782408400901626 },
+      "combat_orbs": { "counter": 0, "s0": 3709022698924259919, "s1": 14251216879026800885, "s2": 17282912234510058014, "s3": 14169899933289687463 },
+      "treasure_room_relics": { "counter": 1, "s0": 5170511426931453141, "s1": 8805479573099312216, "s2": 9446928595293519319, "s3": 18344453300115128426 }
+    },
+    "seed": "BJCZX3J13PZJ"
+  },
+  "players": [
+    {
+      "deck": [
+        { "id": "CARD.STRIKE_SILENT", "floor_added_to_deck": 1 },
+        { "id": "CARD.STRIKE_SILENT", "floor_added_to_deck": 1 },
+        { "id": "CARD.STRIKE_SILENT", "floor_added_to_deck": 1 },
+        { "id": "CARD.STRIKE_SILENT", "floor_added_to_deck": 1 },
+        { "id": "CARD.DEFEND_SILENT", "floor_added_to_deck": 1 },
+        { "id": "CARD.DEFEND_SILENT", "floor_added_to_deck": 1 },
+        { "id": "CARD.DEFEND_SILENT", "floor_added_to_deck": 1 },
+        { "id": "CARD.DEFEND_SILENT", "floor_added_to_deck": 1 },
+        { "id": "CARD.DEFEND_SILENT", "floor_added_to_deck": 1 },
+        { "id": "CARD.NEUTRALIZE", "current_upgrade_level": 1, "floor_added_to_deck": 1 },
+        { "id": "CARD.SURVIVOR", "floor_added_to_deck": 1 },
+        { "id": "CARD.OUTBREAK", "floor_added_to_deck": 1, "enchantment": { "id": "ENCHANTMENT.SLITHER", "amount": 1 } },
+        { "id": "CARD.FOOTWORK", "current_upgrade_level": 1, "floor_added_to_deck": 2 },
+        { "id": "CARD.BACKFLIP", "floor_added_to_deck": 4 },
+        { "id": "CARD.ESCAPE_PLAN", "floor_added_to_deck": 5 },
+        { "id": "CARD.GUILTY", "floor_added_to_deck": 6, "props": { "ints": [{ "name": "CombatsSeen", "value": 3 }] } },
+        { "id": "CARD.BLADE_OF_INK", "floor_added_to_deck": 7 },
+        { "id": "CARD.SNAKEBITE", "current_upgrade_level": 1, "floor_added_to_deck": 8 },
+        { "id": "CARD.PIERCING_WAIL", "current_upgrade_level": 1, "floor_added_to_deck": 11 }
+      ],
+      "relics": [
+        { "id": "RELIC.RING_OF_THE_SNAKE", "floor_added_to_deck": 1 },
+        { "id": "RELIC.ARCANE_SCROLL", "floor_added_to_deck": 1 },
+        { "id": "RELIC.TOXIC_EGG", "floor_added_to_deck": 8 },
+        { "id": "RELIC.BRONZE_SCALES", "floor_added_to_deck": 10 }
+      ]
+    }
+  ]
+}

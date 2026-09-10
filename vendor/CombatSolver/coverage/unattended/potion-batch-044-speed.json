@@ -1,0 +1,1 @@
+{ "potionId": "SpeedPotion", "target": "Player", "expectedPlayerPowers": { "SPEED_POTION_POWER": 5, "DEXTERITY_POWER": 5 } }

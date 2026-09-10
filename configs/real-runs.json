@@ -1,0 +1,21 @@
+{
+  "character": "SILENT",
+  "ascension": 10,
+  "build_source": "spire_codex_run_v1",
+  "target_policy": "source_floor_window_v1",
+  "target_floor_radius": 2,
+  "max_deck_size": 45,
+  "max_colorless": 5,
+  "max_hp_relic_policy": "remove",
+  "removed_relic_ids": ["SNECKO_EYE", "FAKE_SNECKO_EYE", "MASSIVE_SCROLL", "PAELS_EYE", "GOLDEN_COMPASS"],
+  "exclude_resurrection_relics": true,
+  "allow_healing_relics": true,
+  "excluded_relic_ids": ["PRISMATIC_GEM", "LIZARD_TAIL", "KALEIDOSCOPE"],
+  "initial_seeds_per_pair": 4,
+  "short_search_budget_ms": 2000,
+  "battle_timeout_seconds": 120,
+  "search_dop": 1,
+  "worker_count": 1,
+  "battle_seed": 20260905,
+  "counter_seed": 20260906
+}

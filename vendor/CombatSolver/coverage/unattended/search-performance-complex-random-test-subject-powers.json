@@ -1,0 +1,10 @@
+[
+  { "powerId": "CREATIVE_AI_POWER", "target": "Player", "amount": 2 },
+  {
+    "powerId": "AUTOMATION_POWER",
+    "target": "Player",
+    "amount": 1,
+    "internalIntegerMembers": { "cardsLeft": 1 }
+  },
+  { "powerId": "MAYHEM_POWER", "target": "Player", "amount": 2 }
+]

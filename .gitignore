@@ -6,8 +6,13 @@ __pycache__/
 data/
 logs/
 checkpoints/
+backups/
+evidence/
+.staging/
+/*.zip
 **/bin/
 **/obj/
 catalogs/*.raw.json
 catalogs/counter-inspection.txt
 .venv/
+.venv

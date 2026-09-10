@@ -1,0 +1,20 @@
+[
+  {
+    "monsterId": "SlitheringStrangler",
+    "moveId": "CONSTRICT",
+    "triggerPlayerSideTurnEndAfterMove": true,
+    "expectedPlayerHpLoss": 3,
+    "expectedPlayerPowers": {
+      "CONSTRICT_POWER": 3
+    }
+  },
+  {
+    "monsterId": "SlitheringStrangler",
+    "moveId": "CONSTRICT",
+    "killMonsterAfterMove": true,
+    "expectedPlayerHpLoss": 0,
+    "expectedAbsentPlayerPowers": [
+      "CONSTRICT_POWER"
+    ]
+  }
+]

@@ -1,0 +1,16 @@
+[
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "cardsBeforeMove": [
+      { "cardId": "PACTS_END", "pile": "Hand" },
+      { "cardId": "DEFEND_IRONCLAD", "pile": "Exhaust", "count": 3 }
+    ],
+    "cardPlayChecksAfterMove": [
+      { "cardId": "PACTS_END", "target": "None" }
+    ]
+  }
+]

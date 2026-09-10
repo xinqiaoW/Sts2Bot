@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "scenarioId": "THE-HUNT-FATAL-0170",
+  "characterId": "SILENT",
+  "encounterId": "FUZZY_WURM_CRAWLER_WEAK",
+  "seed": "HUNT0170",
+  "enemyCurrentHp": 6,
+  "initialPlayerEnergy": 2,
+  "clearPlayerHand": true,
+  "clearPlayerPiles": true,
+  "cards": [
+    { "cardId": "THE_HUNT", "pile": "Hand", "treatAsDeckCard": true },
+    { "cardId": "STRIKE_SILENT", "pile": "Hand" }
+  ],
+  "forceShortSearchOnly": true,
+  "shortSearchBudgetOverrideMilliseconds": 5000,
+  "expectedInitialFirstActionCardId": "THE_HUNT",
+  "expectedInitialLongTermResourceValueAtLeast": 30,
+  "expectedInitialProjectedBattleHpLost": 0,
+  "expectedInitialCombatEndedTurn": 1,
+  "stopAfterInitialSolverResultAssertion": true,
+  "timeoutSeconds": 150
+}

@@ -1,0 +1,1 @@
+{ "potionId": "FlexPotion", "target": "Player", "expectedPlayerPowers": { "FLEX_POTION_POWER": 5, "STRENGTH_POWER": 5 } }

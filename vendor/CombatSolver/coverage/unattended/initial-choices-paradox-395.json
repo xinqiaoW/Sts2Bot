@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "scenarioId": "INITIAL-CHOICES-PARADOX-395",
+  "characterId": "IRONCLAD",
+  "encounterId": "FUZZY_WURM_CRAWLER_WEAK",
+  "seed": "INITIAL-CHOICES-PARADOX-395",
+  "relics": [
+    { "relicId": "CHOICES_PARADOX", "addWithoutObtainedEffects": true }
+  ],
+  "forceShortSearchOnly": true,
+  "shortSearchBudgetOverrideMilliseconds": 1500,
+  "expectedInitialSetupChoiceCountAtLeast": 1,
+  "expectedInitialSetupChoiceSourceId": "CHOICES_PARADOX",
+  "expectedInitialSetupChoiceTextStartsWith": "选择悖论：选择 ",
+  "expectedInitialChoiceBranchesEvaluatedAtLeast": 5,
+  "verifyTurnSetupManualRefresh": true,
+  "stopAfterInitialSetupAssertion": true,
+  "timeoutSeconds": 120
+}

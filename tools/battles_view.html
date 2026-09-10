@@ -1,0 +1,168 @@
+<div id="sts-collected-battles">
+  <style>
+    #sts-collected-battles .deck-items {display:flex;flex-wrap:wrap;gap:8px 18px;margin:10px 0 18px}
+    #sts-collected-battles .meta {margin:12px 0;color:var(--muted-foreground)}
+    #sts-collected-battles .block {margin:18px 0}
+    #sts-collected-battles .identity {overflow-wrap:anywhere}
+    #sts-collected-battles summary {cursor:pointer;margin:14px 0}
+    #sts-collected-battles .empty {padding:18px 0}
+    #sts-collected-battles .value-row {display:flex;flex-wrap:wrap;gap:12px 24px}
+  </style>
+  <h2 id="sb-title">已采集对战</h2>
+  <div id="sb-overview" class="tabular-nums"></div>
+  <div class="meta text-small" id="sb-snapshot"></div>
+  <div class="viz-controls">
+    <label class="form-label" for="sb-dataset">数据批次<select class="form-select" id="sb-dataset"></select></label>
+    <label class="form-label" for="sb-build">卡组与遗物<select class="form-select" id="sb-build"></select></label>
+    <label class="form-label" for="sb-target">目标编组<select class="form-select" id="sb-target"></select></label>
+  </div>
+  <div class="meta" id="sb-build-meta"></div>
+  <div>卡牌</div>
+  <div class="deck-items" id="sb-cards"></div>
+  <div>遗物 · 按获得顺序</div>
+  <div class="deck-items" id="sb-relics"></div>
+  <hr>
+  <h3 id="sb-target-title"></h3>
+  <div class="meta" id="sb-monsters"></div>
+  <div class="viz-grid" aria-live="polite">
+    <div class="card viz-stat"><div>实测平均净掉血</div><div class="viz-stat-value tabular-nums" id="sb-mean"></div><div class="text-small">满血独立开战 · 含死亡结果</div></div>
+    <div class="card viz-stat"><div>死亡频率</div><div class="viz-stat-value tabular-nums" id="sb-death"></div><div class="text-small" id="sb-death-count"></div></div>
+    <div class="card viz-stat"><div>已完成种子</div><div class="viz-stat-value tabular-nums" id="sb-count"></div><div class="text-small" id="sb-pair-status"></div></div>
+  </div>
+  <div class="table-responsive block">
+    <table class="table table-sm" aria-label="当前卡组和编组的逐场实测结果">
+      <thead><tr><th>种子</th><th class="text-end">战后血量</th><th class="text-end">净掉血</th><th class="text-end">结束回合</th><th>结果</th></tr></thead>
+      <tbody id="sb-battles"></tbody>
+    </table>
+  </div>
+  <details id="sb-all-targets">
+    <summary id="sb-targets-summary">本卡组的全部目标</summary>
+    <div class="table-responsive">
+      <table class="table table-sm" aria-label="当前卡组的所有合法目标及采集覆盖">
+        <thead><tr><th>目标</th><th>类型</th><th class="text-end">样本数</th><th class="text-end">平均掉血</th><th class="text-end">死亡频率</th></tr></thead>
+        <tbody id="sb-target-rows"></tbody>
+      </table>
+    </div>
+  </details>
+  <details>
+    <summary>卡组来源与种子标识</summary>
+    <div id="sb-lineage" class="identity text-small"></div>
+    <div id="sb-seeds" class="identity text-small block"></div>
+  </details>
+  <script type="application/json" id="sb-data">{}</script>
+  <script>
+  (async () => {
+    const root = document.getElementById('sts-collected-battles');
+    let payload = JSON.parse(root.querySelector('#sb-data').textContent);
+    if (payload.encoding === 'gzip-base64') {
+      const bytes = Uint8Array.from(atob(payload.data), c => c.charCodeAt(0));
+      const stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));
+      payload = JSON.parse(await new Response(stream).text());
+    }
+    // Restore losslessly interned strings before expanding card entries.
+    if (payload.string_entries) {
+      const strings = payload.string_entries;
+      const restoreStrings = value => {
+        if (Array.isArray(value)) return value.map(restoreStrings);
+        if (value && typeof value === 'object') {
+          if (Object.keys(value).length === 1 && Object.hasOwn(value, '$s')) {
+            if (!Number.isInteger(value.$s) || value.$s < 0 || value.$s >= strings.length) {
+              throw new Error('Invalid viewer string reference');
+            }
+            return strings[value.$s];
+          }
+          return Object.fromEntries(Object.entries(value).map(([key, item]) => [key, restoreStrings(item)]));
+        }
+        return value;
+      };
+      payload.datasets = restoreStrings(payload.datasets);
+      payload.card_entries = restoreStrings(payload.card_entries);
+      delete payload.string_entries;
+    }
+    (payload.datasets || []).forEach(dataset => {
+      if (!dataset.build_columns) return;
+      const columns = dataset.build_columns;
+      const keys = Object.keys(columns);
+      const count = columns[keys[0]].length;
+      if (keys.some(key => columns[key].length !== count)) throw new Error('Invalid viewer build column');
+      dataset.builds = Array.from({length: count}, (_, i) =>
+        Object.fromEntries(keys.map(key => [key, columns[key][i]])));
+      delete dataset.build_columns;
+    });
+
+    const datasets = payload.datasets || [payload];
+    if (payload.card_entries) datasets.forEach(d => d.builds.forEach(b => {
+      b.cards = b.cards.map(i => payload.card_entries[i]);
+    }));
+    let data = datasets[0];
+    const el = id => root.querySelector('#sb-' + id);
+    const buildSelect = el('build'), targetSelect = el('target');
+    const splitNames = {train:'训练集',validation:'验证集',test:'测试集'};
+    const kinds = {Monster:'普通',Elite:'精英',Boss:'首领'};
+    const fmt = n => Number(n.toFixed(2)).toLocaleString('zh-CN');
+    const pct = n => fmt(n * 100) + '%';
+    const option = (value, text) => {const x = document.createElement('option');x.value=value;x.textContent=text;return x;};
+    const addCell = (row, value, numeric=false) => {const cell=document.createElement('td');cell.textContent=value;if(numeric)cell.className='text-end';row.append(cell);return cell;};
+    const readings = (bi,ti) => data.results[bi + ':' + ti] || [];
+    const inScope = (b,ti) => !b.active_targets || b.active_targets.includes(ti);
+    const summarize = rows => ({n:rows.length,mean:rows.length?rows.reduce((s,r)=>s+r[1],0)/rows.length:null,deaths:rows.reduce((s,r)=>s+r[3],0)});
+    const putItems = (id,items) => {el(id).replaceChildren(...items.map(t=>{const n=document.createElement('span');n.textContent=t;return n;}));};
+    datasets.forEach((d,i)=>el('dataset').append(option(i,`${d.dataset_label || '真实战前构筑'} · ${d.stats.battles.toLocaleString('zh-CN')} 场`)));
+    function renderDataset() {
+      data=datasets[Number(el('dataset').value)];
+      el('title').textContent='已采集对战 · '+(data.build_source==='real_run_mutation_v1'?'真实构筑的一代变异':'真实战前构筑');
+      el('overview').textContent = `${data.stats.battles.toLocaleString('zh-CN')} 场 · ${data.builds.length} 种卡组与遗物配置 · ${data.stats.targets} 个编组已有结果`;
+      el('snapshot').textContent = `${data.snapshot} 快照${data.search_budget_ms?' · 每次短搜 '+data.search_budget_ms/1000+' 秒':''} · 静默猎手 · 进阶 10 · 70/70 开战 · 无药水${data.target_policy?.name==='source_floor_window_v1'?' · 来源前后两层，同幕':data.target_policy?.name==='parent_source_window_v1'?' · 继承母构筑的同幕目标':''}${data.collection_active===false?' · 历史批次，已停止追加':''}`;
+      buildSelect.replaceChildren(...data.builds.map((b,i)=>option(i,`${b.label} · ${b.act_name} · ${b.size} 张${b.cards.some(c=>c.enchantment)?' · 含附魔':''}`)));
+      el('seeds').replaceChildren(...data.seeds.map((s,i)=>{const n=document.createElement('div');n.textContent=`种子 ${i+1}：${s}`;return n;}));
+      buildSelect.value=String(data.default_build);targetSelect.value=String(data.default_target);
+      renderBuild();targetSelect.value=String(data.default_target);renderPair();
+    }
+    function renderPair() {
+      const bi=Number(buildSelect.value),ti=Number(targetSelect.value),b=data.builds[bi],t=data.targets[ti];
+      const rows=readings(bi,ti),s=summarize(rows);
+      el('target-title').textContent=t.name;
+      el('monsters').textContent=`${kinds[t.kind] || t.kind} · 目录怪物：${t.monster_names.join('、')}`;
+      el('mean').textContent=s.n?fmt(s.mean)+' 血':'—';
+      el('death').textContent=s.n?pct(s.deaths/s.n):'—';
+      el('death-count').textContent=`${s.deaths} 场死亡 / ${s.n} 场有效对战`;
+      el('count').textContent=`${s.n} / ${data.seeds.length}`;
+      el('pair-status').textContent=!inScope(b,ti)?'历史结果 · 已退出当前采集范围':s.n===data.seeds.length?'四个种子均已完成':data.collection_active===false?'历史样本 · 本批次未采满':s.n?'未采满 · 当前均值为暂定值':'尚无有效结果';
+      const body=el('battles');body.replaceChildren();
+      data.seeds.forEach((seed,si)=>{
+        const row=document.createElement('tr'),r=rows.find(v=>v[0]===si);
+        addCell(row,`种子 ${si+1}`);
+        addCell(row,r?`${data.max_hp-r[1]} / ${r[4] ?? data.max_hp}`:'—',true);
+        addCell(row,r?r[1]:'—',true);addCell(row,r?r[2]:'—',true);addCell(row,r?(r[3]?'死亡':'存活'):!inScope(b,ti)?'已退出采集范围':data.collection_active===false?'本批次未完成':'待采集');body.append(row);
+      });
+      root.dataset.selectedBuild=b.id;root.dataset.selectedTarget=t.id;
+    }
+    function renderBuild() {
+      const bi=Number(buildSelect.value),b=data.builds[bi],previous=targetSelect.value;
+      targetSelect.replaceChildren(...b.targets.map(ti=>option(ti,data.targets[ti].name+(inScope(b,ti)?'':' · 历史'))));
+      if(b.targets.includes(Number(previous)))targetSelect.value=previous;
+      else targetSelect.value=b.targets.includes(data.default_target)?String(data.default_target):String(b.targets[0]);
+      const done=b.targets.reduce((s,ti)=>s+readings(bi,ti).length,0),groups=b.targets.filter(ti=>readings(bi,ti).length).length;
+      const active=b.active_targets || b.targets,activeDone=active.reduce((s,ti)=>s+readings(bi,ti).length,0);
+      el('build-meta').textContent=`${b.label} · ${b.size} 张牌（${b.colorless} 张无色）· ${b.relics.length} 件遗物 · 累计 ${done} 场 · 当前范围 ${activeDone} / ${active.length*data.seeds.length} 场`;
+      putItems('cards',b.cards.map(c=>`${c.name}${c.upgrade?'+'+(c.upgrade>1?c.upgrade:''):''}${c.enchantment?'〔'+c.enchantment+'〕':''} ×${c.count}${c.colorless?'〔无色〕':''}`));
+      putItems('relics',b.relics.map((r,i)=>`${i+1}. ${r.name}${r.counters.length?'（'+r.counters.join('；')+'）':''}`));
+      el('lineage').replaceChildren();
+      [...(b.derived?[`一代变异 · ${b.derived.size==='small'?'小变异':'大变异'} · ${b.derived.cards_changed} 张牌 / ${b.derived.relics_changed} 件遗物`,`母构筑：${b.derived.parent_label} · ${b.derived.parent_id}`,...b.derived.changes]:[]),`配置 ID：${b.id}`,`先古遗物历史：${b.ancient}`,...(b.origins||[]).map(o=>`原始对局：${o.run_hash} · 第 ${o.floor} 层战前${o.removed_relics?.length?' · 标准化时移除：'+o.removed_relics.join('、'):''}`)].forEach(t=>{const n=document.createElement('div');n.textContent=t;el('lineage').append(n);});
+      el('targets-summary').textContent=`本卡组全部目标 · ${groups} / ${b.targets.length} 个已有结果`;
+      const table=el('target-rows');table.replaceChildren();
+      b.targets.forEach(ti=>{const t=data.targets[ti],s=summarize(readings(bi,ti)),row=document.createElement('tr');
+        const cell=addCell(row,''),button=document.createElement('button');button.type='button';button.className='btn btn-ghost';button.textContent=t.name+(inScope(b,ti)?'':' · 历史');button.addEventListener('click',()=>{targetSelect.value=String(ti);renderPair();});cell.append(button);
+        addCell(row,kinds[t.kind]||t.kind);addCell(row,`${s.n}/${data.seeds.length}`,true);addCell(row,s.n?fmt(s.mean):'—',true);addCell(row,s.n?pct(s.deaths/s.n):'—',true);table.append(row);
+      });
+      renderPair();
+    }
+    buildSelect.addEventListener('change',renderBuild);targetSelect.addEventListener('change',renderPair);
+    el('dataset').addEventListener('change',renderDataset);renderDataset();
+  })().catch(error => {
+    const message=document.createElement('div');message.setAttribute('role','alert');
+    message.textContent='数据加载失败，请刷新页面。';
+    document.getElementById('sts-collected-battles').prepend(message);console.error(error);
+  });
+  </script>
+</div>

@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "scenarioId": "TURN-SETUP-INTERIM-ADOPTION-0250",
+  "characterId": "SILENT",
+  "encounterId": "GREMLIN_MERC_NORMAL",
+  "seed": "TURN-SETUP-INTERIM-ADOPTION-0250",
+  "relics": [
+    {
+      "relicId": "TOASTY_MITTENS",
+      "addWithoutObtainedEffects": true
+    }
+  ],
+  "forceShortSearchOnly": true,
+  "shortSearchBudgetOverrideMilliseconds": 5000,
+  "searchMaxDegreeOfParallelismForTest": 4,
+  "verifyTurnSetupControlsDuringInitialSearch": true,
+  "timeoutSeconds": 120
+}

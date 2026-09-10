@@ -1,0 +1,18 @@
+[
+  {
+    "monsterId": "SpectralKnight",
+    "moveId": "HEX",
+    "cardBeforeMove": {
+      "cardId": "ARMAMENTS",
+      "pile": "Hand",
+      "count": 1
+    },
+    "triggerPlayerTurnEndAfterMove": true,
+    "expectedPlayerPowers": {
+      "HEX_POWER": 2
+    },
+    "expectedPlayerCardStates": {
+      "Exhaust:ARMAMENTS:HEXED:2:E:R0:XFalse:SFalse:TFalse:DFalse:MFalse": 1
+    }
+  }
+]

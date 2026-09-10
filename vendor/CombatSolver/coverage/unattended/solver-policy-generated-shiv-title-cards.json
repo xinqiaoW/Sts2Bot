@@ -1,0 +1,5 @@
+[
+  { "cardId": "BLADE_OF_INK", "pile": "Hand", "count": 1 },
+  { "cardId": "DEFEND_SILENT", "pile": "Draw", "count": 5 },
+  { "cardId": "STRIKE_SILENT", "pile": "Draw", "count": 5 }
+]

@@ -1,0 +1,47 @@
+[
+  {
+    "coveredCardHooks": [
+      { "cardId": "BAD_LUCK", "hook": "OnTurnEndInHand" },
+      { "cardId": "BECKON", "hook": "OnTurnEndInHand" },
+      { "cardId": "BURN", "hook": "OnTurnEndInHand" },
+      { "cardId": "DEBT", "hook": "OnTurnEndInHand" },
+      { "cardId": "DECAY", "hook": "OnTurnEndInHand" }
+    ],
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "playerHpBefore": 80,
+    "clearPlayerHandBeforeMove": true,
+    "cardsBeforeMove": [
+      { "cardId": "BAD_LUCK", "pile": "Hand" },
+      { "cardId": "BECKON", "pile": "Hand" },
+      { "cardId": "BURN", "pile": "Hand" },
+      { "cardId": "DEBT", "pile": "Hand" },
+      { "cardId": "DECAY", "pile": "Hand" }
+    ],
+    "triggerPlayerTurnEndAfterMove": true
+  },
+  {
+    "coveredCardHooks": [
+      { "cardId": "DOUBT", "hook": "OnTurnEndInHand" },
+      { "cardId": "INFECTION", "hook": "OnTurnEndInHand" },
+      { "cardId": "REGRET", "hook": "BeforeSideTurnEnd" },
+      { "cardId": "REGRET", "hook": "OnTurnEndInHand" },
+      { "cardId": "SHAME", "hook": "OnTurnEndInHand" },
+      { "cardId": "TOXIC", "hook": "OnTurnEndInHand" },
+      { "cardId": "WITHER", "hook": "OnTurnEndInHand" }
+    ],
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "playerHpBefore": 80,
+    "clearPlayerHandBeforeMove": true,
+    "cardsBeforeMove": [
+      { "cardId": "DOUBT", "pile": "Hand" },
+      { "cardId": "INFECTION", "pile": "Hand" },
+      { "cardId": "REGRET", "pile": "Hand" },
+      { "cardId": "SHAME", "pile": "Hand" },
+      { "cardId": "TOXIC", "pile": "Hand" },
+      { "cardId": "WITHER", "pile": "Hand" }
+    ],
+    "triggerPlayerTurnEndAfterMove": true
+  }
+]

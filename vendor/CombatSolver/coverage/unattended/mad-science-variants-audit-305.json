@@ -1,0 +1,56 @@
+[
+  {
+    "monsterId": "FuzzyWurmCrawler", "moveId": "INHALE", "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true, "playerEnergyBefore": 99, "playerStarsBefore": 99,
+    "cardsBeforeMove": [{ "cardId": "MAD_SCIENCE", "pile": "Hand", "enumMembers": { "TinkerTimeType": "Attack", "TinkerTimeRider": "Sapping" } }],
+    "cardPlayChecksAfterMove": [{ "cardId": "MAD_SCIENCE", "target": "Enemy" }]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler", "moveId": "INHALE", "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true, "playerEnergyBefore": 99, "playerStarsBefore": 99,
+    "cardsBeforeMove": [{ "cardId": "MAD_SCIENCE", "pile": "Hand", "enumMembers": { "TinkerTimeType": "Attack", "TinkerTimeRider": "Violence" } }],
+    "cardPlayChecksAfterMove": [{ "cardId": "MAD_SCIENCE", "target": "Enemy" }]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler", "moveId": "INHALE", "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true, "playerEnergyBefore": 99, "playerStarsBefore": 99,
+    "cardsBeforeMove": [{ "cardId": "MAD_SCIENCE", "pile": "Hand", "enumMembers": { "TinkerTimeType": "Attack", "TinkerTimeRider": "Choking" } }],
+    "cardPlayChecksAfterMove": [{ "cardId": "MAD_SCIENCE", "target": "Enemy" }]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler", "moveId": "INHALE", "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true, "playerEnergyBefore": 10, "playerStarsBefore": 99,
+    "cardsBeforeMove": [{ "cardId": "MAD_SCIENCE", "pile": "Hand", "enumMembers": { "TinkerTimeType": "Skill", "TinkerTimeRider": "Energized" } }],
+    "cardPlayChecksAfterMove": [{ "cardId": "MAD_SCIENCE", "target": "None" }]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler", "moveId": "INHALE", "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true, "playerEnergyBefore": 99, "playerStarsBefore": 99,
+    "cardsBeforeMove": [{ "cardId": "MAD_SCIENCE", "pile": "Hand", "enumMembers": { "TinkerTimeType": "Skill", "TinkerTimeRider": "Wisdom" } }],
+    "cardPlayChecksAfterMove": [{ "cardId": "MAD_SCIENCE", "target": "None" }]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler", "moveId": "INHALE", "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true, "playerEnergyBefore": 99, "playerStarsBefore": 99,
+    "cardsBeforeMove": [{ "cardId": "MAD_SCIENCE", "pile": "Hand", "enumMembers": { "TinkerTimeType": "Skill", "TinkerTimeRider": "Chaos" } }],
+    "cardPlayChecksAfterMove": [{ "cardId": "MAD_SCIENCE", "target": "None" }]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler", "moveId": "INHALE", "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true, "playerEnergyBefore": 99, "playerStarsBefore": 99,
+    "cardsBeforeMove": [{ "cardId": "MAD_SCIENCE", "pile": "Hand", "enumMembers": { "TinkerTimeType": "Power", "TinkerTimeRider": "Expertise" } }],
+    "cardPlayChecksAfterMove": [{ "cardId": "MAD_SCIENCE", "target": "None" }]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler", "moveId": "INHALE", "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true, "playerEnergyBefore": 99, "playerStarsBefore": 99,
+    "cardsBeforeMove": [{ "cardId": "MAD_SCIENCE", "pile": "Hand", "enumMembers": { "TinkerTimeType": "Power", "TinkerTimeRider": "Curious" } }],
+    "cardPlayChecksAfterMove": [{ "cardId": "MAD_SCIENCE", "target": "None" }]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler", "moveId": "INHALE", "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true, "playerEnergyBefore": 99, "playerStarsBefore": 99,
+    "cardsBeforeMove": [{ "cardId": "MAD_SCIENCE", "pile": "Hand", "enumMembers": { "TinkerTimeType": "Power", "TinkerTimeRider": "Improvement" } }],
+    "cardPlayChecksAfterMove": [{ "cardId": "MAD_SCIENCE", "target": "None" }]
+  }
+]

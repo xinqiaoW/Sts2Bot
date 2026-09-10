@@ -1,0 +1,56 @@
+[
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "playerEnergyBefore": 0,
+    "clearPlayerHandBeforeMove": true,
+    "powersBeforeMove": [
+      {
+        "powerId": "LIGHTNING_ROD_POWER",
+        "target": "Player",
+        "amount": 1
+      },
+      {
+        "powerId": "SPINNER_POWER",
+        "target": "Player",
+        "amount": 2
+      },
+      {
+        "powerId": "RADIANCE_POWER",
+        "target": "Player",
+        "amount": 2
+      },
+      {
+        "powerId": "CLARITY_POWER",
+        "target": "Player",
+        "amount": 2
+      },
+      {
+        "powerId": "MACHINE_LEARNING_POWER",
+        "target": "Player",
+        "amount": 2
+      }
+    ],
+    "cardBeforeMove": {
+      "cardId": "DEFEND_DEFECT",
+      "pile": "Draw",
+      "count": 10
+    },
+    "triggerPlayerSetupAfterMove": true,
+    "expectedPlayerEnergy": 4,
+    "expectedPlayerHandCount": 8,
+    "expectedPlayerPowers": {
+      "SPINNER_POWER": 2,
+      "RADIANCE_POWER": 1,
+      "CLARITY_POWER": 1,
+      "MACHINE_LEARNING_POWER": 2
+    },
+    "expectedAbsentPlayerPowers": [
+      "LIGHTNING_ROD_POWER"
+    ],
+    "expectedPlayerOrbs": {
+      "LIGHTNING_ORB": 1,
+      "GLASS_ORB": 2
+    }
+  }
+]

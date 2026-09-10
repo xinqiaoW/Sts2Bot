@@ -1,0 +1,67 @@
+[
+  {
+    "monsterId": "HauntedShip",
+    "moveId": "SWIPE_MOVE",
+    "expectedPlayerHpLoss": 13,
+    "expectedPlayerPowers": {},
+    "expectedEnemyPowers": {},
+    "expectedPlayerPileCards": {}
+  },
+  {
+    "monsterId": "HauntedShip",
+    "moveId": "STOMP_MOVE",
+    "expectedPlayerHpLoss": 12,
+    "expectedPlayerPowers": {},
+    "expectedEnemyPowers": {},
+    "expectedPlayerPileCards": {}
+  },
+  {
+    "monsterId": "HauntedShip",
+    "moveId": "HAUNT_MOVE",
+    "expectedPlayerHpLoss": 0,
+    "expectedPlayerPowers": {
+      "WEAK_POWER": 3
+    },
+    "expectedEnemyPowers": {},
+    "expectedPlayerPileCards": {
+      "Discard:DAZED": 5
+    }
+  },
+  {
+    "monsterId": "HunterKiller",
+    "moveId": "BITE_MOVE",
+    "expectedPlayerHpLoss": 17,
+    "expectedPlayerPowers": {
+      "WEAK_POWER": 3
+    },
+    "expectedEnemyPowers": {},
+    "expectedPlayerPileCards": {
+      "Discard:DAZED": 5
+    }
+  },
+  {
+    "monsterId": "HunterKiller",
+    "moveId": "PUNCTURE_MOVE",
+    "expectedPlayerHpLoss": 21,
+    "expectedPlayerPowers": {
+      "WEAK_POWER": 3
+    },
+    "expectedEnemyPowers": {},
+    "expectedPlayerPileCards": {
+      "Discard:DAZED": 5
+    }
+  },
+  {
+    "monsterId": "HunterKiller",
+    "moveId": "TENDERIZING_GOOP_MOVE",
+    "expectedPlayerHpLoss": 0,
+    "expectedPlayerPowers": {
+      "WEAK_POWER": 3,
+      "TENDER_POWER": 1
+    },
+    "expectedEnemyPowers": {},
+    "expectedPlayerPileCards": {
+      "Discard:DAZED": 5
+    }
+  }
+]

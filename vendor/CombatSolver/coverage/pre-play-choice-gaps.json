@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 2,
+  "scope": "Single-player combat choices before a PlayerTurnPhase.Play snapshot",
+  "generatedFrom": "Slay the Spire 2 0.111.0 model source audit",
+  "unresolved": [],
+  "handled": [
+    {
+      "id": "TOOLBOX",
+      "source": "Toolbox.BeforeHandDraw",
+      "phase": "BeforeHandDraw",
+      "effect": "GenerateToHand",
+      "behavior": "Opens the native ChooseCard page at vanilla BeforeHandDraw timing, starts the Start-root search after the page is visible, and drives the selected candidate through NativeChoiceRuntime",
+      "evidence": "NATIVE-CHOICE-SURFACES-553"
+    },
+    {
+      "id": "CHOICES_PARADOX",
+      "source": "ChoicesParadox.AfterPlayerTurnStart",
+      "phase": "AfterPlayerTurnStart",
+      "effect": "GenerateRetainedToHand",
+      "behavior": "Opens the native simple-grid page after the opening hand draw, starts search only after visibility, and drives the retained candidate through NativeChoiceRuntime",
+      "evidence": "NATIVE-CHOICE-SURFACES-553"
+    },
+    {
+      "id": "TOASTY_MITTENS_FIRST_TURN",
+      "source": "ToastyMittens.AfterPlayerTurnStart",
+      "phase": "AfterPlayerTurnStart",
+      "effect": "ExhaustThenGainStrength",
+      "behavior": "Opens the native hand page before Play; the first turn searches after visibility, while later turns visibly replay the choice already planned on the preceding EndTurn action",
+      "evidence": "NATIVE-CHOICE-SURFACES-553"
+    },
+    {
+      "id": "GAMBLING_CHIP",
+      "source": "GamblingChip.AfterPlayerTurnStart",
+      "phase": "AfterPlayerTurnStart",
+      "effect": "DiscardAndDrawSameCount",
+      "behavior": "Opens the native optional hand page, searches exact discard-then-draw continuations after visibility, and visibly drives the selected subset",
+      "evidence": "NATIVE-CHOICE-SURFACES-553"
+    },
+    {
+      "id": "IMBUED_INITIAL_RUNTIME_SELECTOR",
+      "source": "Imbued.AfterAutoPrePlayPhaseEntered",
+      "phase": "AutoPrePlay",
+      "effect": "AutoPlayNestedChoice",
+      "behavior": "Keeps one native-choice session across SetupPlayerTurn and RunAutoPrePlayPhase so the autoplayed card and its nested hand choice remain visible and exact",
+      "evidence": "NATIVE-CHOICE-SURFACES-553"
+    }
+  ],
+  "handledAutomatic": [
+    {
+      "id": "WHISPERING_EARRING",
+      "source": "WhisperingEarring.AfterAutoPrePlayPhaseEnteredLate",
+      "behavior": "VakuuCardSelector selects deterministically without player input; the solver mirrors paid autoplay, targeting and row-major nested choices before validating the Play state",
+      "evidence": "INITIAL-NATIVE-START-EFFECTS-400/401"
+    }
+  ]
+}

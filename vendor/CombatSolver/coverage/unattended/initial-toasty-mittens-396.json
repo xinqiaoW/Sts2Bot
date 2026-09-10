@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "scenarioId": "INITIAL-TOASTY-MITTENS-396",
+  "characterId": "IRONCLAD",
+  "encounterId": "FUZZY_WURM_CRAWLER_WEAK",
+  "seed": "INITIAL-TOASTY-MITTENS-396",
+  "relics": [
+    { "relicId": "TOASTY_MITTENS", "addWithoutObtainedEffects": true }
+  ],
+  "forceShortSearchOnly": true,
+  "shortSearchBudgetOverrideMilliseconds": 1500,
+  "expectedInitialSetupChoiceCountAtLeast": 1,
+  "expectedInitialSetupChoiceSourceId": "TOASTY_MITTENS",
+  "verifyTurnSetupManualRefresh": true,
+  "stopAfterInitialSetupAssertion": true,
+  "timeoutSeconds": 120
+}

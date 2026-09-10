@@ -1,0 +1,55 @@
+[
+  {
+    "enemyIndex": 0,
+    "monsterId": "HUNTER_KILLER",
+    "moveId": "BITE_MOVE",
+    "clearAllPowersBeforeMove": true,
+    "clearPlayerPilesBeforeMove": true,
+    "playerEnergyBefore": 4,
+    "enemyHpBefore": 126,
+    "powerBeforeMove": {
+      "powerId": "TENDER_POWER",
+      "target": "Player",
+      "applier": "Enemy",
+      "amount": 1
+    },
+    "cardsBeforeMove": [
+      {
+        "cardId": "BACKFLIP",
+        "pile": "Hand",
+        "count": 1
+      },
+      {
+        "cardId": "NEUTRALIZE",
+        "pile": "Hand",
+        "count": 1,
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "STRIKE_SILENT",
+        "pile": "Hand",
+        "count": 1
+      }
+    ],
+    "cardPlayChecksBeforeMove": [
+      {
+        "cardId": "BACKFLIP",
+        "target": "None"
+      },
+      {
+        "cardId": "NEUTRALIZE",
+        "target": "Enemy"
+      },
+      {
+        "cardId": "STRIKE_SILENT",
+        "target": "Enemy"
+      }
+    ],
+    "expectedEnemyHpGain": -7,
+    "expectedPlayerPowers": {
+      "TENDER_POWER": 1,
+      "STRENGTH_POWER": -3,
+      "DEXTERITY_POWER": -3
+    }
+  }
+]

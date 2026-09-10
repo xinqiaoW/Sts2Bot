@@ -1,0 +1,25 @@
+[
+  {
+    "monsterId": "ShrinkerBeetle",
+    "moveId": "SHRINKER_MOVE",
+    "enemyHpBefore": 20,
+    "playCardAfterMove": {
+      "cardId": "STRIKE_IRONCLAD",
+      "pile": "Hand",
+      "count": 1
+    },
+    "triggerPlayerSideTurnEndAfterMove": true,
+    "expectedEnemyHpGain": -4,
+    "expectedPlayerPowers": {
+      "SHRINK_POWER": -1
+    }
+  },
+  {
+    "monsterId": "ShrinkerBeetle",
+    "moveId": "SHRINKER_MOVE",
+    "killMonsterAfterMove": true,
+    "expectedAbsentPlayerPowers": [
+      "SHRINK_POWER"
+    ]
+  }
+]

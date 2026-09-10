@@ -1,0 +1,317 @@
+[
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "ostyHpBefore": null,
+    "cardsBeforeMove": [
+      {
+        "cardId": "FEAR",
+        "pile": "Hand"
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "FEAR",
+        "target": "Enemy"
+      }
+    ]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "ostyHpBefore": null,
+    "cardsBeforeMove": [
+      {
+        "cardId": "FIGHT_ME",
+        "pile": "Hand"
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "FIGHT_ME",
+        "target": "Enemy"
+      }
+    ]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "ostyHpBefore": null,
+    "cardsBeforeMove": [
+      {
+        "cardId": "FISTICUFFS",
+        "pile": "Hand"
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "FISTICUFFS",
+        "target": "Enemy"
+      }
+    ]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "ostyHpBefore": null,
+    "cardsBeforeMove": [
+      {
+        "cardId": "GAMMA_BLAST",
+        "pile": "Hand"
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "GAMMA_BLAST",
+        "target": "Enemy"
+      }
+    ]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "ostyHpBefore": null,
+    "cardsBeforeMove": [
+      {
+        "cardId": "HANG",
+        "pile": "Hand"
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "HANG",
+        "target": "Enemy"
+      }
+    ]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "ostyHpBefore": 12,
+    "cardsBeforeMove": [
+      {
+        "cardId": "HIGH_FIVE",
+        "pile": "Hand"
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "HIGH_FIVE",
+        "target": "None"
+      }
+    ]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "ostyHpBefore": null,
+    "cardsBeforeMove": [
+      {
+        "cardId": "LEADING_STRIKE",
+        "pile": "Hand"
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "LEADING_STRIKE",
+        "target": "Enemy"
+      }
+    ]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "ostyHpBefore": null,
+    "cardsBeforeMove": [
+      {
+        "cardId": "LEG_SWEEP",
+        "pile": "Hand"
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "LEG_SWEEP",
+        "target": "Enemy"
+      }
+    ]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "ostyHpBefore": null,
+    "cardsBeforeMove": [
+      {
+        "cardId": "MAUL",
+        "pile": "Hand"
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "MAUL",
+        "target": "Enemy"
+      }
+    ]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "ostyHpBefore": null,
+    "cardsBeforeMove": [
+      {
+        "cardId": "METEOR_SHOWER",
+        "pile": "Hand"
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "METEOR_SHOWER",
+        "target": "None"
+      }
+    ]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "ostyHpBefore": null,
+    "cardsBeforeMove": [
+      {
+        "cardId": "MINION_DIVE_BOMB",
+        "pile": "Hand"
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "MINION_DIVE_BOMB",
+        "target": "Enemy"
+      }
+    ]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "ostyHpBefore": null,
+    "cardsBeforeMove": [
+      {
+        "cardId": "NEUTRALIZE",
+        "pile": "Hand"
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "NEUTRALIZE",
+        "target": "Enemy"
+      }
+    ]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "ostyHpBefore": null,
+    "cardsBeforeMove": [
+      {
+        "cardId": "POISONED_STAB",
+        "pile": "Hand"
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "POISONED_STAB",
+        "target": "Enemy"
+      }
+    ]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "ostyHpBefore": 12,
+    "cardsBeforeMove": [
+      {
+        "cardId": "POKE",
+        "pile": "Hand"
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "POKE",
+        "target": "Enemy"
+      }
+    ]
+  },
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "playerStarsBefore": 99,
+    "ostyHpBefore": 12,
+    "cardsBeforeMove": [
+      {
+        "cardId": "RIGHT_HAND_HAND",
+        "pile": "Hand"
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "RIGHT_HAND_HAND",
+        "target": "Enemy"
+      }
+    ]
+  }
+]

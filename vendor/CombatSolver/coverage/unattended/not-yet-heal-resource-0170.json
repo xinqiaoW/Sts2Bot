@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "scenarioId": "NOT-YET-HEAL-0170",
+  "characterId": "NECROBINDER",
+  "encounterId": "FUZZY_WURM_CRAWLER_WEAK",
+  "seed": "NOTYET0170",
+  "enemyCurrentHp": 6,
+  "initialPlayerHp": 60,
+  "initialPlayerMaxHp": 80,
+  "initialPlayerEnergy": 3,
+  "clearPlayerHand": true,
+  "clearPlayerPiles": true,
+  "cards": [
+    { "cardId": "NOT_YET", "pile": "Hand", "treatAsDeckCard": true },
+    { "cardId": "STRIKE_NECROBINDER", "pile": "Hand" }
+  ],
+  "forceShortSearchOnly": true,
+  "shortSearchBudgetOverrideMilliseconds": 5000,
+  "expectedInitialFirstActionCardId": "NOT_YET",
+  "expectedInitialProjectedBattleHpLost": 0,
+  "expectedInitialCombatEndedTurn": 1,
+  "stopAfterInitialSolverResultAssertion": true,
+  "timeoutSeconds": 150
+}

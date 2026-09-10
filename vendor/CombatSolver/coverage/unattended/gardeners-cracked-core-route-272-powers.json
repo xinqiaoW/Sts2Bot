@@ -1,0 +1,6 @@
+[
+  { "powerId": "VULNERABLE_POWER", "target": "Enemy", "targetIndex": 0, "amount": 1 },
+  { "powerId": "VULNERABLE_POWER", "target": "Enemy", "targetIndex": 1, "amount": 1 },
+  { "powerId": "VULNERABLE_POWER", "target": "Enemy", "targetIndex": 2, "amount": 1 },
+  { "powerId": "VULNERABLE_POWER", "target": "Enemy", "targetIndex": 3, "amount": 1 }
+]

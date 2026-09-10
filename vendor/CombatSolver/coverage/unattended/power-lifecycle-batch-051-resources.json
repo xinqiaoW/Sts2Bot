@@ -1,0 +1,82 @@
+[
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 10,
+    "powerBeforeMove": {
+      "powerId": "BLACK_HOLE_POWER",
+      "target": "Player",
+      "amount": 5
+    },
+    "cardBeforeMove": { "cardId": "HIDDEN_CACHE", "pile": "Hand", "count": 1 },
+    "cardPlayChecksAfterMove": [
+      { "cardId": "HIDDEN_CACHE", "target": "None" }
+    ]
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerStarsBefore": 5,
+    "playerBlockBefore": 0,
+    "powerBeforeMove": {
+      "powerId": "CHILD_OF_THE_STARS_POWER",
+      "target": "Player",
+      "amount": 2
+    },
+    "cardBeforeMove": { "cardId": "CLOAK_OF_STARS", "pile": "Hand", "count": 1 },
+    "cardPlayChecksAfterMove": [
+      { "cardId": "CLOAK_OF_STARS", "target": "None" }
+    ],
+    "expectedPlayerBlockGain": 9
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 10,
+    "powerBeforeMove": {
+      "powerId": "ORBIT_POWER",
+      "target": "Player",
+      "amount": 2
+    },
+    "cardBeforeMove": { "cardId": "STRIKE_IRONCLAD", "pile": "Hand", "count": 4 },
+    "cardPlayChecksAfterMove": [
+      { "cardId": "STRIKE_IRONCLAD", "target": "Enemy" },
+      { "cardId": "STRIKE_IRONCLAD", "target": "Enemy" },
+      { "cardId": "STRIKE_IRONCLAD", "target": "Enemy" },
+      { "cardId": "STRIKE_IRONCLAD", "target": "Enemy" }
+    ],
+    "expectedPlayerEnergy": 8
+  },
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 10,
+    "powerBeforeMove": {
+      "powerId": "PALE_BLUE_DOT_POWER",
+      "target": "Player",
+      "amount": 2
+    },
+    "cardsBeforeMove": [
+      { "cardId": "STRIKE_IRONCLAD", "pile": "Hand", "count": 5 },
+      { "cardId": "DEFEND_IRONCLAD", "pile": "Draw", "count": 2 }
+    ],
+    "cardPlayChecksAfterMove": [
+      { "cardId": "STRIKE_IRONCLAD", "target": "Enemy" },
+      { "cardId": "STRIKE_IRONCLAD", "target": "Enemy" },
+      { "cardId": "STRIKE_IRONCLAD", "target": "Enemy" },
+      { "cardId": "STRIKE_IRONCLAD", "target": "Enemy" },
+      { "cardId": "STRIKE_IRONCLAD", "target": "Enemy" }
+    ],
+    "expectedPlayerPowers": {
+      "DRAW_CARDS_NEXT_TURN_POWER": 2
+    }
+  }
+]

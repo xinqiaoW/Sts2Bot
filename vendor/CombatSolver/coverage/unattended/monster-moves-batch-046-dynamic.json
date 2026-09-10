@@ -1,0 +1,17 @@
+[
+  {
+    "monsterId": "Fabricator",
+    "moveId": "FABRICATE_MOVE",
+    "expectedSimulatedDynamicResolution": false
+  },
+  {
+    "monsterId": "FrogKnight",
+    "moveId": "BEETLE_CHARGE",
+    "expectedSimulatedDynamicResolution": false
+  },
+  {
+    "monsterId": "ThievingHopper",
+    "moveId": "THIEVERY_MOVE",
+    "expectedSimulatedDynamicResolution": false
+  }
+]

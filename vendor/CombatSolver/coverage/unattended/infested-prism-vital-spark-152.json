@@ -1,0 +1,14 @@
+[
+  {
+    "monsterId": "InfestedPrism",
+    "moveId": "RADIATE_MOVE",
+    "enemyHpBefore": 171,
+    "expectedEnemyPowers": { "VITAL_SPARK_POWER": 2 }
+  },
+  {
+    "monsterId": "InfestedPrism",
+    "moveId": "PULSATE_MOVE",
+    "enemyHpBefore": 171,
+    "expectedEnemyPowers": { "VITAL_SPARK_POWER": 4 }
+  }
+]

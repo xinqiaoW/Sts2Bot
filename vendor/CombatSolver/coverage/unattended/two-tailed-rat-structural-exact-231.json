@@ -1,0 +1,6 @@
+[
+  { "monsterId": "TwoTailedRat", "moveId": "CALL_FOR_BACKUP_MOVE", "expectedSimulatedDynamicResolution": false },
+  { "monsterId": "TwoTailedRat", "moveId": "SCRATCH_MOVE", "expectedSimulatedDynamicResolution": false },
+  { "monsterId": "TwoTailedRat", "moveId": "DISEASE_BITE_MOVE", "expectedSimulatedDynamicResolution": false },
+  { "monsterId": "TwoTailedRat", "moveId": "SCREECH_MOVE", "expectedSimulatedDynamicResolution": false }
+]

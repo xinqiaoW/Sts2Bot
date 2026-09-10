@@ -1,0 +1,9 @@
+{
+  "solver_base": "31899af",
+  "collector_protocol": 1,
+  "game_version": "0.111.0",
+  "game_sha256": "0861bfa1df347538d932f22d580e75420f08082792eb914e53b4882764acdbe9",
+  "collector_sha256": "53a38d1959336c5a4b05979159288fdc4b21b43caef861ff103ea57d8ade1c83",
+  "ritsu_sha256": "5be797e3ee68bbd261228ad617cc67fd6eba5ed23e5e94674888938399465dcc",
+  "runtime": "Windows game via Wine 11.0 on Ubuntu 22.04"
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "monsterId": "FuzzyWurmCrawler",
+    "moveId": "INHALE",
+    "clearPlayerHandBeforeMove": true,
+    "playerEnergyBefore": 10,
+    "cardsBeforeMove": [
+      { "cardId": "CLOAK_AND_DAGGER", "pile": "Hand" },
+      { "cardId": "DODGE_AND_ROLL", "pile": "Hand" }
+    ],
+    "cardPlayChecksAfterMove": [
+      { "cardId": "CLOAK_AND_DAGGER", "target": "None" },
+      { "cardId": "DODGE_AND_ROLL", "target": "None" }
+    ],
+    "expectedPlayerEnergy": 8,
+    "expectedPlayerBlock": 10,
+    "expectedPlayerPowers": {
+      "BLOCK_NEXT_TURN_POWER": 4
+    },
+    "expectedPlayerPileCards": {
+      "Discard:CLOAK_AND_DAGGER": 1,
+      "Discard:DODGE_AND_ROLL": 1,
+      "Hand:SHIV": 1
+    }
+  }
+]

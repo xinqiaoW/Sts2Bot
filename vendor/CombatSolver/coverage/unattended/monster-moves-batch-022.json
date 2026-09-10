@@ -1,0 +1,44 @@
+[
+  {
+    "monsterId": "SoulFysh",
+    "moveId": "BECKON_MOVE",
+    "expectedPlayerHpLoss": 0,
+    "expectedPlayerPileCards": {
+      "Draw:BECKON": 1,
+      "Discard:BECKON": 1
+    }
+  },
+  {
+    "monsterId": "SoulFysh",
+    "moveId": "DE_GAS_MOVE",
+    "expectedPlayerHpLoss": 16
+  },
+  {
+    "monsterId": "SoulFysh",
+    "moveId": "GAZE_MOVE",
+    "expectedPlayerHpLoss": 7,
+    "expectedPlayerPileCards": {
+      "Draw:BECKON": 1,
+      "Discard:BECKON": 2
+    }
+  },
+  {
+    "monsterId": "SoulFysh",
+    "moveId": "FADE_MOVE",
+    "expectedPlayerHpLoss": 0,
+    "expectedEnemyPowers": {
+      "INTANGIBLE_POWER": 2
+    }
+  },
+  {
+    "monsterId": "SoulFysh",
+    "moveId": "SCREAM_MOVE",
+    "expectedPlayerHpLoss": 13,
+    "expectedPlayerPowers": {
+      "VULNERABLE_POWER": 3
+    },
+    "expectedEnemyPowers": {
+      "INTANGIBLE_POWER": 2
+    }
+  }
+]

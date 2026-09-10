@@ -1,0 +1,50 @@
+[
+  {
+    "monsterId": "Axebot",
+    "moveId": "ONE_TWO_MOVE",
+    "playerHpBefore": 75,
+    "playerBlockBefore": 12,
+    "enemyHpBefore": 2,
+    "clearAllPowersBeforeMove": true,
+    "powersBeforeMove": [
+      {
+        "powerId": "THORNS_POWER",
+        "target": "Player",
+        "amount": 3
+      },
+      {
+        "powerId": "STOCK_POWER",
+        "target": "CheckedEnemy",
+        "amount": 2
+      }
+    ],
+    "expectedPlayerHpLoss": 0,
+    "expectedPlayerBlock": 2
+  },
+  {
+    "monsterId": "Axebot",
+    "moveId": "HAMMER_UPPERCUT_MOVE",
+    "playerHpBefore": 75,
+    "playerBlockBefore": 14,
+    "enemyHpBefore": 2,
+    "clearAllPowersBeforeMove": true,
+    "powersBeforeMove": [
+      {
+        "powerId": "THORNS_POWER",
+        "target": "Player",
+        "amount": 3
+      },
+      {
+        "powerId": "STOCK_POWER",
+        "target": "CheckedEnemy",
+        "amount": 2
+      }
+    ],
+    "expectedPlayerHpLoss": 0,
+    "expectedPlayerBlock": 0,
+    "expectedPlayerPowers": {
+      "WEAK_POWER": 2,
+      "FRAIL_POWER": 2
+    }
+  }
+]

@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "scenarioId": "INITIAL-EARRING-NESTED-CHOICE-401",
+  "characterId": "SILENT",
+  "encounterId": "FUZZY_WURM_CRAWLER_WEAK",
+  "seed": "INITIAL-EARRING-NESTED-CHOICE-401",
+  "relics": [
+    { "relicId": "TOOLBOX", "addWithoutObtainedEffects": true },
+    { "relicId": "WHISPERING_EARRING", "addWithoutObtainedEffects": true }
+  ],
+  "runCards": [
+    { "cardId": "SURVIVOR", "pile": "Deck", "count": 5 }
+  ],
+  "forceShortSearchOnly": true,
+  "shortSearchBudgetOverrideMilliseconds": 1500,
+  "expectedInitialSetupChoiceCountAtLeast": 1,
+  "expectedInitialSetupChoiceSourceId": "TOOLBOX",
+  "stopAfterInitialSetupAssertion": true,
+  "timeoutSeconds": 120
+}

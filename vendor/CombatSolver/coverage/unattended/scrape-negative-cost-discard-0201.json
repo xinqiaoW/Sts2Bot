@@ -1,0 +1,25 @@
+[
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "playerEnergyBefore": 99,
+    "clearAllPowersBeforeMove": true,
+    "clearPlayerPilesBeforeMove": true,
+    "cardsBeforeMove": [
+      { "cardId": "SCRAPE", "pile": "Hand", "upgradeLevels": 1 },
+      { "cardId": "DEFEND_DEFECT", "pile": "Draw" },
+      { "cardId": "GO_FOR_THE_EYES", "pile": "Draw", "upgradeLevels": 1 },
+      { "cardId": "GLACIER", "pile": "Draw" },
+      { "cardId": "DEFEND_DEFECT", "pile": "Draw" },
+      { "cardId": "GREED", "pile": "Draw" }
+    ],
+    "cardPlayChecksBeforeMove": [
+      {
+        "cardId": "SCRAPE",
+        "target": "Enemy",
+        "expectedPlayable": true
+      }
+    ]
+  }
+]

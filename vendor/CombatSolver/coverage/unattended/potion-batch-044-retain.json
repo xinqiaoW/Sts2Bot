@@ -1,0 +1,1 @@
+{ "potionId": "StableSerum", "target": "Player", "expectedPlayerPowers": { "RETAIN_HAND_POWER": 2 } }

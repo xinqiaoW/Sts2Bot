@@ -1,0 +1,30 @@
+[
+  {
+    "coveredCardHooks": [
+      { "cardId": "CLAW", "hook": "AfterDowngraded" },
+      { "cardId": "GENETIC_ALGORITHM", "hook": "AfterDowngraded" },
+      { "cardId": "KINGLY_PUNCH", "hook": "AfterDowngraded" },
+      { "cardId": "MAUL", "hook": "AfterDowngraded" },
+      { "cardId": "RAMPAGE", "hook": "AfterDowngraded" },
+      { "cardId": "SOVEREIGN_BLADE", "hook": "AfterDowngraded" },
+      { "cardId": "THE_SCYTHE", "hook": "AfterDowngraded" },
+      { "cardId": "THRASH", "hook": "AfterDowngraded" }
+    ],
+    "monsterId": "MagiKnight",
+    "moveId": "DAMPEN_MOVE",
+    "enemyHpBefore": 999,
+    "clearPlayerPilesBeforeMove": true,
+    "cardsBeforeMove": [
+      { "cardId": "CLAW", "pile": "Hand", "count": 1, "upgradeLevels": 1 },
+      { "cardId": "GENETIC_ALGORITHM", "pile": "Hand", "count": 1, "upgradeLevels": 1 },
+      { "cardId": "KINGLY_PUNCH", "pile": "Hand", "count": 1, "upgradeLevels": 1 },
+      { "cardId": "MAUL", "pile": "Hand", "count": 1, "upgradeLevels": 1 },
+      { "cardId": "RAMPAGE", "pile": "Draw", "count": 1, "upgradeLevels": 1 },
+      { "cardId": "SOVEREIGN_BLADE", "pile": "Draw", "count": 1, "upgradeLevels": 1 },
+      { "cardId": "THE_SCYTHE", "pile": "Discard", "count": 1, "upgradeLevels": 1 },
+      { "cardId": "THRASH", "pile": "Discard", "count": 1, "upgradeLevels": 1 }
+    ],
+    "killMonsterAfterMove": true,
+    "expectedSimulatedDynamicResolution": false
+  }
+]

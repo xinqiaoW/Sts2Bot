@@ -1,0 +1,11 @@
+{
+  "potionId": "DUPLICATOR",
+  "target": "Player",
+  "procureThroughGame": true,
+  "triggerPlayerSideTurnEndAfterUse": true,
+  "expectedAbsentPlayerPowers": [
+    "DUPLICATION_POWER",
+    "REPTILE_TRINKET_POWER",
+    "STRENGTH_POWER"
+  ]
+}

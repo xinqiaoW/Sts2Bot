@@ -1,0 +1,35 @@
+[
+  {
+    "monsterId": "CeremonialBeast",
+    "moveId": "BEAST_CRY_MOVE",
+    "enemyHpBefore": 999,
+    "clearPlayerPilesBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "cardsBeforeMove": [
+      {
+        "cardId": "HAVOC",
+        "pile": "Hand"
+      },
+      {
+        "cardId": "DEFEND_IRONCLAD",
+        "pile": "Hand"
+      },
+      {
+        "cardId": "SECOND_WIND",
+        "pile": "Draw"
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "HAVOC",
+        "target": "None"
+      }
+    ],
+    "expectedPlayerBlock": 0,
+    "expectedPlayerPileCards": {
+      "Hand:DEFEND_IRONCLAD": 1,
+      "Discard:HAVOC": 1,
+      "Exhaust:SECOND_WIND": 1
+    }
+  }
+]

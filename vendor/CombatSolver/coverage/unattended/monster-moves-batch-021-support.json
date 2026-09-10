@@ -1,0 +1,24 @@
+[
+  {
+    "monsterId": "TrackerRubyRaider",
+    "moveId": "TRACK_MOVE",
+    "expectedPlayerHpLoss": 0,
+    "expectedPlayerPowers": {
+      "FRAIL_POWER": 2
+    }
+  },
+  {
+    "monsterId": "TrackerRubyRaider",
+    "moveId": "HOUNDS_MOVE",
+    "expectedPlayerHpLoss": 8
+  },
+  {
+    "monsterId": "Noisebot",
+    "moveId": "NOISE_MOVE",
+    "expectedPlayerHpLoss": 0,
+    "expectedPlayerPileCards": {
+      "Draw:DAZED": 1,
+      "Discard:DAZED": 1
+    }
+  }
+]

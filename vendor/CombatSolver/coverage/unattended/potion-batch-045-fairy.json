@@ -1,0 +1,6 @@
+{
+  "potionId": "FairyInABottle",
+  "target": "Player",
+  "playerHpBefore": 1,
+  "triggerAutomaticDeath": true
+}

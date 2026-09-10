@@ -1,0 +1,1 @@
+{ "potionId": "PoisonPotion", "target": "Enemy", "expectedEnemyPowers": { "POISON_POWER": 6 } }

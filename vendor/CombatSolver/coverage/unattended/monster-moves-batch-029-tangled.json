@@ -1,0 +1,54 @@
+[
+  {
+    "monsterId": "VineShambler",
+    "moveId": "GRASPING_VINES_MOVE",
+    "cardsBeforeMove": [
+      {
+        "cardId": "BLUDGEON",
+        "pile": "Hand",
+        "count": 1
+      },
+      {
+        "cardId": "ARMAMENTS",
+        "pile": "Hand",
+        "count": 1
+      }
+    ],
+    "cardsAfterMove": [
+      {
+        "cardId": "BODY_SLAM",
+        "pile": "Hand",
+        "count": 1
+      }
+    ],
+    "cardPlayChecksAfterMove": [
+      {
+        "cardId": "BLUDGEON",
+        "expectedPlayable": false
+      }
+    ],
+    "expectedPlayerHpLoss": 8,
+    "expectedPlayerPowers": {
+      "TANGLED_POWER": 1
+    },
+    "expectedPlayerCardStates": {
+      "Hand:BLUDGEON:ENTANGLED:1:-:R0:XFalse:SFalse:TFalse:DFalse:MFalse": 1,
+      "Hand:ARMAMENTS:-:0:-:R0:XFalse:SFalse:TFalse:DFalse:MFalse": 1,
+      "Hand:BODY_SLAM:ENTANGLED:1:-:R0:XFalse:SFalse:TFalse:DFalse:MFalse": 1
+    }
+  },
+  {
+    "monsterId": "VineShambler",
+    "moveId": "GRASPING_VINES_MOVE",
+    "triggerPlayerSideTurnEndAfterMove": true,
+    "expectedPlayerHpLoss": 8,
+    "expectedAbsentPlayerPowers": [
+      "TANGLED_POWER"
+    ],
+    "expectedPlayerCardStates": {
+      "Hand:BLUDGEON:-:0:-:R0:XFalse:SFalse:TFalse:DFalse:MFalse": 1,
+      "Hand:ARMAMENTS:-:0:-:R0:XFalse:SFalse:TFalse:DFalse:MFalse": 1,
+      "Hand:BODY_SLAM:-:0:-:R0:XFalse:SFalse:TFalse:DFalse:MFalse": 1
+    }
+  }
+]

@@ -1,0 +1,23 @@
+[
+  {
+    "monsterId": "BigDummy",
+    "moveId": "NOTHING",
+    "enemyHpBefore": 999,
+    "clearAllPowersBeforeMove": true,
+    "clearPlayerPilesBeforeMove": true,
+    "playerEnergyBefore": 99,
+    "cardsBeforeMove": [
+      { "cardId": "APPARITION", "pile": "Hand" },
+      { "cardId": "STRIKE_IRONCLAD", "pile": "Hand" }
+    ],
+    "cardPlayChecksBeforeMove": [
+      { "cardId": "APPARITION", "target": "None" }
+    ],
+    "cardTransformsAfterMove": [
+      { "originalCardId": "STRIKE_IRONCLAD", "replacementCardId": "BANSHEES_CRY" }
+    ],
+    "cardPlayChecksAfterMove": [
+      { "cardId": "BANSHEES_CRY", "target": "None" }
+    ]
+  }
+]
