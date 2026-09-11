@@ -11,7 +11,8 @@ import socket
 import sqlite3
 
 from damage_model.schema import digest
-from damage_model.observation import validate_hp
+from damage_model.observation import validate_hp, validate_cards
+from damage_model.schema import Build
 
 
 def export_snapshot(database, output):
@@ -22,6 +23,7 @@ def export_snapshot(database, output):
         counts = dict(db.execute('SELECT status,count(*) FROM jobs GROUP BY status'))
         stamp = datetime.now(timezone.utc).isoformat()
         rows = db.execute("SELECT * FROM jobs WHERE status='complete' ORDER BY created,id").fetchall()
+        queued_teachers = {digest(json.loads(r[0])):json.loads(r[0]) for r in db.execute('SELECT DISTINCT teacher FROM jobs')}
         builds = [{**json.loads(r['body']), 'id': r['id'], 'split': r['split']}
                   for r in db.execute("SELECT * FROM builds WHERE id IN (SELECT build_id FROM jobs WHERE status='complete')")]
         origins = []
@@ -50,13 +52,15 @@ def export_snapshot(database, output):
                 for key in ('parent_body', 'parent_targets', 'parent_origins', 'changes'):
                     row[key] = json.loads(row[key])
                 mutation_lineage.append(row)
-    battles, targets, teachers = [], {}, {}
+    battles, targets, teachers = [], {}, queued_teachers
+    planned_cards = {b['id']:Build.from_dict({k:v for k,v in b.items() if k not in ('id','split')}).cards for b in builds}
     for job in rows:
         result, target, teacher = (json.loads(job[k]) for k in ('result', 'target', 'teacher'))
         obs = result['trainingObservation']
         if not (result['status'] == 'Passed' and result['combatEnded'] and obs['complete']):
             raise ValueError(f"Incomplete native outcome: {job['id']}")
         validate_hp(obs, target)
+        validate_cards(obs['initialBuild']['cards'], planned_cards[job['build_id']], teacher.get('collector_protocol',2))
         teacher_id = digest(teacher)
         targets[target['id']], teachers[teacher_id] = target, teacher
         battles.append({'job_id': job['id'], 'build_id': job['build_id'], 'target_id': target['id'],
@@ -73,7 +77,7 @@ def export_snapshot(database, output):
             'targets': list(targets.values()), 'teachers': teachers, 'battles': battles, 'build_origins': origins,
             'target_policy': target_policy, 'selected_targets': selected_targets,
             'collector_host_counts': dict(Counter(r['collector_host'] for r in battles))}
-    if mutation_lineage:
+    if target_policy['name'] == 'parent_source_window_v1':
         data['mutation_lineage'] = mutation_lineage
         data['mutation_policy_history'] = mutation_policy_history
         data['build_source'] = 'real_run_mutation_v1'

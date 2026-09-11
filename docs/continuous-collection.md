@@ -1,5 +1,7 @@
 # 持续采集真实构筑
 
+2026-09-11：活动真实库为 `collection-real-runs-v4.sqlite`，变异库为 `collection-mutations-v2.sqlite`；备份位置分别为 `backups/01-active-card-state` 和 `backups/01-mutations-card-state`，保留旧批次备份。25 路、8 秒、预留 0、无截止时间、每 30 分钟巡检保持。历史 v3/v1 pending 只作为迁移来源记录保留，不能再次领取。见 [卡牌状态适配](card-state.md)。
+
 本机 01：`/data2/pl/ImageTask/wxq/Projects/Sts2Bot`。活动库、配置、runtime 列表、worker 数、`reserve_gib` 和老师以 `data/collection-session.json`、`data/active-collection.json` 为准。当前是 8 秒批次，详见 [8 秒搜索](search-8s.md)；切回本机时的环境见 [切回01](return-to-01.md)。旧随机库和 v2 / 2 秒库保留，不再领取。采集直到用户要求停止。验收或恢复期间不要另起一套控制器。
 
 ```bash

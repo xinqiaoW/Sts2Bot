@@ -15,12 +15,18 @@ import time
 
 from .catalog import COUNTER_DOMAINS
 from .schema import Build, Card, Relic, canonical, digest
+from .starter_relics import SNAKE, DRAKE, TOUCH, uses_orobas_replacement
+from .card_state import normalize_extra, parse_props, history_progress, SPECIAL_POOLS
 from .target_scope import WINDOW_POLICY, require_policy, recorded_floors, window_for_origin, save_target_origins
 
 IMPORT_VERSION = "spire_codex_run_v1"
-IMPORT_REVISION = 'shared_ancient_provenance_v5'
+IMPORT_REVISION = 'special_cards_saved_state_v8'
+OROBAS_REVISION = 'orobas_starter_replacement_v7'
 PREVIOUS_IMPORT_REVISION = 'relic_pickup_normalization_v4'
-REPROCESS_REVISIONS = {'enchantments_counters_v2', 'max_hp_relic_normalization_v3', PREVIOUS_IMPORT_REVISION}
+SHARED_ANCIENT_REVISION = 'shared_ancient_provenance_v5'
+REMOVED_RELIC_REVISION = 'potion_revival_relic_normalization_v6'
+REPROCESS_REVISIONS = {'enchantments_counters_v2', 'max_hp_relic_normalization_v3',
+                      PREVIOUS_IMPORT_REVISION, SHARED_ANCIENT_REVISION, REMOVED_RELIC_REVISION, OROBAS_REVISION}
 MAX_INTERPRETATIONS = 256
 LEGACY_PRESENTATION_FIELDS = {'run_hash', 'username', 'has_replay', 'damage', 'player_index'}
 PRESENTATION_FIELDS = LEGACY_PRESENTATION_FIELDS | {'is_beta', '_spirecodex_damage'}
@@ -62,7 +68,12 @@ class HistoryCard:
             raise RunRejected('Invalid card upgrade/acquisition floor')
         extra = {k:v for k,v in value.items() if k not in
                  ('id', 'current_upgrade_level', 'floor_added_to_deck')}
-        return cls(entry(value['id'], 'CARD'), upgrade, acquired, canonical(extra))
+        card_id = entry(value['id'], 'CARD')
+        try:
+            extra = normalize_extra(card_id, extra, historical=True)
+        except ValueError as error:
+            raise RunRejected(str(error)) from error
+        return cls(card_id, upgrade, acquired, canonical(extra))
 
 
 def signature(deck):
@@ -136,6 +147,38 @@ def apply_floor(deck, stats, floor, catalog):
     return results
 
 
+def enter_history_floor(deck, stats, node, floor, catalog):
+    """Dowsing advances before the first room; its fifth step transforms before combat."""
+    if node.get('map_point_type') != 'unknown':
+        return deck, stats
+    deck = tuple(sorted(history_progress(c, 'RoomsEntered') if c.id == 'DOWSING' else c for c in deck))
+    transformations = list(stats.get('cards_transformed', []))
+    for card in tuple(deck):
+        if card.id != 'DOWSING' or dict(parse_props(card.id, json.loads(card.extra).get('props'), historical=True)).get('RoomsEntered', 0) != 5:
+            continue
+        matches = [x for x in transformations if HistoryCard.read(x['original_card']) == card
+                   and x['final_card']['id'] == 'CARD.ABUNDANCE']
+        if len(matches) != 1:
+            raise RunRejected('Missing Dowsing completion history')
+        result = apply_one(deck, 'transform', matches[0], floor, catalog)
+        if len(result) != 1:
+            raise RunRejected('Ambiguous Dowsing completion history')
+        deck = next(iter(result)); transformations.remove(matches[0])
+    return deck, {**stats, 'cards_transformed': transformations}
+
+
+def leave_history_combat(deck, node, stats, *, last_floor, run):
+    combats = [room for room in node.get('rooms', []) if str(room.get('model_id', '')).startswith('ENCOUNTER.')]
+    if not combats or not any(c.id == 'GUILTY' for c in deck):
+        return deck
+    if len(node.get('rooms', [])) != 1:
+        raise RunRejected('Guilty progress in a mixed combat room remains ambiguous')
+    # Defeat does not finish combat successfully or invoke AfterCombatEnd.
+    if last_floor and not run.get('win') and stats.get('current_hp', 0) <= 0:
+        return deck
+    return tuple(sorted(history_progress(c, 'CombatsSeen') if c.id == 'GUILTY' else c for c in deck))
+
+
 def check_run(run):
     if run.get('schema_version') != 10 or run.get('build_id') != 'v0.111.0':
         raise RunRejected('Unsupported run schema/game version')
@@ -151,6 +194,14 @@ def check_run(run):
 
 def reconstruct(run, catalog):
     player = check_run(run)
+    for relic in player['relics']:
+        if relic['id'] == 'RELIC.' + TOUCH and relic.get('props'):
+            props = relic['props']
+            values = props.get('model_ids', [])
+            if (set(props) != {'model_ids'} or len(values) != 2
+                    or {v['name']: v['value'] for v in values} != {
+                        'StarterRelic': 'RELIC.' + SNAKE, 'UpgradedRelic': 'RELIC.' + DRAKE}):
+                raise RunRejected('Unsupported Touch of Orobas saved replacement')
     deck = tuple(sorted(HistoryCard(c, 0, 1) for c in
                  (*catalog.raw['character']['starting_deck'], 'ASCENDERS_BANE')))
     # Each interpretation keeps its earlier observations for final-deck validation.
@@ -158,6 +209,7 @@ def reconstruct(run, catalog):
     relics = list(catalog.raw['character']['starting_relics'])
     ancient_history, floors = [], []
     floor = 0
+    total_floors = sum(len(nodes) for nodes in run['map_point_history'])
     for act_index, nodes in enumerate(run['map_point_history']):
         act_id = entry(run['acts'][act_index], 'ACT')
         for node in nodes:
@@ -176,8 +228,10 @@ def reconstruct(run, catalog):
                 'room_types': [r.get('room_type') for r in rooms]})
             next_traces = set()
             for current, history in traces:
-                for after in apply_floor(current, stats, floor, catalog):
-                    next_traces.add((after, history + (current,)))
+                precombat, remaining = enter_history_floor(current, stats, node, floor, catalog)
+                settled = leave_history_combat(precombat, node, stats, last_floor=floor == total_floors, run=run)
+                for after in apply_floor(settled, remaining, floor, catalog):
+                    next_traces.add((after, history + (precombat,)))
                     if len(next_traces) > MAX_INTERPRETATIONS:
                         raise RunRejected(f'Ambiguous card history exceeds bound at floor {floor}')
             if not next_traces:
@@ -189,11 +243,25 @@ def reconstruct(run, catalog):
             removed = [entry(x, 'RELIC') for x in stats.get('relics_removed', [])]
             if set(gains) & set(removed):
                 raise RunRejected('Relic acquisition/removal order is ambiguous')
+            replacement = TOUCH in gains
+            if replacement and (SNAKE not in relics or SNAKE not in removed or DRAKE not in gains
+                    or DRAKE in relics or TOUCH in relics
+                    or not any(x.get('was_chosen') and x.get('TextKey') == TOUCH
+                               for x in stats.get('ancient_choice', []))
+                    or [r.get('model_id') for r in rooms] != ['EVENT.OROBAS']
+                    or act_index != 1):
+                raise RunRejected('Unsupported Touch of Orobas replacement history')
             for r in removed:
                 if r not in relics:
                     raise RunRejected('Removed relic was not owned')
-                relics.remove(r)
+                if replacement and r == SNAKE:
+                    # RelicCmd.Replace inserts the replacement at the old index.
+                    relics[relics.index(SNAKE)] = DRAKE
+                else:
+                    relics.remove(r)
             for r in gains:
+                if replacement and r == DRAKE:
+                    continue
                 if r in relics:
                     raise RunRejected('Duplicate relic acquisition')
                 relics.append(r)
@@ -250,8 +318,10 @@ def build_for(snapshot, run_hash, catalog):
     catalog.validate(build)
     if snapshot['target'] not in {t['id'] for t in catalog.targets(build)}:
         raise RunRejected('Recorded encounter is not in the current act catalog')
-    # The frozen native fixture always starts with the character's starter relic.
-    if not build.relics or build.relics[0].id != 'RING_OF_THE_SNAKE':
+    # The native fixture starts with Snake. The explicit Orobas adapter replaces
+    # it in place through RelicCmd; other starter changes remain unsupported.
+    if not uses_orobas_replacement([r.id for r in build.relics], build.ancient_history) and (
+            not build.relics or build.relics[0].id != SNAKE):
         raise RunRejected('Starter relic replacement is not supported by the native fixture')
     return build, counter_seed
 
@@ -259,15 +329,19 @@ def build_for(snapshot, run_hash, catalog):
 def import_card(card_id, upgrade, extra):
     props = json.loads(extra)
     enchantment = props.pop('enchantment', None)
+    try:
+        state = parse_props(card_id, props.pop('props', None))
+    except ValueError as error:
+        raise RunRejected(str(error)) from error
     if props:
         raise RunRejected('Unsupported persistent card state: ' + ','.join(sorted(props)))
     if enchantment is None:
-        return Card(card_id, upgrade)
+        return Card(card_id, upgrade, persistent_state=state)
     if not isinstance(enchantment, dict) or set(enchantment) != {'id', 'amount'}:
         raise RunRejected('Unsupported enchantment state')
     if type(enchantment['amount']) is not int or enchantment['amount'] <= 0:
         raise RunRejected('Invalid enchantment amount')
-    return Card(card_id, upgrade, entry(enchantment['id'], 'ENCHANTMENT'), enchantment['amount'])
+    return Card(card_id, upgrade, entry(enchantment['id'], 'ENCHANTMENT'), enchantment['amount'], state)
 
 
 def init_sources(store):
@@ -315,15 +389,22 @@ def import_run(store, catalog, teacher, run, run_hash, source, *, reprocess=Fals
                      'spire_codex_metadata_v2', source, incoming, time.time()))
         if previous['version'] == IMPORT_REVISION:
             return {**json.loads(previous['report']), 'already_imported': True, 'scheduled_now': 0}
-        if previous['version'] == PREVIOUS_IMPORT_REVISION and not reprocess:
-            # v5 only expands shared-Ancient provenance. Preserve unaffected v4
-            # rows verbatim; transparently re-audit affected cached sources when
-            # the live/archive downloader encounters them again.
+        if previous['version'] in {PREVIOUS_IMPORT_REVISION, SHARED_ANCIENT_REVISION, REMOVED_RELIC_REVISION, OROBAS_REVISION} and not reprocess:
+            # Re-audit cached sources affected by a newly removed relic, or by
+            # v5's shared-Ancient correction. Unaffected old rows stay verbatim.
             shared_events = {'EVENT.' + a for a in catalog.shared_ancients}
-            affected = any(room.get('model_id') in shared_events
+            shared_affected = previous['version'] == PREVIOUS_IMPORT_REVISION and any(room.get('model_id') in shared_events
                            for act in run.get('map_point_history', []) for floor in act
                            for room in floor.get('rooms', []))
-            if not affected:
+            skipped = json.loads(previous['report']).get('skipped', {})
+            removal_affected = any('Disallowed relic: ' + rid in skipped
+                                  for rid in catalog.explicitly_removed_relics)
+            replacement_affected = any(x.get('was_picked') and x.get('choice') == 'RELIC.' + TOUCH
+                for act in run.get('map_point_history', []) for floor in act
+                for stats in floor.get('player_stats', []) for x in stats.get('relic_choices', []))
+            special_ids = {c['id'] for c in catalog.raw['cards'] if c['pool'] in SPECIAL_POOLS} | {'DOWSING', 'GUILTY', 'MAD_SCIENCE', 'SPOILS_MAP'}
+            cards_affected = any('CARD.' + cid in incoming for cid in special_ids)
+            if not (shared_affected or removal_affected or replacement_affected or cards_affected):
                 return {**json.loads(previous['report']), 'already_imported': True, 'scheduled_now': 0}
             reprocess = True
         if not reprocess or previous['version'] not in REPROCESS_REVISIONS:

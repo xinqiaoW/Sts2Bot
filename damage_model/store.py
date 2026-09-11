@@ -7,7 +7,7 @@ import time
 import uuid
 from collections import Counter
 from .schema import Build, canonical, digest
-from .observation import validate_hp
+from .observation import validate_hp, validate_cards
 
 
 class Store:
@@ -34,6 +34,10 @@ class Store:
             CREATE TABLE IF NOT EXISTS job_quarantines(
                 job_id TEXT PRIMARY KEY,reason TEXT NOT NULL,evidence TEXT NOT NULL,
                 original_job TEXT NOT NULL,attempts_sha256 TEXT NOT NULL,quarantined_at REAL NOT NULL);
+            CREATE TABLE IF NOT EXISTS prior_collected_inputs(
+                build_id TEXT,target_id TEXT,seed TEXT,source_database TEXT,source_job_id TEXT,
+                source_status TEXT,source_teacher TEXT,result_sha256 TEXT,
+                PRIMARY KEY(build_id,target_id,seed));
         ''')
 
     def add_build(self, build):
@@ -55,6 +59,11 @@ class Store:
         with self.db:
             for target in targets:
                 for seed in seeds:
+                    # The input adapter batch preserves completed/isolated old
+                    # jobs in their original database, without scheduling them again.
+                    if self.db.execute('SELECT 1 FROM prior_collected_inputs WHERE build_id=? AND target_id=? AND seed=?',
+                                       (build.id, target['id'], str(seed))).fetchone():
+                        continue
                     job_id = digest([build.id, target['id'], str(seed), teacher])
                     added += self.db.execute('INSERT OR IGNORE INTO jobs(id,build_id,target,seed,teacher,created) VALUES(?,?,?,?,?,?)',
                         (job_id, build.id, canonical(target), str(seed), teacher_json, time.time())).rowcount
@@ -115,13 +124,7 @@ class Store:
             actual = observation['initialBuild']
             if actual.get('character') != 'SILENT' or actual.get('ascension') != 10 or actual.get('actId') != requested.act_id:
                 raise ValueError('Actual environment differs from requested build')
-            if any(type(c.get('upgradeLevel')) is not int
-                   or type(c.get('enchantmentAmount', 0)) is not int
-                   or (c.get('enchantmentId') is not None and type(c['enchantmentId']) is not str)
-                   for c in actual['cards']):
-                raise ValueError('Invalid actual card state fields')
-            if Counter((c['id'],c['upgradeLevel'],c.get('enchantmentId') or '',c.get('enchantmentAmount',0)) for c in actual['cards']) != Counter((c.id,c.upgrade,c.enchantment_id,c.enchantment_amount) for c in requested.cards):
-                raise ValueError('Actual starting deck differs from requested build')
+            validate_cards(actual['cards'], requested.cards, job['teacher'].get('collector_protocol', 2))
             if [r['id'] for r in actual['relics']] != [r.id for r in requested.relics]:
                 raise ValueError('Actual relic order/inventory differs from requested build')
             for live, planned in zip(actual['relics'],requested.relics):

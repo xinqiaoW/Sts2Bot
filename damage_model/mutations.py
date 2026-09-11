@@ -161,7 +161,7 @@ def mutate(parent, catalog, rng, size, axes, policy):
         if after is not None: cards.append((-(step+1), after))
         changes.append({'kind': 'card', 'operation': op, 'index': index,
                         'before': before.to_dict() if before else None, 'after': after.to_dict() if after else None})
-    protected = {h[2] for h in parent.ancient_history} | {'RING_OF_THE_SNAKE'}
+    protected = {h[2] for h in parent.ancient_history} | {'RING_OF_THE_SNAKE', 'RING_OF_THE_DRAKE'}
     protected |= {r.id for r in parent.relics if catalog.relics[r.id]['rarity'] not in ORDINARY}
     for step in range(relic_count):
         eligible = [(i, r) for i, r in relics if i >= 0 and i not in used_relics and r.id not in protected]
@@ -237,7 +237,7 @@ def validate_lineage(db, build_id, catalog=None):
         elif op != 'remove': raise ValueError('Mutation operation lost its result')
     if tuple(c for _, c in cards) != child.cards or tuple(r for _, r in relics) != child.relics:
         raise ValueError('Mutation replay differs from stored child')
-    locked = {h[2] for h in parent.ancient_history} | {'RING_OF_THE_SNAKE'}
+    locked = {h[2] for h in parent.ancient_history} | {'RING_OF_THE_SNAKE', 'RING_OF_THE_DRAKE'}
     if catalog is not None:
         locked |= {r.id for r in parent.relics if catalog.relics[r.id]['rarity'] not in ORDINARY}
         catalog.validate(child)
@@ -271,7 +271,9 @@ class Generator:
         families = source_groups(self.source.db)
         groups = {act: defaultdict(list) for act in self.policy['map_weights']}
         db = self.source.db
-        rows = db.execute("SELECT * FROM builds WHERE id IN (SELECT build_id FROM jobs WHERE status='complete')").fetchall()
+        rows = db.execute("""SELECT * FROM builds WHERE id IN (
+            SELECT build_id FROM jobs WHERE status='complete'
+            UNION SELECT build_id FROM prior_collected_inputs WHERE source_status='complete')""").fetchall()
         target_origins = defaultdict(list)
         for r in db.execute('SELECT * FROM target_origins ORDER BY build_id,run_hash,origin_floor,target_floor,target_id'):
             target_origins[r['build_id']].append(dict(r))

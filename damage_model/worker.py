@@ -73,6 +73,8 @@ def asset_loading_failure(text, run_id):
 
 def request_for(job, config):
     build=Build.from_dict(job['build'])
+    from .starter_relics import SNAKE, DRAKE, TOUCH, uses_orobas_replacement
+    replacement = uses_orobas_replacement([r.id for r in build.relics], build.ancient_history)
     run_id=uuid.uuid4().hex
     return {
         'schemaVersion':1,'runId':run_id,'scenarioId':'HP-'+job['id'][:16],
@@ -80,14 +82,15 @@ def request_for(job, config):
         'encounterId':job['target']['id'],'actIndexForTest':build.act-1,
         'trainingCollection':True,'trainingActId':build.act_id,
         'clearRunDeck':True,'runCards':[{'cardId':c.id,'count':1,'upgradeLevels':c.upgrade,
+            **({'savedIntegerMembers':dict(c.persistent_state)} if c.persistent_state else {}),
             **({'enchantmentId': c.enchantment_id, 'enchantmentAmount': c.enchantment_amount} if c.enchantment_id else {})}
             for c in build.cards],
         'cards':[], 'potions':[],
         'relics':[{'relicId':r.id,
-                   'addWithoutObtainedEffects': build.mutation in ('spire_codex_run_v1', 'real_run_mutation_v1'),
+                   'addWithoutObtainedEffects': build.mutation in ('spire_codex_run_v1', 'real_run_mutation_v1') and not (replacement and r.id == TOUCH),
                    'integerMembers':{k:v for k,v in r.state if type(v) is int},
                    'booleanMembers':{k:v for k,v in r.state if type(v) is bool}}
-                  for r in build.relics if r.id!='RING_OF_THE_SNAKE'],
+                  for r in build.relics if r.id != (DRAKE if replacement else SNAKE)],
         'potionPolicyForTest':'Disabled','forceShortSearchOnly':True,
         'shortSearchBudgetOverrideMilliseconds':config['short_search_budget_ms'],
         'searchMaxDegreeOfParallelismForTest':config['search_dop'],

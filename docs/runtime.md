@@ -1,5 +1,7 @@
 # 01 运行环境
 
+2026-09-11：25 个正式 worker 的 `game_dir` 已切换到 `.runtime/game-card-state-v3`，仅训练采集器 DLL 升级为持久卡牌状态协议 3；原版游戏、RitsuLib、Wine、独立 prefix 和每游戏 8 线程设置保持。旧 `.runtime/game-windows` 保留供审计恢复。实际运行值以 session 和 runtime 配置为准。
+
 Ubuntu 22.04；用户 pl，无 sudo。CPU 为 EPYC 7763，256 逻辑核，约 251 GiB 内存；8 张 RTX 4090 已有其他进程。采集使用 CPU，当前单 worker、求解器 DOP 1；训练代码支持 CUDA，但首批命令不占用其他任务的 GPU。
 
 资源位于 `/data2/pl/ImageTask/wxq/Projects/Sts2Bot/.runtime`：

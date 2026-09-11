@@ -1,5 +1,5 @@
 {
-  "game_dir": "/data2/pl/ImageTask/wxq/Projects/Sts2Bot/.runtime/game-windows",
+  "game_dir": "/data2/pl/ImageTask/wxq/Projects/Sts2Bot/.runtime/game-card-state-v3",
   "data_dir": "/data2/pl/ImageTask/wxq/Projects/Sts2Bot/.runtime/prefix-worker-23/drive_c/users/pl/AppData/Roaming/SlayTheSpire2",
   "command": [
     "/data2/pl/ImageTask/wxq/Projects/Sts2Bot/.runtime/wine/root/opt/wine-stable/bin/wine",

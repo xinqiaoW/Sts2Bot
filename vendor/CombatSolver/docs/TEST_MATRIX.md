@@ -1,5 +1,19 @@
 # CombatSolver 测试清单
 
+## 特殊牌池与持久卡牌状态采集（2026-09-11）
+
+- 新入口：`UnattendedCardInjection.savedIntegerMembers`；原生回读 `trainingObservation.initialBuild.cards[].persistentState`。保留已有升级和附魔字段。
+- 最小差分：疯狂科学 MAD_SCIENCE 九种合法 type/rider，使用真实保存属性设置并核对原生和模拟结果，9/9 Passed。
+- 真实战前构筑完整验收：藏宝图、探寻（非零进度）、愧疚（非零进度）、灯火钥匙、多尼斯异鸟蛋、疯狂科学攻击/技能/能力各一例，共8/8 Passed。均验证实际初始逐张卡牌/升级/附魔/持久状态、遗物顺序/计数、70/70和完整终局。仅在隔离验证库，不重复加入正式标签。
+- 外部采集器 Linux 341 项测试通过，包含保存属性边界、探寻进入房间前变牌、愧疚胜利后推进及死亡、联合模型特征、旧批次去重和变异状态继承。
+- 证据：相邻 Sts2DamageModel 的 `evidence/card-state-20260910/differential-acceptance.json`、`native-acceptance.json`、`native-pilot.sqlite`、`pytest-final.log`。保留原始日志与请求。未宣称所有状态牌、衍生牌效果或 Steam 可见 UI 的全量回归通过。
+
+## 逐张附魔训练观察（2026-09-06）
+
+检查 `trainingObservation.initialBuild.cards` 的 `enchantmentId`、`enchantmentAmount` 与该实例的 ID、升级次数一一匹配。外部采集器必须拒绝附魔丢失、数值不符和附魔绑定到另一张同名但不同升级状态的牌。原生注入沿用 `runCards` 的现有附魔字段；不以构建成功代替实际采集验证。
+
+原生Wine验收9场全部Passed，输入逐张、遗物计数/顺序和完整终局均通过外部校验。代表附魔观察：涡旋 `57035de0907d48e9ade761f6d061ced7`（0血），华彩 `0ab3cbdb91124974aa81109a9e64aee0`（4血），迅速 `b0820918d7e64f59a96896136775ab7e`（0血），锋利 `13b8e609fb8a46d098d8a40bdd8349a2`（8血）。其他5场覆盖双整数状态、周期计数与战后变更。完整证据保存在相邻Sts2DamageModel的 `evidence/enchantment-counters-20260906/native-pilot.json`；不把9场当作所有附魔组合的全量语义证明。
+
 ## 独立掉血模型采集入口（2026-09-05）
 
 以下场景由 01 独立 Python 采集器写入 unattended 请求，Windows 原版游戏经 Wine 11.0 headless 执行；均为 SILENT、A10、满血、Disabled 药水、Medium / DOP1 / 2000 ms 短搜索。
@@ -1578,8 +1592,6 @@ pwsh -NoProfile -File tools\run-unattended-test.ps1 -ScenarioId MONSTER-MOVES-BA
 | `RF-OFFICIAL-WORKSHOP-COEXIST-069` | 通过 | RF 本地 fork 已与 `0.10.0` 共同跑完完整长线；用户随后订阅创意工坊原版 RF 并完成一次实机启动，未出现初始化或共存问题 | 2026-08-21 |
 
 ## 判定规则
-
-`TOOLS-HORIZON-COLLECTION`（2026-09-05）**通过**：在最终修复版本恢复采集后，优先重跑原来超时的 8 个卡组/目标/种子任务，全部原生 Passed、combatEnded=true、trainingObservation.complete=true。骇鳗代表 `363bdc4eba624f12a4c13b36f6af7a8c`（19 回合）、灵魂异鱼代表 `cbc112d49dcf46b1bb3c69f42888b93a`（17 回合）、瀑布巨人代表 `647febabea094eabac089b5a6bb54d65`（20 回合）；均为真实死亡 70 HP 负样本。各场冷启动加战斗总计 56.8–71.4 秒，未增大 120 秒超时。该项验证完整采集终局，不宣称零重算或最优战损。
 
 采集任务分支补充：`TOOLS-HORIZON-BOUNDARY`（2026-09-05）状态为**边界已观察，非完整 Passed**。原失败组为带必备工具的静默 A10 卡组，8 场在搜索末尾没有 continuation 的原生弃牌阶段超时。最终观察 runId `horizon-fixed-boundary-20260905` 在第 6 回合依次记录计划打击被原生选择、`TURN_SETUP_PLAN_REPLAYED`、`SEARCH_REUSE_MISS reason=continuation_missing`，用时 67.90 秒（包含冷启动），随后结束专用进程。搜索保持 Medium / 2000 ms / DOP 1，观察不进入训练库。Release 与结构门禁通过，可见 UI 未测试。
 

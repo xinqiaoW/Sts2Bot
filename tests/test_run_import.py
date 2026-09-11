@@ -113,7 +113,7 @@ def test_import_is_idempotent_preserves_origin_and_never_uses_human_loss(run,cat
 
 def test_unsupported_effects_keep_the_entire_build_out(run,catalog):
     state = reconstruct(run,catalog)[1]
-    for rid in ('LIZARD_TAIL','PRISMATIC_GEM'):
+    for rid in ('PRISMATIC_GEM',):
         bad = {**state,'relics':state['relics']+(rid,)}
         with pytest.raises(ValueError, match='Disallowed relic|Ancient relic without acquisition history'):
             build_for(bad,'aa',catalog)

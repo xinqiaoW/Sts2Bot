@@ -38,6 +38,9 @@ internal sealed partial class UnattendedTestRunner
                 {
                     Id = card.Id.Entry,
                     UpgradeLevel = card.CurrentUpgradeLevel,
+                    EnchantmentId = card.Enchantment?.Id.Entry,
+                    EnchantmentAmount = card.Enchantment?.Amount ?? 0,
+                    PersistentState = CaptureSavedCardIntegers(card),
                 }).ToArray(),
                 Relics = player.Relics.Select(relic => new
                 {

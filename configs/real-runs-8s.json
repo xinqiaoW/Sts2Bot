@@ -12,13 +12,20 @@
                               "FAKE_SNECKO_EYE",
                               "MASSIVE_SCROLL",
                               "PAELS_EYE",
-                              "GOLDEN_COMPASS"
+                              "GOLDEN_COMPASS",
+                              "PHIAL_HOLSTER",
+                              "PETRIFIED_TOAD",
+                              "LIZARD_TAIL",
+                              "ALCHEMICAL_COFFER",
+                              "DELICATE_FROND",
+                              "NEOWS_SACRIFICE",
+                              "FUR_COAT",
+                              "PAELS_TOOTH"
                           ],
     "exclude_resurrection_relics":  true,
     "allow_healing_relics":  true,
     "excluded_relic_ids":  [
                                "PRISMATIC_GEM",
-                               "LIZARD_TAIL",
                                "KALEIDOSCOPE"
                            ],
     "initial_seeds_per_pair":  4,

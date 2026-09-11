@@ -19,11 +19,21 @@ class Card:
     upgrade: int = 0
     enchantment_id: str = ''
     enchantment_amount: int = 0
+    persistent_state: tuple[tuple[str, int], ...] = ()
+
+    def __post_init__(self):
+        state = self.persistent_state
+        items = list(state.items()) if isinstance(state, dict) else list(state)
+        if any(len(item) != 2 for item in items) or len({item[0] for item in items}) != len(items):
+            raise ValueError('Invalid or duplicate persistent card fields')
+        object.__setattr__(self, 'persistent_state', tuple(sorted(tuple(item) for item in items)))
 
     def to_dict(self):
         result = {'id': self.id, 'upgrade': self.upgrade}
         if self.enchantment_id or self.enchantment_amount:
             result.update(enchantment_id=self.enchantment_id, enchantment_amount=self.enchantment_amount)
+        if self.persistent_state:
+            result['persistent_state'] = dict(self.persistent_state)
         return result
 
 

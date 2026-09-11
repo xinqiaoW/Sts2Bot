@@ -91,4 +91,5 @@ def test_reimport_v3_preserves_history_and_separates_removal_reasons(run, catalo
 def test_unadapted_gameplay_state_still_blocks_builds(catalog):
     assert all(r in catalog.relic_pool for r in ('NEW_LEAF','DUSTY_TOME','BYRDPIP','PAELS_LEGION',
                                                 'BELT_BUCKLE','BIIIG_HUG','BLOOD_SOAKED_ROSE'))
-    assert all(r not in catalog.relic_pool for r in ('FUR_COAT','PAELS_TOOTH','SEA_GLASS','TOUCH_OF_OROBAS','TOY_BOX'))
+    assert all(r not in catalog.relic_pool for r in ('FUR_COAT','PAELS_TOOTH','SEA_GLASS','TOY_BOX'))
+    assert 'TOUCH_OF_OROBAS' in catalog.relic_pool  # Validated replacement only; see dedicated tests.

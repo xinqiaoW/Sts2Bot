@@ -1,5 +1,21 @@
 """Validate HP labels while allowing verified native combat mechanics."""
 
+def validate_cards(actual, requested, protocol):
+    from collections import Counter
+    from .card_state import normalize_state
+    states = []
+    for card in actual:
+        if (type(card.get('upgradeLevel')) is not int
+                or type(card.get('enchantmentAmount', 0)) is not int
+                or (card.get('enchantmentId') is not None and type(card['enchantmentId']) is not str)):
+            raise ValueError('Invalid actual card state fields')
+        if protocol >= 3 and 'persistentState' not in card:
+            raise ValueError('Missing native persistent card observation')
+        state = normalize_state(card['id'], card.get('persistentState', {}))
+        states.append((card['id'], card['upgradeLevel'], card.get('enchantmentId') or '', card.get('enchantmentAmount', 0), state))
+    if Counter(states) != Counter((c.id, c.upgrade, c.enchantment_id, c.enchantment_amount, c.persistent_state) for c in requested):
+        raise ValueError('Actual starting deck differs from requested build')
+
 
 def validate_hp(observation, target):
     required = ('initialHp', 'initialMaxHp', 'finalHp', 'finalMaxHp', 'netHpLoss', 'playerDied')

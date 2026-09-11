@@ -1,5 +1,4 @@
 """Read-only health and provenance checks for the separate mutation queue."""
-from collections import Counter
 import json
 from pathlib import Path
 import sqlite3
@@ -7,9 +6,9 @@ import time
 
 from .catalog import Catalog
 from .mutations import policy_history, require_mutation_database, validate_lineage
-from .observation import validate_hp
+from .observation import validate_hp, validate_cards
 from .provenance import sha256
-from .schema import canonical, digest
+from .schema import Build, canonical, digest
 
 
 def check_mutations(session, active, root):
@@ -38,7 +37,7 @@ def check_mutations(session, active, root):
             validate_hp(obs, json.loads(row['target']))
             assert obs['initialHp'] == obs['initialMaxHp'] == 70
             assert actual['character'] == 'SILENT' and actual['ascension'] == 10 and actual['actId'] == planned['act_id']
-            assert Counter((c['id'],c['upgradeLevel'],c.get('enchantmentId') or '',c.get('enchantmentAmount',0)) for c in actual['cards']) == Counter((c['id'],c['upgrade'],c.get('enchantment_id') or '',c.get('enchantment_amount',0)) for c in planned['cards'])
+            validate_cards(actual['cards'], Build.from_dict(planned).cards, session['teacher'].get('collector_protocol', 1))
             assert [r['id'] for r in actual['relics']] == [r['id'] for r in planned['relics']]
             assert all(canonical(r.get('counters',{})) == canonical(dict(p['state'])) for r,p in zip(actual['relics'],planned['relics']))
             workers.add(result['collector']['worker'])

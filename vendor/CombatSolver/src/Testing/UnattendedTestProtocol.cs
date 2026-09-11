@@ -400,6 +400,7 @@ internal sealed class UnattendedCardInjection
     public bool TreatAsDeckCard { get; init; }
     public Dictionary<string, int> DynamicVars { get; init; } = new(StringComparer.Ordinal);
     public Dictionary<string, string> EnumMembers { get; init; } = new(StringComparer.Ordinal);
+    public Dictionary<string, int> SavedIntegerMembers { get; init; } = new(StringComparer.Ordinal);
 }
 
 internal sealed class UnattendedPotionInjection

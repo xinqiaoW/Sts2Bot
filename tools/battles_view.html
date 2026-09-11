@@ -90,7 +90,7 @@
       delete dataset.build_columns;
     });
 
-    const datasets = payload.datasets || [payload];
+    const datasets = (payload.datasets || [payload]).filter(d => d.builds.length > 0);
     if (payload.card_entries) datasets.forEach(d => d.builds.forEach(b => {
       b.cards = b.cards.map(i => payload.card_entries[i]);
     }));
@@ -126,10 +126,10 @@
       el('mean').textContent=s.n?fmt(s.mean)+' 血':'—';
       el('death').textContent=s.n?pct(s.deaths/s.n):'—';
       el('death-count').textContent=`${s.deaths} 场死亡 / ${s.n} 场有效对战`;
-      el('count').textContent=`${s.n} / ${data.seeds.length}`;
-      el('pair-status').textContent=!inScope(b,ti)?'历史结果 · 已退出当前采集范围':s.n===data.seeds.length?'四个种子均已完成':data.collection_active===false?'历史样本 · 本批次未采满':s.n?'未采满 · 当前均值为暂定值':'尚无有效结果';
+      el('count').textContent=`${s.n} / ${data.planned_seed_count || 4}`;
+      el('pair-status').textContent=!inScope(b,ti)?'历史结果 · 已退出当前采集范围':s.n===(data.planned_seed_count || 4)?'四个种子均已完成':data.collection_active===false?'历史样本 · 本批次未采满':s.n?'未采满 · 当前均值为暂定值':'尚无有效结果';
       const body=el('battles');body.replaceChildren();
-      data.seeds.forEach((seed,si)=>{
+      Array.from({length:data.planned_seed_count || 4}).forEach((_,si)=>{
         const row=document.createElement('tr'),r=rows.find(v=>v[0]===si);
         addCell(row,`种子 ${si+1}`);
         addCell(row,r?`${data.max_hp-r[1]} / ${r[4] ?? data.max_hp}`:'—',true);
@@ -144,8 +144,8 @@
       else targetSelect.value=b.targets.includes(data.default_target)?String(data.default_target):String(b.targets[0]);
       const done=b.targets.reduce((s,ti)=>s+readings(bi,ti).length,0),groups=b.targets.filter(ti=>readings(bi,ti).length).length;
       const active=b.active_targets || b.targets,activeDone=active.reduce((s,ti)=>s+readings(bi,ti).length,0);
-      el('build-meta').textContent=`${b.label} · ${b.size} 张牌（${b.colorless} 张无色）· ${b.relics.length} 件遗物 · 累计 ${done} 场 · 当前范围 ${activeDone} / ${active.length*data.seeds.length} 场`;
-      putItems('cards',b.cards.map(c=>`${c.name}${c.upgrade?'+'+(c.upgrade>1?c.upgrade:''):''}${c.enchantment?'〔'+c.enchantment+'〕':''} ×${c.count}${c.colorless?'〔无色〕':''}`));
+      el('build-meta').textContent=`${b.label} · ${b.size} 张牌（${b.colorless} 张无色）· ${b.relics.length} 件遗物 · 累计 ${done} 场 · 当前范围 ${activeDone} / ${active.length*(data.planned_seed_count || 4)} 场`;
+      putItems('cards',b.cards.map(c=>`${c.name}${c.upgrade?'+'+(c.upgrade>1?c.upgrade:''):''}${c.enchantment?'〔'+c.enchantment+'〕':''}${c.saved_state?'〔'+c.saved_state+'〕':''} ×${c.count}${c.colorless?'〔无色〕':''}`));
       putItems('relics',b.relics.map((r,i)=>`${i+1}. ${r.name}${r.counters.length?'（'+r.counters.join('；')+'）':''}`));
       el('lineage').replaceChildren();
       [...(b.derived?[`一代变异 · ${b.derived.size==='small'?'小变异':'大变异'} · ${b.derived.cards_changed} 张牌 / ${b.derived.relics_changed} 件遗物`,`母构筑：${b.derived.parent_label} · ${b.derived.parent_id}`,...b.derived.changes]:[]),`配置 ID：${b.id}`,`先古遗物历史：${b.ancient}`,...(b.origins||[]).map(o=>`原始对局：${o.run_hash} · 第 ${o.floor} 层战前${o.removed_relics?.length?' · 标准化时移除：'+o.removed_relics.join('、'):''}`)].forEach(t=>{const n=document.createElement('div');n.textContent=t;el('lineage').append(n);});
@@ -153,7 +153,7 @@
       const table=el('target-rows');table.replaceChildren();
       b.targets.forEach(ti=>{const t=data.targets[ti],s=summarize(readings(bi,ti)),row=document.createElement('tr');
         const cell=addCell(row,''),button=document.createElement('button');button.type='button';button.className='btn btn-ghost';button.textContent=t.name+(inScope(b,ti)?'':' · 历史');button.addEventListener('click',()=>{targetSelect.value=String(ti);renderPair();});cell.append(button);
-        addCell(row,kinds[t.kind]||t.kind);addCell(row,`${s.n}/${data.seeds.length}`,true);addCell(row,s.n?fmt(s.mean):'—',true);addCell(row,s.n?pct(s.deaths/s.n):'—',true);table.append(row);
+        addCell(row,kinds[t.kind]||t.kind);addCell(row,`${s.n}/${data.planned_seed_count || 4}`,true);addCell(row,s.n?fmt(s.mean):'—',true);addCell(row,s.n?pct(s.deaths/s.n):'—',true);table.append(row);
       });
       renderPair();
     }

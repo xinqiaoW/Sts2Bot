@@ -1,5 +1,7 @@
 # 8 秒搜索批次
 
+2026-09-11：当前原生适配器协议 3，活动库为 `collection-real-runs-v4.sqlite` 与 `collection-mutations-v2.sqlite`，仍保持 8 秒搜索。旧协议 2 的 v3/v1 库已经封存，禁止领取其中仍保留的 pending。入口从 session/active 动态读取，详见 [特殊卡牌与持久状态](card-state.md)。
+
 **2026-09-08 战后清理超时修复：** Failed / cleanup 的原生期限异常可能同时带有 complete observation，原重试入口拒绝此组合而导致全池退出。现在仅允许明确的 System.TimeoutException / EnsureWithinDeadline 清理异常进入既定最多三次重试，原 Failed 结果及 observation 原样保留，不能用作标签；其他完整 observation 异常与成功验收规则不变。见 [恢复证据](../evidence/cleanup-deadline-20260908/README.md)。该目录 deploy.py 是一次性脚本，禁止重放；files.json 覆盖旧部署清单中同名文件的历史摘要。
 
 **2026-09-08 最新内存授权：** 用户要求取消内存预留线、只要还能运行就持续采集。当前 pool/controller/session/active 的 `reserve_gib=0`，覆盖本文及历史文档所有 32 GiB 预留和 82 GiB 启动要求。运行中的 worker 不因可用内存降到某条线而统一收尾；新启动仍估算每 worker 2 GiB（25 个全新 worker 合计 50 GiB，运行后不保留这部分）。保持 25 worker、8 秒搜索及故障重试/隔离、备份和巡检，不干预其他账号或系统限额。巡检从 session 动态读取预留值，不能恢复旧阈值。部署记录见 [取消预留线](../evidence/no-memory-reserve-20260908/README.md)，deploy.py 为一次性脚本，禁止重放。

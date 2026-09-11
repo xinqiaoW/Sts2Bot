@@ -4,6 +4,8 @@ import json
 from pathlib import Path
 import re
 from .schema import Build
+from .starter_relics import TOUCH, uses_orobas_replacement
+from .card_state import SPECIAL_POOLS, normalize_state
 
 
 # Explicit initial support. Unknown persistent state is reported instead of fabricated.
@@ -76,6 +78,9 @@ IMPORTED_ACQUISITION_RELICS = {
 # .run. Pet skins have valid native defaults and do not affect combat behavior.
 # Pets are still summoned by BeforeCombatStart, independently of AfterObtained.
 IMPORTED_DISPLAY_STATE_RELICS = {'ARCHAIC_TOOTH', 'DUSTY_TOME', 'BYRDPIP', 'PAELS_LEGION'}
+# Its only pickup action deterministically replaces Snake with Drake. The worker
+# invokes that native action once; its saved ModelIds are verified in the source.
+IMPORTED_STARTER_REPLACEMENT_RELICS = {TOUCH}
 
 
 class Catalog:
@@ -105,10 +110,10 @@ class Catalog:
             self.max_hp_relic_ids if self.remove_max_hp_relics else set())
         for c in raw["cards"]:
             reason = None
-            if c["pool"] not in ("SILENT_CARD_POOL", "COLORLESS_CARD_POOL", *(['CURSE_CARD_POOL', 'EVENT_CARD_POOL'] if imported else [])):
+            if c["pool"] not in ("SILENT_CARD_POOL", "COLORLESS_CARD_POOL", *(['CURSE_CARD_POOL', 'EVENT_CARD_POOL', *SPECIAL_POOLS] if imported else [])):
                 reason = "other_character_or_special_pool"
             elif c["multiplayer_constraint"] == "MultiplayerOnly": reason = "multiplayer_only"
-            elif c["rarity"] not in ("Common", "Uncommon", "Rare", "Basic", *(['Curse', 'Event', 'Ancient'] if imported else [])): reason = "requires_special_acquisition"
+            elif c["rarity"] not in ("Common", "Uncommon", "Rare", "Basic", *(['Curse', 'Event', 'Ancient', 'Quest', 'Status', 'Token'] if imported else [])): reason = "requires_special_acquisition"
             elif any("PotionFactory::" in s or "PotionCmd::" in s for s in c["calls"]): reason = "potions_out_of_scope"
             if reason: self.excluded["cards"][c["id"]] = reason
             elif c["rarity"] != "Basic": self.card_pool.append(c["id"])
@@ -125,9 +130,9 @@ class Catalog:
             elif r["pool"] not in ("SILENT_RELIC_POOL", "SHARED_RELIC_POOL", "EVENT_RELIC_POOL"):
                 reason = "other_character_pool"
             elif any("PotionFactory::" in s or "PotionCmd::" in s for s in r["calls"]): reason = "potions_out_of_scope"
-            elif r["state_properties"] and not (imported and r['id'] in IMPORTED_DISPLAY_STATE_RELICS) and (r["id"] not in COUNTER_DOMAINS or (r['id'] in {*IMPORTED_COUNTER_DOMAINS, 'TUNING_FORK'} and not imported)):
+            elif r["state_properties"] and not (imported and r['id'] in IMPORTED_DISPLAY_STATE_RELICS | IMPORTED_STARTER_REPLACEMENT_RELICS) and (r["id"] not in COUNTER_DOMAINS or (r['id'] in {*IMPORTED_COUNTER_DOMAINS, 'TUNING_FORK'} and not imported)):
                 reason = "persistent_state_adapter_pending"
-            elif "AfterObtained" in methods and not (imported and r['id'] in IMPORTED_ACQUISITION_RELICS):
+            elif "AfterObtained" in methods and not (imported and r['id'] in IMPORTED_ACQUISITION_RELICS | IMPORTED_STARTER_REPLACEMENT_RELICS):
                 reason = "acquisition_effect_adapter_pending"
             if reason: self.excluded["relics"][r["id"]] = reason
             else: self.relic_pool.append(r["id"])
@@ -152,6 +157,8 @@ class Catalog:
         for card in build.cards:
             if card.id not in self.cards or card.id in self.excluded["cards"]:
                 raise ValueError(f"Disallowed card: {card.id}")
+            if normalize_state(card.id, dict(card.persistent_state)) != card.persistent_state:
+                raise ValueError('Noncanonical persistent card state')
             if type(card.upgrade) is not int or not 0 <= card.upgrade <= self.cards[card.id]["max_upgrade_level"]:
                 raise ValueError("Invalid card upgrade")
             if type(card.enchantment_id) is not str or type(card.enchantment_amount) is not int:
@@ -174,6 +181,7 @@ class Catalog:
                 if not any(type(value) is type(v) and value == v for v in expected[key]):
                     raise ValueError("Invalid counter value")
             validate_counter_relation(relic.id, state)
+        uses_orobas_replacement(ids, build.ancient_history)
         self.validate_ancient_history(build.act, build.ancient_history, ids,
                                       allow_removed=bool(self.normalized_relic_ids))
 

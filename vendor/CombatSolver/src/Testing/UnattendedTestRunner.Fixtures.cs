@@ -342,9 +342,11 @@ internal sealed partial class UnattendedTestRunner
         for (int index = 0; index < injection.Count; index++)
         {
             CardModel card = combatState.CreateCard(canonical, player);
+            ApplySavedCardIntegers(card, injection.SavedIntegerMembers);
             if (injection.TreatAsDeckCard)
             {
                 CardModel deckVersion = combatState.RunState.CreateCard(canonical, player);
+                ApplySavedCardIntegers(deckVersion, injection.SavedIntegerMembers);
                 CardPileAddResult deckResult = await CardPileCmd.Add(deckVersion, PileType.Deck);
                 if (!deckResult.success)
                     throw new InvalidOperationException($"游戏拒绝为测试卡牌 {canonical.Id} 建立跑局版本。");
@@ -412,6 +414,7 @@ internal sealed partial class UnattendedTestRunner
         for (int index = 0; index < injection.Count; index++)
         {
             CardModel card = runState.CreateCard(canonical, player);
+            ApplySavedCardIntegers(card, injection.SavedIntegerMembers);
             for (int level = 0; level < injection.UpgradeLevels && card.IsUpgradable; level++)
                 CardCmd.Upgrade(card, CardPreviewStyle.None);
             foreach ((string key, int value) in injection.DynamicVars)

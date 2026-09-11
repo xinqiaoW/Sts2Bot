@@ -55,6 +55,29 @@ def databases(tmp_path, catalog, policy):
     real.db.close(); mutations.db.close()
 
 
+def test_historical_completed_parents_remain_eligible(databases, catalog, policy):
+    real, destination = databases
+    for row in real.db.execute('SELECT * FROM jobs').fetchall():
+        real.db.execute('INSERT INTO prior_collected_inputs VALUES(?,?,?,?,?,?,?,?)',
+                        (row['build_id'], json.loads(row['target'])['id'], row['seed'], 'frozen.sqlite',
+                         row['id'], 'complete', row['teacher'], 'fixture'))
+    real.db.execute('DELETE FROM jobs'); real.db.commit()
+    generator = Generator(real, destination, catalog, {'fixture': True}, policy)
+    generator.refresh()
+    assert all(generator.groups[act] for act in ('HIVE', 'GLORY'))
+
+
+def test_relic_mutation_preserves_saved_card_state(catalog, policy):
+    card = Card('MAD_SCIENCE', 1, persistent_state={'TinkerTimeType': 2, 'TinkerTimeRider': 5})
+    parent = parent_for(catalog, 'HIVE')
+    parent = replace(parent, cards=(*parent.cards, card))
+    children = [mutate(parent, catalog, random.Random(seed), 'small', 'relics', policy) for seed in range(8)]
+    assert any(children)
+    for result in filter(None, children):
+        child = Build.from_dict(result[0].to_dict())
+        assert child.cards == parent.cards and card in child.cards
+
+
 @pytest.mark.parametrize('act_id', ['HIVE', 'GLORY'])
 @pytest.mark.parametrize('size', ['small', 'large'])
 @pytest.mark.parametrize('axes', ['cards', 'relics', 'both'])

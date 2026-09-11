@@ -16,3 +16,6 @@ catalogs/*.raw.json
 catalogs/counter-inspection.txt
 .venv/
 .venv
+
+# Generated shareable viewer snapshot
+/share-viewer-20260910/

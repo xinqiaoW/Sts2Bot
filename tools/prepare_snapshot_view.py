@@ -9,6 +9,7 @@ import json
 from pathlib import Path
 import statistics
 import zipfile
+import sys
 from view_payload import pack_build_columns, pack_strings
 
 parser = argparse.ArgumentParser()
@@ -22,6 +23,8 @@ parser.add_argument('--standalone', action='store_true',
 args = parser.parse_args()
 OUT = args.input_dir.resolve()
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+from damage_model.card_state import state_description
 FRAGMENT = args.fragment.resolve()
 source = OUT / 'collected-data.json.gz'
 source_manifest = json.loads((OUT/'source-manifest.json').read_text(encoding='utf-8'))
@@ -75,11 +78,11 @@ bi = {b['id']: i for i, b in enumerate(builds)}
 ti = {t['id']: i for i, t in enumerate(targets)}
 seeds = sorted({r['seed'] for r in data['battles']})
 si = {s: i for i, s in enumerate(seeds)}
-assert len(seeds) == 4
+assert len(seeds) <= 4
 groups = collections.defaultdict(list)
 for r in data['battles']:
     groups[r['build_id'], r['target_id']].append(r)
-assert len({r['job_id'] for r in data['battles']}) == len(data['battles']) == data['job_counts']['complete']
+assert len({r['job_id'] for r in data['battles']}) == len(data['battles']) == data['job_counts'].get('complete',0)
 assert all(r['max_hp'] == r['initial_hp'] == 70 for r in data['battles'])
 assert all(len({r['seed'] for r in rows}) == len(rows) <= 4 for rows in groups.values())
 
@@ -93,10 +96,11 @@ for origin in data.get('build_origins', []):
     origins[origin['build_id']].append({'run_hash': origin['run_hash'], 'floor': origin['floor'],
         **({'removed_relics': [name('relics', r) for r in removed]} if removed else {})})
 for i, b in enumerate(builds):
-    cc = collections.Counter((c['id'], c['upgrade'], c.get('enchantment_id',''), c.get('enchantment_amount',0)) for c in b['cards'])
+    cc = collections.Counter((c['id'], c['upgrade'], c.get('enchantment_id',''), c.get('enchantment_amount',0), tuple(sorted(c.get('persistent_state', {}).items()))) for c in b['cards'])
     entries = [{'id': cid, 'name': name('cards',cid), 'upgrade':up, 'count':n,
         'enchantment': (name('enchantments', ench) + ' ' + str(amount)) if ench else '',
-        'colorless': cards[cid]['pool']=='COLORLESS_CARD_POOL'} for (cid,up,ench,amount),n in sorted(cc.items())]
+        **({'saved_state': state_description(cid, state)} if state_description(cid, state) else {}),
+        'colorless': cards[cid]['pool']=='COLORLESS_CARD_POOL'} for (cid,up,ench,amount,state),n in sorted(cc.items())]
     label_number = previous_labels.get(b['id'])
     if label_number is None:
         label_number = next_label
@@ -121,6 +125,8 @@ for i, b in enumerate(builds):
                 if group == 'cards':
                     if item.get('upgrade'): text += '+' + (str(item['upgrade']) if item['upgrade'] > 1 else '')
                     if item.get('enchantment_id'): text += f"〔{name('enchantments', item['enchantment_id'])} {item['enchantment_amount']}〕"
+                    if state_description(item['id'], item.get('persistent_state', {})):
+                        text += '〔' + state_description(item['id'], item.get('persistent_state', {})) + '〕'
                 elif item.get('state'): text += '（' + '；'.join(counters(item['state'])) + '）'
                 return text
             operation = {'add':'添加','remove':'移除','replace':'替换','upgrade':'升级'}[change['operation']]
@@ -155,17 +161,17 @@ stats = {'battles':len(data['battles']),'builds':len(builds),'targets':len(data[
     'split_build_counts':dict(collections.Counter(b['split'] for b in builds)),
     'split_battle_counts':dict(collections.Counter(builds[bi[r['build_id']]]['split'] for r in data['battles']))}
 stamp = datetime.datetime.fromisoformat(data['snapshot_at_utc']).astimezone(datetime.timezone(datetime.timedelta(hours=8))).strftime('%Y-%m-%d %H:%M:%S 北京时间')
-latest = max(data['battles'], key=lambda r:r['finished_at'])
-default_bid, default_target = latest['build_id'], latest['target_id']
+latest = max(data['battles'], key=lambda r:r['finished_at'], default=None)
 search_budgets = {t['search_ms'] for t in data['teachers'].values()}
 assert len(search_budgets) == 1, 'Display each search configuration as a separate dataset'
 view = {'snapshot':stamp,'dataset_label':args.dataset_label,'search_budget_ms':next(iter(search_budgets)),
     'build_source':data.get('build_source', 'spire_codex_run_v1'),
-    'max_hp':70,'stats':stats,'builds':view_builds,'seeds':seeds,
+    'max_hp':70,'stats':stats,'builds':view_builds,'seeds':seeds,'planned_seed_count':4,
     'target_policy': data.get('target_policy', {'name': 'whole_act_v1'}),
     'targets':[{'id':t['id'],'name':name('encounters',t['id']), 'kind':t['room_type'],
         'monster_names':[name('monsters',m) for m in t['monsters']]} for t in targets],
-    'results':results,'default_build':bi[default_bid],'default_target':ti[default_target]}
+    'collector_protocols':sorted({t.get('collector_protocol',1) for t in data['teachers'].values()}),
+    'results':results,'default_build':bi[latest['build_id']] if latest else -1,'default_target':ti[latest['target_id']] if latest else -1}
 fragment = FRAGMENT.read_text(encoding='utf-8')
 fragment, replaced = re.subn(r'(<script[^>]*id="sb-data"[^>]*>).*?(</script>)', lambda m: m[1]+'__DATA__'+m[2], fragment, flags=re.S)
 assert replaced == 1 and fragment.count('__DATA__') == 1
@@ -259,4 +265,6 @@ with zipfile.ZipFile(archive) as z:
     assert z.testzip() is None
     assert len(z.read('battles.jsonl').splitlines())==stats['battles']
     assert len(z.read('pair-summaries.jsonl').splitlines())==stats['pairs']
-print(json.dumps({'stats':stats,'fragment_bytes':FRAGMENT.stat().st_size,'zip':str(archive),'zip_bytes':archive.stat().st_size,'missing_names':sorted(set(names_missing)),'default_build':builds[bi[default_bid]]['label'],'default_target':name('encounters',default_target)},ensure_ascii=False,indent=2))
+print(json.dumps({'stats':stats,'fragment_bytes':FRAGMENT.stat().st_size,'zip':str(archive),'zip_bytes':archive.stat().st_size,'missing_names':sorted(set(names_missing)),
+                  'default_build':builds[view['default_build']]['label'] if latest else None,
+                  'default_target':name('encounters',latest['target_id']) if latest else None},ensure_ascii=False,indent=2))
