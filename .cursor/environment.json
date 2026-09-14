@@ -1,0 +1,4 @@
+{
+  "name": "Sts2 Damage Model",
+  "install": "bash .cursor/install.sh"
+}
