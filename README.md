@@ -1,47 +1,58 @@
 # 静默猎手预期掉血模型
 
-目标：`F(真实卡组及升级、逐张附魔, 遗物及采样计数, 原版怪物编组) → 标准化预期净掉血`。
+目标：`F(卡组及逐张升级、附魔、持久状态，遗物及计数，原版怪物编组) → 预期净掉血`，并预测死亡概率。
 
-当前采集流程为 **Spire Codex `.run` → 还原战前构筑 → 校验 → CombatSolver 独立对战**。真实任务优先；队列耗尽时，使用已验证真实构筑的一代小／大变异补充巢穴和荣耀任务，小变异 60%、大变异 40%，不通过人工评分筛选父代。遗物计数按用户要求在已验证的合法范围内随机采样，记录采样种子；同一输入的四次对战固定计数，只改变战斗种子。详见[变异规则](docs/mutations-8s.md)。
+数据流程：**Spire Codex `.run` → 还原并标准化战前构筑 → CombatSolver 独立对战 → 有效终局标签 → 冻结快照训练**。真实来源与真实构筑的一代变异并行采集，不按真人胜负或人工评分筛选强构筑。
 
-原版 0.111.0，静默猎手，单人标准模式，A10，70/70 满血开战，无药水。最多 45 张牌、0–5 张无色牌，保留真实诅咒、事件/先古牌，以及真实历史中的任务牌、状态牌、衍生牌。按用户要求移除影响最大生命的遗物，保留其余构筑和真实历史；不因该遗物直接拒绝整套输入。药瓶皮套、石化蟾蜍、蜥蜴尾巴同样只移除遗物，保留剩余构筑；其余复活、棱彩宝石及尚未适配的持久状态仍排除。保留回血遗物。真实构筑只测试同一 `.run`、同幕出现楼层前后各两层实际遇到的原版编组，重复出现时合并范围；变异构筑沿用父代目标。每场独立开战，不把前一场的损失带入后一场。
+## 当前生产口径
 
-掉血标签必须来自原版完整终局：初始满血减去最终生命，包含回血抵消，死亡另记布尔标签。超时和异常没有掉血标签。真人的掉血、胜负和用药记录只保存在原始来源中，不用作老师标签，也不用于挑选“好构筑”。
+| 项目 | 设置 |
+| --- | --- |
+| 采集主机与目录 | SSH `01`，`/data1/pl/ImageTask/wxq/Projects/Sts2Bot` |
+| 来源版本 | v0.109.0 / v0.109.1、v0.110.0 / v0.110.1、v0.111.0 |
+| 实际战斗 | 游戏 0.111.0，静默猎手，单人标准 A10，70/70 满血，无药水 |
+| 搜索 | Medium、short_only、8,000 ms、DOP 1，整场期限 120 秒 |
+| 并发 | 25 个独立运行环境：20 个优先真实，5 个优先变异；空队列允许互相借用 |
+| 活动数据库 | `data/collection-real-runs-v4.sqlite`、`data/collection-mutations-v2.sqlite` |
+| 运行与备份 | 持续采集直到用户停止；运行内存预留 0；新 worker 启动预算 2 GiB；两路 300 秒双槽备份 |
 
-## 使用
+0.109 来源中的恫吓转换为侧步，保留升级、附魔及可还原状态；旧版本只提供输入，标签统一重新用 0.111.0 生成。完整规则见[来源版本与调度](docs/source-versions-and-scheduling.md)。
 
-当前在 01 的 `/data2/pl/ImageTask/wxq/Projects/Sts2Bot` 采集，Python `.venv/bin/python`；本地代码 `C:\Users\www\Documents\Sts2DamageModel`。活动状态以 `data/collection-session.json` 和 `data/active-collection.json` 为准。用户授权持续采集直到明确要求停止，每半小时巡检。原租用机操作保留在[历史记录](docs/rental-collection.md)。
+最多 45 张牌、0–5 张无色牌；允许真实永久牌组中的诅咒、事件/先古牌、任务牌、状态牌和衍生牌。最大生命遗物及明确指定的 13 件遗物单独移除，保留剩余构筑和来源历史；回血遗物保留。其他角色永久牌、棱彩宝石、万花筒和未适配状态仍按规则拒绝。详见[卡牌状态](docs/card-state.md)、[遗物规则](docs/relic-rules.md)。
 
-当前批次见 [8 秒搜索](docs/search-8s.md)，运行环境见[切回 01](docs/return-to-01.md)。
+真实构筑匹配同一 `.run`、同一幕来源楼层前后各两层实际遇到的原版编组；每目标 4 个种子，每场独立重置。同一构筑重复出现时合并目标范围，已有任务去重。变异沿用父代目标，以荣耀 60%、巢穴 40%，小变异 60%、大变异 40% 生成，详见[变异规则](docs/mutations-8s.md)。
 
-```bash
-.venv/bin/python -m damage_model.cli import-runs --directory data/external/local-runs
-.venv/bin/python -m damage_model.cli sync-runs
-.venv/bin/python -m damage_model.cli status
-.venv/bin/python -m damage_model.cli work --runtime configs/runtime-wine-pilot.json --limit 256
-```
+## 操作入口
 
-上面的裸命令仍使用 CLI 历史默认值（v2 库、2 秒 `configs/real-runs.json`）；操作当前批次时，必须在子命令之前显式传入 `--db data/collection-real-runs-v4.sqlite --config configs/real-runs-8s.json`。变异另库存储于 `data/collection-mutations-v2.sqlite`。旧协议 2 的 v3/v1 库已封存，不要再领取。`configs/teacher.json` 冻结原版、CombatSolver 和 RitsuLib 摘要；当前采集协议 3、8 秒短搜、Medium、DOP 1。老师代表该搜索预算下的实际表现，不保证最优打法。
-
-持续采集由 `tools.collect_continuous --collect-only` 管理：提前补充真实来源，队列低于水位时下载下一页；通过 `--mutation-db` 启用真实队列耗尽后的变异补充。每个 worker 使用独立 Wine prefix，启动和停止方式见[持续采集](docs/continuous-collection.md)，当前参数以活动会话为准。
-
-## 来源与校验
-
-导入器先从初始牌组（含进阶之灾）依次应用升级、删牌、变牌、获得牌和遗物记录。战前快照取在该层奖励之前。重复牌升级和同层操作顺序不确定时保留一致解释，最终与 `.run` 的牌组及遗物顺序核对；不能确认的状态不进队列。附魔 ID、数值与具体卡牌升级状态共同保留；另支持藏宝图、探寻、愧疚和疯狂科学的原生持久字段，按真实历史还原，与原生开战观察逐张核对。详见 [特殊卡牌与持久状态](docs/card-state.md)。混合事件/战斗房间及其他未适配持久字段仍明确跳过，原始记录和原因保留。
-
-当前导入修订为 `special_cards_saved_state_v8`：真实历史中的任务/状态/衍生牌，以及藏宝图、探寻、愧疚、疯狂科学的保存字段，进入构筑身份并与原生协议 3 观察核对；未知卡牌字段仍跳过。炼金箱、娇嫩蕨草、涅奥的牺牲、皮草大衣、佩尔之牙等仍单独移除，保留其余构筑；欧罗巴斯之触保留，核对来源后由原版将蛇之戒原位替换成龙之戒。其他遗物仍跳过获得效果，保留实际牌组和合法计数；达弗共享先古及此前移除规则保持。受影响的旧修订来源幂等重审，无关旧来源保持原修订。新接受的输入写入 v4 活动库；旧协议 2 的 v3 标签不重写、不混进新协议，旧导入报告存入 `source_import_history`。模型编码在卡牌 ID × 升级 × 附魔之外，对已适配保存状态再按变体计数；原始输入保留每一张牌，旧模型遇到新增特征会明确拒绝。
-
-已验证的一次性遗物直接装入，不重放获得时的删牌、升级或奖励效果。珠宝盒、涅奥的苦痛、古老牙齿已适配，以保留神化、涅奥之怒和压制；古老牙齿的两个保存字段仅供原版提示文字使用，牌组变化已在历史中还原。不同来源的相同输入共享对战任务，`build_origins` 保留每份 `.run`、楼层和移除遗物清单；`source_runs` 保留原始内容、来源 URL、摘要和导入报告。公开导出页保留 gzip、摘要和下一页游标，完整下载和导入后才推进游标。其他待适配项见[遗物清单](docs/unadapted-relics-20260906.md)。
-
-训练读取数据时按“源局与共享构筑的连通组”划分训练、验证和测试集，防止同一局流入多个集合。数据持续扩充可能合并连通组，因此每次训练应使用独立一致性快照；若没有足够的独立留出组，训练会拒绝，不能伪造评估隔离。
+以下命令在 **01 的现行生产目录**执行。活动路径与参数以 `data/collection-session.json`、`data/active-collection.json` 和实际进程为准。
 
 ```bash
-# 在具备 PyTorch 的训练环境中，对固定快照训练。
-python -m damage_model.cli --db data/training-snapshot.sqlite train --output checkpoints/real-runs
+cd /data1/pl/ImageTask/wxq/Projects/Sts2Bot
+.venv/bin/python -m damage_model.cli \
+  --db data/collection-real-runs-v4.sqlite --config configs/real-runs-8s.json status
 ```
 
-跨库（8 秒真实 v3/v4 与变异 v1/v2）的多模型训练、比较、推理与验证在 [train/](train/README.md)：`train.snapshot` 导出只读一致快照并按跨库连通组划分，`train.compare` 在指定 GPU 上训练并比较仓库 MLP、rtdl MLP/ResNet、TabM、Set Transformer 与 LightGBM，`train.predict` 提供推理入口。
+不要省略 `--db`、`--config`：CLI 的历史默认值仍指向 v2 库和 2 秒配置。旧 `/data2` 仓库不是当前采集目录，不能从那里恢复服务。Git 工作副本与运行副本分开；当前分支尚未包含全部线上兼容版本和双队列调度代码，不能把 checkout 或单独同步文档当作生产部署，详见[运行环境](docs/runtime.md)。
 
-目前 01 只采集，首版 `checkpoints/v1` 保留。旧随机数据 `data/collection-horizon.sqlite` 和更早 `data/collection.sqlite` 不删除、不与新数据静默合并；`configs/v1.json` 保留为旧数据与兼容测试的历史配置。最早的随机构筑代码 `sampling.py`、旧轮次驱动 `collect_rounds.py`、`seed/evolve` 命令已移除。Build 的代数、父代等字段同时用于历史数据兼容和当前真实构筑变异的血缘记录。
+采集控制器使用 `--collect-only`，不自动训练、不覆盖 `checkpoints/v1`。仓库已经有独立的多模型训练、比较、推理与评估工具和两批固定快照报告，见 [train/README.md](train/README.md)。训练需要另行准备完整、一致的来源快照。
 
-更多边界及实测记录见 [真实局导入](docs/spire-codex-run-assessment.md)。
+## 标签与数据边界
+
+标签为原版完整终局的 `initialHp - finalHp`，回血会抵消损失，死亡另记布尔值；超时、异常和不完整终局不产生标签。四种子均值是该搜索预算下的预期掉血估计，不保证最优打法。真人掉血与用药记录保存在原始来源中，不充当标签。
+
+构筑、来源、遗物计数种子、教师和全部尝试分别留档；跨库训练按源局与共享构筑/变异血缘的连通组划分，避免泄漏。旧协议标签不改写成新协议；训练只能按显式兼容规则合并。已知历史附件缺口与冻结批次位置见[验证与审计](docs/validation.md)。
+
+## 文档导航
+
+| 内容 | 入口 |
+| --- | --- |
+| 导入与目标范围 | [真实局导入](docs/spire-codex-run-assessment.md) |
+| 版本转换、历史回补、20/5 调度 | [来源版本与调度](docs/source-versions-and-scheduling.md) |
+| 运行、停止、备份、故障恢复 | [持续采集](docs/continuous-collection.md)、[运行环境](docs/runtime.md) |
+| 搜索预算与教师边界 | [8 秒搜索](docs/search-8s.md) |
+| 卡牌与遗物状态 | [卡牌状态](docs/card-state.md)、[遗物规则](docs/relic-rules.md)、[计数范围](docs/counter-state.md) |
+| 一代变异 | [变异规则](docs/mutations-8s.md) |
+| 数据页面 | [查看与刷新](docs/data-viewer.md) |
+| 验证及已知限制 | [验证与审计](docs/validation.md) |
+| 模型训练和报告 | [训练入口](train/README.md) |
+| 内嵌求解器资料 | [文档范围](vendor/CombatSolver/docs/README.md) |

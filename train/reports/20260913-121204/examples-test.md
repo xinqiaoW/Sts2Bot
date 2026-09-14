@@ -1,5 +1,7 @@
 # 预测样例与误差分析
 
+> 本报告保留该固定快照的原指标与样例，路径是生成时的出处，不是当前采集工作目录。现行环境与指标解释见[训练说明](../../README.md)；不同快照的留出集不能直接作同条件比较。
+
 快照 `/data2/pl/ImageTask/wxq/Projects/Sts2Bot/data/train-snapshots/20260913-121204`，测试集 138732 场 / 34690 对。主模型 **set_transformer**（pair MAE 4.54 HP，中位数 2.49，偏差 -0.47）。对比模型：lightgbm, repo_mlp, rtdl_mlp, rtdl_resnet, set_transformer, tabm, ensemble。误差 = 预测 − 同输入全部种子的均值，单位 HP。
 
 ## 误差分布（主模型，pair 级）

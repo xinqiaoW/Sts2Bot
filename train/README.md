@@ -1,14 +1,28 @@
 # 训练 / 推理 / 验证
 
-目标：`F(真实卡组及升级及持久状态、逐张附魔, 遗物及采样计数, 原版怪物编组) → 标准化预期净掉血`，标签为 `净掉血 / 初始最大生命`（当前全部 70/70，即 `netHpLoss / 70`），另带死亡概率辅助头。
+目标：`F(标准化卡组及逐张升级、附魔、持久状态, 遗物及采样计数, 原版怪物编组) → 标准化预期净掉血`，标签为 `净掉血 / 初始最大生命`（当前全部 70/70，即 `netHpLoss / 70`），另带死亡概率辅助头。
 
-数据只读取 8 秒老师的有效标签：真实 `collection-real-runs-v3.sqlite`（协议 2，已封存）、`collection-real-runs-v4.sqlite`（协议 3，活动）、变异 `collection-mutations-v1.sqlite`（封存）、`collection-mutations-v2.sqlite`（活动）。来源列表在 [configs/sources.json](configs/sources.json)。训练不读活动库本身，只读一次性导出的冻结快照；不写回任何采集库，不改 `damage_model`。
+数据只读取 8 秒老师的有效标签：真实 `collection-real-runs-v3.sqlite`（协议 2，已封存）、`collection-real-runs-v4.sqlite`（协议 3，活动）、变异 `collection-mutations-v1.sqlite`（封存）、`collection-mutations-v2.sqlite`（活动）。来源列表在 [configs/sources.json](configs/sources.json)。训练不读活动库本身，只读一次性导出的冻结快照；不写回任何采集库，不写回采集输入或标签。
 
-环境：`.venv-train`（`python -m venv --system-site-packages`，在采集用 `.venv` 之上追加 `lightgbm`、`rtdl_revisiting_models`、`tabm`、`pyarrow`；不改动采集环境）。GPU 默认用 `cuda:0`、`cuda:1`，第三张仅临时占用时通过 `--gpus 0,1,2` 显式指定。
+## 运行位置与准备条件
+
+当前采集目录为 01 的 `/data1/pl/ImageTask/wxq/Projects/Sts2Bot`。训练需要独立环境、可用 GPU 和完整冻结来源，不与持续采集控制器绑定。
+
+迁移后核对发现：`/data1` 只有两个活动数据库，默认来源列表中的封存真实 v3 / 变异 v1 尚未迁入，`data/train-snapshots` 也未就绪；`.venv-train/bin/python` 仍指向旧 `/data2` 的解释器。**不能把现存 venv 路径或默认快照命令视为已经可用。** 先在健康存储上准备训练环境，补齐并核验冻结来源缓存，再执行下述流程。现有 `checkpoints/train/20260913-121204` 已在新盘；报告中的旧路径仍保留原始出处。
+
+训练环境使用 `python -m venv --system-site-packages`，在包含 PyTorch 的基础环境中安装 `lightgbm`、`rtdl_revisiting_models`、`tabm`、`pyarrow` 等训练依赖。仓库尚无独立的训练依赖锁定文件，重建环境需核对实际包版本。不向采集环境安装训练依赖。Torch 模型可选 GPU，LightGBM 的训练实现使用 CPU；默认 `--gpus 0,1` 是工具参数，不代表这些 GPU 当前空闲。
+
+默认 [configs/sources.json](configs/sources.json) 按 real-v4、real-v3、mut-v2、mut-v1 顺序去重。可将既有已核验快照的 `sources/` 缓存准备到健康路径，用 `--reuse` 复用 frozen 来源；每个来源需齐备 `.battles.parquet`、`.builds.json.gz`、`.edges.json.gz`、`.meta.json`。缺少缓存时工具会尝试读取配置中的数据库，不能靠 `--reuse` 绕过缺失数据。
+
+若明确只训练活动来源，另建显式 `--config`，保留教师兼容键与划分设置，并在报告中注明覆盖变化。`--only` 仅导出指定来源缓存，跳过合并，不能把其输出当成完整训练快照。不要通过跳过卡牌验证或忽略教师不匹配来凑齐数据。
 
 ## 流程
 
+以下示例中的 `<stamp>`、`<上次>` 等需替换为已准备的实际目录。
+
 ```bash
+cd /data1/pl/ImageTask/wxq/Projects/Sts2Bot
+
 # 1. 导出一致快照（每库一次只读事务；封存库可复用上一次快照的导出）
 .venv-train/bin/python -m train.snapshot --reuse data/train-snapshots/<上次>
 # → data/train-snapshots/<UTC 时间戳>/{battles.parquet, builds.json.gz, targets.json, manifest.json, sources/}
@@ -39,10 +53,12 @@
 
 ## 快照与划分
 
+快照逐库取得一致的只读视图；四个库并非同一原子时间点，分别记录导出时间。模型训练仅读取冻结结果。`train.evaluate` 默认排除 checkpoint 已见构筑及连通组；`--all-rows` 不再是独立留出评估，须另行标记。
+
 - 每条记录必须是 `status='complete'`、`Passed`、`combatEnded`、观察 `complete`，并重新通过 `validate_hp` 与逐张 `validate_cards`；导出即失败于任何不一致。
 - 同一 `(build, target, seed)` 出现在多个库时只保留 `sources.json` 顺序靠前者（v4 优先于 v3），去重数量写入 `manifest.json`。
 - 老师兼容性：各库老师在 `teacher_compatibility_keys`（求解器、游戏 SHA、8000 ms、Medium、DOP 1 等）上必须一致；协议 2/3 的采集器摘要不同但搜索预算相同，允许并入并在 artifact 中保留全部老师。
-- 划分按连通组：`build_origins`（构筑—源局）、`mutation_target_origins`（变异子—父源局）、`mutation_lineage`（子—父）做并查集，一个组只进一个集合（80/10/10，按组内源局哈希分桶）。任何集合为空即拒绝训练。
+- 划分按连通组：`build_origins`（构筑—源局）、`mutation_target_origins`（变异子—父源局）、`mutation_lineage`（子—父）做并查集，一个组只进一个集合（80/10/10，按组内源局哈希分桶，不保证场次数正好按该比例）。任何集合为空即拒绝训练。
 
 ## 特征
 
@@ -65,26 +81,21 @@
 
 ## 指标
 
-- `row_*`：逐场对战误差（含不可约的战斗随机性），单位 HP。
+- `row_*`：逐场对战误差（包含战斗种子带来的波动），单位 HP。
 - `pair_*`：先对同一 (构筑, 目标) 的所有种子取均值再比较，是评估“预期掉血”的主要指标；`pair_r2` 为对 pair 均值的解释比例。
-- 噪声下限：`within_pair_rmse_hp`（组内标准差，row RMSE 的下界）与 `loo_seed_mean_mae_hp`（用同输入其他种子均值预测单场，仅供参照）。
+- 组内波动参考：`within_pair_rmse_hp` 是有限种子样本的组内波动，`loo_seed_mean_mae_hp` 用同输入其他种子均值预测单场。它们不是已知总体分布的不可约误差下限；四种子均值本身也有采样误差。
 - 死亡头：Brier 与 AUC。全部指标另按来源类型（real/mutation）、幕、来源库分组。
 
-## 首次比较（2026-09-11）
+报告生成器目前仍使用历史名称“噪声下限”和 `test_noise_floor` 字段；其统计含义以上述解释为准。本次只纠正文档与现存报告的措辞，未修改统计计算或报告生成代码。
 
-快照 `data/train-snapshots/20260911-065245`：552,043 场（real-v3 400,132、real-v4 91,180、mut-v1 60,731、mut-v2 当时为 0），54,748 个构筑，1,413 个连通组；测试集 41,954 场 / 10,490 对 / 134 组。完整表格见 [reports/20260911-065245/comparison.md](reports/20260911-065245/comparison.md)。
+## 已有固定快照报告
 
-| 模型 | 测试 pair MAE (HP) | pair R² | row RMSE | death AUC |
-|---|---|---|---|---|
-| set_transformer | 4.26 | 0.813 | 9.95 | 0.976 |
-| rtdl_resnet | 4.28 | 0.813 | 9.94 | 0.972 |
-| tabm | 4.47 | 0.804 | 10.07 | 0.977 |
-| repo_mlp | 4.67 | 0.783 | 10.34 | 0.972 |
-| rtdl_mlp | 4.72 | 0.775 | 10.43 | 0.965 |
-| lightgbm | 5.02 | 0.768 | 10.52 | 0.973 |
-| 六模型均值集成 | 4.10 | 0.834 | 9.66 | 0.979 |
+| 快照 | 有效场次 / 构筑 / 连通组 | 比较与样例 |
+| --- | --- | --- |
+| 20260911-065245 | 552,043 / 54,748 / 1,413 | [模型比较](reports/20260911-065245/comparison.md)、[测试样例](reports/20260911-065245/examples-test.md) |
+| 20260913-121204 | 770,682 / 77,039 / 2,071 | [模型比较](reports/20260913-121204/comparison.md)、[测试样例](reports/20260913-121204/examples-test.md) |
 
-测试集噪声下限 `within_pair_rmse_hp = 8.07`，即 row RMSE 中约 8 HP 来自同输入的战斗随机性。变异构筑的误差高于真实构筑（pair MAE 5.2–5.9 对 4.1–4.9），第三幕（GLORY）最难。这些数字只对应该快照与 `configs/models.json` 的默认超参，未做超参搜索；数据继续扩充后应重新导出快照并重跑 `train.compare`。
+两份报告的测试连通组与数据分布不同，不能直接用跨报告 MAE 升降判断模型退步或进步。原指标、训练设置、耗时与快照路径保留作复现依据，不表示当前采集总量。比较优化效果应在同一固定留出集上评估。
 
 ## 产物
 
