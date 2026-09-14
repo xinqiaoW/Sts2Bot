@@ -1,0 +1,299 @@
+{
+ "meta": {
+  "stamp": "20260914-215935",
+  "tables": "sim-tables-v0",
+  "fit_runs": 6401,
+  "holdout_runs": 1629,
+  "episodes": 2000,
+  "arms": {
+   "sim/empirical/heuristic": "human damage histograms, heuristic policy",
+   "sim/empirical/random": "human damage histograms, random policy",
+   "sim/F/heuristic": "F ensemble of 6 (set_transformer, rtdl_resnet, tabm, rtdl_mlp, repo_mlp, lightgbm), pessimism=0.0, noise_sd=0.0, death_head=True, heuristic policy",
+   "sim/F/greedy_f": "same F oracle; card/smith/ancient choices by one-step F lookahead, map/shop heuristic"
+  },
+  "gaps": [
+   "Potions are ignored entirely (no potion drops, no use); the teacher and F are trained without potions as well, so the human column is the only one that benefits from potions.",
+   "Map layout is generated STS1-style; only the visited-path type mix is checked against humans (unvisited nodes are unobservable).",
+   "Events replay recorded human outcomes irrespective of the current state (no option choice, HP-dependent choices not conditioned, outcomes clamped so events never kill).",
+   "Relic pickup effects only for relics whose effect shows up as HP/max HP/gold/cards deltas on ancient/treasure/combat floors; shop-only relics, card enchantments and rest-site options unlocked by relics (DIG, LIFT, COOK, \u2026) are absent.",
+   "Rest site heal is fixed to 30 % of max HP; SMITH upgrades only; no dual choices.",
+   "Card rewards always offer 3 cards from the Silent pool with fitted rarity odds; no colorless/attack-only rewards, no reward-modifying relics.",
+   "Combat: F returns an expected loss; realised loss = round(mean + pessimism\u00b7std + N(0, noise_sd)), plus a death draw from the death head. Human damage includes potions, misplays and lower-than-70 starting HP.",
+   "Baseline policies are hand-written and do not use F; human decision quality is not reproduced (see the HP-when-entering-combat row)."
+  ],
+  "args": {
+   "tables": "/data2/pl/ImageTask/wxq/Projects/Sts2Bot/data/sim/tables-v0.json",
+   "episodes": 2000,
+   "checkpoint": [
+    "checkpoints/train/20260911-065245/set_transformer",
+    "checkpoints/train/20260911-065245/rtdl_resnet",
+    "checkpoints/train/20260911-065245/tabm",
+    "checkpoints/train/20260911-065245/rtdl_mlp",
+    "checkpoints/train/20260911-065245/repo_mlp",
+    "checkpoints/train/20260911-065245/lightgbm"
+   ],
+   "device": "cuda:0",
+   "pessimism": 0.0,
+   "noise_sd": 0.0,
+   "no_death_head": false,
+   "snapshot": "data/train-snapshots/20260911-065245",
+   "human_build_runs": 400,
+   "greedy_episodes": 500,
+   "output": null,
+   "seed": 0,
+   "catalog": "/data2/pl/ImageTask/wxq/Projects/Sts2Bot/catalogs/game-0.111.0.raw.json",
+   "config": "/data2/pl/ImageTask/wxq/Projects/Sts2Bot/configs/real-runs-8s.json"
+  }
+ },
+ "sections": {
+  "outcomes": {
+   "human": {
+    "win_rate": 0.23758278145695363,
+    "floors": {
+     "n": 1208,
+     "mean": 29.59933774834437,
+     "p25": 16.0,
+     "p50": 30.0,
+     "p75": 48.0
+    }
+   },
+   "sim/empirical/heuristic": {
+    "win_rate": 0.199,
+    "floors": {
+     "n": 2000,
+     "mean": 32.258,
+     "p25": 16.0,
+     "p50": 32.0,
+     "p75": 48.0
+    }
+   },
+   "sim/empirical/random": {
+    "win_rate": 0.0065,
+    "floors": {
+     "n": 2000,
+     "mean": 17.5965,
+     "p25": 12.0,
+     "p50": 16.0,
+     "p75": 16.0
+    }
+   },
+   "sim/F/heuristic": {
+    "win_rate": 0.0,
+    "floors": {
+     "n": 2000,
+     "mean": 12.851,
+     "p25": 7.0,
+     "p50": 12.0,
+     "p75": 16.0
+    }
+   },
+   "sim/F/greedy_f": {
+    "win_rate": 0.0,
+    "floors": {
+     "n": 500,
+     "mean": 19.444,
+     "p25": 12.0,
+     "p50": 16.0,
+     "p75": 29.0
+    }
+   }
+  },
+  "map_tv": {
+   "OVERGROWTH": [
+    0.07666902963878132,
+    0.06427143289358785,
+    0.07971953628768823,
+    0.0906082776083575
+   ],
+   "UNDERDOCKS": [
+    0.07436415814556938,
+    0.06039506917055951,
+    0.07634950774926602,
+    0.07678379617546768
+   ],
+   "HIVE": [
+    0.08102962518333459,
+    0.06040656505541194,
+    0.0851748827576257,
+    0.0783640783178286
+   ],
+   "GLORY": [
+    0.05858332732434878,
+    0.056787285458956525,
+    0.285704793462977,
+    0.10486565467175349
+   ]
+  },
+  "combat_mae": {
+   "sim/empirical/heuristic": 0.8870587773736488,
+   "sim/empirical/random": 2.393754163216555,
+   "sim/F/heuristic": 7.792279289619746,
+   "sim/F/greedy_f": 4.29886390604007
+  },
+  "f_on_human_builds": {
+   "runs": 356,
+   "fights": 3583,
+   "rejected": {
+    "Disallowed relic: TOY_BOX": 36,
+    "Disallowed card: ALCHEMIZE": 31,
+    "Precombat card state remains ambiguous": 26,
+    "Disallowed card: BOOT_SEQUENCE": 24,
+    "Disallowed card: DOMINATE": 23
+   },
+   "bias": {
+    "all": {
+     "n": 3583,
+     "human_mean": 10.646106614568797,
+     "f_mean": 13.728733091306108,
+     "bias": 3.0826264767373113,
+     "mae": 7.559882523530897,
+     "human_death": 0.050795422830030704,
+     "f_death": 0.03561499115990526,
+     "f_sampled_death": 0.11247557912363941
+    },
+    "no_potion": {
+     "n": 2511,
+     "human_mean": 8.367184388689765,
+     "f_mean": 8.826162651971202,
+     "bias": 0.4589782632814367,
+     "mae": 5.389189802629901,
+     "human_death": 0.03106332138590203,
+     "f_death": 0.015383994108306218,
+     "f_sampled_death": 0.052568697729988054
+    },
+    "potion": {
+     "n": 1072,
+     "human_mean": 15.984141791044776,
+     "f_mean": 25.21227261851688,
+     "bias": 9.228130827472103,
+     "mae": 12.644406238253284,
+     "human_death": 0.09701492537313433,
+     "f_death": 0.08300308220147727,
+     "f_sampled_death": 0.25279850746268656
+    }
+   },
+   "by_group": {
+    "OVERGROWTH:monster": {
+     "n": 660,
+     "human_mean": 4.542424242424242,
+     "f_mean": 3.459020555249436,
+     "bias": -1.0834036871748067,
+     "mae": 3.046003001308415,
+     "human_death": 0.00909090909090909,
+     "f_death": 0.0002398478204018808,
+     "f_sampled_death": 0.007575757575757576
+    },
+    "OVERGROWTH:elite": {
+     "n": 100,
+     "human_mean": 18.72,
+     "f_mean": 19.80224375519464,
+     "bias": 1.0822437551946387,
+     "mae": 8.115031862309667,
+     "human_death": 0.07,
+     "f_death": 0.018444567835696864,
+     "f_sampled_death": 0.08
+    },
+    "OVERGROWTH:boss": {
+     "n": 27,
+     "human_mean": 32.44444444444444,
+     "f_mean": 35.0666989317016,
+     "bias": 2.6222544872571603,
+     "mae": 11.169847779851715,
+     "human_death": 0.18518518518518517,
+     "f_death": 0.07934299934302382,
+     "f_sampled_death": 0.4074074074074074
+    },
+    "HIVE:monster": {
+     "n": 487,
+     "human_mean": 6.924024640657084,
+     "f_mean": 6.5695269831534615,
+     "bias": -0.3544976575036232,
+     "mae": 5.099785392531365,
+     "human_death": 0.022587268993839837,
+     "f_death": 0.001953589012691458,
+     "f_sampled_death": 0.01642710472279261
+    },
+    "UNDERDOCKS:monster": {
+     "n": 653,
+     "human_mean": 4.983154670750383,
+     "f_mean": 4.180329949643584,
+     "bias": -0.802824721106799,
+     "mae": 3.423015236142957,
+     "human_death": 0.007656967840735069,
+     "f_death": 0.0004960607133044883,
+     "f_sampled_death": 0.013782542113323124
+    },
+    "UNDERDOCKS:boss": {
+     "n": 45,
+     "human_mean": 24.31111111111111,
+     "f_mean": 32.86570543238228,
+     "bias": 8.55459432127117,
+     "mae": 11.569553335644143,
+     "human_death": 0.17777777777777778,
+     "f_death": 0.09422438846240411,
+     "f_sampled_death": 0.3333333333333333
+    },
+    "UNDERDOCKS:elite": {
+     "n": 111,
+     "human_mean": 16.43243243243243,
+     "f_mean": 17.057871722682375,
+     "bias": 0.6254392902499429,
+     "mae": 6.296027684156278,
+     "human_death": 0.09009009009009009,
+     "f_death": 0.011910755909246267,
+     "f_sampled_death": 0.09009009009009009
+    },
+    "HIVE:boss": {
+     "n": 41,
+     "human_mean": 26.951219512195124,
+     "f_mean": 42.938975910723755,
+     "bias": 15.987756398528635,
+     "mae": 20.098189665622417,
+     "human_death": 0.1951219512195122,
+     "f_death": 0.2730953219356992,
+     "f_sampled_death": 0.6097560975609756
+    },
+    "GLORY:monster": {
+     "n": 199,
+     "human_mean": 5.597989949748744,
+     "f_mean": 5.527234845139549,
+     "bias": -0.07075510460919499,
+     "mae": 5.790057743269684,
+     "human_death": 0.005025125628140704,
+     "f_death": 0.0008313653682160331,
+     "f_sampled_death": 0.010050251256281407
+    },
+    "GLORY:boss": {
+     "n": 36,
+     "human_mean": 23.36111111111111,
+     "f_mean": 45.359134342197585,
+     "bias": 21.99802323108647,
+     "mae": 24.799116989002037,
+     "human_death": 0.1111111111111111,
+     "f_death": 0.3178967129797163,
+     "f_sampled_death": 0.5
+    },
+    "HIVE:elite": {
+     "n": 100,
+     "human_mean": 20.2,
+     "f_mean": 22.349514831447504,
+     "bias": 2.1495148314475054,
+     "mae": 10.283974836728486,
+     "human_death": 0.13,
+     "f_death": 0.04168548440047653,
+     "f_sampled_death": 0.18
+    },
+    "GLORY:elite": {
+     "n": 52,
+     "human_mean": 12.307692307692308,
+     "f_mean": 17.74465262279621,
+     "bias": 5.436960315103905,
+     "mae": 11.020733968569175,
+     "human_death": 0.0,
+     "f_death": 0.012913365038483617,
+     "f_sampled_death": 0.057692307692307696
+    }
+   }
+  }
+ }
+}
