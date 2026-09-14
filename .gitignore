@@ -17,6 +17,7 @@ catalogs/counter-inspection.txt
 .venv/
 .venv
 .venv-train/
+.venv-train
 *.egg-info/
 
 # Generated shareable viewer snapshot
