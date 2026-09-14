@@ -16,6 +16,8 @@ catalogs/*.raw.json
 catalogs/counter-inspection.txt
 .venv/
 .venv
+.venv-train/
+*.egg-info/
 
 # Generated shareable viewer snapshot
 /share-viewer-20260910/
