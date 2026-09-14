@@ -1,5 +1,7 @@
 # 《杀戮尖塔 2》源码严格对照审计：未适配实体清单 (纯净程序集数据)
 
+> **历史报告：求解器 0.6.0。** 下文的“目前”、覆盖率及未适配列表仅指当时源码，不能据此判断当前采集支持范围。现行入口与静态覆盖表的限制见[文档索引](docs/README.md)。
+
 > **数据基准**：严格基于《杀戮尖塔 2》官方游戏程序集 `sts2.dll`（v0.111.0）反射元数据直接生成。  
 > **对比范围**：`CombatSolver` (v0.6.0) 源码 (`CorePowerSupport.cs`, `MonsterMoveEffects.cs`, `CardChoiceSupport.cs`)。  
 > **数据总览**：`sts2.dll` 中包含 **603 个 CardModel**、**283 个 PowerModel**、**126 个 MonsterModel**、**66 个 PotionModel**。

@@ -1,5 +1,7 @@
 # CombatSolver 测试清单
 
+> 表中结果属于所列版本、日期和夹具；保留旧 2 秒试采及其他预设不表示当前生产仍使用它们。本次文档整理未重跑这些测试，现行采集参数见[搜索配置](../../../docs/search-8s.md)。
+
 ## 特殊牌池与持久卡牌状态采集（2026-09-11）
 
 - 新入口：`UnattendedCardInjection.savedIntegerMembers`；原生回读 `trainingObservation.initialBuild.cards[].persistentState`。保留已有升级和附魔字段。
