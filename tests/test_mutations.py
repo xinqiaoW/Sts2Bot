@@ -4,6 +4,7 @@ from dataclasses import replace
 import json
 from pathlib import Path
 import random
+import sqlite3
 
 import pytest
 
@@ -53,6 +54,126 @@ def databases(tmp_path, catalog, policy):
         real.db.commit()
     yield real, mutations
     real.db.close(); mutations.db.close()
+
+
+def test_refill_released_lock_matches_uncontended_generation(databases, tmp_path, catalog, policy, monkeypatch):
+    real, destination = databases
+    baseline = Store(tmp_path/'uncontended.sqlite')
+    generator = Generator(real, destination, catalog, {'fixture': True}, policy)
+    reference = Generator(real, baseline, catalog, {'fixture': True}, policy)
+    monkeypatch.setattr('damage_model.mutations.time.time', lambda: 12345678.0)
+    reference.refill(5)
+    original_source = list(real.db.iterdump())
+    destination.db.execute('PRAGMA busy_timeout=0')
+    holder = sqlite3.connect(tmp_path/'mutations.sqlite')
+    holder.execute('BEGIN IMMEDIATE')
+    waits = []
+
+    def release(delay):
+        waits.append(delay)
+        assert not destination.db.in_transaction
+        assert destination.db.execute('SELECT count(*) FROM builds').fetchone()[0] == 0
+        holder.rollback()
+
+    monkeypatch.setattr('damage_model.store.time.sleep', release)
+    try:
+        generator.refill(5)
+        assert waits == [0.25]
+        # Includes exact builds, counters, card state, lineage, seeds and job IDs.
+        assert list(destination.db.iterdump()) == list(baseline.db.iterdump())
+        assert list(real.db.iterdump()) == original_source
+        assert destination.db.execute('SELECT count(*) FROM attempts').fetchone()[0] == 0
+    finally:
+        holder.close()
+        baseline.db.close()
+
+
+def test_refill_persistent_busy_preserves_sequence_and_all_rows(databases, tmp_path, catalog, policy, monkeypatch):
+    real, destination = databases
+    generator = Generator(real, destination, catalog, {'fixture': True}, policy)
+    destination.db.execute('PRAGMA busy_timeout=0')
+    before = list(destination.db.iterdump())
+    holder = sqlite3.connect(tmp_path/'mutations.sqlite')
+    holder.execute('BEGIN IMMEDIATE')
+    delays, trace = [], []
+    destination.db.set_trace_callback(trace.append)
+    monkeypatch.setattr('damage_model.store.time.sleep', delays.append)
+    try:
+        with pytest.raises(sqlite3.OperationalError) as error:
+            generator.refill(1)
+        assert error.value.sqlite_errorcode == sqlite3.SQLITE_BUSY
+        assert trace.count('BEGIN IMMEDIATE') == 3
+        assert delays == [0.25, 0.5]
+        assert not destination.db.in_transaction
+        assert list(destination.db.iterdump()) == before
+    finally:
+        holder.rollback()
+        holder.close()
+
+
+@pytest.mark.parametrize('changed', ['sequence', 'policy'])
+def test_refill_rechecks_generation_state_after_lock_wait(databases, tmp_path, catalog, policy, monkeypatch, changed):
+    real, destination = databases
+    generator = Generator(real, destination, catalog, {'fixture': True}, policy)
+    destination.db.execute('PRAGMA busy_timeout=0')
+    holder = sqlite3.connect(tmp_path/'mutations.sqlite')
+    holder.execute('BEGIN IMMEDIATE')
+    if changed == 'sequence':
+        holder.execute("UPDATE collection_settings SET value='1' WHERE key='mutation_sequence'")
+    else:
+        holder.execute("UPDATE collection_settings SET value=? WHERE key='mutation_policy'",
+                       (canonical({**policy, 'small_probability': 0.5}),))
+    monkeypatch.setattr('damage_model.store.time.sleep', lambda _: holder.commit())
+    try:
+        with pytest.raises(ValueError, match='Concurrent mutation generator|policy changed'):
+            generator.refill(1)
+        assert destination.db.execute('SELECT count(*) FROM builds').fetchone()[0] == 0
+        assert destination.db.execute('SELECT count(*) FROM jobs').fetchone()[0] == 0
+        assert not destination.db.in_transaction
+    finally:
+        holder.close()
+
+
+def test_refill_body_failure_rolls_back_without_replay(databases, catalog, policy, monkeypatch):
+    real, destination = databases
+    generator = Generator(real, destination, catalog, {'fixture': True}, policy)
+    destination.db.execute("CREATE TRIGGER fail_lineage BEFORE INSERT ON mutation_lineage BEGIN SELECT RAISE(ABORT,'synthetic lineage failure'); END")
+    before, trace = list(destination.db.iterdump()), []
+    destination.db.set_trace_callback(trace.append)
+    monkeypatch.setattr('damage_model.store.time.sleep', lambda _: pytest.fail('Transaction body was retried'))
+    with pytest.raises(sqlite3.IntegrityError, match='synthetic lineage failure'):
+        generator.refill(1)
+    assert trace.count('BEGIN IMMEDIATE') == 1
+    assert list(destination.db.iterdump()) == before
+    assert not destination.db.in_transaction
+
+
+def test_refill_commit_error_is_not_replayed(databases, catalog, policy, monkeypatch):
+    real, destination = databases
+    generator = Generator(real, destination, catalog, {'fixture': True}, policy)
+    connection = destination.db
+    before, commits = list(connection.iterdump()), []
+
+    class CommitFailure:
+        def __getattr__(self, name):
+            return getattr(connection, name)
+
+        def commit(self):
+            commits.append(True)
+            error = sqlite3.OperationalError('synthetic commit busy')
+            error.sqlite_errorcode = sqlite3.SQLITE_BUSY
+            raise error
+
+    destination.db = CommitFailure()
+    monkeypatch.setattr('damage_model.store.time.sleep', lambda _: pytest.fail('Commit was retried'))
+    try:
+        with pytest.raises(sqlite3.OperationalError, match='synthetic commit busy'):
+            generator.refill(1)
+        assert commits == [True]
+        assert list(connection.iterdump()) == before
+        assert not connection.in_transaction
+    finally:
+        destination.db = connection
 
 
 def test_historical_completed_parents_remain_eligible(databases, catalog, policy):

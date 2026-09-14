@@ -21,7 +21,7 @@
 .venv/bin/python -m damage_model.cli work --runtime configs/runtime-wine-pilot.json --limit 256
 ```
 
-上面的裸命令仍使用 CLI 历史默认值（v2、2 秒配置）；操作当前批次时，必须在子命令之前显式传入 `--db data/collection-real-runs-v3.sqlite --config configs/real-runs-8s.json`。变异另库存储于 `data/collection-mutations-v1.sqlite`。`configs/teacher.json` 冻结原版、CombatSolver 和 RitsuLib 摘要；当前 8 秒短搜、Medium、DOP 1。老师代表该搜索预算下的实际表现，不保证最优打法。
+上面的裸命令仍使用 CLI 历史默认值（v2 库、2 秒 `configs/real-runs.json`）；操作当前批次时，必须在子命令之前显式传入 `--db data/collection-real-runs-v4.sqlite --config configs/real-runs-8s.json`。变异另库存储于 `data/collection-mutations-v2.sqlite`。旧协议 2 的 v3/v1 库已封存，不要再领取。`configs/teacher.json` 冻结原版、CombatSolver 和 RitsuLib 摘要；当前采集协议 3、8 秒短搜、Medium、DOP 1。老师代表该搜索预算下的实际表现，不保证最优打法。
 
 持续采集由 `tools.collect_continuous --collect-only` 管理：提前补充真实来源，队列低于水位时下载下一页；通过 `--mutation-db` 启用真实队列耗尽后的变异补充。每个 worker 使用独立 Wine prefix，启动和停止方式见[持续采集](docs/continuous-collection.md)，当前参数以活动会话为准。
 
@@ -29,7 +29,7 @@
 
 导入器先从初始牌组（含进阶之灾）依次应用升级、删牌、变牌、获得牌和遗物记录。战前快照取在该层奖励之前。重复牌升级和同层操作顺序不确定时保留一致解释，最终与 `.run` 的牌组及遗物顺序核对；不能确认的状态不进队列。附魔 ID、数值与具体卡牌升级状态共同保留；另支持藏宝图、探寻、愧疚和疯狂科学的原生持久字段，按真实历史还原，与原生开战观察逐张核对。详见 [特殊卡牌与持久状态](docs/card-state.md)。混合事件/战斗房间及其他未适配持久字段仍明确跳过，原始记录和原因保留。
 
-当前导入修订为 `orobas_starter_replacement_v7`：炼金箱、娇嫩蕨草、涅奥的牺牲、皮草大衣、佩尔之牙改为单独移除，保留其余构筑；欧罗巴斯之触保留，核对来源后由原版将蛇之戒原位替换成龙之戒。其他遗物仍跳过获得效果，保留实际牌组和合法计数；达弗共享先古支持及此前移除规则保持。受影响的 v4/v5/v6 来源幂等重审，无关旧来源保持原修订。训练观察协议仍为 2，同一冻结老师的 v3 活动库内追加新接受的输入，旧 jobs/results/attempts 不重写，旧导入报告存入 `source_import_history`。模型编码包含卡牌 ID × 升级 × 附魔类型的数量、数值和平方和；原始输入保留每一张牌，旧模型遇到新增特征会明确拒绝。
+当前导入修订为 `special_cards_saved_state_v8`：真实历史中的任务/状态/衍生牌，以及藏宝图、探寻、愧疚、疯狂科学的保存字段，进入构筑身份并与原生协议 3 观察核对；未知卡牌字段仍跳过。炼金箱、娇嫩蕨草、涅奥的牺牲、皮草大衣、佩尔之牙等仍单独移除，保留其余构筑；欧罗巴斯之触保留，核对来源后由原版将蛇之戒原位替换成龙之戒。其他遗物仍跳过获得效果，保留实际牌组和合法计数；达弗共享先古及此前移除规则保持。受影响的旧修订来源幂等重审，无关旧来源保持原修订。新接受的输入写入 v4 活动库；旧协议 2 的 v3 标签不重写、不混进新协议，旧导入报告存入 `source_import_history`。模型编码在卡牌 ID × 升级 × 附魔之外，对已适配保存状态再按变体计数；原始输入保留每一张牌，旧模型遇到新增特征会明确拒绝。
 
 已验证的一次性遗物直接装入，不重放获得时的删牌、升级或奖励效果。珠宝盒、涅奥的苦痛、古老牙齿已适配，以保留神化、涅奥之怒和压制；古老牙齿的两个保存字段仅供原版提示文字使用，牌组变化已在历史中还原。不同来源的相同输入共享对战任务，`build_origins` 保留每份 `.run`、楼层和移除遗物清单；`source_runs` 保留原始内容、来源 URL、摘要和导入报告。公开导出页保留 gzip、摘要和下一页游标，完整下载和导入后才推进游标。其他待适配项见[遗物清单](docs/unadapted-relics-20260906.md)。
 
@@ -39,6 +39,8 @@
 # 在具备 PyTorch 的训练环境中，对固定快照训练。
 python -m damage_model.cli --db data/training-snapshot.sqlite train --output checkpoints/real-runs
 ```
+
+跨库（8 秒真实 v3/v4 与变异 v1/v2）的多模型训练、比较、推理与验证在 [train/](train/README.md)：`train.snapshot` 导出只读一致快照并按跨库连通组划分，`train.compare` 在指定 GPU 上训练并比较仓库 MLP、rtdl MLP/ResNet、TabM、Set Transformer 与 LightGBM，`train.predict` 提供推理入口。
 
 目前 01 只采集，首版 `checkpoints/v1` 保留。旧随机数据 `data/collection-horizon.sqlite` 和更早 `data/collection.sqlite` 不删除、不与新数据静默合并；`configs/v1.json` 保留为旧数据与兼容测试的历史配置。最早的随机构筑代码 `sampling.py`、旧轮次驱动 `collect_rounds.py`、`seed/evolve` 命令已移除。Build 的代数、父代等字段同时用于历史数据兼容和当前真实构筑变异的血缘记录。
 

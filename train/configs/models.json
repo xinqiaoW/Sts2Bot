@@ -1,0 +1,29 @@
+{
+  "comment": "每个模型的训练超参数。torch 模型共用同一训练循环（AdamW、按验证集 pair MAE 早停）；lightgbm 用原生早停。",
+  "defaults": {
+    "epochs": 200,
+    "patience": 15,
+    "batch_size": 1024,
+    "lr": 0.001,
+    "weight_decay": 0.0001,
+    "death_loss_weight": 0.1,
+    "seed": 20260911,
+    "min_train_builds": 20
+  },
+  "models": {
+    "repo_mlp": {"hidden": 128, "batch_size": 256, "lr": 0.001, "weight_decay": 0.0001},
+    "rtdl_mlp": {"n_blocks": 3, "d_block": 512, "dropout": 0.1},
+    "rtdl_resnet": {"n_blocks": 3, "d_block": 256, "d_hidden_multiplier": 2.0, "dropout1": 0.15, "dropout2": 0.0},
+    "tabm": {"n_blocks": 3, "d_block": 512, "dropout": 0.1, "k": 32, "arch_type": "tabm", "lr": 0.002},
+    "set_transformer": {"d_model": 128, "num_heads": 4, "num_inds": 0, "n_enc": 2, "ln": true, "dropout": 0.0, "lr": 0.0005, "batch_size": 512},
+    "lightgbm": {
+      "num_threads": 32,
+      "max_rounds": 5000,
+      "early_stopping_rounds": 100,
+      "regression": {"objective": "regression", "learning_rate": 0.05, "num_leaves": 127, "min_data_in_leaf": 40,
+                     "feature_fraction": 0.5, "bagging_fraction": 0.8, "bagging_freq": 1, "lambda_l2": 1.0, "verbose": -1},
+      "death": {"objective": "binary", "learning_rate": 0.05, "num_leaves": 63, "min_data_in_leaf": 40,
+                "feature_fraction": 0.5, "bagging_fraction": 0.8, "bagging_freq": 1, "lambda_l2": 1.0, "verbose": -1}
+    }
+  }
+}

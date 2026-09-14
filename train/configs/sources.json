@@ -1,0 +1,14 @@
+{
+  "comment": "8 秒老师的有效标签来源。顺序即去重优先级：同一 (build, target, seed) 出现在多个库时保留靠前者。frozen 表示库已封存，可从上一次快照复用导出结果。",
+  "sources": [
+    {"name": "real-v4", "kind": "real", "db": "data/collection-real-runs-v4.sqlite", "frozen": false},
+    {"name": "real-v3", "kind": "real", "db": "data/collection-real-runs-v3.sqlite", "frozen": true},
+    {"name": "mut-v2", "kind": "mutation", "db": "data/collection-mutations-v2.sqlite", "frozen": false},
+    {"name": "mut-v1", "kind": "mutation", "db": "data/collection-mutations-v1.sqlite", "frozen": true}
+  ],
+  "teacher_compatibility_keys": [
+    "solver_base", "game_version", "game_sha256", "character", "ascension", "potion_policy",
+    "performance_preset", "search_mode", "search_ms", "dop", "timeout_seconds", "label"
+  ],
+  "split_buckets": {"train": 80, "validation": 10, "test": 10}
+}

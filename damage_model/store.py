@@ -23,6 +23,7 @@ class Store:
                 result TEXT,created REAL,FOREIGN KEY(build_id) REFERENCES builds(id));
             CREATE TABLE IF NOT EXISTS attempts(id INTEGER PRIMARY KEY,job_id TEXT,lease TEXT,status TEXT,result TEXT,finished REAL);
             CREATE INDEX IF NOT EXISTS jobs_status ON jobs(status,created);
+            CREATE INDEX IF NOT EXISTS jobs_build ON jobs(build_id);
             CREATE INDEX IF NOT EXISTS attempts_recent ON attempts(finished,status,job_id);
             CREATE INDEX IF NOT EXISTS attempts_job ON attempts(job_id);
             CREATE TABLE IF NOT EXISTS collection_settings(key TEXT PRIMARY KEY,value TEXT NOT NULL);
@@ -95,10 +96,12 @@ class Store:
         self._begin_write('claim')
         try:
             # Persist expired attempts before returning their jobs to the queue.
+            # Both statements must use one cutoff, even if I/O or the clock moves.
+            expired_at = time.time()
             self.db.execute("""INSERT INTO attempts(job_id,lease,status,result,finished)
                 SELECT id,lease,'expired','{"status":"LeaseExpired"}',? FROM jobs
-                WHERE status='running' AND lease_until < ?""", (time.time(), time.time()))
-            self.db.execute("UPDATE jobs SET status='pending',lease=NULL WHERE status='running' AND lease_until < ?", (time.time(),))
+                WHERE status='running' AND lease_until < ?""", (expired_at, expired_at))
+            self.db.execute("UPDATE jobs SET status='pending',lease=NULL WHERE status='running' AND lease_until < ?", (expired_at,))
             row = self.db.execute("SELECT * FROM jobs WHERE status='pending' ORDER BY created LIMIT 1").fetchone()
             if row is None:
                 self.db.commit()

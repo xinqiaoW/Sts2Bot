@@ -19,3 +19,4 @@ catalogs/counter-inspection.txt
 
 # Generated shareable viewer snapshot
 /share-viewer-20260910/
+.venv-train/

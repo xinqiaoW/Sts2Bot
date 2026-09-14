@@ -1,0 +1,14 @@
+{
+  "comment": "Protocol 3 live DBs are on /data1 after the /data2 crash; protocol 2 frozen DBs stay on /data2 and are reused from the previous snapshot.",
+  "sources": [
+    {"name": "real-v4", "kind": "real", "db": "/data1/pl/ImageTask/wxq/Projects/Sts2Bot/data/collection-real-runs-v4.sqlite", "frozen": false},
+    {"name": "real-v3", "kind": "real", "db": "data/collection-real-runs-v3.sqlite", "frozen": true},
+    {"name": "mut-v2", "kind": "mutation", "db": "/data1/pl/ImageTask/wxq/Projects/Sts2Bot/data/collection-mutations-v2.sqlite", "frozen": false},
+    {"name": "mut-v1", "kind": "mutation", "db": "data/collection-mutations-v1.sqlite", "frozen": true}
+  ],
+  "teacher_compatibility_keys": [
+    "solver_base", "game_version", "game_sha256", "character", "ascension", "potion_policy",
+    "performance_preset", "search_mode", "search_ms", "dop", "timeout_seconds", "label"
+  ],
+  "split_buckets": {"train": 80, "validation": 10, "test": 10}
+}

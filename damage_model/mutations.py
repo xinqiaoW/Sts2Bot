@@ -315,7 +315,7 @@ class Generator:
                         or db.execute('SELECT 1 FROM builds WHERE id=?', (bid,)).fetchone()): continue
                 candidate = attempt
                 break
-            db.execute('BEGIN IMMEDIATE')
+            self.destination._begin_write('mutation_refill')
             try:
                 current = json.loads(db.execute("SELECT value FROM collection_settings WHERE key='mutation_sequence'").fetchone()[0])
                 if current != sequence: raise ValueError('Concurrent mutation generator')
