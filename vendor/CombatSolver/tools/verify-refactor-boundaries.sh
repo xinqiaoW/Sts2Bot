@@ -611,6 +611,14 @@ forbid_fixed \
     '_monsterAiStates?.Remove(creature)' \
     'active-roster removal must retain known-monster AI state through move completion:'
 
+require_fixed "$repository_root/src/RunControl/RunControlSession.cs" 'internal sealed partial class RunControlSession' 'missing whole-run owner'
+require_fixed "$repository_root/src/Testing/UnattendedTestRunner.ProtocolHost.cs" 'COMBATSOLVER_RUN_CONTROL' 'missing whole-run opt-in gate'
+for run_file in "$repository_root"/src/RunControl/*.cs; do
+    for forbidden in 'new CombatRoomHandler(' 'new EventRoomHandler(' 'CreatureCmd.Kill(' 'CreatureCmd.SetCurrentHp(' 'PowerCmd.Apply<'; do
+        forbid_fixed "$run_file" "$forbidden" 'whole-run v1 must use unmodified native combat:'
+    done
+done
+
 if ((${#violations[@]} > 0)); then
     printf '%s\n' "${violations[@]}" >&2
     printf 'Refactor boundary verification failed with %d violation(s).\n' "${#violations[@]}" >&2

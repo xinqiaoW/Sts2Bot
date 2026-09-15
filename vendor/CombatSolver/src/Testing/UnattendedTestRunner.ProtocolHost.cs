@@ -98,6 +98,16 @@ internal sealed partial class UnattendedTestRunner
                     }
 
                     string json = File.ReadAllText(requestPath);
+                    using (JsonDocument envelope = JsonDocument.Parse(json))
+                    {
+                        if (envelope.RootElement.TryGetProperty("kind", out JsonElement kind))
+                        {
+                            if (kind.ValueKind != JsonValueKind.String || kind.GetString() != "run")
+                                throw new InvalidDataException("Unknown request kind.");
+                            await RunWholeRunAsync(host, json, requestPath, runningPath);
+                            continue;
+                        }
+                    }
                     UnattendedTestRequest request = JsonSerializer.Deserialize<UnattendedTestRequest>(
                         json,
                         UnattendedTestFiles.JsonOptions)
@@ -170,6 +180,39 @@ internal sealed partial class UnattendedTestRunner
                     $"[CombatSolver/Unattended] PROCESS_NOT_REUSABLE exit=true exception={ex}");
                 host.GetTree().Quit(1);
             }
+        }
+
+        private async Task RunWholeRunAsync(NGame host, string json, string requestPath, string runningPath)
+        {
+            if (System.Environment.GetEnvironmentVariable("COMBATSOLVER_RUN_CONTROL") != "1")
+                throw new InvalidOperationException("Whole-run control requires COMBATSOLVER_RUN_CONTROL=1 in a dedicated process.");
+            RunControlRequest request = JsonSerializer.Deserialize<RunControlRequest>(json, RunControlFiles.Json)
+                ?? throw new InvalidDataException("Empty run-control request.");
+            request.Validate();
+            RunControlFiles files = new(request);
+            File.Move(requestPath, runningPath, true);
+            Activate(new UnattendedTestRequest
+            {
+                RunId = request.RunId, ExitOnComplete = false, ForceShortSearchOnly = true,
+                SearchMaxDegreeOfParallelismForTest = 1, ShortSearchBudgetOverrideMilliseconds = 8000,
+            });
+            EnableAutomaticTurnSearch();
+            RunControlSession session = new(host, request, files);
+            try
+            {
+                Entry.Logger.Info($"[CombatSolver/RunControl] ACCEPTED run_id={request.RunId}");
+                object result = await session.RunAsync();
+                Reset();
+                await WaitUntilReusableAsync(host);
+                files.Result(result); // Complete is visible only after native quiescence.
+                Entry.Logger.Info($"[CombatSolver/RunControl] COMPLETE run_id={request.RunId} reusable=true");
+            }
+            catch (Exception ex)
+            {
+                files.Result(new { schemaVersion = 1, request.RunId, status = "failed", stage = session.Stage, error = ex.ToString() });
+                throw; // Existing protocol boundary retires the failed process.
+            }
+            finally { Reset(); }
         }
 
         private static async Task WaitUntilReusableAsync(NGame host)

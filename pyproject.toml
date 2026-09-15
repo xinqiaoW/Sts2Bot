@@ -15,4 +15,4 @@ sts2-damage = "damage_model.cli:main"
 testpaths = ["tests"]
 
 [tool.setuptools.packages.find]
-include = ["damage_model*"]
+include = ["damage_model*", "runctl*"]
