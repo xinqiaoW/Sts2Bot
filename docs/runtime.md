@@ -29,7 +29,7 @@ SlayTheSpire2.slim.exe --main-pack SlayTheSpire2.pck --headless --disable-vsync 
 
 本机采集工具副本通常位于 `C:/Users/www/Documents/Sts2DamageModel`；文档分支是 `docs/corrections`。Git 分支只表达源码版本，线上实际口径还依赖 session、配置、目录导出、部署清单及游戏/采集器摘要。游戏、Wine、数据库和模型不随普通源码 checkout 自动获得。
 
-本轮核对发现：分支基线 `8bbd239` 尚未包含 `/data1` 已部署的 `damage_model/source_versions.py`、对应版本兼容修改及 20/5 调度参数。本文及[来源版本与调度](source-versions-and-scheduling.md)记录线上行为；恢复命令仅适用于已部署并通过校验的 `/data1` 副本。文档修订不替代这些代码的同步与部署。
+`feat/mutation-selection-strategy` 已补入生产版本兼容、历史回补和工作者续接代码，并增加三队列采集。恢复命令仍须在已部署并通过校验的 `/data1` 副本执行；仅切换 Git 分支不会自动切换生产进程。
 
 迁移只带走必要生产文件。旧协议 2 的真实 v3、变异 v1 历史数据库，以及部分旧下载页和 Git 元数据仍在旧目录；不能默认它们已在 `/data1` 齐备。冻结训练缓存需先恢复到健康路径并核验，之后才可显式复用，见[训练快照准备](../train/README.md)。
 

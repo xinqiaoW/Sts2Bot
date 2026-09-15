@@ -46,6 +46,15 @@ def test_backup_captures_the_active_teacher_configuration(tmp_path, monkeypatch)
     with pytest.raises(FileNotFoundError): source_metadata('data/new.sqlite')
 
 
+def test_backup_includes_targeted_selection_policy(tmp_path, monkeypatch):
+    from tools.local_backup import source_metadata
+    monkeypatch.chdir(tmp_path)
+    Path('data').mkdir(); Path('configs').mkdir()
+    Path('configs/targeted.json').write_text('{"target_selection":{"name":"balanced_error_targets_v1"}}')
+    Path('data/collection-session.json').write_text('{"targeted_policy":"configs/targeted.json"}')
+    assert json.loads(source_metadata('data/targeted.sqlite')[Path('targeted.json')])['target_selection']['name']=='balanced_error_targets_v1'
+
+
 def test_two_slots_preserve_previous_consistent_database(tmp_path, monkeypatch):
     monkeypatch.chdir(tmp_path)
     db = tmp_path / 'source.sqlite'
@@ -91,7 +100,7 @@ def test_backup_cursors_precede_snapshot_and_include_both_history_phases(tmp_pat
     with sqlite3.connect(db) as connection:
         connection.execute('create table jobs(status text)')
     history = Path('data/external/history')
-    for phase in ('recent-history', 'full-archive'):
+    for phase in ('recent-history', 'full-archive', 'compatible-archive-v1'):
         (history / phase).mkdir(parents=True)
         (history / phase / 'cursor.json').write_text('{"page_number":3}')
     (history / 'plan.json').write_text('{"phase_index":0}')
@@ -109,7 +118,7 @@ def test_backup_cursors_precede_snapshot_and_include_both_history_phases(tmp_pat
     state = backup_once(db, tmp_path / 'backups', tmp_path / 'state.json')
     saved = Path(state['directory'])
     assert json.loads((saved / 'cursor.json').read_text()) == {'page_number':88}
-    for phase in ('recent-history', 'full-archive'):
+    for phase in ('recent-history', 'full-archive', 'compatible-archive-v1'):
         assert json.loads((saved / 'source-backfill' / phase / 'cursor.json').read_text()) == {'page_number':3}
     assert (saved / 'source-backfill/plan.json').is_file()
     assert (saved / 'source-backfill/export-rate.json').is_file()

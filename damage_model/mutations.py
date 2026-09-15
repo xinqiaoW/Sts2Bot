@@ -14,18 +14,33 @@ TARGET_POLICY = {'name': 'parent_source_window_v1', 'radius': 2, 'same_act': Tru
 ORDINARY = {'Common', 'Uncommon', 'Rare', 'Shop'}
 
 
+def target_policy_for(policy):
+    selection = policy.get('target_selection')
+    return {**TARGET_POLICY, 'selection': selection} if selection else TARGET_POLICY
+
+
 def require_mutation_database(db):
     row = db.execute("SELECT value FROM collection_settings WHERE key='mutation_policy'").fetchone()
     if row is None or json.loads(row[0]).get('name') != MUTATION:
         raise ValueError('Not an initialized mutation database')
     policy = db.execute("SELECT value FROM collection_settings WHERE key='target_policy'").fetchone()
-    if policy is None or json.loads(policy[0]) != TARGET_POLICY:
+    if policy is None or json.loads(policy[0]) != target_policy_for(json.loads(row[0])):
         raise ValueError('Mutation target policy differs')
 
 
 def validate_policy(policy):
+    selection = policy.get('target_selection')
+    if selection:
+        targets = selection.get('targets', {})
+        if (selection.get('name') != 'balanced_error_targets_v1' or not targets
+                or set(targets) - {'UNDERDOCKS', 'OVERGROWTH', 'HIVE', 'GLORY'}
+                or any(not isinstance(ids, list) or not ids or len(set(ids)) != len(ids)
+                       or any(not isinstance(t, str) or not t for t in ids) for ids in targets.values())
+                or set(policy['map_weights']) != set(targets)
+                or any(w <= 0 for w in policy['map_weights'].values())):
+            raise ValueError('Invalid targeted mutation selection')
     if (policy['name'] != MUTATION or policy['generation_depth'] != 1
-            or policy['map_weights'] != {'GLORY': .6, 'HIVE': .4}
+            or (not selection and policy['map_weights'] != {'GLORY': .6, 'HIVE': .4})
             or policy['small_probability'] not in (.8, .6)
             or policy['small'] != {'cards': [1, 2], 'relics': [1, 2]}
             or policy['large'] != {'cards': [3, 6], 'relics': [1, 4]}
@@ -103,10 +118,13 @@ def initialize(store, policy):
             PRIMARY KEY(build_id,parent_id,run_hash,origin_floor,target_floor,target_id));
     ''')
     with db:
-        for key, value in [('mutation_policy', policy), ('target_policy', TARGET_POLICY), ('mutation_sequence', 0)]:
+        for key, value in [('mutation_policy', policy), ('target_policy', target_policy_for(policy)), ('mutation_sequence', 0)]:
             db.execute('INSERT OR IGNORE INTO collection_settings VALUES(?,?)', (key, canonical(value)))
     require_mutation_database(db)
     policy_history(db)
+    if policy.get('target_selection'):
+        db.execute('CREATE TABLE IF NOT EXISTS mutation_focus(build_id TEXT PRIMARY KEY, act_id TEXT NOT NULL, target_id TEXT NOT NULL)')
+        db.commit()
 
 
 def multiset_distance(before, after):
@@ -244,6 +262,12 @@ def validate_lineage(db, build_id, catalog=None):
     if [r for r in parent.relics if r.id in locked] != [r for r in child.relics if r.id in locked]:
         raise ValueError('Protected relic identity, order or counters changed')
     expected = set(json.loads(row['parent_targets']))
+    selection = policy.get('target_selection')
+    if selection:
+        focus = db.execute('SELECT act_id,target_id FROM mutation_focus WHERE build_id=?', (build_id,)).fetchone()
+        if (focus is None or focus['act_id'] != child.act_id or expected != {focus['target_id']}
+                or focus['target_id'] not in selection['targets'].get(child.act_id, [])):
+            raise ValueError('Targeted mutation escaped its configured encounter')
     actual = {r[0] for r in db.execute('SELECT DISTINCT target_id FROM mutation_target_origins WHERE build_id=?', (build_id,))}
     if expected != actual or not expected: raise ValueError('Mutation target provenance differs')
     origins = json.loads(row['parent_origins'])
@@ -261,8 +285,13 @@ class Generator:
     def __init__(self, source, destination, catalog, teacher, policy):
         self.source, self.destination = source, destination
         self.catalog, self.teacher, self.policy = catalog, teacher, policy
+        for act, targets in policy.get('target_selection', {}).get('targets', {}).items():
+            allowed = {t['id'] for t in catalog.acts[act]['encounters']}
+            if not set(targets) <= allowed: raise ValueError('Unknown encounter in targeted mutation policy')
         initialize(destination, policy)
         self.groups, self.refreshed = {}, 0
+        self.avoid_stores = ()
+        self.focus_counts = {}
         if {r[0] for r in destination.db.execute('SELECT DISTINCT teacher FROM jobs')} - {canonical(teacher)}:
             raise ValueError('Mutation teacher differs from the real-run teacher')
 
@@ -287,7 +316,21 @@ class Generator:
             # snapshots that only differ by upgrades, relics or floor.
             key = tuple(sorted(Counter(c.id for c in parent.cards).items()))
             groups[parent.act_id][key].append((parent, target_origins[parent.id]))
-        if not all(groups.values()): raise ValueError('Both requested maps need verified real parents')
+        if self.policy.get('target_selection'):
+            focused = {}
+            for act, targets in self.policy['target_selection']['targets'].items():
+                for tid in targets:
+                    by_cards = []
+                    for items in groups[act].values():
+                        matches = [(parent, [o for o in origins if o['target_id'] == tid])
+                                   for parent, origins in items if any(o['target_id'] == tid for o in origins)]
+                        if matches: by_cards.append(matches)
+                    if by_cards: focused[(act, tid)] = by_cards
+            if not focused: raise ValueError('No verified real parents match the requested target windows')
+            self.focus_groups = focused
+            self.focus_counts = {(r[0], r[1]): r[2] for r in self.destination.db.execute(
+                'SELECT act_id,target_id,count(*) FROM mutation_focus GROUP BY act_id,target_id')}
+        elif not all(groups.values()): raise ValueError('Both requested maps need verified real parents')
         self.groups = {act: [items for _, items in sorted(values.items())] for act, values in groups.items()}
         self.refreshed = time.time()
 
@@ -300,8 +343,15 @@ class Generator:
             attempts += 1
             sequence = json.loads(db.execute("SELECT value FROM collection_settings WHERE key='mutation_sequence'").fetchone()[0])
             seed = digest([MUTATION, self.policy['seed'], sequence]); rng = random.Random(seed)
-            act = rng.choices(list(self.policy['map_weights']), list(self.policy['map_weights'].values()))[0]
-            parent, origins = rng.choice(rng.choice(self.groups[act]))
+            focus = None
+            if self.policy.get('target_selection'):
+                minimum = min(self.focus_counts.get(key, 0) for key in self.focus_groups)
+                focus = rng.choice(sorted(key for key in self.focus_groups if self.focus_counts.get(key, 0) == minimum))
+                act = focus[0]
+                parent, origins = rng.choice(rng.choice(self.focus_groups[focus]))
+            else:
+                act = rng.choices(list(self.policy['map_weights']), list(self.policy['map_weights'].values()))[0]
+                parent, origins = rng.choice(rng.choice(self.groups[act]))
             size = 'small' if rng.random() < self.policy['small_probability'] else 'large'
             axes = rng.choices(list(self.policy['axes_weights']), list(self.policy['axes_weights'].values()))[0]
             # Retry within the chosen map/size/axes so rejected net-cancelling
@@ -312,10 +362,12 @@ class Generator:
                 if attempt is None: continue
                 bid = attempt[0].id
                 if (self.source.db.execute('SELECT 1 FROM builds WHERE id=?', (bid,)).fetchone()
-                        or db.execute('SELECT 1 FROM builds WHERE id=?', (bid,)).fetchone()): continue
+                        or db.execute('SELECT 1 FROM builds WHERE id=?', (bid,)).fetchone()
+                        or any(s.db.execute('SELECT 1 FROM builds WHERE id=?', (bid,)).fetchone() for s in self.avoid_stores)): continue
                 candidate = attempt
                 break
             self.destination._begin_write('mutation_refill')
+            inserted = False
             try:
                 current = json.loads(db.execute("SELECT value FROM collection_settings WHERE key='mutation_sequence'").fetchone()[0])
                 if current != sequence: raise ValueError('Concurrent mutation generator')
@@ -329,6 +381,8 @@ class Generator:
                         allowed = {t['id']: t for t in self.catalog.targets(child)}
                         if not set(targets) <= allowed.keys(): raise ValueError('Parent target crosses acts')
                         db.execute('INSERT INTO builds VALUES(?,?,?,?)', (child.id, child.family, child.split, canonical(child.to_dict())))
+                        if focus:
+                            db.execute('INSERT INTO mutation_focus VALUES(?,?,?)', (child.id, *focus))
                         db.execute('INSERT INTO mutation_lineage VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)',
                             (child.id, parent.id, canonical(parent.to_dict()), canonical(targets), canonical(origins),
                              sequence, seed, size, axes, canonical(changes), nc, nr, time.time()))
@@ -343,9 +397,16 @@ class Generator:
                                 scheduled += 1
                         validate_lineage(db, child.id, self.catalog)
                         added += 1
+                        inserted = True
                 db.commit()
+                if inserted and focus: self.focus_counts[focus] = self.focus_counts.get(focus, 0) + 1
             except BaseException:
                 db.rollback(); raise
         if added != count: raise ValueError('Insufficient unique legal neighbours within generation bound')
-        return {'builds_added': added, 'jobs_added': scheduled, 'attempted_candidates': attempts,
-                'counts': self.destination.counts()}
+        report = {'builds_added': added, 'jobs_added': scheduled, 'attempted_candidates': attempts,
+                  'counts': self.destination.counts()}
+        if self.policy.get('target_selection'):
+            report['target_coverage'] = {f'{act}/{tid}': {'available': (act, tid) in self.focus_groups,
+                'builds': self.focus_counts.get((act, tid), 0)}
+                for act, targets in self.policy['target_selection']['targets'].items() for tid in targets}
+        return report

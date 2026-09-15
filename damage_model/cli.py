@@ -24,7 +24,10 @@ def main():
     worker = sub.add_parser('work')
     worker.add_argument('--runtime', required=True)
     worker.add_argument('--limit', type=int, default=8)
-    worker.add_argument('--fallback-db', help='Validated mutation queue, claimed only when the real queue is empty')
+    worker.add_argument('--fallback-db', help='Validated mutation queue sharing the worker')
+    worker.add_argument('--prefer-dataset', choices=('real', 'mutation'), default='real')
+    worker.add_argument('--targeted-db', help='Enable the real:mutation:targeted 2:1:1 task cycle')
+    worker.add_argument('--schedule-offset', type=int, default=0)
     trainer = sub.add_parser('train')
     trainer.add_argument('--output', default='checkpoints/real-runs')
     trainer.add_argument('--epochs', type=int, default=100)
@@ -66,12 +69,17 @@ def main():
         elif args.command == 'work':
             from .worker import work
             from .priority_store import open_priority
-            queues, fallback = open_priority(store, args.fallback_db, teacher)
+            if args.targeted_db:
+                from .priority_store import open_allocation
+                queues, opened = open_allocation(store, args.fallback_db, args.targeted_db, teacher, offset=args.schedule_offset)
+            else:
+                queues, fallback = open_priority(store, args.fallback_db, teacher, preferred=args.prefer_dataset)
+                opened = [fallback] if fallback is not None else []
             try:
                 if not work(queues, catalog, args.runtime, args.limit, teacher):
                     raise SystemExit(2)
             finally:
-                if fallback is not None: fallback.db.close()
+                for other in opened: other.db.close()
         elif args.command == 'train':
             from .model import train
             print(json.dumps(train(store, catalog, args.output, args.epochs, args.device)))

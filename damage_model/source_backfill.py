@@ -65,5 +65,15 @@ def sync_sources(store, catalog, teacher, live_dir, live_start, backfill_dir):
         atomic(directory/'latest.json',result)
         return result
     atomic(pointer,state)
+    # A separate cursor revisits pages skipped under the previous version gate.
+    # Preserve the completed old scan and share its request/backoff budget.
+    if catalog is not None and catalog.config.get('source_compatibility_backfill'):
+        from .source_versions import LEGACY_VERSIONS
+        report = sync_page(store, catalog, teacher, directory/'compatible-archive-v1', None,
+                           follow=False, rate_path=rate_path, accepted_versions=LEGACY_VERSIONS)
+        if report['state'] != 'backfill_complete':
+            result = {'source_stream': 'compatible-archive-v1', **report}
+            atomic(directory/'latest.json', result)
+            return result
     return {'state':'waiting_source','reason':'historical_scan_complete',
             'retry_at':live.get('next_request_at',now+300)}

@@ -12,15 +12,15 @@
 | 来源版本 | v0.109.0 / v0.109.1、v0.110.0 / v0.110.1、v0.111.0 |
 | 实际战斗 | 游戏 0.111.0，静默猎手，单人标准 A10，70/70 满血，无药水 |
 | 搜索 | Medium、short_only、8,000 ms、DOP 1，整场期限 120 秒 |
-| 并发 | 25 个独立运行环境：20 个优先真实，5 个优先变异；空队列允许互相借用 |
-| 活动数据库 | `data/collection-real-runs-v4.sqlite`、`data/collection-mutations-v2.sqlite` |
+| 并发 | 25 个独立运行环境：真实/原变异/专项变异按领取次数 50/25/25 调度；空队列允许借用 |
+| 活动数据库 | `data/collection-real-runs-v4.sqlite`、`data/collection-mutations-v2.sqlite`、`data/collection-targeted-mutations-v1.sqlite` |
 | 运行与备份 | 持续采集直到用户停止；运行内存预留 0；新 worker 启动预算 2 GiB；两路 300 秒双槽备份 |
 
 0.109 来源中的恫吓转换为侧步，保留升级、附魔及可还原状态；旧版本只提供输入，标签统一重新用 0.111.0 生成。完整规则见[来源版本与调度](docs/source-versions-and-scheduling.md)。
 
 最多 45 张牌、0–5 张无色牌；允许真实永久牌组中的诅咒、事件/先古牌、任务牌、状态牌和衍生牌。最大生命遗物及明确指定的 13 件遗物单独移除，保留剩余构筑和来源历史；回血遗物保留。其他角色永久牌、棱彩宝石、万花筒和未适配状态仍按规则拒绝。详见[卡牌状态](docs/card-state.md)、[遗物规则](docs/relic-rules.md)。
 
-真实构筑匹配同一 `.run`、同一幕来源楼层前后各两层实际遇到的原版编组；每目标 4 个种子，每场独立重置。同一构筑重复出现时合并目标范围，已有任务去重。变异沿用父代目标，以荣耀 60%、巢穴 40%，小变异 60%、大变异 40% 生成，详见[变异规则](docs/mutations-8s.md)。
+真实构筑匹配同一 `.run`、同一幕来源楼层前后各两层实际遇到的原版编组；每目标 4 个种子，每场独立重置。同一构筑重复出现时合并目标范围，已有任务去重。变异沿用父代目标，以荣耀 60%、巢穴 40%，小变异 60%、大变异 40% 生成，另增针对 43 个高误差编组的均衡专项变异，详见[变异规则](docs/mutations-8s.md)和[专项采集](docs/targeted-mutations.md)。
 
 ## 操作入口
 
@@ -47,7 +47,7 @@ cd /data1/pl/ImageTask/wxq/Projects/Sts2Bot
 | 内容 | 入口 |
 | --- | --- |
 | 导入与目标范围 | [真实局导入](docs/spire-codex-run-assessment.md) |
-| 版本转换、历史回补、20/5 调度 | [来源版本与调度](docs/source-versions-and-scheduling.md) |
+| 版本转换、历史回补、三队列调度 | [来源版本与调度](docs/source-versions-and-scheduling.md) |
 | 运行、停止、备份、故障恢复 | [持续采集](docs/continuous-collection.md)、[运行环境](docs/runtime.md) |
 | 搜索预算与教师边界 | [8 秒搜索](docs/search-8s.md) |
 | 卡牌与遗物状态 | [卡牌状态](docs/card-state.md)、[遗物规则](docs/relic-rules.md)、[计数范围](docs/counter-state.md) |

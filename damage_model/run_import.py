@@ -1,4 +1,4 @@
-"""Reconstruct v0.111.0 run histories without treating human damage as a label.
+"""Reconstruct compatible run histories for native v0.111.0 battle labels.
 
 Histories aggregate changes within a floor, and upgrades identify a card type,
 not an instance. Keep all consistent interpretations, validate the final deck,
@@ -18,6 +18,8 @@ from .schema import Build, Card, Relic, canonical, digest
 from .starter_relics import SNAKE, DRAKE, TOUCH, uses_orobas_replacement
 from .card_state import normalize_extra, parse_props, history_progress, SPECIAL_POOLS
 from .target_scope import WINDOW_POLICY, require_policy, recorded_floors, window_for_origin, save_target_origins
+from .source_versions import (SOURCE_SCHEMAS, LEGACY_VERSIONS, COMPATIBILITY_REVISION,
+                              compatibility_report, normalize_history)
 
 IMPORT_VERSION = "spire_codex_run_v1"
 IMPORT_REVISION = 'special_cards_saved_state_v8'
@@ -180,7 +182,8 @@ def leave_history_combat(deck, node, stats, *, last_floor, run):
 
 
 def check_run(run):
-    if run.get('schema_version') != 10 or run.get('build_id') != 'v0.111.0':
+    expected_schema = SOURCE_SCHEMAS.get(run.get('build_id'))
+    if expected_schema is None or type(run.get('schema_version')) is not int or run['schema_version'] != expected_schema:
         raise RunRejected('Unsupported run schema/game version')
     if run.get('ascension') != 10 or run.get('game_mode') != 'standard' or run.get('modifiers'):
         raise RunRejected('Requires standard A10 without modifiers')
@@ -193,7 +196,9 @@ def check_run(run):
 
 
 def reconstruct(run, catalog):
-    player = check_run(run)
+    check_run(run)
+    run = normalize_history(run)
+    player = run['players'][0]
     for relic in player['relics']:
         if relic['id'] == 'RELIC.' + TOUCH and relic.get('props'):
             props = relic['props']
@@ -284,6 +289,8 @@ def reconstruct(run, catalog):
     for i, details in enumerate(floors):
         states = {signature(trace[i]) for trace in survivors}
         details['cards'] = next(iter(states)) if len(states) == 1 else None
+        if run['build_id'] in LEGACY_VERSIONS:
+            details['source_compatibility'] = compatibility_report(run)
     return floors
 
 
@@ -371,6 +378,9 @@ def import_run(store, catalog, teacher, run, run_hash, source, *, reprocess=Fals
     init_sources(store)
     target_policy = require_policy(store, catalog.config)
     checksum = source_checksum(run)
+    # Keep existing 0.111 imports byte-identical. Only the newly supported source
+    # versions receive a distinct import revision and compatibility audit.
+    revision = COMPATIBILITY_REVISION if run.get('build_id') in LEGACY_VERSIONS else IMPORT_REVISION
     previous = store.db.execute('SELECT sha256,version,report,body FROM source_runs WHERE hash=?', (run_hash,)).fetchone()
     if previous:
         original = json.loads(previous['body'])
@@ -387,8 +397,12 @@ def import_run(store, catalog, teacher, run, run_hash, source, *, reprocess=Fals
                 store.db.execute('INSERT OR IGNORE INTO source_equivalences VALUES(?,?,?,?,?,?,?)',
                     (run_hash, hashlib.sha256(incoming.encode()).hexdigest(), checksum,
                      'spire_codex_metadata_v2', source, incoming, time.time()))
-        if previous['version'] == IMPORT_REVISION:
+        if previous['version'] == revision:
             return {**json.loads(previous['report']), 'already_imported': True, 'scheduled_now': 0}
+        compatibility_reprocess = (revision == COMPATIBILITY_REVISION and previous['version'] == IMPORT_REVISION
+                                   and json.loads(previous['report']).get('rejected') == 'Unsupported run schema/game version')
+        if compatibility_reprocess:
+            reprocess = True
         if previous['version'] in {PREVIOUS_IMPORT_REVISION, SHARED_ANCIENT_REVISION, REMOVED_RELIC_REVISION, OROBAS_REVISION} and not reprocess:
             # Re-audit cached sources affected by a newly removed relic, or by
             # v5's shared-Ancient correction. Unaffected old rows stay verbatim.
@@ -407,13 +421,15 @@ def import_run(store, catalog, teacher, run, run_hash, source, *, reprocess=Fals
             if not (shared_affected or removal_affected or replacement_affected or cards_affected):
                 return {**json.loads(previous['report']), 'already_imported': True, 'scheduled_now': 0}
             reprocess = True
-        if not reprocess or previous['version'] not in REPROCESS_REVISIONS:
+        if not reprocess or (previous['version'] not in REPROCESS_REVISIONS and not compatibility_reprocess):
             raise ValueError('Source import version changed; explicitly reprocess the supported revision')
     report = {'run_hash': run_hash, 'accepted_floors': 0, 'skipped': {}, 'scheduled_now': 0,
               'target_policy': target_policy,
-              'counter_policy': 'sample_legal_domains_v2', 'version': IMPORT_REVISION,
+              'counter_policy': 'sample_legal_domains_v2', 'version': revision,
               'max_hp_relic_policy': 'remove' if catalog.remove_max_hp_relics else 'reject_build',
               'normalized_floors': 0, 'removed_max_hp_relics': {}, 'removed_user_relics': {}}
+    if run.get('build_id') in LEGACY_VERSIONS:
+        report['source_compatibility'] = compatibility_report(run)
     skipped = Counter()
     removed = Counter()
     removed_user = Counter()
@@ -445,7 +461,7 @@ def import_run(store, catalog, teacher, run, run_hash, source, *, reprocess=Fals
         stripped = [r for r in state['relics'] if r not in {relic.id for relic in build.relics}]
         stripped_hp = [r for r in stripped if r in catalog.max_hp_relic_ids]
         stripped_user = [r for r in stripped if r in catalog.explicitly_removed_relics]
-        details['normalization'] = {'revision': IMPORT_REVISION, 'removed_max_hp_relics': stripped_hp,
+        details['normalization'] = {'revision': revision, 'removed_max_hp_relics': stripped_hp,
                                     'removed_user_relics': stripped_user,
                                     'initial_hp': 70, 'initial_max_hp': 70}
         if stripped:
@@ -468,10 +484,10 @@ def import_run(store, catalog, teacher, run, run_hash, source, *, reprocess=Fals
             store.db.execute('INSERT OR IGNORE INTO source_import_history VALUES(?,?,?,?)',
                 (run_hash, previous['version'], previous['report'], time.time()))
             store.db.execute('UPDATE source_runs SET version=?,report=? WHERE hash=?',
-                (IMPORT_REVISION, canonical(report), run_hash))
+                (revision, canonical(report), run_hash))
         else:
             store.db.execute('INSERT INTO source_runs VALUES(?,?,?,?,?,?)',
-                (run_hash, checksum, IMPORT_REVISION, source, canonical(run), canonical(report)))
+                (run_hash, checksum, revision, source, canonical(run), canonical(report)))
     return report
 
 
