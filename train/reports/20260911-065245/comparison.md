@@ -1,5 +1,7 @@
 # 模型比较
 
+> 本报告保留该固定快照的原指标与样例，路径是生成时的出处，不是当前采集工作目录。现行环境与指标解释见[训练说明](../../README.md)；不同快照的留出集不能直接作同条件比较。
+
 快照：`data/train-snapshots/20260911-065245`（2026-09-11T06:53:24.979422+00:00，552043 场，54748 个构筑，1413 个连通组）
 
 来源：real-v4 91180 场、real-v3 400132 场、mut-v2 0 场、mut-v1 60731 场
@@ -8,7 +10,7 @@
 
 指标单位为 HP。pair 指标先对同一 (构筑, 目标) 的全部种子取均值再比较，row 指标按每场对战计算并以 1/种子数加权。
 
-测试集噪声下限：within_pair_rmse_hp=8.074，loo_seed_mean_mae_hp=5.817，multi_seed_rows=41954，pairs_with_multiple_seeds=10490
+测试集组内波动参考：within_pair_rmse_hp=8.074，loo_seed_mean_mae_hp=5.817，multi_seed_rows=41954，pairs_with_multiple_seeds=10490
 
 ## 测试集（留出连通组）
 
@@ -54,5 +56,5 @@
 
 - 各模型均为现有实现的适配：`repo_mlp` 为仓库 `damage_model.model.DamageNet`；`rtdl_mlp`/`rtdl_resnet` 来自 `rtdl_revisiting_models`；`tabm` 来自 `tabm`；`set_transformer` 为官方 Set Transformer 模块加 key padding mask；`lightgbm` 为两棵 LightGBM（回归 + 死亡二分类）。
 - 标签为 `净掉血 / 初始最大生命`，同一输入的重复种子按 1/种子数加权。早停依据验证集 pair MAE。
-- 噪声下限 `within_pair_rmse_hp` 为同输入多种子的组内标准差，是 row RMSE 的不可约部分；`loo_seed_mean_mae_hp` 是用同输入其他种子均值预测单场的 MAE，仅作参考，不是模型能达到的目标。
+- `within_pair_rmse_hp` 是同输入有限种子的组内波动参考，不能据此确定总体不可约误差下限；`loo_seed_mean_mae_hp` 是用同输入其他种子均值预测单场的 MAE。四种子均值本身也有采样误差，这两项不是模型必须达到的目标。
 - 运行记录：{"repo_mlp": {"exit_code": 0, "seconds": 345.0, "device": "cuda:0"}, "rtdl_mlp": {"exit_code": 0, "seconds": 345.0, "device": "cuda:1"}, "rtdl_resnet": {"exit_code": 0, "seconds": 545.0, "device": "cuda:2"}, "lightgbm": {"exit_code": 0, "seconds": 555.1, "device": "cpu"}, "tabm": {"exit_code": 0, "seconds": 690.1, "device": "cuda:0"}, "set_transformer": {"exit_code": 0, "seconds": 715.1, "device": "cuda:1"}}
