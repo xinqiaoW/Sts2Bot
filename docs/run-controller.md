@@ -1,101 +1,67 @@
-# RunController：用真实游戏做 RL 环境（路 B）
+# RunController：真实游戏整局环境
 
-2026-09-15 决定。放弃拟合式抽象模拟器（已移入 [历史垃圾箱](历史垃圾箱/sim-v0-fitted/README.md)），改为让原版游戏进程本身充当环境：所有局外规则（地图、遭遇池、奖励、商店、篝火、事件、上古、遗物效果）由游戏原样执行，Python 只负责在决策点给出动作。战斗可由 CombatSolver 全自动打，也可以在需要提速时用训练好的期望掉血模型 F 直接结算并跳过。
+当前工作分支：`feat/rl-combat-env`。局外规则由原版游戏执行，Python 在地图决策点选择合法路线；每场战斗由 CombatSolver 实际执行。旧拟合式模拟器保存在[历史目录](历史垃圾箱/sim-v0-fitted/README.md)。
 
-## 已确认的事实（来源：`decompiled/` 与 `vendor/CombatSolver`）
+## 第一版范围
 
-- 原版内置 `MegaCrit.Sts2.Core.AutoSlay.AutoSlayer`：官方冒烟测试机器人，已经覆盖整局流程——主菜单开局、每种房间（`CombatRoomHandler`/`EventRoomHandler`/`ShopRoomHandler`/`TreasureRoomHandler`/`RestSiteRoomHandler`）和每种覆盖层（奖励、选卡、升级/转化/附魔/删卡、选遗物、选包、水晶球、游戏结束）。它用 `Rng` 随机做每个选择。发布版把 `--autoslay` 命令行关掉了（`NGame.IsReleaseGame()` 恒为 true），但这些类是 public 的，mod 里可以直接实例化或照抄。它就是 RunController 的现成骨架：把每个 `random.NextItem(...)` 换成"把候选列表发给 Python，等动作"。
-- 局外操作有非 UI 入口：`RunManager.Instance.EnterMapCoord(coord)`（地图移动）、`RunState.Map.GetPoint / MapPoint.Children`（可达节点）、`StartNewSingleplayerRun(character, shouldSave, acts, modifiers, seed, GameMode, ascension)`（我们采集器已在用）、`RunManager.Abandon()`。奖励、商店、篝火、事件在 AutoSlay 里走的是 UI 节点点击（`UiHelper.Click`），无头模式下可用（AutoSlay 本身就是无头跑的）。
-- 跳过战斗的原语：`CreatureCmd.SetCurrentHp(player.Creature, hp)` + `CreatureCmd.Kill(enemies, force: true)`。战斗以胜利结束后奖励屏由游戏正常生成，不需要我们伪造奖励。
-- 现有 IPC：CombatSolver 无人协议已经是"Python 写 `user://combat_solver_test_request.json` → mod 轮询（每 10 帧）→ 写 `result.json`"，`damage_model/worker.py` 负责进程复用、超时和原生故障分类。RunController 沿用同一套进程管理与故障隔离，只是把一次请求从"一场战斗"扩展成"一整局 + 多轮决策往返"。
-- 每个 Wine worker 一个独立 prefix，25 路已在跑。RL 环境天然按 worker 向量化。
+- 原版 0.111.0，静默猎手，单人标准 A10，完整原生内容解锁，捏奥开局。
+- 沿用整局实际生命值、牌组、遗物、计数及升级。A10 正常起手为 56/70，不套用独立战斗采集的 70/70 标准化。
+- Python 接管地图合法选项；事件由整局控制器逐项随机选择，奖励、选牌、商店、篝火、宝箱使用原版 AutoSlay 的局外处理器。后者是固定基线，有些行为是拿取所有奖励或购买所有可负担物品，并非所有选项均匀随机。
+- 普通、精英、Boss 及事件内战斗均使用 CombatSolver：Medium、8 秒短搜、DOP 1、禁用药水、关闭 No-GC、Instant 部署。单场上限 120 秒，整局上限默认 3600 秒。
+- 原生奖励仍可能产生药水，库存照实记录，战斗基线不使用药水。
+- `runctl.RealRunEnv` 提供同步 `reset/step/close`。第一版不是完整 Gym/PPO 接口，不提供 F 跳战或整局向量池。
 
-## 架构
+## 所有权与隔离
 
-```
-Python                                   游戏进程 (Wine headless, 每 worker 一个)
-──────────────────────────────           ─────────────────────────────────────────
-runctl.env.RealRunEnv (gym 风格)  <────>  CombatSolver.dll 内新增 RunController
-  reset(seed, character, ascension)       - StartNewSingleplayerRun
-  step(action)                            - 主循环：AutoSlayer 流程，但每个决策点
-  obs = 决策点 JSON                           写 decision.json 后阻塞等待 action.json
-runctl.oracle (F 集成，跳过战斗)           - 战斗：solver 全自动 / skip(F)
-runctl.pool (复用 worker 池)              - 终局：写 run_result.json（含完整 .run 等价历史）
-```
+`src/Testing/UnattendedTestRunner.ProtocolHost.cs` 仍独占游戏请求邮箱及进程复用；`src/RunControl/RunControlSession*` 拥有单局状态、原生交互、决策序号及日志；`RunControlProtocol.cs` 拥有协议校验和文件写入。Search、Mirror、评分及出牌政策保持原有职责。
 
-放在 vendored CombatSolver 同一个 DLL 里（新目录 `src/RunControl/`），不另起 mod：真战斗要调用 CombatSolver 的全自动执行器，无头启动、进程复用、FTUE 禁用、Fast 模式这些已经在 `UnattendedTestRunner` 里调通了。`RunController` 是无人协议的一种新请求类型（`SchemaVersion` 提升，`Kind = "run"`），不改动现有训练采集路径。
+只有环境变量 `COMBATSOLVER_RUN_CONTROL=1` 的独立进程才能接受整局请求。Python 配置还必须明确 `kind: run_control`。一个环境独占一个用户目录和进程；失败后退出该进程，保留原始尝试，下一次调用使用新的 run ID。自然死亡是完成的对局，超时和异常是失败。
 
-### 协议（文件，同现有目录）
+生产采集继续使用 `/data1/pl/ImageTask/wxq/Projects/Sts2Bot`；整局试验使用相邻的 `Sts2Bot-runctl-pilot` 独立游戏副本和 Wine prefix。开发仓库的 DLL 只部署到试验副本，不能直接覆盖生产采集器。
 
-一次请求对应一整局：
+## 已纠正的设计假设
 
-```jsonc
-// run_request.json  (Python → mod)
-{"schemaVersion": 2, "kind": "run", "runId": "...", "characterId": "SILENT", "ascension": 10,
- "seed": "ABC123", "combatMode": "solver" | "skip" | "auto", "timeoutSeconds": 3600}
-```
+1. **AutoSlayer 整体不是正常玩法。** 原版普通战斗处理器会施加 999 层防御/再生能力；事件战斗处理器还会施加能力、移除敌方阻止战斗结束的能力并杀死敌人。整局控制器不调用这两个处理器，也不调用会结束整个进程的 `AutoSlayer.Start`。
+2. **全新采集存档缺少内容解锁。** 不解锁捏奥时原版会走首次游玩流程，初始层与 A10 开局效果不同。整局请求在独立进程内通过原生 Epoch 接口启用完整内容，再由游戏创建跑局。
+3. **地图和奖励界面可同时留在界面栈里。** 地图已经打开时优先处理可旅行地图，避免对已完成的奖励界面重复点击。
+4. **购买、事件和篝火可能等待嵌套选牌界面。** 控制器在父操作等待期间处理子界面，原生操作自己完成结算。未知界面和反复不推进的操作明确失败。
+5. **反编译目录是参考资料。** 编译以试验游戏副本所用程序集为准；现有参考目录与冻结程序集的 AutoSlay 商店构造参数存在差异，不能只凭参考文本判断可直接调用。
 
-局内每个决策点，mod 写 `decision.json` 并等待 `action.json`（按 `decisionSeq` 匹配，防串位）：
+## 协议 v1
 
-```jsonc
-// decision.json (mod → Python)
-{"runId": "...", "decisionSeq": 17,
- "screen": "MAP" | "CARD_REWARD" | "REWARDS" | "SHOP" | "REST" | "EVENT" | "BOSS_RELIC" |
-           "TREASURE" | "DECK_SELECT" | "ANCIENT" | "COMBAT_ENTRY" | "GAME_OVER",
- "state": {"act": 1, "actFloor": 6, "totalFloor": 6, "hp": 52, "maxHp": 70, "gold": 143,
-           "deck": [{"id": "STRIKE_SILENT", "upgrade": 0, "state": {...}}, ...],
-           "relics": [{"id": "...", "state": {...}}], "potions": [...],
-           "map": {...可达节点与整张图...}, "currentCoord": [row, col]},
- "options": [ {"index": 0, "kind": "card", "id": "BACKFLIP", "upgrade": 0},
-              {"index": 1, "kind": "skip"} , ... ],
- "context": {"encounterId": "...", "roomType": "MONSTER", "eventId": "...", "prices": [...]} }
+整局请求复用 `user://combat_solver_test_request.json` 邮箱，以 `kind: run` 分流。单场无人请求版本及训练观察版本保持各自定义，不能混为一个 schema。
+
+```json
+{"schemaVersion":1,"kind":"run","runId":"unique-id","seed":"RUNCTL0","characterId":"SILENT","ascension":10,"combatMode":"solver","policySeed":0,"timeoutSeconds":3600,"actionTimeoutSeconds":60,"combatTimeoutSeconds":120}
 ```
 
-```jsonc
-// action.json (Python → mod)
-{"runId": "...", "decisionSeq": 17, "choice": 0,
- "combat": {"mode": "skip", "hpAfter": 45, "maxHpAfter": 70} }   // 仅 COMBAT_ENTRY
+原生接受后，每局文件位于 `user://combat_solver_runs/<runId>/`：
+
+| 文件 | 含义 |
+| --- | --- |
+| `accepted.json` | 经校验的请求；同一 ID 只能接受一次 |
+| `decision.json` | 当前地图决策、可选位置、角色状态与递增 `decisionSeq` |
+| `action.json` | Python 的原子写入；原生消费后转存为 `action-00001.json` 等 |
+| `events.jsonl` | 带递增事件序号的追加日志，含战前/战后、楼层、事件选择及局外操作前后状态 |
+| `native-run.json` | 终局原生 `RunManager.ToSave` 快照，含原生逐层历史；不是 Spire Codex `.run` 导入接口 |
+| `result.json` | 自然死亡/胜利且清理完成后才写 `complete`；异常写 `failed` 与阶段和错误 |
+
+```json
+{"schemaVersion":1,"runId":"unique-id","decisionSeq":1,"choice":0}
 ```
 
-候选列表由 mod 从游戏对象直接枚举（`NCardHolder`、`NRewardButton`、`NMerchantSlot`、`NRestSiteButton`、`NEventOptionButton.Option`、`NMapPoint.Point.Children`），Python 永远只在合法动作里选；非法索引由 mod 直接报错终止该局（同 CombatSolver 的"未知语义显式失败"原则）。
+动作必须包含全部字段，匹配当前 run ID 与决策序号，选项仍须通过原生合法性检查。旧动作、重复动作、缺字段和越界输入不能被当作默认选项执行。
 
-终局 `run_result.json` 写完整逐层历史（房间、遭遇、HP/金币前后、选项、战斗模式与是否被跳过），字段对齐 `.run`，便于沿用 `sim/history.py` 的展平逻辑做真人对比。
+状态保存逐张卡牌的 ID、升级、原生附魔与持久字段；遗物保存原生状态，包括计数。原生选择界面目前记录处理前后状态与界面类型，尚不对所有界面导出完整候选集合，因此这些记录不能宣称是完整行为克隆数据集。
 
-### 战斗的三种模式
+## 使用和验收
 
-| 模式 | 做法 | 用途 |
-| --- | --- | --- |
-| `solver` | CombatSolver 全自动（8 秒预设、无药水，与现有标签老师一致） | 真值；每场顺带产出一条新的 F 标签（闭环数据） |
-| `skip` | 进入战斗、发牌稳定后，mod 上报 `COMBAT_ENTRY`（战前构筑 + 遭遇）；Python 用 F 集成采样掉血/死亡，回传 `hpAfter`；mod 设 HP、强杀全部敌人，进入正常奖励流程 | 提速 |
-| `auto` | Python 按规则决定：F 有覆盖且集成方差小 → skip；精英/Boss、无覆盖目标、或卡组含战斗内副作用的牌/遗物 → solver | 默认 |
+命令与独立环境配置见 [runctl/README.md](../runctl/README.md)，实测结果见[原生验收](run-controller-validation.md)。协议测试覆盖进程复用、ID/序号隔离、非法动作、失败结果、独占锁和超时保留现场。原生测试按开局、战斗、奖励、连续楼层、终局、同进程下一局逐步进行；验收场次和实际覆盖以运行报告为准。
 
-`skip` 会丢掉战斗内副作用，必须显式处理而不是忽略：
+整局日志单独存储。其输入生命值、遗物和内容池不同于标准化战斗采集，不能直接写入现有 F 训练库。
 
-- 回合数/击杀相关计数遗物、战斗中永久变化（吸血/进食类加上限、Lesson Learned 类升级、诅咒/状态牌的战后增减、药水消耗）——`auto` 模式对这些构筑强制 `solver`。名单从 `damage_model/catalog.py` 的排除表和 `docs/relic-rules.md` 出发，运行中遇到未列出的战后 diff（mod 比对战前/战后卡组与遗物状态）就报错，而不是静默继续。
-- F 的偏差在真人卡组上约 +0.46 HP（`sim-v0-fitted` 报告）；RL 策略走出真人分布后偏差未知，所以 `auto` 模式的 skip 比例要能按训练阶段收紧，且每个 epoch 固定抽一部分 skip 场次改用 `solver` 复测，监控偏差漂移。
+## 后续阶段
 
-### Python 侧
-
-- `runctl/env.py`：`RealRunEnv`，`reset()` 发 `run_request`，`step()` 写 action、等下一个 decision；`VecRealRunEnv` 持有 N 个 worker 进程（复用 `damage_model/worker.py` 的启动、复用、故障分类与隔离逻辑）。
-- 观测编码复用 `train/features.py` 的卡牌/遗物词表；策略是"给候选打分"的 pointer 结构（每个 option 一个 logit），天然处理变长动作集。
-- 先用真人 `.run` 做行为克隆（选项 = 真人当时的候选，`sim/history.py` 的展平逻辑可回收），再 PPO 微调；奖励 = 通关 + 少量存活层数 shaping。
-- 同一 seed 下不同策略可做配对比较（游戏 RNG 由 seed 决定），评估方差远小于随机 seed。
-
-## 吞吐估计（需实测，先按下面假设排期）
-
-- 一局约 50 层、30 场战斗。`solver` 模式下一场 1–3 分钟（8 秒短搜 × 若干回合），整局 30–60 分钟/worker；25 路约 30–50 局/小时。
-- `auto` 模式若普通战斗 80% 被跳过，只有精英/Boss 与少数构筑走 solver：整局约 5–10 分钟，25 路约 150–300 局/小时。
-- PPO 对样本量的需求可用 BC 起点和配对 seed 评估来压低；真正的瓶颈是 worker 数与内存（现有 25 路配置已知稳定）。
-
-## 分阶段
-
-1. **M1 打通**：mod 新增 `run` 请求；开局 → 上报 `MAP` 决策 → Python 随机选 → `EnterMapCoord` → 房间由 AutoSlay 原逻辑随机处理 → 终局写 `run_result.json`。单 worker、无头、`solver` 模式。验收：连续 20 局无挂起，逐层记录与游戏日志一致。
-2. **M2 全决策点**：把 AutoSlay 各 handler 的随机选择全部换成决策上报（含 Neow/上古、事件的多步选项、商店多次购买、篝火、宝箱、Boss 遗物、各种选卡屏）。加 `skip` 模式与战后 diff 校验。验收：随机策略 100 局，决策类型覆盖真人 `.run` 里出现过的所有 screen。
-3. **M3 训练**：`runctl` 环境与 25 路池；BC 数据集与训练；PPO；配对 seed 评估对比随机/启发式/BC/PPO。
-4. **M4 闭环**：solver 场次回灌 F 标签库；定期用新 F 重新校准 skip 偏差。
-
-## 已知风险
-
-- Wine 无头下的 UI 点击路径（奖励、商店、事件）比直接 API 更脆；AutoSlay 已用同样方式跑通，但个别事件有自定义屏（水晶球等），未覆盖的屏按"显式失败 + 隔离该局"处理，不允许猜测。
-- 一局运行时间长，单次原生崩溃会丢整局；沿用现有 `retry_then_quarantine` 分类，但按局而不是按场重试，并保留已完成的逐层记录用于 BC。
-- 现有 vendored CombatSolver 的 `AGENTS.md` 限定该 mod 只做战斗；RunController 放在其中是为了复用执行器与进程管理，改动必须限于新增 `src/RunControl/` 与协议分发，不触碰搜索语义。
+1. 将事件、商店、篝火、奖励及各类选牌的完整合法候选统一交给 Python；补齐截断、奖励与批量环境接口。
+2. 实现经过校验的 F 结算。强杀敌人可能触发爆炸、复活或遗物；单独预测平均掉血及死亡概率也不足以得到一致的结算分布。需要处理当前血量、最大生命、回合计数、战斗内永久变化与奖励边界，并用原生对战逐项验证。
+3. 在数据支持完整候选时进行行为克隆，再接入强化学习；吞吐、胜率和 F 分布外偏差都应实测。

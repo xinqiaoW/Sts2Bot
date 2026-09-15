@@ -753,6 +753,21 @@ if (Select-String -LiteralPath (Join-Path $repositoryRoot "src\Search\SimulatedC
     $violations.Add("SimulatedCombatState.cs: active-roster removal must retain known-monster AI state through move completion")
 }
 
+foreach ($check in @(
+    @{ Path = Join-Path $repositoryRoot 'src/RunControl/RunControlSession.cs'; Text = 'internal sealed partial class RunControlSession' },
+    @{ Path = $unattendedProtocolHostPath; Text = 'COMBATSOLVER_RUN_CONTROL' })) {
+    if (-not (Select-String -LiteralPath $check.Path -SimpleMatch $check.Text -Quiet)) {
+        $violations.Add("$($check.Path): missing whole-run ownership boundary '$($check.Text)'")
+    }
+}
+foreach ($runFile in Get-ChildItem -LiteralPath (Join-Path $repositoryRoot 'src/RunControl') -Filter '*.cs') {
+    foreach ($forbidden in @('new CombatRoomHandler(', 'new EventRoomHandler(', 'CreatureCmd.Kill(', 'CreatureCmd.SetCurrentHp(', 'PowerCmd.Apply<')) {
+        if (Select-String -LiteralPath $runFile.FullName -SimpleMatch $forbidden -Quiet) {
+            $violations.Add("$($runFile.FullName): whole-run v1 must use unmodified native combat: $forbidden")
+        }
+    }
+}
+
 if ($violations.Count -gt 0) {
     $violations | ForEach-Object { Write-Error $_ }
     throw "Refactor boundary verification failed with $($violations.Count) violation(s)."

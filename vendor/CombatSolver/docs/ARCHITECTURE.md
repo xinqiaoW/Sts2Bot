@@ -175,6 +175,17 @@ renderer 不得重新读取 `SolverResult`、`PlanAction`、`PlanCardChoice` 或
 
 不要从深层 fixture 直接写结果，不要在 entry 中重新建立战斗，也不要让断言负责执行动作。
 
+### 独立整局控制
+
+`ProtocolHost` 的同一邮箱还接受显式 `kind: run` 请求，但要求独立进程设置 `COMBATSOLVER_RUN_CONTROL=1`。没有 `kind` 的单场协议仍走原执行路径。
+
+- `src/RunControl/RunControlProtocol.cs`：整局请求与动作校验、每局唯一目录、原子快照与追加事件记录。
+- `RunControlSession.cs`：持有原生 `RunState`，创建 Silent A10 正常跑局、等待地图动作、调用 CombatSolver、处理终局并恢复设置。
+- `RunControlSession.Rooms.cs`：合法局外基线与嵌套选择界面。事件内战斗也交给 CombatSolver，禁止调用会作弊的原版 `CombatRoomHandler`、`EventRoomHandler`。
+- `ProtocolHost` 继续拥有邮箱和进程静稳检查；清理成功后才公布整局 `complete`。异常保存 `failed` 并退出进程，不伪造自然死亡。
+
+整局控制不调用单场 `ScenarioBuilder` 注入状态，不向 F 标签库写入数据，不拥有 Search/Mirror 政策。Python 客户端与范围见仓库根部 [RunController 说明](../../../docs/run-controller.md)。两套结构门禁禁止在整局控制目录施加作弊 Power、直接杀怪或设置生命值。
+
 ## 8. 工具与结构门禁
 
 - `tools/run-unattended-test.ps1` / `tools/run-unattended-test.sh`：Windows / Linux 的平台原生入口，负责隔离 headless 进程、请求协议和结果读取。

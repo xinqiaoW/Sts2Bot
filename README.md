@@ -57,4 +57,4 @@ cd /data1/pl/ImageTask/wxq/Projects/Sts2Bot
 | 模型训练和报告 | [训练入口](train/README.md) |
 | 内嵌求解器资料 | [文档范围](vendor/CombatSolver/docs/README.md) |
 
-强化学习环境采用真实游戏进程加 `RunController` mod，设计见 [RunController](docs/run-controller.md)；早先的拟合式抽象模拟器已退役，存档在 [历史垃圾箱](docs/历史垃圾箱/sim-v0-fitted/README.md)。
+强化学习环境的第一版已接入真实游戏：`runctl.RealRunEnv` 用 `reset/step` 控制地图选择，CombatSolver 执行战斗，局外规则由原版处理。范围与限制见 [RunController](docs/run-controller.md)，命令见 [运行入口](runctl/README.md)。早先的拟合式抽象模拟器已退役，存档在 [历史垃圾箱](docs/历史垃圾箱/sim-v0-fitted/README.md)。

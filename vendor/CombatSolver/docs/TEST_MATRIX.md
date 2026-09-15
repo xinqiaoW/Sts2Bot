@@ -2,6 +2,12 @@
 
 > 表中结果属于所列版本、日期和夹具；保留旧 2 秒试采及其他预设不表示当前生产仍使用它们。本次文档整理未重跑这些测试，现行采集参数见[搜索配置](../../../docs/search-8s.md)。
 
+## 真实整局控制 M1（2026-09-15）
+
+范围及原生试跑结果见[整局验收](../../../docs/run-controller-validation.md)。客户端可重跑 `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest tests/test_runctl.py -q`；原生协议可重跑 `PYTHONPATH=. python tests/runctl_native.py --runtime <独立试验配置> --output <报告目录>`；整局连续运行使用 `python -m runctl`。这些入口位于外层 Sts2Bot 仓库根部。
+
+原生协议测试覆盖错误 run ID、过期序号、越界、动作缺字段和等待超时，另在同一原生 PID 中执行两次旧 `SMOKE-001` 请求。整局死亡是 `complete/death`，协议及引擎错误是 `failed`；不得混算。需要验证的事件、幕及胜利覆盖，以验收报告实测内容为准。
+
 ## 特殊牌池与持久卡牌状态采集（2026-09-11）
 
 - 新入口：`UnattendedCardInjection.savedIntegerMembers`；原生回读 `trainingObservation.initialBuild.cards[].persistentState`。保留已有升级和附魔字段。
