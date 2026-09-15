@@ -45,3 +45,5 @@ python -m damage_model.cli --db data/training-snapshot.sqlite train --output che
 目前 01 只采集，首版 `checkpoints/v1` 保留。旧随机数据 `data/collection-horizon.sqlite` 和更早 `data/collection.sqlite` 不删除、不与新数据静默合并；`configs/v1.json` 保留为旧数据与兼容测试的历史配置。最早的随机构筑代码 `sampling.py`、旧轮次驱动 `collect_rounds.py`、`seed/evolve` 命令已移除。Build 的代数、父代等字段同时用于历史数据兼容和当前真实构筑变异的血缘记录。
 
 更多边界及实测记录见 [真实局导入](docs/spire-codex-run-assessment.md)。
+
+强化学习环境采用真实游戏进程加 `RunController` mod，设计见 [RunController](docs/run-controller.md)；早先的拟合式抽象模拟器已退役，存档在 [历史垃圾箱](docs/历史垃圾箱/sim-v0-fitted/README.md)。
