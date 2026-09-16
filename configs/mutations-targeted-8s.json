@@ -1,0 +1,97 @@
+{
+  "name": "real_run_mutation_v1",
+  "seed": 20260915,
+  "map_weights": {
+    "HIVE": 0.3488372093023256,
+    "GLORY": 0.3488372093023256,
+    "UNDERDOCKS": 0.13953488372093023,
+    "OVERGROWTH": 0.16279069767441862
+  },
+  "small_probability": 0.6,
+  "axes_weights": {
+    "cards": 1,
+    "relics": 1,
+    "both": 1
+  },
+  "small": {
+    "cards": [
+      1,
+      2
+    ],
+    "relics": [
+      1,
+      2
+    ]
+  },
+  "large": {
+    "cards": [
+      3,
+      6
+    ],
+    "relics": [
+      1,
+      4
+    ]
+  },
+  "generation_depth": 1,
+  "queue_low_water": 600,
+  "refill_builds": 100,
+  "parent_refresh_seconds": 300,
+  "evidence_directory": "evidence/native-failures-targeted-v1",
+  "target_selection": {
+    "name": "balanced_error_targets_v1",
+    "targets": {
+      "HIVE": [
+        "THE_INSATIABLE_BOSS",
+        "KAISER_CRAB_BOSS",
+        "KNOWLEDGE_DEMON_BOSS",
+        "INFESTED_PRISMS_ELITE",
+        "DECIMILLIPEDE_ELITE",
+        "ENTOMANCER_ELITE",
+        "SLUMBERING_BEETLE_NORMAL",
+        "OVICOPTER_NORMAL",
+        "THE_OBSCURA_NORMAL",
+        "MYTES_NORMAL",
+        "CHOMPERS_NORMAL",
+        "EXOSKELETONS_NORMAL",
+        "HUNTER_KILLER_NORMAL",
+        "TUNNELER_WEAK",
+        "BOWLBUGS_NORMAL"
+      ],
+      "GLORY": [
+        "TEST_SUBJECT_BOSS",
+        "KNIGHTS_ELITE",
+        "QUEEN_BOSS",
+        "MECHA_KNIGHT_ELITE",
+        "AEONGLASS_BOSS",
+        "AXEBOTS_NORMAL",
+        "CONSTRUCT_MENAGERIE_NORMAL",
+        "SCROLLS_OF_BITING_NORMAL",
+        "SOUL_NEXUS_ELITE",
+        "THE_LOST_AND_FORGOTTEN_NORMAL",
+        "DEVOTED_SCULPTOR_WEAK",
+        "FROG_KNIGHT_NORMAL",
+        "OWL_MAGISTRATE_NORMAL",
+        "FABRICATOR_NORMAL",
+        "SLIMED_BERSERKER_NORMAL"
+      ],
+      "UNDERDOCKS": [
+        "SOUL_FYSH_BOSS",
+        "LAGAVULIN_MATRIARCH_BOSS",
+        "WATERFALL_GIANT_BOSS",
+        "PHANTASMAL_GARDENERS_ELITE",
+        "CULTISTS_NORMAL",
+        "TERROR_EEL_ELITE"
+      ],
+      "OVERGROWTH": [
+        "THE_KIN_BOSS",
+        "VANTOM_BOSS",
+        "CEREMONIAL_BEAST_BOSS",
+        "PHROG_PARASITE_ELITE",
+        "BYGONE_EFFIGY_ELITE",
+        "BYRDONIS_ELITE",
+        "OVERGROWTH_CRAWLERS"
+      ]
+    }
+  }
+}

@@ -114,3 +114,37 @@ def test_enable_history_honors_existing_live_backoff(tmp_path,network):
     run_source.atomic(live/'cursor.json',{'next_request_at':1400})
     r=source_backfill.sync_sources(None,None,None,live,'2026-09-05T00:00:00Z',tmp_path/'history')
     assert r['retry_at']==1400 and not calls
+
+
+def test_compatible_scan_preserves_old_cursors_and_shares_rate_gate(tmp_path, network, monkeypatch):
+    from types import SimpleNamespace
+    from damage_model.source_versions import LEGACY_VERSIONS
+    now, calls, responses = network
+    live, history = tmp_path/'live', tmp_path/'history'
+    live.mkdir(); history.mkdir()
+    run_source.atomic(live/'cursor.json', {'next_request_at': 2000})
+    plan = {'schema': 1, 'cutoff': '2026-09-05T00:00:00Z', 'phase_index': 2,
+            'phases': source_backfill.historical_plan('2026-09-05T00:00:00Z'), 'state': 'history_complete'}
+    run_source.atomic(history/'plan.json', plan)
+    run_source.atomic(history/'export-rate.json', {'next_request_at': 0})
+    rows = [{'run_hash': 'aa', 'build_id': 'v0.109.0'}, {'run_hash': 'bb', 'build_id': 'v0.111.0'}]
+    responses.extend([Response(rows, cursor='next'), Response()])
+    seen = []
+    monkeypatch.setattr(run_source, 'check_run', lambda r: None)
+    def importer(*args):
+        seen.append(args[3]['run_hash'])
+        return {'scheduled_now': 4, 'accepted_floors': 1}
+    monkeypatch.setattr(run_source, 'import_run', importer)
+    args = (None, SimpleNamespace(config={'source_compatibility_backfill': True}), None, live, plan['cutoff'], history)
+    first = source_backfill.sync_sources(*args)
+    assert first['source_stream'] == 'compatible-archive-v1' and seen == ['aa']
+    assert json.loads((history/'plan.json').read_text()) == plan
+    saved = json.loads((history/'compatible-archive-v1/cursor.json').read_text())
+    assert saved['accepted_versions'] == sorted(LEGACY_VERSIONS)
+    assert source_backfill.sync_sources(*args)['reason'] == 'shared_export_rate_limit'
+    now[0] += 31
+    source_backfill.sync_sources(*args)
+    assert calls[1]['cursor'] == ['next']
+    now[0] += 31
+    assert source_backfill.sync_sources(*args)['reason'] == 'historical_scan_complete'
+    assert len(calls) == 2

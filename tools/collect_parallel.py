@@ -36,27 +36,49 @@ def validate_runtimes(paths):
     return runtimes
 
 
+def worker_preferences(total, mutation_workers):
+    if not 0 <= mutation_workers <= total or (mutation_workers and mutation_workers * 2 >= total):
+        raise ValueError('Mutation workers must be a minority of the pool')
+    return ['real'] * (total - mutation_workers) + ['mutation'] * mutation_workers
+
+
 def main():
     p=argparse.ArgumentParser()
     p.add_argument('--db',default='data/collection-real-runs-v2.sqlite')
     p.add_argument('--config',default='configs/real-runs.json')
     p.add_argument('--fallback-db', help='Optional mutation queue sharing these workers')
+    p.add_argument('--targeted-db', help='Third queue; replaces worker preferences with a 2:1:1 task cycle')
+    p.add_argument('--mutation-workers', type=int, default=0, help='Workers preferring mutation; both groups borrow idle capacity')
     p.add_argument('--runtimes',nargs='+',required=True)
     p.add_argument('--reserve-gib',type=float,default=32,help='Available memory reserve; 0 disables reserve-based draining')
     p.add_argument('--worker-start-gib',type=float,default=3)
     p.add_argument('--limit-per-worker',type=int,default=6080)
+    p.add_argument('--continuous-workers',action='store_true',help='Refill cleanly completed worker slots while pending jobs remain')
     p.add_argument('--train-after',action='store_true')
     p.add_argument('--stop-at',type=float,help='UTC Unix deadline; drain current battles and stop')
     args=p.parse_args()
     for sig in (signal.SIGINT,signal.SIGTERM): signal.signal(sig,interrupt_collector)
     if args.limit_per_worker<1: raise ValueError('Invalid resource bounds')
+    if args.continuous_workers and args.train_after:
+        raise ValueError('Continuous workers cannot use --train-after')
     validate_memory_bounds(args.reserve_gib, args.worker_start_gib)
     if args.stop_at is not None and (not math.isfinite(args.stop_at) or args.stop_at <= 0):
         raise ValueError('Invalid collection deadline')
     configs=validate_runtimes(args.runtimes)
+    preferences = worker_preferences(len(configs), args.mutation_workers)
+    if args.mutation_workers and not args.fallback_db:
+        raise ValueError('Mutation workers require --fallback-db')
+    if args.targeted_db and args.mutation_workers:
+        raise ValueError('Task-cycle allocation cannot also reserve preferred mutation workers')
     primary=Store(args.db)
     from damage_model.priority_store import open_priority
-    store,fallback=open_priority(primary,args.fallback_db)
+    targeted = None
+    if args.targeted_db:
+        from damage_model.priority_store import open_allocation
+        store, opened = open_allocation(primary, args.fallback_db, args.targeted_db)
+        fallback, targeted = opened
+    else:
+        store,fallback=open_priority(primary,args.fallback_db)
     status_path=Path(args.db).with_suffix('.parallel.json')
     lock=Path(args.db).with_suffix('.pool.lock').open('a+')
     fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
@@ -64,14 +86,23 @@ def main():
     if fallback is not None:
         fallback_lock = Path(args.fallback_db).with_suffix('.pool.lock').open('a+')
         fcntl.flock(fallback_lock, fcntl.LOCK_EX|fcntl.LOCK_NB)
+    targeted_lock = None
+    if targeted is not None:
+        targeted_lock = Path(args.targeted_db).with_suffix('.pool.lock').open('a+')
+        fcntl.flock(targeted_lock, fcntl.LOCK_EX|fcntl.LOCK_NB)
     children=[]
     log_files=[]
     markers=[Path(r['data_dir'])/'collector.stop' for r in configs]
+    worker_restarts=[0 for _ in configs]
     def status(state,**extra):
         value={'state':state,'updated':time.time(),'pid':__import__('os').getpid(),
                'counts':primary.counts(),'combined_counts':store.counts(),
                'mutation_counts':fallback.counts() if fallback is not None else {},
-               'workers':len(children),'available_gib':available_gib(),
+               'targeted_counts':targeted.counts() if targeted is not None else {},
+               'dataset_cycle':['real','real','mutation','targeted'] if targeted is not None else None,
+               'schedule_offsets':dict(zip(args.runtimes, [i % 4 for i in range(len(configs))])) if targeted is not None else {},
+               'preferred_workers': {} if targeted is not None else dict(zip(args.runtimes, preferences)),
+               'workers':len(children),'worker_restarts':worker_restarts,'available_gib':available_gib(),
                'reserve_gib':args.reserve_gib,'worker_start_gib':args.worker_start_gib,**extra}
         temporary=status_path.with_suffix('.tmp');temporary.write_text(json.dumps(value,indent=2));temporary.replace(status_path)
     def drain():
@@ -89,27 +120,44 @@ def main():
         drain()
         status('paused',reason='Requested collection deadline')
         return True
+    def start_worker(index):
+        path=args.runtimes[index]
+        if len(log_files)<=index:
+            log=Path('logs')/(Path(path).stem+'-worker.log');log.parent.mkdir(exist_ok=True)
+            log_files.append(log.open('ab'))
+        return subprocess.Popen([sys.executable,'-u','-m','damage_model.cli','--db',args.db,
+            '--config',args.config,
+            'work','--runtime',path,'--limit',str(args.limit_per_worker),
+            *(['--targeted-db',args.targeted_db,'--schedule-offset',str(index % 4)] if targeted is not None
+              else ['--prefer-dataset',preferences[index]]),
+            *(['--fallback-db',args.fallback_db] if args.fallback_db else [])],
+            stdout=log_files[index],stderr=subprocess.STDOUT)
     try:
         if store.counts().get('failed',0): raise ValueError('Diagnose failed jobs before starting pool')
-        for path,marker in zip(args.runtimes,markers):
+        for index,marker in enumerate(markers):
             if stop_at_deadline(): return
             if available_gib()<args.reserve_gib+args.worker_start_gib: raise RuntimeError('Insufficient available memory to add a worker')
             marker.unlink(missing_ok=True)
-            log=Path('logs')/(Path(path).stem+'-worker.log');log.parent.mkdir(exist_ok=True)
-            stream=log.open('ab');log_files.append(stream)
-            child=subprocess.Popen([sys.executable,'-u','-m','damage_model.cli','--db',args.db,
-                '--config',args.config,
-                'work','--runtime',path,'--limit',str(args.limit_per_worker),
-                *(['--fallback-db',args.fallback_db] if args.fallback_db else [])],stdout=stream,stderr=subprocess.STDOUT)
+            child=start_worker(index)
             children.append(child)
             status('starting',child_pids=[c.pid for c in children])
             time.sleep(2)
-        while any(child.poll() is None for child in children):
+        while True:
             if stop_at_deadline(): return
             if store.counts().get('failed',0) or any(c.poll() not in (None,0) for c in children):
                 raise RuntimeError('A collector failed; draining the other workers')
             if args.reserve_gib > 0 and available_gib()<args.reserve_gib:
                 raise RuntimeError('Available memory fell below reserve; draining workers')
+            if args.continuous_workers:
+                for index,child in enumerate(children):
+                    if deadline_reached(args.stop_at) or any(marker.exists() for marker in markers): break
+                    if child.poll()==0 and store.counts().get('pending',0):
+                        if available_gib()<args.reserve_gib+args.worker_start_gib: break
+                        children[index]=start_worker(index)
+                        worker_restarts[index]+=1
+                        status('collecting',child_pids=[c.pid for c in children])
+                        time.sleep(2)
+            if not any(child.poll() is None for child in children): break
             status('collecting',child_pids=[c.pid for c in children])
             time.sleep(3)
         if any(c.returncode!=0 for c in children): raise RuntimeError('A collector exited unsuccessfully')
@@ -129,6 +177,8 @@ def main():
         lock.close()
         if fallback_lock is not None: fallback_lock.close()
         if fallback is not None: fallback.db.close()
+        if targeted_lock is not None: targeted_lock.close()
+        if targeted is not None: targeted.db.close()
         primary.db.close()
 
 

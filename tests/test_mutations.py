@@ -297,6 +297,26 @@ def test_mutation_request_retains_teacher_and_skips_pickup(databases, catalog, p
     assert request['ascension'] == 10
 
 
+def test_both_worker_preferences_progress_and_borrow_idle_capacity(databases, catalog, policy):
+    real, derived = databases
+    Generator(real, derived, catalog, {'fixture': True}, policy).refill(2)
+    parent = parent_for(catalog, 'HIVE')
+    real.schedule(parent, catalog.targets(parent)[:1], ['parallel-real'], {'fixture': True})
+    prefer_real = PriorityStore(real, derived, {'fixture': True})
+    prefer_mutation = PriorityStore(real, derived, {'fixture': True}, preferred='mutation')
+    assert prefer_mutation.claim()['collection_dataset'] == 'mutation'
+    assert real.counts()['pending'] == 1
+    assert prefer_real.claim()['collection_dataset'] == 'real'
+    assert prefer_real.claim()['collection_dataset'] == 'mutation'
+    while derived.claim() is not None:
+        pass
+    real.schedule(parent, catalog.targets(parent)[:1], ['borrow-real'], {'fixture': True})
+    assert prefer_mutation.claim()['collection_dataset'] == 'real'
+    real.db.execute("update jobs set status='failed' where seed='borrow-real'")
+    real.db.commit()
+    assert prefer_mutation.claim() is None
+
+
 @pytest.mark.parametrize('corrupt', ['count', 'target', 'parent', 'change'])
 def test_corrupt_lineage_refused(databases, catalog, policy, corrupt):
     real, derived = databases

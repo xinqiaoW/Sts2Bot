@@ -101,7 +101,7 @@ def defer_invalid_download(directory, pointer, state, page_key, url, data, follo
             'retry_at': state['next_request_at'], 'evidence': str(evidence)}
 
 
-def sync_page(store, catalog, teacher, source_dir, start, *, end=None, follow=True, rate_path=None):
+def sync_page(store, catalog, teacher, source_dir, start, *, end=None, follow=True, rate_path=None, accepted_versions=None):
     if follow and (end is not None or start is None):
         raise ValueError('Live source needs a start and manages its own end')
     directory = Path(source_dir)
@@ -111,6 +111,11 @@ def sync_page(store, catalog, teacher, source_dir, start, *, end=None, follow=Tr
         'start':start, 'end':utc_now() if follow else end, 'cursor':None, 'next_request_at':0,
         'follow':follow, 'complete':False,
         'page_number':0, 'endpoint':ENDPOINT}
+    versions = sorted(accepted_versions) if accepted_versions is not None else None
+    if pointer.exists() and state.get('accepted_versions') != versions:
+        raise ValueError('Existing source cursor has different accepted versions; use a separate directory')
+    if versions is not None:
+        state['accepted_versions'] = versions
     if state.get('follow', True) != follow or (not follow and (state['start'], state['end']) != (start, end)):
         raise ValueError('Existing source cursor has a different scan scope; use a separate directory')
     if state.get('complete'):
@@ -174,6 +179,8 @@ def sync_page(store, catalog, teacher, source_dir, start, *, end=None, follow=Tr
     runs = decode_page(data)
     reports = []
     for run in runs:
+        if versions is not None and run.get('build_id') not in versions:
+            continue
         try:
             check_run(run)
         except RunRejected:

@@ -1,10 +1,10 @@
 # 持续采集与备份
 
-工作目录：01 的 `/data1/pl/ImageTask/wxq/Projects/Sts2Bot`。当前真实库为 `data/collection-real-runs-v4.sqlite`，变异库为 `data/collection-mutations-v2.sqlite`，配置为 `configs/real-runs-8s.json`。实际运行以 session/active、进程命令行和锁为准，不依赖文档中的历史 PID。
+工作目录：01 的 `/data1/pl/ImageTask/wxq/Projects/Sts2Bot`。当前真实库为 `data/collection-real-runs-v4.sqlite`，原变异库为 `data/collection-mutations-v2.sqlite`，专项库为 `data/collection-targeted-mutations-v1.sqlite`，配置为 `configs/real-runs-8s.json`。实际运行以 session/active、进程命令行和锁为准，不依赖文档中的历史 PID。
 
 ## 调度与启动
 
-25 个 worker 共用一个池，每个使用独立 Wine 环境。20 个优先领取真实任务，5 个优先领取变异任务；偏好的队列无可领取任务时借用另一队列。变异低于 600 个 pending 时按策略补充，不再要求真实队列为空。详见[来源与调度](source-versions-and-scheduling.md)、[变异规则](mutations-8s.md)。
+25 个 worker 共用一个池，每个使用独立 Wine 环境。各 worker 按真实、真实、原变异、专项变异循环领取任务，空队列允许借用。两个变异队列各低于 600 个 pending 时按策略补充，不要求真实队列为空。详见[来源与调度](source-versions-and-scheduling.md)、[变异规则](mutations-8s.md)。
 
 控制器独占 continuous 锁，可接管已存在的正常池；池和每个 worker 也有独占锁。以下是**已部署生产副本**的恢复示例，使用前先确认没有另一个控制器；不可在旧 Git 副本直接套用：
 
@@ -24,6 +24,7 @@ subprocess.run([
     '--worker-start-gib', str(s['worker_start_gib']),
     '--mutation-workers', str(s['mutation_workers']),
     '--mutation-db', s['mutation_db'], '--mutation-policy', s['mutation_policy'],
+    '--targeted-db', s['targeted_db'], '--targeted-policy', s['targeted_policy'],
     '--source-dir', 'data/external/spire-codex',
     '--source-start', s['historical_source_start'],
     '--backfill-dir', s['backfill_dir'], '--collect-only',
@@ -45,12 +46,13 @@ PY
 
 用户要求停止时：先停止已核实的控制器，再在每个 runtime 的 `data_dir` 写入 `collector.stop`，让在途战斗完成；核对 worker 退出和 running=0 后做最终一致性备份。不要通过中断池来代替这一收尾流程。
 
-## 两路备份
+## 三路备份
 
 | 数据 | 双槽目录 | 状态 |
 | --- | --- | --- |
 | 真实 v4 | `backups/01-active-card-state/slot-a`、`slot-b` | `data/local-backup.json` |
 | 变异 v2 | `backups/01-mutations-card-state/slot-a`、`slot-b` | `data/mutation-backup.json` |
+| 专项变异 v1 | `backups/01-targeted-mutations-card-state/slot-a`、`slot-b` | `data/targeted-backup.json` |
 
 `tools.local_backup` 每 300 秒发起下一轮，完成时间还包含备份耗时。先保存 session、配置、来源游标和历史 plan，再固定 WAL 读取快照并用 SQLite backup API 导出；不能直接复制活跃数据库或 WAL。`source-backfill/` 包括 `compatible-archive-v1/cursor.json`。恢复较早游标可以幂等重放来源，不能手工跳过未导入页。
 
@@ -58,6 +60,6 @@ PY
 
 ## 日常检查
 
-读取 `data/collection-real-runs-v4.parallel.json`、`.continuous.json`、两路备份状态和实际进程/锁；判断产出要看近期 complete 增量与有效原生结果。控制器批量导入来源时可能暂不刷新状态，需要检查实际 CPU/I/O 进展，不能仅凭状态年龄重启。
+读取 `data/collection-real-runs-v4.parallel.json`、`.continuous.json`、三路备份状态和实际进程/锁；判断产出要看近期 complete 增量与有效原生结果。控制器批量导入来源时可能暂不刷新状态，需要检查实际 CPU/I/O 进展，不能仅凭状态年龄重启。
 
 自动巡检频率以本机应用保存的自动化配置为准，不在文档中硬编码另一套周期。正常运行保持安静，新的实质故障和恢复完成才通知。现行生产检查脚本与历史审计边界见[验证与审计](validation.md)。

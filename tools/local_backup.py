@@ -25,6 +25,9 @@ def source_metadata(db):
     if session.get('mutation_policy'):
         path = Path(session['mutation_policy'])
         captured[Path(path.name)] = path.read_bytes()
+    if session.get('targeted_policy'):
+        path = Path(session['targeted_policy'])
+        captured[Path(path.name)] = path.read_bytes()
     if session.get('backfill_dir'):
         directory = Path(session['backfill_dir'])
         # Read the plan before phase cursors: restoring an earlier plan simply

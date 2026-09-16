@@ -20,7 +20,7 @@ from damage_model.catalog import Catalog
 from damage_model.provenance import teacher_for
 from damage_model.schema import canonical
 from damage_model.store import Store
-from tools.collect_parallel import available_gib, deadline_reached, validate_memory_bounds, validate_runtimes
+from tools.collect_parallel import available_gib, deadline_reached, validate_memory_bounds, validate_runtimes, worker_preferences
 
 
 MEMORY_PAUSES = {
@@ -96,6 +96,8 @@ class Controller:
             raise ValueError('Active dataset must use the current frozen teacher')
         self.mutation_store = None
         self.generator = None
+        self.targeted_store = None
+        self.targeted_generator = None
         if getattr(args, 'mutation_db', None):
             if not args.collect_only:
                 raise ValueError('Mutation collection requires collect-only mode')
@@ -105,6 +107,16 @@ class Controller:
             self.generator = Generator(self.store, self.mutation_store, self.catalog,
                                        json.loads(teacher), read_json(args.mutation_policy))
             self.queues = PriorityStore(self.store, self.mutation_store, json.loads(teacher))
+        if getattr(args, 'targeted_db', None):
+            if self.mutation_store is None: raise ValueError('Targeted collection requires the existing mutation queue')
+            from damage_model.mutations import Generator
+            from damage_model.priority_store import AllocationStore
+            self.targeted_store = Store(args.targeted_db)
+            self.targeted_generator = Generator(self.store, self.targeted_store, self.catalog,
+                                                json.loads(teacher), read_json(args.targeted_policy))
+            self.generator.avoid_stores = (self.targeted_store,)
+            self.targeted_generator.avoid_stores = (self.mutation_store,)
+            self.queues = AllocationStore(self.store, self.mutation_store, self.targeted_store, json.loads(teacher))
 
     def work_counts(self):
         return self.queues.counts() if getattr(self, 'mutation_store', None) is not None else self.store.counts()
@@ -114,6 +126,10 @@ class Controller:
             'db': str(self.db_path), 'counts': self.store.counts(),
             'mutation_db': getattr(self.args, 'mutation_db', None),
             'mutation_counts': self.mutation_store.counts() if getattr(self, 'mutation_store', None) is not None else {},
+            'mutation_workers': getattr(self.args, 'mutation_workers', 0),
+            'targeted_db': getattr(self.args, 'targeted_db', None),
+            'targeted_counts':self.targeted_store.counts() if getattr(self, 'targeted_store', None) is not None else {},
+            'dataset_cycle':['real','real','mutation','targeted'] if getattr(self, 'targeted_store', None) is not None else None,
             'initial_samples': self.args.initial_samples, 'validated_rounds': len(self.progress['validated']),
             'configured_workers': len(self.args.runtimes), 'reserve_gib': self.args.reserve_gib,
             'worker_start_gib': self.args.worker_start_gib,
@@ -127,6 +143,8 @@ class Controller:
             raise ValueError('Active database pointer changed; controller must not collect the old teacher')
         if getattr(self.args, 'mutation_db', None) and active.get('mutation_db') != self.args.mutation_db:
             raise ValueError('Active mutation database pointer changed')
+        if getattr(self.args, 'targeted_db', None) and active.get('targeted_db') != self.args.targeted_db:
+            raise ValueError('Active targeted database pointer changed')
         if shutil.disk_usage(self.db_path.parent).free < 20 * 1024**3:
             raise RuntimeError('Less than 20 GiB free disk; preserve data and diagnose')
 
@@ -182,12 +200,18 @@ class Controller:
 
     def refill_mutations(self):
         if getattr(self, 'generator', None) is None: return
-        if self.store.counts().get('pending', 0) or self.work_counts().get('failed', 0): return
+        if self.work_counts().get('failed', 0): return
+        if not getattr(self.args, 'mutation_workers', 0) and not getattr(self.args, 'targeted_db', None) and self.store.counts().get('pending', 0): return
         policy = self.generator.policy
         counts = self.mutation_store.counts()
         if counts.get('pending', 0) < policy['queue_low_water']:
             report = self.generator.refill()
             print(json.dumps({'event': 'mutation_refill', **report}), flush=True)
+        if getattr(self, 'targeted_generator', None) is not None:
+            counts = self.targeted_store.counts()
+            if counts.get('pending', 0) < self.targeted_generator.policy['queue_low_water']:
+                report = self.targeted_generator.refill()
+                print(json.dumps({'event': 'targeted_mutation_refill', **report}), flush=True)
 
     def memory_ready(self, for_pool):
         required = self.args.reserve_gib + (self.args.worker_start_gib * len(self.args.runtimes) if for_pool else 2)
@@ -258,7 +282,10 @@ class Controller:
                             '--runtimes', *self.args.runtimes,
                             '--reserve-gib', str(self.args.reserve_gib),
                             '--worker-start-gib', str(self.args.worker_start_gib), '--limit-per-worker', '6080',
+                            *(['--continuous-workers'] if self.args.collect_only else []),
+                            '--mutation-workers', str(getattr(self.args, 'mutation_workers', 0)),
                             *(['--fallback-db', self.args.mutation_db] if getattr(self.args, 'mutation_db', None) else []),
+                            *(['--targeted-db', self.args.targeted_db] if getattr(self.args, 'targeted_db', None) else []),
                             *(['--stop-at', str(self.args.stop_at)] if self.args.stop_at is not None else [])],
                             stdout=stream, stderr=subprocess.STDOUT, start_new_session=True)
                     self.status('starting_pool', child_pid=self.child.pid)
@@ -272,8 +299,11 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument('--db', default='data/collection-real-runs-v2.sqlite')
     p.add_argument('--config', default='configs/real-runs.json')
-    p.add_argument('--mutation-db', help='Separate one-generation mutation queue used when real tasks run out')
+    p.add_argument('--mutation-db', help='Separate one-generation mutation queue')
+    p.add_argument('--mutation-workers', type=int, default=0, help='Minority of workers preferring mutation work')
     p.add_argument('--mutation-policy', default='configs/mutations-8s.json')
+    p.add_argument('--targeted-db', help='Additional encounter-targeted mutation queue with 2:1:1 task allocation')
+    p.add_argument('--targeted-policy', default='configs/mutations-targeted-8s.json')
     p.add_argument('--source-dir', default='data/external/spire-codex')
     p.add_argument('--source-start', default='2026-09-05T00:00:00Z')
     p.add_argument('--backfill-dir', help='Separate durable historical cursors sharing the live export rate limit')
@@ -289,6 +319,11 @@ def main():
     p.add_argument('--collect-only', action='store_true', help='Defer model training; continue importing real runs')
     p.add_argument('--stop-at', type=float, help='UTC Unix deadline shared with each pool')
     args = p.parse_args()
+    worker_preferences(len(args.runtimes), args.mutation_workers)
+    if args.mutation_workers and not args.mutation_db:
+        raise ValueError('Mutation workers require --mutation-db')
+    if args.targeted_db and (not args.mutation_db or args.mutation_workers):
+        raise ValueError('Targeted allocation requires a mutation queue and no fixed mutation-worker reservation')
     validate_memory_bounds(args.reserve_gib, args.worker_start_gib)
     if args.stop_at is not None and (not math.isfinite(args.stop_at) or args.stop_at <= 0):
         raise ValueError('Invalid collection deadline')
@@ -312,6 +347,7 @@ def main():
         finally:
             controller.store.db.close()
             if controller.mutation_store is not None: controller.mutation_store.db.close()
+            if controller.targeted_store is not None: controller.targeted_store.db.close()
 
 
 if __name__ == '__main__':

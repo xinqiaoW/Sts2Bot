@@ -44,6 +44,28 @@ def test_bounded_pool_and_completed_panel_have_distinct_next_steps():
     assert continuous.checkpoint_directory(9000, 6080, 'first', 'later') == Path('later/samples-000009000')
 
 
+def test_real_majority_worker_allocation_and_mutation_refill_with_real_backlog():
+    from tools.collect_parallel import worker_preferences
+    assert worker_preferences(25, 5) == ['real'] * 20 + ['mutation'] * 5
+    for n in (-1, 13, 25):
+        with pytest.raises(ValueError): worker_preferences(25, n)
+    controller = object.__new__(continuous.Controller)
+    controller.args = Namespace(mutation_workers=5)
+    controller.store = Namespace(counts=lambda: {'pending': 1000})
+    controller.mutation_store = Namespace(counts=lambda: {'pending': 2})
+    controller.queues = Namespace(counts=lambda: {'pending': 1002})
+    calls = []
+    def refill():
+        calls.append('refill')
+        return {'scheduled_now': 4}
+    controller.generator = Namespace(policy={'queue_low_water': 600}, refill=refill)
+    controller.refill_mutations()
+    assert calls == ['refill']
+    controller.args.mutation_workers = 0
+    controller.refill_mutations()
+    assert calls == ['refill']
+
+
 def test_existing_pool_finishes_then_waits_for_real_source(tmp_path, monkeypatch):
     monkeypatch.chdir(tmp_path)
     monkeypatch.setattr(continuous, 'available_gib', lambda: 96)
@@ -221,6 +243,20 @@ def test_collection_only_records_panel_without_training_or_checkpoint_mutation(t
     assert controller.progress['validated'] == [first]
     assert len(controller.progress['collected']) == 1
     assert controller.progress['collected'][0]['training_deferred'] is True
+
+
+def test_three_queue_refills_both_mutations_while_real_has_work():
+    controller = object.__new__(continuous.Controller)
+    controller.args = Namespace(mutation_workers=0, targeted_db='targeted.sqlite')
+    controller.store = Namespace(counts=lambda: {'pending': 100})
+    controller.mutation_store = Namespace(counts=lambda: {'pending': 10})
+    controller.targeted_store = Namespace(counts=lambda: {'pending': 10})
+    controller.work_counts = lambda: {'pending': 120}
+    called = []
+    controller.generator = Namespace(policy={'queue_low_water':600}, refill=lambda: called.append('regular') or {})
+    controller.targeted_generator = Namespace(policy={'queue_low_water':600}, refill=lambda: called.append('targeted') or {})
+    controller.refill_mutations()
+    assert called == ['regular','targeted']
 
 
 def test_deadline_drains_adopted_pool_without_launch_or_failure(tmp_path, monkeypatch):

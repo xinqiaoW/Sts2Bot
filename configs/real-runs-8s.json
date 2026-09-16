@@ -2,6 +2,7 @@
     "character":  "SILENT",
     "ascension":  10,
     "build_source":  "spire_codex_run_v1",
+    "source_compatibility_backfill": true,
     "target_policy":  "source_floor_window_v1",
     "target_floor_radius":  2,
     "max_deck_size":  45,
