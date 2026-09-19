@@ -4,7 +4,7 @@
 
 ## 独立环境
 
-准备 0.111.0 游戏副本及独占用户目录；在该副本安装本分支构建的 CombatSolver 和相匹配的 RitsuLib。Linux 使用独立 Wine prefix。不要引用正在采集的 worker prefix。
+准备 0.111.0 游戏副本及独占用户目录；在该副本安装与 RunController 协议匹配的 CombatSolver 和相匹配的 RitsuLib。Linux 使用独立 Wine prefix。不要引用正在采集的 worker prefix。
 
 ```json
 {

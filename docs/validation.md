@@ -14,13 +14,13 @@ Python 测试覆盖来源历史还原、计数与先古合法性、特殊卡状�
 
 历史验收材料保留在部署副本的 `evidence/`，如 `card-state-20260910/`、`orobas-replacement-20260910/`、`shared-ancients-20260910/`、`source-versions-20260913/`。这些是当次代码、配置和运行环境的证据，不能把旧测试数写作当前分支重新执行的结果。游戏、原生附件及多数 evidence 不随普通 Git checkout 获得。
 
-当前已有两批固定训练报告，见[训练文档](../train/README.md)。留出误差说明快照内泛化表现，不能证明最优搜索、未见卡牌全覆盖或下一版教师同样准确。
+已纳入仓库的两批固定训练报告，见[训练文档](../train/README.md)。留出误差说明快照内泛化表现，不能证明最优搜索、未见卡牌全覆盖或下一版教师同样准确。
 
-## 01 迁移后的运行巡检
+## 运行与数据检查
 
-生产在 `/data1/pl/ImageTask/wxq/Projects/Sts2Bot`。现行检查入口为部署副本 `evidence/disk-migration-20260913/monitor_new_disk.py`，状态为 `data/heartbeat-health-post-migration.json`；需同时核对部署清单、冻结教师、进程/锁、近期有效产出、备份摘要/quick_check 与磁盘错误是否增长。运行设置及停止方法见[持续采集](continuous-collection.md)。
+生产执行目录为 `/data1/pl/ImageTask/wxq/Projects/Sts2Bot`。运行检查应核对部署版本、冻结教师、实际进程与锁、近期有效产出、备份摘要和 SQLite quick_check。正常库状态与历史补采状态分别读取，操作入口见[持续采集](continuous-collection.md)和[补采说明](../tools/one_off/README.md)。
 
-旧 `/data2` 上的真实 v3、变异 v1 和部分缓存未整体迁入新盘，不能当作当前活动路径。一次性迁移/恢复脚本不是可重复运维命令。运行巡检通过只说明本次检查覆盖的运行与数据边界，不能消除历史附件缺口。
+历史 evidence 中的迁移监控或恢复脚本只证明当时的检查范围，不能默认覆盖新增专项库、补采库或不同运行配置。运行正常也不表示历史附件完整；完整标签、去重索引和故障附件需要分别核验。
 
 ## 已知历史附件缺口
 
