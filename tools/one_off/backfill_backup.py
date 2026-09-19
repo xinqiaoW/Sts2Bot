@@ -20,12 +20,24 @@ def main():
     if args.interval < 300 or args.initial_delay < 0:
         raise ValueError('Invalid backup timing')
     root, destination = Path(args.run_dir).resolve(), Path(args.directory).resolve()
-    report = json.loads((root/'prepare-report.json').read_text())
-    databases = [Path(source['output']) for source in report['sources']]
-    if not report['apply'] or not databases or any(not p.is_file() for p in databases):
-        raise ValueError('Prepared backfill databases are required')
+    report_path = root/'prepare-report.json'
+    if report_path.exists():
+        report = json.loads(report_path.read_text())
+        if not report['apply']:
+            raise ValueError('An applied backfill is required')
+        databases = [Path(source['output']) for source in report['sources']]
+    else:
+        # The manifest is written only after all historical inputs validate.
+        # Collection can consume committed tasks while the same preparer adds
+        # the remaining queues. Snapshot each queue once it exists.
+        manifest = json.loads((root/'queues/backfill-manifest.json').read_text())
+        if manifest.get('version') != 1 or manifest.get('seed_indices') != [4, 24]:
+            raise ValueError('A validated backfill manifest is required')
+        databases = [root/'queues'/(Path(source).stem+'.backfill.sqlite') for source in manifest['sources']]
+    if not databases or not any(p.is_file() for p in databases):
+        raise ValueError('At least one prepared backfill queue is required')
     destination.mkdir(parents=True, exist_ok=True)
-    for name in ('deployment.json', 'prepare-report.json', 'runtimes.json'):
+    for name in ('deployment.json', 'runtimes.json'):
         shutil.copy2(root/name, destination/name)
     shutil.copy2(root/'queues/backfill-manifest.json', destination/'backfill-manifest.json')
     stopping = False
@@ -46,9 +58,14 @@ def main():
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         pause(args.initial_delay)
         while not stopping:
+            if report_path.exists():
+                shutil.copy2(report_path, destination/report_path.name)
             for db in databases:
                 if stopping:
                     break
+                if not db.is_file():
+                    print(json.dumps({'database': str(db), 'state': 'waiting_for_queue'}), flush=True)
+                    continue
                 state = root/(db.stem+'.backup.json')
                 try:
                     if shutil.disk_usage(destination).free < 20 * 1024**3:

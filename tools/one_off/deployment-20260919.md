@@ -13,10 +13,14 @@
 - `queues/backfill-manifest.json` 与三个 `*.backfill.sqlite`：独立历史补采队列。
 - `runtimes.json`、`runtimes/`：25 个隔离 runtime 的配置；游戏日志在 `logs/game-NNN.log`。
 - `pool-process.json`、`logs/pool.log`：正式采集启动命令和进程信息。
+- `bootstrap-pool-process.json`、`pipeline-process.json`、`pipeline-state.json`：先采集已提交的真实来源任务，完整队列就绪后排空并切换三来源的记录。`bootstrap-final.parallel.json` 保留切换前的结束状态；`prepared-queue-counts.json` 保留完整任务数校验结果。
+- `resource-monitor.jsonl`：用户 cgroup 的实际内存、可回收内核缓存和线程数；超过 118 GiB 或接近线程限额时正常排空采集器，记录 `resource-guard-stop.json`。
 - `queues/collection-real-runs-v4.backfill.parallel.json`：现有 pool 的实际状态、各来源数量和 worker PID。
 - `backup-process.json`、`logs/backup.log`、`*.backup.json`：备份启动记录和各库的快照状态。
 
-正式采集沿用 `tools.collect_parallel --continuous-workers`，只消耗已生成的有限队列，不启动新构筑生成器。原有失败处理保持原样，异常停止后应先诊断，不应盲目重启或重置数据。
+正式采集沿用 `tools.collect_parallel --continuous-workers`，只消耗已生成的有限队列，不启动新构筑生成器。为了尽早启动，先用已提交的 236,000 条真实来源任务运行 25 个 worker，原准备进程继续追加缺失任务。全部三个队列写完并通过总数校验后，`tools.one_off.finish_backfill_startup` 自动排空这批 worker，再以真实/普通变异/定向变异的原有 2:1:1 周期启动 25 个 worker。已采结果直接保留在同一个数据库里，不复制、不重置。
+
+原有失败处理保持原样，异常停止后应先诊断，不应盲目重启或重置数据；切换程序不会自动恢复异常退出的采集器。准备进程或采集进程失败时，`pipeline-state.json` 会记录需要诊断的原因。
 
 ## 数据范围
 
@@ -28,10 +32,14 @@
 
 ## 备份
 
-原库冻结后保留其已完成快照，在备份进程空闲时停止重复全量复制。新库使用 `tools.one_off.backfill_backup`，首次延迟 300 秒，三个库依次调用原有、带 SQLite 检查和校验和的快照实现；一轮完成后等待 3,600 秒。每库保留两个轮换快照，位于 `backups/targeted-seed-backfill-20260919/`。
+原库冻结后保留其已完成快照，在备份进程空闲时停止重复全量复制。新库使用 `tools.one_off.backfill_backup`，首次延迟 300 秒，三个库依次调用原有、带 SQLite 检查和校验和的快照实现；尚未生成的库会等待后续备份轮次。一轮完成后等待 3,600 秒。每库保留两个轮换快照，位于 `backups/targeted-seed-backfill-20260919/`。
 
 这是降低同一磁盘并发全库复制开销的取舍：恢复点间隔约为一小时加整轮备份耗时，不再是原来的五分钟加备份耗时。收到 SIGTERM/SIGINT 时，新备份程序完成当前快照后退出。备份仍位于同一磁盘，不提供磁盘损坏时的异地恢复。
 
-停止采集应向 `pool-process.json` 记录的、命令仍匹配的 pool PID 发送 SIGINT，并等待 `.parallel.json` 和 worker 退出状态确认排空。原 pool 将人工中断也标记为 `failed`，须结合错误内容判断；不要因为状态标签自行重置任务。
+停止采集时先创建运行目录中的 `pipeline.stop`，防止准备完成后自动切换，再向 `pool-process.json` 记录的、命令仍匹配的 pool PID 发送 SIGINT，并等待 `.parallel.json` 和 worker 退出状态确认排空。原 pool 将人工中断也标记为 `failed`，须结合错误内容判断；不要因为状态标签自行重置任务。
+
+## 主机内存说明
+
+`pl` 用户 cgroup 的软阈值为 110 GiB，硬上限为 128 GiB。旧 `/tmp/mdprobe (deleted)` 探测任务 PID 2560865 所属会话曾积累约 80 GiB 可回收内核缓存。经用户授权已向其发送 SIGTERM 并确认退出。实际启动 worker 时观察到内核正常回收这部分缓存；没有执行 sudo 回收命令，也没有改变主机或用户内存配额。任务为何积累如此多内核缓存尚未进一步定位。
 
 本目录下工具仅用于本次补采，生产模块不依赖它们；补采、数据验收和备份完成后可单独移除。
