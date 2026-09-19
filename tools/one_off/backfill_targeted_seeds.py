@@ -24,6 +24,13 @@ PROVENANCE_TABLES = ('build_origins', 'target_origins', 'mutation_lineage',
 ADAPTER_KEYS = {'collector_protocol', 'collector_source', 'collector_sha256'}
 
 
+def pair_statistics(pairs):
+    """Count builds separately from their distinct encounter pairs."""
+    per_build = Counter(bid for bid, _ in set(pairs))
+    return {'eligible_builds': len(per_build), 'eligible_pairs': sum(per_build.values()),
+            'eligible_pairs_per_build': dict(sorted(Counter(per_build.values()).items()))}
+
+
 def connect_readonly(path):
     db = sqlite3.connect(Path(path).resolve().as_uri() + '?mode=ro', uri=True)
     db.row_factory = sqlite3.Row
@@ -165,6 +172,7 @@ def backfill(sources, output_dir, catalog, teacher, *, apply=False, progress=Non
         databases = [stack.enter_context(closing(connect_readonly(p))) for p in paths]
         source_teachers = []
         source_coverage = []
+        source_builds = []
         for index, db in enumerate(databases):
             if progress:
                 progress({'event': 'scan_source', 'source': str(paths[index])})
@@ -175,18 +183,22 @@ def backfill(sources, output_dir, catalog, teacher, *, apply=False, progress=Non
                 check_teacher(json.loads(value), teacher)
             source_teachers.append([json.loads(v) for v in sorted(encoded)])
             source_coverage.append(coverage)
+            source_builds.append({r[0] for r in db.execute('SELECT id FROM builds')})
         # Existing output statuses (including running/failed/quarantined) all
         # count as occupied, so retries never reset attempts or duplicate work.
-        for path, source in zip(outputs, paths):
+        existing_output_jobs = [0] * len(outputs)
+        for index, (path, source) in enumerate(zip(outputs, paths)):
             if path.exists():
                 with closing(connect_readonly(path)) as db:
                     check_output(db, manifest, source)
+                    existing_output_jobs[index] = db.execute('SELECT count(*) FROM jobs').fetchone()[0]
                     scan(db, ids, occupied, {}, None)
         report = {'apply': apply, 'seed_indices': [4, 24], 'target_encounters': len(catalog.encounter_seed_counts),
                   'eligible_pairs': 0, 'partial_original_pairs': 0, 'missing_original_seeds': 0,
                   'jobs_to_add': 0, 'jobs_added': 0, 'existing_extra_seeds': 0,
                   'sources': [], 'by_encounter': {}}
         work = [[] for _ in paths]
+        eligible = [set() for _ in paths]
         per_target = Counter()
         for pair_index, ((bid, tid), index) in enumerate(sorted(owners.items())):
             if progress and pair_index % 10000 == 0:
@@ -212,6 +224,7 @@ def backfill(sources, output_dir, catalog, teacher, *, apply=False, progress=Non
             extras = catalog.battle_seeds(build.act_id, tid)[4:]
             missing = [s for s in extras if s not in occupied[(bid, tid)]]
             report['eligible_pairs'] += 1
+            eligible[index].add((bid, tid))
             report['partial_original_pairs'] += len(old_complete) < 4
             report['missing_original_seeds'] += 4 - len(old_complete)
             report['existing_extra_seeds'] += len(extras) - len(missing)
@@ -220,6 +233,13 @@ def backfill(sources, output_dir, catalog, teacher, *, apply=False, progress=Non
             if missing:
                 work[index].append((row, target, missing, sorted(old_complete)))
         report['by_encounter'] = dict(sorted(per_target.items()))
+        report.update(pair_statistics(set().union(*eligible)))
+        report['stored_unique_builds'] = len(set().union(*source_builds))
+        report['original_seed_slots'] = report['eligible_pairs'] * 4
+        report['original_completed_seed_slots'] = report['original_seed_slots'] - report['missing_original_seeds']
+        report['extra_seed_slots'] = report['eligible_pairs'] * 20
+        if report['jobs_to_add'] + report['existing_extra_seeds'] != report['extra_seed_slots']:
+            raise ValueError('Backfill seed counts do not reconcile with eligible pairs')
         if apply and not manifest_path.exists():
             temporary = manifest_path.with_suffix('.tmp')
             temporary.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
@@ -230,6 +250,9 @@ def backfill(sources, output_dir, catalog, teacher, *, apply=False, progress=Non
         for index, pairs in enumerate(work):
             detail = {'source': str(paths[index]), 'output': str(outputs[index]),
                       'pairs_to_extend': len(pairs), 'jobs_to_add': sum(len(p[2]) for p in pairs),
+                      'stored_builds': len(source_builds[index]), **pair_statistics(eligible[index]),
+                      'existing_output_jobs': existing_output_jobs[index],
+                      'expected_output_jobs': existing_output_jobs[index] + sum(len(p[2]) for p in pairs),
                       'original_teachers': source_teachers[index], 'target_input_records': source_coverage[index]}
             report['sources'].append(detail)
             if not apply or not pairs:

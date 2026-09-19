@@ -4,6 +4,8 @@
 
 用户最终选择固定 25 个 worker。25 worker 的 10 分钟压测完成 543 场，覆盖 43 个编组，记录到 5 次原生失败；40 档按用户要求中断并正常排空，60/80 档未执行。单场搜索仍为 8,000 ms、DOP 1，不修改锁竞争失败处理。
 
+**数量复核后已按用户明确指令恢复启动。** 上次人工停止时，25 个 worker 正常排空，保留 1,893 场完成结果、234,107 场待处理任务，没有 running。复核确认原 4,067,580 场计划数量不变，用户随后要求恢复；停止标记已归档，未重置任何任务或结果。恢复记录见 `resume-processes.json`，停止与授权证据见 `user-stop.json` 和 `resume-*/authorization.json`。当前先采集已有 real 队列，同时恢复剩余队列准备和自动接续。接续程序在启动、排空和拉起新 worker 前检查停止标记。
+
 ## 生产运行目录
 
 `data/targeted-seed-backfill-20260919/` 保存：
@@ -24,7 +26,7 @@
 
 ## 数据范围
 
-读取 `collection-real-runs-v4.sqlite`、`collection-mutations-v2.sqlite`、`collection-targeted-mutations-v1.sqlite`。新版库通过 `prior_collected_inputs` 和保留的构筑血缘覆盖 real-v3/mut-v1；按构筑–编组–种子跨版本去重。预览为 203,379 个组合、4,067,580 个额外种子任务，最终以 `prepare-report.json` 为准。
+读取 `collection-real-runs-v4.sqlite`、`collection-mutations-v2.sqlite`、`collection-targeted-mutations-v1.sqlite`。新版库通过 `prior_collected_inputs` 和保留的构筑血缘覆盖 real-v3/mut-v1；按构筑–编组–种子跨版本去重。最初预览为 203,379 个组合、4,067,580 个额外种子任务，完整建库尚未结束，因此没有最终 `prepare-report.json`。新的报告同时列出唯一构筑数与每构筑的组合数分布；启动校验使用实际报告中的各库 `expected_output_jobs`，不再固定旧预览的三个常量。
 
 仅补充目标编组种子索引 4–23。少数原始四种子未全部成功的组合仍保留原状，不能把“配置 24 种子”理解为所有组合最终一定有 24 个有效结果。所有原库保持原始数据，不将多档压测的重复输入导入生产训练集。
 
@@ -43,3 +45,5 @@
 `pl` 用户 cgroup 的软阈值为 110 GiB，硬上限为 128 GiB。旧 `/tmp/mdprobe (deleted)` 探测任务 PID 2560865 所属会话曾积累约 80 GiB 可回收内核缓存。经用户授权已向其发送 SIGTERM 并确认退出。实际启动 worker 时观察到内核正常回收这部分缓存；没有执行 sudo 回收命令，也没有改变主机或用户内存配额。任务为何积累如此多内核缓存尚未进一步定位。
 
 本目录下工具仅用于本次补采，生产模块不依赖它们；补采、数据验收和备份完成后可单独移除。
+
+完整只读复核结果见 [数量核对报告](count-audit-20260919.json)：158,987 个已完成构筑中，125,765 个命中补采条件，对应 203,379 个组合；没有跨来源重复组合。本次修正了报告口径、队列数量硬编码和停止标记检查，没有修改原来的 24/4 种子策略、43 个目标名单或历史补采范围。

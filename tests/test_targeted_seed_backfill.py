@@ -32,6 +32,9 @@ def test_preview_apply_resume_preserves_sources_and_all_output_statuses(tmp_path
         before = list(source.db.iterdump())
         preview = backfill(sources, output_dir, expanded, {})
         assert preview['jobs_to_add'] == 20 and preview['eligible_pairs'] == 1
+        assert preview['eligible_builds'] == preview['stored_unique_builds'] == 1
+        assert preview['original_completed_seed_slots'] == 4
+        assert preview['extra_seed_slots'] == 20
         assert not output_dir.exists()
         result = backfill(sources, output_dir, expanded, {}, apply=True)
         assert result['jobs_added'] == 20
@@ -54,6 +57,9 @@ def test_preview_apply_resume_preserves_sources_and_all_output_statuses(tmp_path
             resumed = backfill(sources, output_dir, expanded, {}, apply=True)
             assert resumed['jobs_added'] == resumed['jobs_to_add'] == 0
             assert resumed['existing_extra_seeds'] == 20
+            assert resumed['eligible_builds'] == resumed['eligible_pairs'] == 1
+            assert resumed['sources'][0]['pairs_to_extend'] == 0
+            assert resumed['sources'][0]['expected_output_jobs'] == 20
             assert list(output.db.iterdump()) == saved
         finally:
             output.db.close()
@@ -81,6 +87,29 @@ def test_archived_prior_inputs_cover_old_data_and_dedupe_across_versions(tmp_pat
     finally:
         old.db.close()
         new.db.close()
+
+
+def test_one_build_multiple_targets_and_duplicate_sources_are_counted_separately(tmp_path, catalog):
+    source, build, first, _ = seed_source(tmp_path, catalog)
+    duplicate = Store(tmp_path/'duplicate.sqlite')
+    second = catalog.targets(build)[1]
+    expanded = with_targets(catalog, {'HIVE': [first['id'], second['id']]})
+    try:
+        source.schedule(build, [second], catalog.battle_seeds('HIVE', second['id']), {})
+        with source.db:
+            source.db.execute("UPDATE jobs SET status='complete'")
+        source.db.backup(duplicate.db)
+        result = backfill([tmp_path/'real.sqlite', tmp_path/'duplicate.sqlite'], tmp_path/'extra', expanded, {})
+        assert result['stored_unique_builds'] == result['eligible_builds'] == 1
+        assert result['eligible_pairs'] == 2
+        assert result['eligible_pairs_per_build'] == {2: 1}
+        assert result['original_completed_seed_slots'] == 8
+        assert result['extra_seed_slots'] == result['jobs_to_add'] == 40
+        assert [s['eligible_pairs'] for s in result['sources']] == [2, 0]
+        assert [s['expected_output_jobs'] for s in result['sources']] == [40, 0]
+    finally:
+        source.db.close()
+        duplicate.db.close()
 
 
 def test_partial_pairs_non_target_pending_only_and_existing_extras(tmp_path, catalog):

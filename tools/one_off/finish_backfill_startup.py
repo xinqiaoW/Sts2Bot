@@ -12,18 +12,25 @@ import time
 from damage_model.store import Store
 from tools.collect_parallel import validate_runtimes
 
-EXPECTED = (2520320, 1151700, 395560)
-
 
 def validate_ready(report, counts):
     if (not report['apply'] or len(report['sources']) != 3
-            or report['jobs_added'] + report['existing_extra_seeds'] != sum(EXPECTED)):
-        raise ValueError('Prepared plan differs from the approved full backfill')
+            or report['jobs_added'] != report['jobs_to_add']):
+        raise ValueError('Queue preparation is incomplete')
+    expected = [s['expected_output_jobs'] for s in report['sources']]
+    if any(s['expected_output_jobs'] != s['existing_output_jobs'] + s['jobs_to_add']
+           for s in report['sources']) or sum(s['jobs_to_add'] for s in report['sources']) != report['jobs_added']:
+        raise ValueError('Prepared queue counts do not reconcile')
     if len(counts) != 3:
         raise ValueError('All three queues are required')
-    for value, expected in zip(counts, EXPECTED):
-        if sum(value.values()) != expected or value.get('failed', 0):
+    for value, expected_count in zip(counts, expected):
+        if sum(value.values()) != expected_count or value.get('failed', 0):
             raise ValueError('Incomplete queue or failed samples require diagnosis')
+
+
+def require_not_stopped(root):
+    if (root/'pipeline.stop').exists() or (root/'resource-guard-stop.json').exists():
+        raise RuntimeError('Collection is stopped; do not resume automatically')
 
 
 def active_process(pid, token):
@@ -50,6 +57,7 @@ def main():
     with (root/'pipeline.lock').open('a+') as lock:
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         try:
+            require_not_stopped(root)
             bootstrap = json.loads((root/'bootstrap-pool-process.json').read_text())
             prepare = json.loads((root/'prepare-process.json').read_text())
             state('collecting_ready_queue', pool_pid=bootstrap['pid'])
@@ -64,6 +72,7 @@ def main():
                 time.sleep(5)
             # The report is emitted at the end; wait for its writer to close.
             while active_process(prepare['pid'], b'backfill_targeted_seeds'):
+                require_not_stopped(root)
                 time.sleep(1)
             if (root/'pipeline.stop').exists() or (root/'resource-guard-stop.json').exists():
                 raise RuntimeError('Switch cancelled or resource protection triggered')
@@ -81,12 +90,14 @@ def main():
                 return values
 
             validate_ready(report, counts())
+            require_not_stopped(root)
             if not active_process(bootstrap['pid'], b'tools.collect_parallel'):
                 raise RuntimeError('Ready-queue pool stopped before the planned transition')
             state('draining_for_all_sources', pool_pid=bootstrap['pid'])
             os.kill(bootstrap['pid'], signal.SIGINT)
             deadline = time.monotonic()+240
             while active_process(bootstrap['pid'], b'tools.collect_parallel'):
+                require_not_stopped(root)
                 if time.monotonic() > deadline:
                     raise RuntimeError('Pool did not drain; preserve workers for diagnosis')
                 time.sleep(1)
@@ -107,6 +118,7 @@ def main():
                        '--config', 'configs/real-runs-8s.json', '--fallback-db', str(paths[1]),
                        '--targeted-db', str(paths[2]), '--runtimes', *runtimes, '--reserve-gib', '32',
                        '--worker-start-gib', '3', '--limit-per-worker', '6080', '--continuous-workers']
+            require_not_stopped(root)
             with (root/'logs/pool.log').open('ab') as log:
                 pool = subprocess.Popen(command, stdout=log, stderr=log, start_new_session=True)
             info = {'pid': pool.pid, 'command': command, 'started': time.time(), 'phase': 'all_three_queues'}
