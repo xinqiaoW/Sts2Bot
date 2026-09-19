@@ -75,3 +75,5 @@ PY
 同一个串行备份进程用 `--additional-db` 覆盖三个正常采集库和三个补采库，每轮结束后等待 3600 秒。正常库的新双槽快照位于 `backups/targeted-seed-backfill-20260919/collection-real-runs-v4`、`collection-mutations-v2`、`collection-targeted-mutations-v1` 下；原快照保留。来源游标与配置仍随快照保存。
 
 新增 4 worker 的资源保护在用户组内存达到 115 GiB 或线程数达到 7900 时停止正常采集控制器并排空这 4 个 worker，优先保留原来的补采。停止事件记录在 `data/new-build-collection-20260919/resource-stop.json`，不自行恢复。
+
+2026-09-19 启动尝试已按用户要求取消：新增 4 个正常采集 worker 未进入战斗，相关控制器和预读任务已停止；正常采集禁止自动恢复，需用户再次明确要求。原有 25 个历史补采 worker 继续运行。构筑级去重和 24/4 种子配置保留。
