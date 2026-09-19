@@ -438,8 +438,6 @@ def import_run(store, catalog, teacher, run, run_hash, source, *, reprocess=Fals
     except (RunRejected, KeyError, IndexError, TypeError) as error:
         report['rejected'] = str(error)
         snapshots = []
-    seeds = [digest(['battle', catalog.config['battle_seed'], j])[:16]
-             for j in range(catalog.config['initial_seeds_per_pair'])]
     source_floors = recorded_floors(run) if snapshots and target_policy['name'] == WINDOW_POLICY else None
     for state in snapshots:
         if state['target'] is None:
@@ -454,8 +452,14 @@ def import_run(store, catalog, teacher, run, run_hash, source, *, reprocess=Fals
         selection = None
         if source_floors is not None:
             targets, selection = window_for_origin(source_floors, state, catalog, target_policy['radius'])
-        report['scheduled_now'] += store.schedule(build, targets, seeds, teacher,
-                                                reactivate_excluded=selection is not None)
+        seed_groups = {}
+        for target in targets:
+            seeds = tuple(catalog.battle_seeds(build.act_id, target['id']))
+            seed_groups.setdefault(seeds, []).append(target)
+        for seeds, grouped_targets in seed_groups.items():
+            report['scheduled_now'] += store.schedule(
+                build, grouped_targets, seeds, teacher,
+                reactivate_excluded=selection is not None)
         details = {k:v for k,v in state.items() if k != 'cards'}
         details['counter_seed'] = counter_seed
         stripped = [r for r in state['relics'] if r not in {relic.id for relic in build.relics}]
