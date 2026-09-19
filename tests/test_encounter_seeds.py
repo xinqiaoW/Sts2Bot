@@ -57,18 +57,56 @@ def test_import_mixed_targets_preserves_old_jobs_and_does_not_backfill_cached_ru
         assert import_run(store, expanded, {}, run, 'old', 'fixture')['scheduled_now'] == 0
         assert before == {r['id']: tuple(r) for r in store.db.execute('SELECT * FROM jobs')}
         report = import_run(store, expanded, {}, run, 'new-source', 'fixture')
-        assert report['scheduled_now'] == 40  # Two existing builds, one expanded target each.
-        assert store.counts()['pending'] == old_report['scheduled_now'] + 40
+        assert report['scheduled_now'] == 0
+        assert report['duplicate_build_floors'] == 2
+        assert store.counts()['pending'] == old_report['scheduled_now']
         for row in store.db.execute('SELECT * FROM jobs'):
             if row['id'] in before:
                 assert tuple(row) == before[row['id']]
         assert import_run(store, expanded, {}, run, 'new-source', 'fixture')['scheduled_now'] == 0
         counts = list(store.db.execute("SELECT json_extract(target,'$.id'),count(*) FROM jobs GROUP BY build_id,target"))
-        assert sorted(r[1] for r in counts) == [4, 4, 24, 24]
+        assert sorted(r[1] for r in counts) == [4, 4, 4, 4]
+        assert store.db.execute("SELECT count(*) FROM build_origins WHERE run_hash='new-source'").fetchone()[0] == 2
         assert plan_window(store.db, expanded)['report']['selected_battles'] == 56
-        assert migrate_window(store, expanded, {})['added'] == 0
+        # Explicit migration is separate from ordinary source import.
+        assert migrate_window(store, expanded, {})['added'] == 40
+        fresh = Store(tmp_path/'fresh.sqlite')
+        try:
+            assert import_run(fresh, expanded, {}, run, 'fresh', 'fixture')['scheduled_now'] == 56
+            assert import_run(fresh, expanded, {}, run, 'repeated-fresh', 'fixture')['scheduled_now'] == 0
+        finally:
+            fresh.db.close()
     finally:
         store.db.close()
+
+
+def test_duplicate_build_does_not_add_a_new_opponent(catalog, run, tmp_path):
+    from copy import deepcopy
+    store = Store(tmp_path/'real.sqlite')
+    try:
+        import_run(store, catalog, {}, run, 'first', 'fixture')
+        before = list(store.db.execute('SELECT * FROM jobs'))
+        changed = deepcopy(run)
+        changed['map_point_history'][0][2]['rooms'] = [
+            {'model_id': 'ENCOUNTER.' + catalog.acts['OVERGROWTH']['encounters'][1]['id']}]
+        assert import_run(store, catalog, {}, changed, 'other-opponent', 'fixture')['scheduled_now'] == 0
+        assert before == list(store.db.execute('SELECT * FROM jobs'))
+    finally:
+        store.db.close()
+
+
+def test_real_import_skips_builds_already_in_related_queues(catalog, run, tmp_path):
+    known, fresh = Store(tmp_path/'known.sqlite'), Store(tmp_path/'fresh.sqlite')
+    try:
+        import_run(known, catalog, {}, run, 'known', 'fixture')
+        fresh.avoid_build_stores = (known,)
+        result = import_run(fresh, catalog, {}, run, 'new-source', 'fixture')
+        assert result['scheduled_now'] == 0 and result['duplicate_build_floors'] == 2
+        assert fresh.db.execute('SELECT count(*) FROM builds').fetchone()[0] == 0
+        assert fresh.db.execute('SELECT count(*) FROM jobs').fetchone()[0] == 0
+    finally:
+        known.db.close()
+        fresh.db.close()
 
 
 @pytest.mark.parametrize('targeted', [False, True])

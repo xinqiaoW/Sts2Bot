@@ -60,18 +60,19 @@ def test_migration_preserves_all_labels_attempts_and_sources_and_restores_new_so
     assert before == preserved_hashes(store.db)
     assert migrate_window(store,catalog,{})['exclude_pending']==0
     assert store.db.execute('SELECT count(*) FROM target_origins').fetchone()[0]==4
-    # Same build appearing in a new source expands the union and revives only
-    # its newly recorded targets. Re-importing cannot duplicate those jobs.
+    # A repeated build preserves provenance but does not revive excluded tasks
+    # or add opponents. Only an explicit migration may expand its old queue.
     newer = deepcopy(run)
     new_target = catalog.acts['OVERGROWTH']['encounters'][2]['id']
     newer['map_point_history'][0][2]['rooms']=[{'model_id':'ENCOUNTER.'+new_target}]
     result = import_run(store,catalog,{},newer,'bb','fixture')
-    assert result['scheduled_now']==8
-    assert store.counts()['pending']==16
+    assert result['scheduled_now']==0
+    assert result['duplicate_build_floors']==2
+    assert store.counts()['pending']==8
     assert import_run(store,catalog,{},newer,'bb','fixture')['scheduled_now']==0
-    for _ in range(16):
+    for _ in range(8):
         job=store.claim()
-        assert job['target']['id'] in {new_target,reconstruct(run,catalog)[1]['target']}
+        assert job['target']['id'] == reconstruct(run,catalog)[1]['target']
     assert store.claim() is None
 
 

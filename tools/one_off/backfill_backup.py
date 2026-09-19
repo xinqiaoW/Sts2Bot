@@ -16,6 +16,8 @@ def main():
     parser.add_argument('--directory', required=True)
     parser.add_argument('--interval', type=int, default=3600)
     parser.add_argument('--initial-delay', type=int, default=300)
+    parser.add_argument('--additional-db', action='append', default=[],
+                        help='Also snapshot an active normal-collection database in the same serial loop')
     args = parser.parse_args()
     if args.interval < 300 or args.initial_delay < 0:
         raise ValueError('Invalid backup timing')
@@ -34,6 +36,10 @@ def main():
         if manifest.get('version') != 1 or manifest.get('seed_indices') != [4, 24]:
             raise ValueError('A validated backfill manifest is required')
         databases = [root/'queues'/(Path(source).stem+'.backfill.sqlite') for source in manifest['sources']]
+    additional = [Path(p).resolve(strict=True) for p in args.additional_db]
+    databases.extend(additional)
+    if len({p.stem for p in databases}) != len(databases):
+        raise ValueError('Backup database names must be unique')
     if not databases or not any(p.is_file() for p in databases):
         raise ValueError('At least one prepared backfill queue is required')
     destination.mkdir(parents=True, exist_ok=True)

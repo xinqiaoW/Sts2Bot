@@ -29,11 +29,15 @@ def test_serial_backups_finish_and_stop_cleanly(tmp_path, preparation_finished):
         (run/name).write_text('{}')
     command = [sys.executable, '-m', 'tools.one_off.backfill_backup', '--run-dir', str(run),
                '--directory', str(tmp_path/'backups'), '--initial-delay', '0']
+    additional = tmp_path/'normal-real.sqlite'
+    Store(additional).db.close()
+    databases.append(additional)
+    command += ['--additional-db', str(additional)]
     with (tmp_path/'backup.log').open('wb') as log:
         process = subprocess.Popen(command, stdout=log, stderr=log)
         try:
             deadline = time.monotonic()+30
-            while not (run/'targeted.backfill.backup.json').exists():
+            while not (run/'normal-real.backup.json').exists():
                 assert process.poll() is None
                 assert time.monotonic() < deadline
                 time.sleep(.05)
