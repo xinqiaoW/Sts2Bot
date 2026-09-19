@@ -99,6 +99,10 @@ def prepare_output(path, source_db, manifest, source):
     store = Store(path)
     try:
         db = store.db
+        # This connection only builds the one-off queue. Keep durable commits,
+        # but avoid the default 2 MiB cache spilling random index pages.
+        db.execute('PRAGMA cache_size=-262144')
+        db.execute('PRAGMA wal_autocheckpoint=16384')
         row = db.execute("SELECT value FROM collection_settings WHERE key='targeted_seed_backfill'").fetchone()
         if row is not None:
             check_output(db, manifest, source)
@@ -234,10 +238,10 @@ def backfill(sources, output_dir, catalog, teacher, *, apply=False, progress=Non
                 progress({'event': 'write_queue', 'output': str(outputs[index]), 'pairs': len(pairs)})
             store = prepare_output(outputs[index], databases[index], manifest, paths[index])
             try:
-                for start in range(0, len(pairs), 100):
+                for start in range(0, len(pairs), 1000):
                     store._begin_write('targeted_seed_backfill')
                     with store.db:
-                        for row, target, seeds, old_complete in pairs[start:start + 100]:
+                        for row, target, seeds, old_complete in pairs[start:start + 1000]:
                             copy_build(store.db, databases[index], row)
                             store.db.execute('INSERT OR IGNORE INTO backfill_origins VALUES(?,?,?,?)',
                                              (row['id'], target['id'], str(paths[index]), canonical(old_complete)))
@@ -248,9 +252,9 @@ def backfill(sources, output_dir, catalog, teacher, *, apply=False, progress=Non
                                     (jid, row['id'], canonical(target), seed, canonical(teacher), time.time())).rowcount
                             if json.loads(row['body'])['mutation'] == MUTATION:
                                 validate_lineage(store.db, row['id'], catalog)
-                    if progress and (start % 1000 == 0 or start + 100 >= len(pairs)):
+                    if progress:
                         progress({'event': 'queue_progress', 'output': str(outputs[index]),
-                                  'pairs_written': min(start + 100, len(pairs)), 'pairs': len(pairs),
+                                  'pairs_written': min(start + 1000, len(pairs)), 'pairs': len(pairs),
                                   'total_jobs_added': report['jobs_added']})
             finally:
                 store.db.close()
