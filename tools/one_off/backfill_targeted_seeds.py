@@ -221,7 +221,8 @@ def backfill(sources, output_dir, catalog, teacher, *, apply=False, progress=Non
             temporary.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
             temporary.replace(manifest_path)
         # All sources, teachers, builds and lineages were checked before any
-        # queue is written. Each pair commits atomically for resumable runs.
+        # queue is written. Commit batches of whole pairs to avoid hundreds of
+        # thousands of fsyncs; an interrupted batch rolls back in its entirety.
         for index, pairs in enumerate(work):
             detail = {'source': str(paths[index]), 'output': str(outputs[index]),
                       'pairs_to_extend': len(pairs), 'jobs_to_add': sum(len(p[2]) for p in pairs),
@@ -233,19 +234,24 @@ def backfill(sources, output_dir, catalog, teacher, *, apply=False, progress=Non
                 progress({'event': 'write_queue', 'output': str(outputs[index]), 'pairs': len(pairs)})
             store = prepare_output(outputs[index], databases[index], manifest, paths[index])
             try:
-                for row, target, seeds, old_complete in pairs:
+                for start in range(0, len(pairs), 100):
                     store._begin_write('targeted_seed_backfill')
                     with store.db:
-                        copy_build(store.db, databases[index], row)
-                        store.db.execute('INSERT OR IGNORE INTO backfill_origins VALUES(?,?,?,?)',
-                                         (row['id'], target['id'], str(paths[index]), canonical(old_complete)))
-                        for seed in seeds:
-                            jid = digest([row['id'], target['id'], seed, teacher])
-                            report['jobs_added'] += store.db.execute('''INSERT OR IGNORE INTO jobs
-                                (id,build_id,target,seed,teacher,created) VALUES(?,?,?,?,?,?)''',
-                                (jid, row['id'], canonical(target), seed, canonical(teacher), time.time())).rowcount
-                        if json.loads(row['body'])['mutation'] == MUTATION:
-                            validate_lineage(store.db, row['id'], catalog)
+                        for row, target, seeds, old_complete in pairs[start:start + 100]:
+                            copy_build(store.db, databases[index], row)
+                            store.db.execute('INSERT OR IGNORE INTO backfill_origins VALUES(?,?,?,?)',
+                                             (row['id'], target['id'], str(paths[index]), canonical(old_complete)))
+                            for seed in seeds:
+                                jid = digest([row['id'], target['id'], seed, teacher])
+                                report['jobs_added'] += store.db.execute('''INSERT OR IGNORE INTO jobs
+                                    (id,build_id,target,seed,teacher,created) VALUES(?,?,?,?,?,?)''',
+                                    (jid, row['id'], canonical(target), seed, canonical(teacher), time.time())).rowcount
+                            if json.loads(row['body'])['mutation'] == MUTATION:
+                                validate_lineage(store.db, row['id'], catalog)
+                    if progress and (start % 1000 == 0 or start + 100 >= len(pairs)):
+                        progress({'event': 'queue_progress', 'output': str(outputs[index]),
+                                  'pairs_written': min(start + 100, len(pairs)), 'pairs': len(pairs),
+                                  'total_jobs_added': report['jobs_added']})
             finally:
                 store.db.close()
         return report

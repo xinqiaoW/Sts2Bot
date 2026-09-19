@@ -149,3 +149,30 @@ def test_only_existing_adapter_transition_is_compatible():
     check_teacher(old, new)
     with pytest.raises(ValueError, match='teacher'):
         check_teacher(old, {**new, 'search_ms': 2000})
+
+
+def test_interrupted_queue_batch_rolls_back_and_resumes(tmp_path, databases, catalog, policy, monkeypatch):
+    from tools.one_off import backfill_targeted_seeds as module
+    real, source = databases
+    Generator(real, source, catalog, {}, focused_policy(real, policy)).refill(4)
+    with source.db:
+        source.db.execute("UPDATE jobs SET status='complete'")
+    expanded = with_targets(catalog, focused_policy(real, policy)['target_selection']['targets'])
+    original = module.copy_build
+    calls = 0
+
+    def interrupted(*args):
+        nonlocal calls
+        calls += 1
+        if calls == 2:
+            raise RuntimeError('simulated interruption within a batch')
+        return original(*args)
+
+    monkeypatch.setattr(module, 'copy_build', interrupted)
+    with pytest.raises(RuntimeError, match='simulated interruption'):
+        backfill([tmp_path/'mutations.sqlite'], tmp_path/'extra', expanded, {}, apply=True)
+    with closing(connect_readonly(tmp_path/'extra/mutations.backfill.sqlite')) as output:
+        assert output.execute('SELECT count(*) FROM jobs').fetchone()[0] == 0
+        assert output.execute('SELECT count(*) FROM backfill_origins').fetchone()[0] == 0
+    monkeypatch.setattr(module, 'copy_build', original)
+    assert backfill([tmp_path/'mutations.sqlite'], tmp_path/'extra', expanded, {}, apply=True)['jobs_added'] == 80
