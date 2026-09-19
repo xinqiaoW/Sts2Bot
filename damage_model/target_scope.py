@@ -113,7 +113,7 @@ def plan_window(database, catalog):
     per_build = Counter(bid for bid, _ in pairs)
     report = {'policy': policy, 'source_runs': len(sources), 'builds': len(builds),
               'origins': len(origins), 'selected_pairs': len(pairs),
-              'selected_battles': len(pairs)*catalog.config['initial_seeds_per_pair'],
+              'selected_battles': sum(catalog.seed_count(builds[bid].act_id, tid) for bid, tid in pairs),
               'targets_per_build': dict(sorted(Counter(per_build.values()).items())),
               'jobs_by_scope': {f'{status}:{"selected" if selected else "outside"}': n
                                 for (status, selected), n in sorted(by_status.items())},
@@ -142,13 +142,11 @@ def migrate_window(store, catalog, teacher):
             db.execute('INSERT INTO job_scope_changes(job_id,previous_status,new_status,reason,changed_at) VALUES(?,?,?,?,?)',
                        (jid, 'pending', EXCLUDED_STATUS, WINDOW_POLICY, stamp))
             db.execute('UPDATE jobs SET status=? WHERE id=? AND status=\'pending\'', (EXCLUDED_STATUS, jid))
-        seeds = [digest(['battle', catalog.config['battle_seed'], j])[:16]
-                 for j in range(catalog.config['initial_seeds_per_pair'])]
         added = restored = 0
         for bid, tid in sorted(plan['pairs']):
             build = plan['builds'][bid]
             target = next(t for t in catalog.targets(build) if t['id'] == tid)
-            for seed in seeds:
+            for seed in catalog.battle_seeds(build.act_id, tid):
                 jid = digest([bid, tid, seed, teacher])
                 added += db.execute('INSERT OR IGNORE INTO jobs(id,build_id,target,seed,teacher,created) VALUES(?,?,?,?,?,?)',
                     (jid, bid, canonical(target), seed, canonical(teacher), stamp)).rowcount

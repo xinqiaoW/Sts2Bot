@@ -30,6 +30,10 @@
                                "KALEIDOSCOPE"
                            ],
     "initial_seeds_per_pair":  4,
+    "encounter_seed_policy": {
+        "seeds_per_pair": 24,
+        "targets_file": "mutations-targeted-8s.json"
+    },
     "short_search_budget_ms":  8000,
     "battle_timeout_seconds":  120,
     "search_dop":  1,

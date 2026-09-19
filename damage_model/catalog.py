@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 import re
-from .schema import Build
+from .schema import Build, digest
 from .starter_relics import TOUCH, uses_orobas_replacement
 from .card_state import SPECIAL_POOLS, normalize_state
 
@@ -84,11 +84,34 @@ IMPORTED_STARTER_REPLACEMENT_RELICS = {TOUCH}
 
 
 class Catalog:
-    def __init__(self, raw: dict, config: dict):
+    def __init__(self, raw: dict, config: dict, *, config_dir=None):
+        policy = config.get('encounter_seed_policy')
+        if policy is not None and 'targets_file' in policy:
+            if 'targets' in policy:
+                raise ValueError('Specify either targets_file or targets in seed policy')
+            base = Path(config_dir) if config_dir is not None else Path(__file__).resolve().parents[1] / 'configs'
+            targets = json.loads((base / policy['targets_file']).read_text(encoding='utf-8'))['target_selection']['targets']
+            # Keep the in-memory config self-contained for Catalog(raw, config).
+            config = {**config, 'encounter_seed_policy': {
+                'seeds_per_pair': policy['seeds_per_pair'], 'targets': targets}}
         self.raw, self.config = raw, config
         self.cards = {c["id"]: c for c in raw["cards"]}
         self.relics = {r["id"]: r for r in raw["relics"]}
         self.acts = {a["id"]: a for a in raw["acts"]}
+        self.encounter_seed_counts = {}
+        seed_policy = config.get('encounter_seed_policy')
+        if seed_policy is not None:
+            count = seed_policy.get('seeds_per_pair')
+            targets = seed_policy.get('targets')
+            if (type(count) is not int or count < config['initial_seeds_per_pair']
+                    or not isinstance(targets, dict) or not targets):
+                raise ValueError('Invalid encounter seed policy')
+            for act_id, ids in targets.items():
+                allowed = {t['id'] for t in self.acts.get(act_id, {}).get('encounters', [])}
+                if (not isinstance(ids, list) or not ids or any(type(t) is not str for t in ids)
+                        or len(set(ids)) != len(ids) or not set(ids) <= allowed):
+                    raise ValueError('Unknown or duplicate encounter in seed policy')
+                self.encounter_seed_counts.update(((act_id, tid), count) for tid in ids)
         self.ancients = {a["id"]: a for a in raw["ancients"]}
         # Missing in historical catalogs; never infer eligibility from relic IDs.
         self.shared_ancients = set(raw.get('shared_ancients', []))
@@ -139,8 +162,17 @@ class Catalog:
 
     @classmethod
     def load(cls, raw_path, config_path):
-        return cls(json.loads(Path(raw_path).read_text(encoding="utf-8")),
-                   json.loads(Path(config_path).read_text(encoding="utf-8")))
+        config = json.loads(Path(config_path).read_text(encoding="utf-8"))
+        return cls(json.loads(Path(raw_path).read_text(encoding="utf-8")), config,
+                   config_dir=Path(config_path).resolve().parent)
+
+    def seed_count(self, act_id, target_id):
+        return self.encounter_seed_counts.get((act_id, target_id), self.config['initial_seeds_per_pair'])
+
+    def battle_seeds(self, act_id, target_id):
+        # Extending the index range preserves the original seeds and job IDs.
+        return [digest(['battle', self.config['battle_seed'], j])[:16]
+                for j in range(self.seed_count(act_id, target_id))]
 
     def colorless_count(self, cards):
         return sum(self.cards[c.id]["pool"] == "COLORLESS_CARD_POOL" for c in cards)

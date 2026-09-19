@@ -20,7 +20,9 @@ ROOT = Path(__file__).resolve().parents[1]
 
 @pytest.fixture
 def catalog():
-    return Catalog.load(ROOT/'catalogs/game-0.111.0.raw.json', ROOT/'configs/real-runs-8s.json')
+    loaded = Catalog.load(ROOT/'catalogs/game-0.111.0.raw.json', ROOT/'configs/real-runs-8s.json')
+    # These historical mutation fixtures exercise the original four-seed batch.
+    return Catalog(loaded.raw, {k: v for k, v in loaded.config.items() if k != 'encounter_seed_policy'})
 
 
 @pytest.fixture

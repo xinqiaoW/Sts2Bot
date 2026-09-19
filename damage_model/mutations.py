@@ -389,8 +389,7 @@ class Generator:
                         db.executemany('INSERT INTO mutation_target_origins VALUES(?,?,?,?,?,?)',
                             [(child.id, parent.id, r['run_hash'], r['origin_floor'], r['target_floor'], r['target_id']) for r in origins])
                         for tid in targets:
-                            for j in range(self.catalog.config['initial_seeds_per_pair']):
-                                battle_seed = digest(['battle', self.catalog.config['battle_seed'], j])[:16]
+                            for battle_seed in self.catalog.battle_seeds(child.act_id, tid):
                                 jid = digest([child.id, tid, battle_seed, self.teacher])
                                 db.execute('INSERT INTO jobs(id,build_id,target,seed,teacher,created) VALUES(?,?,?,?,?,?)',
                                     (jid, child.id, canonical(allowed[tid]), battle_seed, canonical(self.teacher), time.time()))

@@ -1,0 +1,100 @@
+{
+  "checked_at": 1789822169.4719589,
+  "sources": [
+    {
+      "source": "/data1/pl/ImageTask/wxq/Projects/Sts2Bot/data/collection-real-runs-v4.sqlite",
+      "stored_builds": 109978,
+      "completed_builds": 105973,
+      "completed_pairs": 266174,
+      "selected_builds": 76452,
+      "selected_pairs": 126016,
+      "counts": {
+        "jobs:complete": 664406,
+        "jobs:quarantined": 152,
+        "jobs:pending": 14519,
+        "prior_collected_inputs:complete": 400132,
+        "prior_collected_inputs:quarantined": 53
+      }
+    },
+    {
+      "source": "/data1/pl/ImageTask/wxq/Projects/Sts2Bot/data/collection-mutations-v2.sqlite",
+      "stored_builds": 33359,
+      "completed_builds": 33236,
+      "completed_pairs": 80436,
+      "selected_builds": 29535,
+      "selected_pairs": 57585,
+      "counts": {
+        "jobs:complete": 260788,
+        "jobs:quarantined": 220,
+        "jobs:pending": 1138,
+        "prior_collected_inputs:complete": 60731,
+        "prior_collected_inputs:quarantined": 27
+      }
+    },
+    {
+      "source": "/data1/pl/ImageTask/wxq/Projects/Sts2Bot/data/collection-targeted-mutations-v1.sqlite",
+      "stored_builds": 19972,
+      "completed_builds": 19778,
+      "completed_pairs": 19778,
+      "selected_builds": 19778,
+      "selected_pairs": 19778,
+      "counts": {
+        "jobs:complete": 79045,
+        "jobs:quarantined": 71,
+        "jobs:pending": 772
+      }
+    }
+  ],
+  "stored_unique_builds": 163309,
+  "completed_unique_builds": 158987,
+  "completed_unique_pairs": 366388,
+  "unique_completed_inputs": 1465102,
+  "selected_unique_builds": 125765,
+  "selected_unique_pairs": 203379,
+  "selected_original_completed_inputs": 813153,
+  "selected_pairs_per_build": {
+    "1": 68949,
+    "2": 39013,
+    "3": 14996,
+    "4": 2626,
+    "5": 174,
+    "6": 7
+  },
+  "selected_pairs_cross_source_overlap": 0,
+  "additional_tasks": 4067580,
+  "examples_multiple_targets": [
+    {
+      "build_id": "03394a785818ee2cf3df0b42fca8c6e836be8b665e73c38c7ee6490556552ace",
+      "targets": [
+        "FROG_KNIGHT_NORMAL",
+        "KNIGHTS_ELITE",
+        "MECHA_KNIGHT_ELITE",
+        "OWL_MAGISTRATE_NORMAL",
+        "SOUL_NEXUS_ELITE",
+        "THE_LOST_AND_FORGOTTEN_NORMAL"
+      ]
+    },
+    {
+      "build_id": "b9f7f8c938d83b180a3f1a4778b09efd7dbb0304b14830f9a93d71c28ed99611",
+      "targets": [
+        "AEONGLASS_BOSS",
+        "FROG_KNIGHT_NORMAL",
+        "MECHA_KNIGHT_ELITE",
+        "SLIMED_BERSERKER_NORMAL",
+        "TEST_SUBJECT_BOSS",
+        "THE_LOST_AND_FORGOTTEN_NORMAL"
+      ]
+    },
+    {
+      "build_id": "49f8d1ad545c9e0966fc2b01584b52ef056c0f8ed5e3cc799d498581d8a2626a",
+      "targets": [
+        "FROG_KNIGHT_NORMAL",
+        "KNIGHTS_ELITE",
+        "MECHA_KNIGHT_ELITE",
+        "OWL_MAGISTRATE_NORMAL",
+        "SOUL_NEXUS_ELITE",
+        "THE_LOST_AND_FORGOTTEN_NORMAL"
+      ]
+    }
+  ]
+}

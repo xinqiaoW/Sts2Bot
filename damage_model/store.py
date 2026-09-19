@@ -12,6 +12,7 @@ from .observation import validate_hp, validate_cards
 
 class Store:
     def __init__(self, path):
+        self.avoid_build_stores = ()
         Path(path).parent.mkdir(parents=True, exist_ok=True)
         self.db = sqlite3.connect(path, timeout=30)
         self.db.row_factory = sqlite3.Row

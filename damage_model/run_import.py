@@ -424,6 +424,7 @@ def import_run(store, catalog, teacher, run, run_hash, source, *, reprocess=Fals
         if not reprocess or (previous['version'] not in REPROCESS_REVISIONS and not compatibility_reprocess):
             raise ValueError('Source import version changed; explicitly reprocess the supported revision')
     report = {'run_hash': run_hash, 'accepted_floors': 0, 'skipped': {}, 'scheduled_now': 0,
+              'duplicate_build_floors': 0,
               'target_policy': target_policy,
               'counter_policy': 'sample_legal_domains_v2', 'version': revision,
               'max_hp_relic_policy': 'remove' if catalog.remove_max_hp_relics else 'reject_build',
@@ -438,8 +439,6 @@ def import_run(store, catalog, teacher, run, run_hash, source, *, reprocess=Fals
     except (RunRejected, KeyError, IndexError, TypeError) as error:
         report['rejected'] = str(error)
         snapshots = []
-    seeds = [digest(['battle', catalog.config['battle_seed'], j])[:16]
-             for j in range(catalog.config['initial_seeds_per_pair'])]
     source_floors = recorded_floors(run) if snapshots and target_policy['name'] == WINDOW_POLICY else None
     for state in snapshots:
         if state['target'] is None:
@@ -449,13 +448,28 @@ def import_run(store, catalog, teacher, run, run_hash, source, *, reprocess=Fals
         except ValueError as error:
             skipped[str(error)] += 1
             continue
-        # Deduplicate the native work across runs, while retaining every origin.
+        # New work is admitted by build identity, not by missing job seeds.
+        # Keep real-source origins for split/lineage auditing, but never expand
+        # an existing build's targets or seeds when another source repeats it.
+        existing = store.db.execute('SELECT 1 FROM builds WHERE id=?', (build.id,)).fetchone()
+        if not existing and any(other.db.execute('SELECT 1 FROM builds WHERE id=?', (build.id,)).fetchone()
+                                for other in store.avoid_build_stores):
+            report['duplicate_build_floors'] += 1
+            continue
+        if existing:
+            report['duplicate_build_floors'] += 1
         targets = catalog.targets(build)
         selection = None
         if source_floors is not None:
             targets, selection = window_for_origin(source_floors, state, catalog, target_policy['radius'])
-        report['scheduled_now'] += store.schedule(build, targets, seeds, teacher,
-                                                reactivate_excluded=selection is not None)
+        seed_groups = {}
+        for target in (() if existing else targets):
+            seeds = tuple(catalog.battle_seeds(build.act_id, target['id']))
+            seed_groups.setdefault(seeds, []).append(target)
+        for seeds, grouped_targets in seed_groups.items():
+            report['scheduled_now'] += store.schedule(
+                build, grouped_targets, seeds, teacher,
+                reactivate_excluded=selection is not None)
         details = {k:v for k,v in state.items() if k != 'cards'}
         details['counter_seed'] = counter_seed
         stripped = [r for r in state['relics'] if r not in {relic.id for relic in build.relics}]

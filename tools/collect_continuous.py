@@ -117,6 +117,8 @@ class Controller:
             self.generator.avoid_stores = (self.targeted_store,)
             self.targeted_generator.avoid_stores = (self.mutation_store,)
             self.queues = AllocationStore(self.store, self.mutation_store, self.targeted_store, json.loads(teacher))
+        self.store.avoid_build_stores = tuple(
+            store for store in (self.mutation_store, self.targeted_store) if store is not None)
 
     def work_counts(self):
         return self.queues.counts() if getattr(self, 'mutation_store', None) is not None else self.store.counts()
