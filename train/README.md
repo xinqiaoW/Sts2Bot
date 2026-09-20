@@ -2,13 +2,13 @@
 
 目标：`F(标准化卡组及逐张升级、附魔、持久状态, 遗物及采样计数, 原版怪物编组) → 标准化预期净掉血`，标签为 `净掉血 / 初始最大生命`（当前全部 70/70，即 `netHpLoss / 70`），另带死亡概率辅助头。
 
-数据只读取 8 秒老师的有效标签：真实 `collection-real-runs-v3.sqlite`（协议 2，已封存）、`collection-real-runs-v4.sqlite`（协议 3，活动）、变异 `collection-mutations-v1.sqlite`（封存）、`collection-mutations-v2.sqlite`（活动）。来源列表在 [configs/sources.json](configs/sources.json)。训练不读活动库本身，只读一次性导出的冻结快照；不写回任何采集库，不写回采集输入或标签。
+数据只读取 8 秒教师的有效标签。默认 [configs/sources.json](configs/sources.json) 包含真实 v4/v3、普通变异 v2/v1 四个来源，**尚未包含专项变异 v1 和历史种子补采库**；它不是全部采集数据的来源清单。快照导出器只读访问源库，模型训练只读取导出的冻结快照，不写回采集输入或标签。
 
 ## 运行位置与准备条件
 
 当前采集目录为 01 的 `/data1/pl/ImageTask/wxq/Projects/Sts2Bot`。训练需要独立环境、可用 GPU 和完整冻结来源，不与持续采集控制器绑定。
 
-迁移后核对发现：`/data1` 只有两个活动数据库，默认来源列表中的封存真实 v3 / 变异 v1 尚未迁入，`data/train-snapshots` 也未就绪；`.venv-train/bin/python` 仍指向旧 `/data2` 的解释器。**不能把现存 venv 路径或默认快照命令视为已经可用。** 先在健康存储上准备训练环境，补齐并核验冻结来源缓存，再执行下述流程。现有 `checkpoints/train/20260913-121204` 已在新盘；报告中的旧路径仍保留原始出处。
+运行前检查训练解释器、依赖、GPU 和各来源文件，尤其是虚拟环境的实际解释器路径，以及封存 real-v3 / mut-v1 的完整标签或已验证导出缓存。`prior_collected_inputs` 用于旧输入去重，不会被训练快照导出器当作完整标签导出；新版库不能单独替代旧库的训练数据。
 
 训练环境使用 `python -m venv --system-site-packages`，在包含 PyTorch 的基础环境中安装 `lightgbm`、`rtdl_revisiting_models`、`tabm`、`pyarrow` 等训练依赖。仓库尚无独立的训练依赖锁定文件，重建环境需核对实际包版本。不向采集环境安装训练依赖。Torch 模型可选 GPU，LightGBM 的训练实现使用 CPU；默认 `--gpus 0,1` 是工具参数，不代表这些 GPU 当前空闲。
 
@@ -16,15 +16,30 @@
 
 若明确只训练活动来源，另建显式 `--config`，保留教师兼容键与划分设置，并在报告中注明覆盖变化。`--only` 仅导出指定来源缓存，跳过合并，不能把其输出当成完整训练快照。不要通过跳过卡牌验证或忽略教师不匹配来凑齐数据。
 
+## 纳入专项与补采数据
+
+复制来源配置后，通过 `--config` 指定扩展配置，保留 `teacher_compatibility_keys` 与 `split_buckets`。除了原四个来源，应显式加入需要训练的专项库及补采库：
+
+| 新增来源 | `kind` | 数据库位置 |
+| --- | --- | --- |
+| 专项变异 v1 | `mutation` | `data/collection-targeted-mutations-v1.sqlite` |
+| 真实补采 | `real` | 补采输出目录中的 `collection-real-runs-v4.backfill.sqlite` |
+| 普通变异补采 | `mutation` | 补采输出目录中的 `collection-mutations-v2.backfill.sqlite` |
+| 专项变异补采 | `mutation` | 补采输出目录中的 `collection-targeted-mutations-v1.backfill.sqlite` |
+
+每项须有唯一的 `name`、正确的 `db` 和 `frozen`。仍在写入的库设为 `frozen: false`；只有不再变化的来源才允许复用冻结缓存。[sources-data1.json](configs/sources-data1.json) 同样只有原四个来源，只调整了部分路径。若只纳入部分来源，应在报告中明确范围。
+
+旧结果与新增种子先按 `(build, target, seed)` 去重，再按共享构筑、源局和变异血缘统一划分。无需所有组合都凑满 24 个有效结果才导出，但应记录每个组合的实际有效样本数。
+
 ## 流程
 
-以下示例中的 `<stamp>`、`<上次>` 等需替换为已准备的实际目录。
+以下示例中的 `<stamp>`、`<上次>` 和 `<本次来源配置.json>` 需替换为实际路径。没有可复用缓存时省略 `--reuse`，并确保所有来源库可读取。
 
 ```bash
 cd /data1/pl/ImageTask/wxq/Projects/Sts2Bot
 
 # 1. 导出一致快照（每库一次只读事务；封存库可复用上一次快照的导出）
-.venv-train/bin/python -m train.snapshot --reuse data/train-snapshots/<上次>
+.venv-train/bin/python -m train.snapshot --config <本次来源配置.json> --reuse data/train-snapshots/<上次>
 # → data/train-snapshots/<UTC 时间戳>/{battles.parquet, builds.json.gz, targets.json, manifest.json, sources/}
 
 # 2. 训练单个模型
@@ -53,7 +68,7 @@ cd /data1/pl/ImageTask/wxq/Projects/Sts2Bot
 
 ## 快照与划分
 
-快照逐库取得一致的只读视图；四个库并非同一原子时间点，分别记录导出时间。模型训练仅读取冻结结果。`train.evaluate` 默认排除 checkpoint 已见构筑及连通组；`--all-rows` 不再是独立留出评估，须另行标记。
+快照逐库取得一致的只读视图；多个来源库并非同一原子时间点，分别记录导出时间。模型训练仅读取冻结结果。`train.evaluate` 默认排除 checkpoint 已见构筑及连通组；`--all-rows` 不再是独立留出评估，须另行标记。
 
 - 每条记录必须是 `status='complete'`、`Passed`、`combatEnded`、观察 `complete`，并重新通过 `validate_hp` 与逐张 `validate_cards`；导出即失败于任何不一致。
 - 同一 `(build, target, seed)` 出现在多个库时只保留 `sources.json` 顺序靠前者（v4 优先于 v3），去重数量写入 `manifest.json`。
@@ -83,10 +98,10 @@ cd /data1/pl/ImageTask/wxq/Projects/Sts2Bot
 
 - `row_*`：逐场对战误差（包含战斗种子带来的波动），单位 HP。
 - `pair_*`：先对同一 (构筑, 目标) 的所有种子取均值再比较，是评估“预期掉血”的主要指标；`pair_r2` 为对 pair 均值的解释比例。
-- 组内波动参考：`within_pair_rmse_hp` 是有限种子样本的组内波动，`loo_seed_mean_mae_hp` 用同输入其他种子均值预测单场。它们不是已知总体分布的不可约误差下限；四种子均值本身也有采样误差。
+- 组内波动参考：`within_pair_rmse_hp` 是有限种子样本的组内波动，`loo_seed_mean_mae_hp` 用同输入其他种子均值预测单场。它们不是已知总体分布的不可约误差下限；有限种子均值本身也有采样误差。
 - 死亡头：Brier 与 AUC。全部指标另按来源类型（real/mutation）、幕、来源库分组。
 
-报告生成器目前仍使用历史名称“噪声下限”和 `test_noise_floor` 字段；其统计含义以上述解释为准。本次只纠正文档与现存报告的措辞，未修改统计计算或报告生成代码。
+报告生成器目前仍使用历史名称“噪声下限”和 `test_noise_floor` 字段；其统计含义以上述解释为准。这些历史字段名不表示已经测得总体不可约误差。
 
 ## 已有固定快照报告
 

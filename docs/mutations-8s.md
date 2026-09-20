@@ -1,6 +1,6 @@
 # 真实构筑的一代变异
 
-25 个独立 runtime 共用三个队列，按领取次数分配真实 50%、本页原变异 25%、[专项变异](targeted-mutations.md) 25%，空队列可借用。两个变异队列 pending 各低于 600 时补充 100 个构筑，即使真实仍有任务也会生成。本页策略为 `configs/mutations-8s.json`；活动库 `data/collection-mutations-v2.sqlite`，备份 `backups/01-mutations-card-state`。原变异的地图、大小和目标范围规则保持不变。
+正常采集的独立 runtime 共用三个队列，按领取次数分配真实 50%、本页普通变异 25%、[专项变异](targeted-mutations.md) 25%，空队列可借用。worker 数量由运行配置决定。两个变异队列 pending 各低于 600 时补充 100 个构筑，即使真实仍有任务也会生成。本页策略为 `configs/mutations-8s.json`；活动库 `data/collection-mutations-v2.sqlite`；备份位置与周期见[持续采集](continuous-collection.md)。
 
 ## 抽样与变化
 

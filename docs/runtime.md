@@ -1,36 +1,37 @@
 # 01 运行环境
 
-当前生产目录为 `/data1/pl/ImageTask/wxq/Projects/Sts2Bot`，SSH 别名 `01`。旧 `/data2/pl/ImageTask/wxq/Projects/Sts2Bot` 曾发生文件系统损坏，保留其中的历史库与 Git 工作副本不代表允许从那里恢复采集。
+SSH 别名为 `01`。源码维护目录是 `/data2/pl/ImageTask/wxq/Projects/Sts2Bot`，执行与数据目录是 `/data1/pl/ImageTask/wxq/Projects/Sts2Bot`。代码修改在源码分支完成，部署后才影响执行副本。
 
 ## 运行资源
 
-Ubuntu 22.04，CPU 为双路 EPYC 7763、256 逻辑核，约 251 GiB 内存。可用 CPU、内存、GPU 随共享主机负载变化，不能把一次观测写成固定资源余量。采集使用 CPU；25 个独立游戏进程内的搜索各为 DOP 1。训练用独立环境和明确选择的 GPU，见[训练说明](../train/README.md)。
+Ubuntu 22.04，双路 EPYC 7763、256 逻辑核，约 251 GiB 主机内存。采集使用 CPU，每场搜索为 DOP 1。可用资源随共享负载变化，启动前同时检查主机余量和用户 cgroup 的内存、线程限额；不能把一次观测当成固定可用容量。训练使用独立环境，见[训练说明](../train/README.md)。
 
-| 资源 | 生产位置 |
+| 资源 | 执行副本中的位置 |
 | --- | --- |
-| Python | `.venv/bin/python`，指向既有 py311 环境 |
+| Python | `.venv/bin/python` |
 | 游戏与协议 3 采集器 | `.runtime/game-card-state-v3/` |
 | Wine 11.0 | `.runtime/wine/root/opt/wine-stable/bin/wine` |
-| 第一个隔离环境 | `.runtime/prefix-smoke/` |
-| 其他隔离环境 | `.runtime/prefix-worker-01/` 至 `prefix-worker-24/` |
-| runtime 配置 | `configs/runtime-wine-pilot.json` 及 session 中列出的 worker 配置 |
+| 隔离环境 | 各 runtime 配置中的 `env.WINEPREFIX` |
+| 协议数据与日志 | 各 runtime 配置中的 `data_dir`、`log_path` |
+| 正常采集 runtime 列表 | `data/collection-session.json` 的 `runtimes` |
+| 一次性补采 runtime 列表 | 对应运行目录的 `runtimes.json` |
 
-每个 runtime 必须有独立的 `WINEPREFIX`、`data_dir`、存档、协议文件和日志。实际完整路径从 runtime 配置读取，不复制运行中的 prefix 作为扩容模板。`tools.prepare_parallel_runtimes`、`tools.prepare_wine_profile` 用于明确的环境准备，不是日常恢复命令。
+每个 runtime 必须独占 Wine prefix、用户数据目录、存档、协议文件和日志。正常采集与补采不能复用同一个 runtime。`tools.prepare_parallel_runtimes`、`tools.prepare_wine_profile` 用于环境准备；复制 prefix 前须确认模板没有活动游戏或 Wine server。
 
-运行的是 Windows 游戏经 Wine 执行。`SlayTheSpire2.slim.exe` 是去除调试信息的独立副本，原 PCK 和游戏程序集保持；不是 Linux 原生游戏。启动参数：
+运行的是 Windows 游戏经 Wine 执行。`SlayTheSpire2.slim.exe` 是去除调试信息的独立副本，原 PCK 和游戏程序集保持。启动参数：
 
 ```text
 SlayTheSpire2.slim.exe --main-pack SlayTheSpire2.pck --headless --disable-vsync --max-fps 0 --force-steam=off
 ```
 
-环境包含 `COMBATSOLVER_HEADLESS=1`、`WINEDEBUG=-all`、`WINEDLLOVERRIDES=mshtml=`，不能禁用 `mscoree`。隔离存档关闭教学弹窗。游戏目录 `override.cfg` 中 `worker_pool/max_threads=8` 限制 Godot 辅助线程，和求解器 DOP 1 是不同设置。
+环境包含 `COMBATSOLVER_HEADLESS=1`、`WINEDEBUG=-all`、`WINEDLLOVERRIDES=mshtml=`，不能禁用 `mscoree`。隔离存档关闭教学弹窗。游戏目录 `override.cfg` 的 `worker_pool/max_threads=8` 限制 Godot 辅助线程，和求解器 DOP 1 是不同设置。
 
-## 工作副本与生产部署
+## 部署与恢复
 
-本机采集工具副本通常位于 `C:/Users/www/Documents/Sts2DamageModel`；文档分支是 `docs/corrections`。Git 分支只表达源码版本，线上实际口径还依赖 session、配置、目录导出、部署清单及游戏/采集器摘要。游戏、Wine、数据库和模型不随普通源码 checkout 自动获得。
+Git 分支只表达源码版本。游戏、Wine、数据库、模型和本机 runtime 配置不随普通 checkout 自动获得；切换分支也不会重启运行中的进程。
 
-`feat/mutation-selection-strategy` 已补入生产版本兼容、历史回补和工作者续接代码，并增加三队列采集。恢复命令仍须在已部署并通过校验的 `/data1` 副本执行；仅切换 Git 分支不会自动切换生产进程。
+部署时同步相互依赖的源码与采集配置，保留执行副本自己的 runtime 路径和数据。核对部署清单、`configs/teacher.json`、游戏与采集器摘要，记录实际部署版本。恢复前再核对 session、活动库、进程和锁，避免用旧路径启动另一套采集。
 
-迁移只带走必要生产文件。旧协议 2 的真实 v3、变异 v1 历史数据库，以及部分旧下载页和 Git 元数据仍在旧目录；不能默认它们已在 `/data1` 齐备。冻结训练缓存需先恢复到健康路径并核验，之后才可显式复用，见[训练快照准备](../train/README.md)。
+历史 real-v3 / mut-v1 的完整标签与冻结训练缓存应按实际文件或快照清单定位。新版库保留的 `prior_collected_inputs` 可用于补采去重，但不能替代训练导出所需的旧标签；训练前须准备完整数据库或已验证缓存。
 
-恢复前核对 `data/collection-session.json`、`data/active-collection.json`、runtime 路径、`configs/teacher.json` 与实际进程/锁。不要重放 `evidence/` 中已执行的一次性迁移脚本。持续采集与备份操作见[持续采集](continuous-collection.md)。
+持续采集操作见[持续采集](continuous-collection.md)，历史种子补采见[一次性补采](../tools/one_off/README.md)。`evidence/` 中的迁移或故障处理脚本是历史证据，不应作为日常恢复入口直接重放。
