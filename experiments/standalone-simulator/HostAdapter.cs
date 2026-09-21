@@ -1,9 +1,11 @@
 using System.Reflection;
 using System.Reflection.Metadata;
+using System.Reflection.Metadata.Ecma335;
 using System.Reflection.PortableExecutable;
 using System.Security.Cryptography;
 
 // Prototype-only environment shims. Never use these objects for real save/network operations.
+// Three host adaptations; game rules and the solver assembly remain unchanged.
 internal static class HostAdapter
 {
     public const string GameHash = "0861bfa1df347538d932f22d580e75420f08082792eb914e53b4882764acdbe9";
@@ -24,9 +26,13 @@ internal static class HostAdapter
         using (var pe = new PEReader(new MemoryStream(gameBytes)))
         {
             var reader = pe.GetMetadataReader();
-            foreach (var patch in new[] { (Type: "Logger", Method: "GetIsRunningFromGodotEditor", IL: new byte[] { 0x16, 0x2a }), (Type: "ConsoleLogPrinter", Method: "Print", IL: new byte[] { 0x2a }) })
+            foreach (var patch in new[] {
+                (Namespace: "MegaCrit.Sts2.Core.Logging", Type: "Logger", Method: "GetIsRunningFromGodotEditor", IL: new byte[] { 0x16, 0x2a }),
+                (Namespace: "MegaCrit.Sts2.Core.Logging", Type: "ConsoleLogPrinter", Method: "Print", IL: new byte[] { 0x2a }),
+                (Namespace: "MegaCrit.Sts2.Core.Platform.Null", Type: "NullPlatformUtilStrategy", Method: ".ctor", IL: OfflinePlatformConstructor(reader))
+            })
             {
-                var type = reader.TypeDefinitions.Select(reader.GetTypeDefinition).Single(t => reader.GetString(t.Namespace) == "MegaCrit.Sts2.Core.Logging" && reader.GetString(t.Name) == patch.Type);
+                var type = reader.TypeDefinitions.Select(reader.GetTypeDefinition).Single(t => reader.GetString(t.Namespace) == patch.Namespace && reader.GetString(t.Name) == patch.Type);
                 var method = type.GetMethods().Select(reader.GetMethodDefinition).Single(m => reader.GetString(m.Name) == patch.Method);
                 var body = pe.GetMethodBody(method.RelativeVirtualAddress);
                 if (body.GetILBytes()!.Length < patch.IL.Length) throw new NotSupportedException("Replacement exceeds original method body.");
@@ -42,6 +48,23 @@ internal static class HostAdapter
         File.WriteAllBytes(hostGame, gameBytes);
 
         return hostGame;
+    }
+    private static byte[] OfflinePlatformConstructor(MetadataReader reader)
+    {
+        // Preserve the vanilla offline net ID (1), omit optional mp_names.json / Godot file I/O.
+        // Other methods and the vanilla fallback names remain unchanged.
+        var type = reader.TypeDefinitions.Select(reader.GetTypeDefinition).Single(t =>
+            reader.GetString(t.Namespace) == "MegaCrit.Sts2.Core.Platform.Null" && reader.GetString(t.Name) == "NullPlatformUtilStrategy");
+        var field = type.GetFields().Single(f => reader.GetString(reader.GetFieldDefinition(f).Name) == "<LocalPlayerId>k__BackingField");
+        var baseCtor = reader.MemberReferences.Single(h =>
+        {
+            var member = reader.GetMemberReference(h);
+            if (reader.GetString(member.Name) != ".ctor" || member.Parent.Kind != HandleKind.TypeReference) return false;
+            var owner = reader.GetTypeReference((TypeReferenceHandle)member.Parent);
+            return reader.GetString(owner.Namespace) == "System" && reader.GetString(owner.Name) == "Object";
+        });
+        return [0x02, 0x28, ..BitConverter.GetBytes(MetadataTokens.GetToken(baseCtor)),
+            0x02, 0x17, 0x6e, 0x7d, ..BitConverter.GetBytes(MetadataTokens.GetToken(field)), 0x2a];
     }
     public static void ConfigureTestSave(Func<string, Type> get)
     {

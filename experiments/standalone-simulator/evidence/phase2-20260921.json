@@ -1,0 +1,754 @@
+{
+  "schema": "standalone-simulator-probe/v1",
+  "productionReady": false,
+  "productionLabels": false,
+  "collectedBattles": 0,
+  "checkedAt": "2026-09-21T14:15:02.098730+00:00",
+  "build": {
+    "exitCode": 0,
+    "timedOut": false,
+    "wallSeconds": 1.6216956790303811,
+    "records": [],
+    "stdout": "  Determining projects to restore...\n  Restored /data1/pl/ImageTask/wxq/Experiments/sts2-standalone-20260921/tmp/sts2-simulator-probe-4ylhadc1/SimulatorPrototype.csproj (in 81 ms).\n  SimulatorPrototype -> /data1/pl/ImageTask/wxq/Experiments/sts2-standalone-20260921/tmp/sts2-simulator-probe-4ylhadc1/bin/Release/net9.0/SimulatorPrototype.dll\n\nBuild succeeded.\n    0 Warning(s)\n    0 Error(s)\n\nTime Elapsed 00:00:01.34\n",
+    "stderr": ""
+  },
+  "smoke": {
+    "exitCode": 0,
+    "timedOut": false,
+    "wallSeconds": 1.28330609400291,
+    "records": [
+      {
+        "stage": "native_test_host"
+      },
+      {
+        "stage": "model_catalog"
+      },
+      {
+        "stage": "player"
+      },
+      {
+        "stage": "unlock_state"
+      },
+      {
+        "stage": "create_player"
+      },
+      {
+        "stage": "player_factory"
+      },
+      {
+        "stage": "test_mod_environment"
+      },
+      {
+        "stage": "run"
+      },
+      {
+        "stage": "offline_platform"
+      },
+      {
+        "stage": "combat"
+      },
+      {
+        "stage": "monster"
+      },
+      {
+        "stage": "monster_state_machine"
+      },
+      {
+        "stage": "cards"
+      },
+      {
+        "stage": "solver"
+      },
+      {
+        "stage": "simulator"
+      },
+      {
+        "stage": "fixed_card_smoke"
+      },
+      {
+        "status": "smoke_passed",
+        "productionReady": false,
+        "productionLabels": false,
+        "completeBattles": 0,
+        "gameSha256": "0861bfa1df347538d932f22d580e75420f08082792eb914e53b4882764acdbe9",
+        "solverSha256": "1950d98b8aa742f651a2c09d59e6044da8c0836a29f4c1258047a8d1048f9bfb",
+        "fixture": "Silent: StrikeSilent + DefendSilent vs Chomper; manually prepared hand; no enemy turn",
+        "outcome": {
+          "enemyHp": 58,
+          "playerBlock": 5,
+          "energy": 1,
+          "discard": [
+            "STRIKE_SILENT",
+            "DEFEND_SILENT"
+          ],
+          "checkedSourceStateUnchanged": true
+        },
+        "iterations": 1000,
+        "actions": 2000,
+        "elapsedMilliseconds": 372.7042,
+        "measurement": "fresh simulator + two card plays + assertions + source-state snapshot",
+        "peakWorkingSetBytes": 124223488
+      }
+    ],
+    "stdout": "{\"stage\":\"native_test_host\"}\nSentryGodotInitializer: Sentry GDExtension not loaded in this process; skipping. If you see this in a running game (not during project export or IDE script analysis), check Godot's log for extension load failures.\n{\"stage\":\"model_catalog\"}\n{\"stage\":\"player\"}\n{\"stage\":\"unlock_state\"}\n{\"stage\":\"create_player\"}\n{\"stage\":\"player_factory\"}\n{\"stage\":\"test_mod_environment\"}\n{\"stage\":\"run\"}\n{\"stage\":\"offline_platform\"}\n{\"stage\":\"combat\"}\n{\"stage\":\"monster\"}\n{\"stage\":\"monster_state_machine\"}\n{\"stage\":\"cards\"}\n{\"stage\":\"solver\"}\n{\"stage\":\"simulator\"}\n{\"stage\":\"fixed_card_smoke\"}\n{\"status\":\"smoke_passed\",\"productionReady\":false,\"productionLabels\":false,\"completeBattles\":0,\"gameSha256\":\"0861bfa1df347538d932f22d580e75420f08082792eb914e53b4882764acdbe9\",\"solverSha256\":\"1950d98b8aa742f651a2c09d59e6044da8c0836a29f4c1258047a8d1048f9bfb\",\"fixture\":\"Silent: StrikeSilent \\u002B DefendSilent vs Chomper; manually prepared hand; no enemy turn\",\"outcome\":{\"enemyHp\":58,\"playerBlock\":5,\"energy\":1,\"discard\":[\"STRIKE_SILENT\",\"DEFEND_SILENT\"],\"checkedSourceStateUnchanged\":true},\"iterations\":1000,\"actions\":2000,\"elapsedMilliseconds\":372.7042,\"measurement\":\"fresh simulator \\u002B two card plays \\u002B assertions \\u002B source-state snapshot\",\"peakWorkingSetBytes\":124223488}\n",
+    "stderr": ""
+  },
+  "rootProbe": {
+    "exitCode": 0,
+    "timedOut": false,
+    "wallSeconds": 1.3449135989649221,
+    "records": [
+      {
+        "stage": "native_test_host"
+      },
+      {
+        "stage": "model_catalog"
+      },
+      {
+        "stage": "player"
+      },
+      {
+        "stage": "unlock_state"
+      },
+      {
+        "stage": "create_player"
+      },
+      {
+        "stage": "player_factory"
+      },
+      {
+        "stage": "test_mod_environment"
+      },
+      {
+        "stage": "run"
+      },
+      {
+        "stage": "offline_platform"
+      },
+      {
+        "stage": "combat"
+      },
+      {
+        "stage": "monster"
+      },
+      {
+        "stage": "monster_state_machine"
+      },
+      {
+        "stage": "cards"
+      },
+      {
+        "stage": "solver"
+      },
+      {
+        "stage": "simulator"
+      },
+      {
+        "stage": "fixed_card_smoke"
+      },
+      {
+        "status": "root_smoke_passed",
+        "productionReady": false,
+        "productionLabels": false,
+        "completeBattles": 0,
+        "gameSha256": "0861bfa1df347538d932f22d580e75420f08082792eb914e53b4882764acdbe9",
+        "solverSha256": "1950d98b8aa742f651a2c09d59e6044da8c0836a29f4c1258047a8d1048f9bfb",
+        "fixture": "Silent: StrikeSilent + DefendSilent vs Chomper; manually prepared hand; no enemy turn",
+        "outcome": {
+          "enemyHp": 58,
+          "playerBlock": 5,
+          "energy": 1,
+          "discard": [
+            "STRIKE_SILENT",
+            "DEFEND_SILENT"
+          ],
+          "checkedSourceStateUnchanged": true
+        },
+        "iterations": 1000,
+        "actions": 2000,
+        "elapsedMilliseconds": 295.0385,
+        "measurement": "fork captured simulator + two card plays + assertions + source-state snapshot",
+        "peakWorkingSetBytes": 130289664
+      }
+    ],
+    "stdout": "{\"stage\":\"native_test_host\"}\nSentryGodotInitializer: Sentry GDExtension not loaded in this process; skipping. If you see this in a running game (not during project export or IDE script analysis), check Godot's log for extension load failures.\n{\"stage\":\"model_catalog\"}\n{\"stage\":\"player\"}\n{\"stage\":\"unlock_state\"}\n{\"stage\":\"create_player\"}\n{\"stage\":\"player_factory\"}\n{\"stage\":\"test_mod_environment\"}\n{\"stage\":\"run\"}\n{\"stage\":\"offline_platform\"}\n{\"stage\":\"combat\"}\n{\"stage\":\"monster\"}\n{\"stage\":\"monster_state_machine\"}\n{\"stage\":\"cards\"}\n{\"stage\":\"solver\"}\n{\"stage\":\"simulator\"}\n{\"stage\":\"fixed_card_smoke\"}\n{\"status\":\"root_smoke_passed\",\"productionReady\":false,\"productionLabels\":false,\"completeBattles\":0,\"gameSha256\":\"0861bfa1df347538d932f22d580e75420f08082792eb914e53b4882764acdbe9\",\"solverSha256\":\"1950d98b8aa742f651a2c09d59e6044da8c0836a29f4c1258047a8d1048f9bfb\",\"fixture\":\"Silent: StrikeSilent \\u002B DefendSilent vs Chomper; manually prepared hand; no enemy turn\",\"outcome\":{\"enemyHp\":58,\"playerBlock\":5,\"energy\":1,\"discard\":[\"STRIKE_SILENT\",\"DEFEND_SILENT\"],\"checkedSourceStateUnchanged\":true},\"iterations\":1000,\"actions\":2000,\"elapsedMilliseconds\":295.0385,\"measurement\":\"fork captured simulator \\u002B two card plays \\u002B assertions \\u002B source-state snapshot\",\"peakWorkingSetBytes\":130289664}\n",
+    "stderr": ""
+  },
+  "roundProbe": {
+    "exitCode": 0,
+    "timedOut": false,
+    "wallSeconds": 1.329855269053951,
+    "records": [
+      {
+        "stage": "native_test_host"
+      },
+      {
+        "stage": "model_catalog"
+      },
+      {
+        "stage": "player"
+      },
+      {
+        "stage": "unlock_state"
+      },
+      {
+        "stage": "create_player"
+      },
+      {
+        "stage": "player_factory"
+      },
+      {
+        "stage": "test_mod_environment"
+      },
+      {
+        "stage": "run"
+      },
+      {
+        "stage": "offline_platform"
+      },
+      {
+        "stage": "combat"
+      },
+      {
+        "stage": "monster"
+      },
+      {
+        "stage": "monster_state_machine"
+      },
+      {
+        "stage": "cards"
+      },
+      {
+        "stage": "solver"
+      },
+      {
+        "stage": "simulator"
+      },
+      {
+        "stage": "localization"
+      },
+      {
+        "stage": "localization_loaded",
+        "tables": 46,
+        "bytes": 613387
+      },
+      {
+        "stage": "search_root_capture"
+      },
+      {
+        "status": "search_root_captured"
+      },
+      {
+        "stage": "battle_replay"
+      },
+      {
+        "status": "battle_pair_passed",
+        "productionReady": false,
+        "productionLabels": false,
+        "policy": "play legal fixture cards in hand order; no teacher search",
+        "syntheticBattles": 2,
+        "elapsedMilliseconds": 185.8293,
+        "deterministic": true,
+        "rootUnchanged": true,
+        "battle": {
+          "outcome": "loss",
+          "trace": [
+            {
+              "action": "start",
+              "round": 1,
+              "playerHp": 70,
+              "enemyHp": 64,
+              "energy": 3,
+              "hand": [
+                "STRIKE_SILENT",
+                "DEFEND_SILENT"
+              ],
+              "state": "turn=1;hp=70;max_hp=70;block=0;energy=3;stars=0;gold=99;osty=4294967295/0/0;E0=1/CHOMPER/-/64/64/0/CLAMP_MOVE;AI0=CLAMP_MOVE;MS0=-/0;H=STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,;D=;C=;X=;Y=0/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=0:2154658693951041819:8902999016366367411:12303517906231339201:15409975333933292775/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116"
+            },
+            {
+              "action": "STRIKE_SILENT",
+              "round": 1,
+              "playerHp": 70,
+              "enemyHp": 58,
+              "energy": 2,
+              "hand": [
+                "DEFEND_SILENT"
+              ],
+              "state": "turn=1;hp=70;max_hp=70;block=0;energy=2;stars=0;gold=99;osty=4294967295/0/0;E0=1/CHOMPER/-/58/64/0/CLAMP_MOVE;AI0=CLAMP_MOVE;MS0=-/0;H=DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,;D=;C=STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,;X=;Y=0/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=0:2154658693951041819:8902999016366367411:12303517906231339201:15409975333933292775/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116"
+            },
+            {
+              "action": "DEFEND_SILENT",
+              "round": 1,
+              "playerHp": 70,
+              "enemyHp": 58,
+              "energy": 1,
+              "hand": [],
+              "state": "turn=1;hp=70;max_hp=70;block=5;energy=1;stars=0;gold=99;osty=4294967295/0/0;E0=1/CHOMPER/-/58/64/0/CLAMP_MOVE;AI0=CLAMP_MOVE;MS0=-/0;H=;D=;C=STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,;X=;Y=0/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=0:2154658693951041819:8902999016366367411:12303517906231339201:15409975333933292775/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116"
+            },
+            {
+              "action": "end_turn",
+              "round": 2,
+              "playerHp": 59,
+              "enemyHp": 58,
+              "energy": 3,
+              "hand": [
+                "DEFEND_SILENT",
+                "STRIKE_SILENT"
+              ],
+              "state": "turn=2;hp=59;max_hp=70;block=0;energy=3;stars=0;gold=99;osty=4294967295/0/0;E0=1/CHOMPER/-/58/64/0/SCREECH_MOVE;AI0=CLAMP_MOVE,SCREECH_MOVE;MS0=-/0;H=DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,;D=;C=;X=;Y=0/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=1:12947873316850618191:14759928327109114729:3136438990842698202:8055415582055504849/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116"
+            },
+            {
+              "action": "DEFEND_SILENT",
+              "round": 2,
+              "playerHp": 59,
+              "enemyHp": 58,
+              "energy": 2,
+              "hand": [
+                "STRIKE_SILENT"
+              ],
+              "state": "turn=2;hp=59;max_hp=70;block=5;energy=2;stars=0;gold=99;osty=4294967295/0/0;E0=1/CHOMPER/-/58/64/0/SCREECH_MOVE;AI0=CLAMP_MOVE,SCREECH_MOVE;MS0=-/0;H=STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,;D=;C=DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,;X=;Y=0/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=1:12947873316850618191:14759928327109114729:3136438990842698202:8055415582055504849/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116"
+            },
+            {
+              "action": "STRIKE_SILENT",
+              "round": 2,
+              "playerHp": 59,
+              "enemyHp": 52,
+              "energy": 1,
+              "hand": [],
+              "state": "turn=2;hp=59;max_hp=70;block=5;energy=1;stars=0;gold=99;osty=4294967295/0/0;E0=1/CHOMPER/-/52/64/0/SCREECH_MOVE;AI0=CLAMP_MOVE,SCREECH_MOVE;MS0=-/0;H=;D=;C=DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,;X=;Y=0/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=1:12947873316850618191:14759928327109114729:3136438990842698202:8055415582055504849/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116"
+            },
+            {
+              "action": "end_turn",
+              "round": 3,
+              "playerHp": 59,
+              "enemyHp": 52,
+              "energy": 3,
+              "hand": [
+                "DAZED",
+                "DAZED",
+                "DAZED"
+              ],
+              "state": "turn=3;hp=59;max_hp=70;block=0;energy=3;stars=0;gold=99;osty=4294967295/0/0;E0=1/CHOMPER/-/52/64/0/CLAMP_MOVE;AI0=CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE;MS0=-/0;H=DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,;D=STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,;C=;X=;Y=3/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=5:8023234441986057255:7901593927807258067:5526646772728474628:6317811162343551129/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116"
+            },
+            {
+              "action": "end_turn",
+              "round": 4,
+              "playerHp": 43,
+              "enemyHp": 52,
+              "energy": 3,
+              "hand": [
+                "STRIKE_SILENT",
+                "DEFEND_SILENT"
+              ],
+              "state": "turn=4;hp=43;max_hp=70;block=0;energy=3;stars=0;gold=99;osty=4294967295/0/0;E0=1/CHOMPER/-/52/64/0/SCREECH_MOVE;AI0=CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE;MS0=-/0;H=STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,;D=;C=;X=DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,;Y=0/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=5:8023234441986057255:7901593927807258067:5526646772728474628:6317811162343551129/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116"
+            },
+            {
+              "action": "STRIKE_SILENT",
+              "round": 4,
+              "playerHp": 43,
+              "enemyHp": 46,
+              "energy": 2,
+              "hand": [
+                "DEFEND_SILENT"
+              ],
+              "state": "turn=4;hp=43;max_hp=70;block=0;energy=2;stars=0;gold=99;osty=4294967295/0/0;E0=1/CHOMPER/-/46/64/0/SCREECH_MOVE;AI0=CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE;MS0=-/0;H=DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,;D=;C=STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,;X=DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,;Y=0/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=5:8023234441986057255:7901593927807258067:5526646772728474628:6317811162343551129/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116"
+            },
+            {
+              "action": "DEFEND_SILENT",
+              "round": 4,
+              "playerHp": 43,
+              "enemyHp": 46,
+              "energy": 1,
+              "hand": [],
+              "state": "turn=4;hp=43;max_hp=70;block=5;energy=1;stars=0;gold=99;osty=4294967295/0/0;E0=1/CHOMPER/-/46/64/0/SCREECH_MOVE;AI0=CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE;MS0=-/0;H=;D=;C=STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,;X=DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,;Y=0/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=5:8023234441986057255:7901593927807258067:5526646772728474628:6317811162343551129/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116"
+            },
+            {
+              "action": "end_turn",
+              "round": 5,
+              "playerHp": 43,
+              "enemyHp": 46,
+              "energy": 3,
+              "hand": [
+                "STRIKE_SILENT",
+                "DAZED",
+                "DAZED"
+              ],
+              "state": "turn=5;hp=43;max_hp=70;block=0;energy=3;stars=0;gold=99;osty=4294967295/0/0;E0=1/CHOMPER/-/46/64/0/CLAMP_MOVE;AI0=CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE;MS0=-/0;H=STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,;D=DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,;C=;X=DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,;Y=2/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=9:8503866521332964759:10769061634057086035:10886642543468712795:13668239680159874584/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116"
+            },
+            {
+              "action": "STRIKE_SILENT",
+              "round": 5,
+              "playerHp": 43,
+              "enemyHp": 40,
+              "energy": 2,
+              "hand": [
+                "DAZED",
+                "DAZED"
+              ],
+              "state": "turn=5;hp=43;max_hp=70;block=0;energy=2;stars=0;gold=99;osty=4294967295/0/0;E0=1/CHOMPER/-/40/64/0/CLAMP_MOVE;AI0=CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE;MS0=-/0;H=DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,;D=DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,;C=STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,;X=DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,;Y=2/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=9:8503866521332964759:10769061634057086035:10886642543468712795:13668239680159874584/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116"
+            },
+            {
+              "action": "end_turn",
+              "round": 6,
+              "playerHp": 27,
+              "enemyHp": 40,
+              "energy": 3,
+              "hand": [
+                "DEFEND_SILENT",
+                "DAZED",
+                "STRIKE_SILENT"
+              ],
+              "state": "turn=6;hp=27;max_hp=70;block=0;energy=3;stars=0;gold=99;osty=4294967295/0/0;E0=1/CHOMPER/-/40/64/0/SCREECH_MOVE;AI0=CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE;MS0=-/0;H=DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,;D=;C=;X=DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,;Y=1/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=9:8503866521332964759:10769061634057086035:10886642543468712795:13668239680159874584/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116"
+            },
+            {
+              "action": "DEFEND_SILENT",
+              "round": 6,
+              "playerHp": 27,
+              "enemyHp": 40,
+              "energy": 2,
+              "hand": [
+                "DAZED",
+                "STRIKE_SILENT"
+              ],
+              "state": "turn=6;hp=27;max_hp=70;block=5;energy=2;stars=0;gold=99;osty=4294967295/0/0;E0=1/CHOMPER/-/40/64/0/SCREECH_MOVE;AI0=CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE;MS0=-/0;H=DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,;D=;C=DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,;X=DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,;Y=1/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=9:8503866521332964759:10769061634057086035:10886642543468712795:13668239680159874584/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116"
+            },
+            {
+              "action": "STRIKE_SILENT",
+              "round": 6,
+              "playerHp": 27,
+              "enemyHp": 34,
+              "energy": 1,
+              "hand": [
+                "DAZED"
+              ],
+              "state": "turn=6;hp=27;max_hp=70;block=5;energy=1;stars=0;gold=99;osty=4294967295/0/0;E0=1/CHOMPER/-/34/64/0/SCREECH_MOVE;AI0=CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE;MS0=-/0;H=DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,;D=;C=DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,;X=DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,;Y=1/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=9:8503866521332964759:10769061634057086035:10886642543468712795:13668239680159874584/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116"
+            },
+            {
+              "action": "end_turn",
+              "round": 7,
+              "playerHp": 27,
+              "enemyHp": 34,
+              "energy": 3,
+              "hand": [
+                "DAZED",
+                "DAZED",
+                "DAZED"
+              ],
+              "state": "turn=7;hp=27;max_hp=70;block=0;energy=3;stars=0;gold=99;osty=4294967295/0/0;E0=1/CHOMPER/-/34/64/0/CLAMP_MOVE;AI0=CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE;MS0=-/0;H=DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,;D=STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,;C=;X=DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,;Y=3/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=13:5890235816350238039:17853338711803098169:13024973749729706295:15158048732726969507/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116"
+            },
+            {
+              "action": "end_turn",
+              "round": 8,
+              "playerHp": 11,
+              "enemyHp": 34,
+              "energy": 3,
+              "hand": [
+                "STRIKE_SILENT",
+                "DEFEND_SILENT"
+              ],
+              "state": "turn=8;hp=11;max_hp=70;block=0;energy=3;stars=0;gold=99;osty=4294967295/0/0;E0=1/CHOMPER/-/34/64/0/SCREECH_MOVE;AI0=CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE;MS0=-/0;H=STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,;D=;C=;X=DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,;Y=0/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=13:5890235816350238039:17853338711803098169:13024973749729706295:15158048732726969507/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116"
+            },
+            {
+              "action": "STRIKE_SILENT",
+              "round": 8,
+              "playerHp": 11,
+              "enemyHp": 28,
+              "energy": 2,
+              "hand": [
+                "DEFEND_SILENT"
+              ],
+              "state": "turn=8;hp=11;max_hp=70;block=0;energy=2;stars=0;gold=99;osty=4294967295/0/0;E0=1/CHOMPER/-/28/64/0/SCREECH_MOVE;AI0=CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE;MS0=-/0;H=DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,;D=;C=STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,;X=DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,;Y=0/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=13:5890235816350238039:17853338711803098169:13024973749729706295:15158048732726969507/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116"
+            },
+            {
+              "action": "DEFEND_SILENT",
+              "round": 8,
+              "playerHp": 11,
+              "enemyHp": 28,
+              "energy": 1,
+              "hand": [],
+              "state": "turn=8;hp=11;max_hp=70;block=5;energy=1;stars=0;gold=99;osty=4294967295/0/0;E0=1/CHOMPER/-/28/64/0/SCREECH_MOVE;AI0=CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE;MS0=-/0;H=;D=;C=STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,;X=DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,;Y=0/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=13:5890235816350238039:17853338711803098169:13024973749729706295:15158048732726969507/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116"
+            },
+            {
+              "action": "end_turn",
+              "round": 9,
+              "playerHp": 11,
+              "enemyHp": 28,
+              "energy": 3,
+              "hand": [
+                "DAZED",
+                "DAZED",
+                "DAZED"
+              ],
+              "state": "turn=9;hp=11;max_hp=70;block=0;energy=3;stars=0;gold=99;osty=4294967295/0/0;E0=1/CHOMPER/-/28/64/0/CLAMP_MOVE;AI0=CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE;MS0=-/0;H=DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,;D=STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,;C=;X=DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,;Y=3/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=17:7618109964459187251:9975117414509584012:17575555045133959281:1182607264964084826/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116"
+            },
+            {
+              "action": "end_turn",
+              "round": 9,
+              "playerHp": 0,
+              "enemyHp": 28,
+              "energy": 3,
+              "hand": [],
+              "state": "turn=9;hp=0;max_hp=70;block=0;energy=3;stars=0;gold=99;osty=4294967295/0/0;E0=1/CHOMPER/-/28/64/0/CLAMP_MOVE;AI0=CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE;MS0=-/0;H=;D=STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,;C=;X=DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED+0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,;Y=3/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=17:7618109964459187251:9975117414509584012:17575555045133959281:1182607264964084826/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116"
+            }
+          ]
+        }
+      }
+    ],
+    "stdout": "{\"stage\":\"native_test_host\"}\nSentryGodotInitializer: Sentry GDExtension not loaded in this process; skipping. If you see this in a running game (not during project export or IDE script analysis), check Godot's log for extension load failures.\n{\"stage\":\"model_catalog\"}\n{\"stage\":\"player\"}\n{\"stage\":\"unlock_state\"}\n{\"stage\":\"create_player\"}\n{\"stage\":\"player_factory\"}\n{\"stage\":\"test_mod_environment\"}\n{\"stage\":\"run\"}\n{\"stage\":\"offline_platform\"}\n{\"stage\":\"combat\"}\n{\"stage\":\"monster\"}\n{\"stage\":\"monster_state_machine\"}\n{\"stage\":\"cards\"}\n{\"stage\":\"solver\"}\n{\"stage\":\"simulator\"}\n{\"stage\":\"localization\"}\n{\"stage\":\"localization_loaded\",\"tables\":46,\"bytes\":613387}\n{\"stage\":\"search_root_capture\"}\n{\"status\":\"search_root_captured\"}\n{\"stage\":\"battle_replay\"}\n{\"status\":\"battle_pair_passed\",\"productionReady\":false,\"productionLabels\":false,\"policy\":\"play legal fixture cards in hand order; no teacher search\",\"syntheticBattles\":2,\"elapsedMilliseconds\":185.8293,\"deterministic\":true,\"rootUnchanged\":true,\"battle\":{\"outcome\":\"loss\",\"trace\":[{\"action\":\"start\",\"round\":1,\"playerHp\":70,\"enemyHp\":64,\"energy\":3,\"hand\":[\"STRIKE_SILENT\",\"DEFEND_SILENT\"],\"state\":\"turn=1;hp=70;max_hp=70;block=0;energy=3;stars=0;gold=99;osty=4294967295/0/0;E0=1/CHOMPER/-/64/64/0/CLAMP_MOVE;AI0=CLAMP_MOVE;MS0=-/0;H=STRIKE_SILENT\\u002B0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,DEFEND_SILENT\\u002B0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,;D=;C=;X=;Y=0/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=0:2154658693951041819:8902999016366367411:12303517906231339201:15409975333933292775/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116\"},{\"action\":\"STRIKE_SILENT\",\"round\":1,\"playerHp\":70,\"enemyHp\":58,\"energy\":2,\"hand\":[\"DEFEND_SILENT\"],\"state\":\"turn=1;hp=70;max_hp=70;block=0;energy=2;stars=0;gold=99;osty=4294967295/0/0;E0=1/CHOMPER/-/58/64/0/CLAMP_MOVE;AI0=CLAMP_MOVE;MS0=-/0;H=DEFEND_SILENT\\u002B0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,;D=;C=STRIKE_SILENT\\u002B0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,;X=;Y=0/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=0:2154658693951041819:8902999016366367411:12303517906231339201:15409975333933292775/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116\"},{\"action\":\"DEFEND_SILENT\",\"round\":1,\"playerHp\":70,\"enemyHp\":58,\"energy\":1,\"hand\":[],\"state\":\"turn=1;hp=70;max_hp=70;block=5;energy=1;stars=0;gold=99;osty=4294967295/0/0;E0=1/CHOMPER/-/58/64/0/CLAMP_MOVE;AI0=CLAMP_MOVE;MS0=-/0;H=;D=;C=STRIKE_SILENT\\u002B0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,DEFEND_SILENT\\u002B0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,;X=;Y=0/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=0:2154658693951041819:8902999016366367411:12303517906231339201:15409975333933292775/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116\"},{\"action\":\"end_turn\",\"round\":2,\"playerHp\":59,\"enemyHp\":58,\"energy\":3,\"hand\":[\"DEFEND_SILENT\",\"STRIKE_SILENT\"],\"state\":\"turn=2;hp=59;max_hp=70;block=0;energy=3;stars=0;gold=99;osty=4294967295/0/0;E0=1/CHOMPER/-/58/64/0/SCREECH_MOVE;AI0=CLAMP_MOVE,SCREECH_MOVE;MS0=-/0;H=DEFEND_SILENT\\u002B0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,STRIKE_SILENT\\u002B0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,;D=;C=;X=;Y=0/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=1:12947873316850618191:14759928327109114729:3136438990842698202:8055415582055504849/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116\"},{\"action\":\"DEFEND_SILENT\",\"round\":2,\"playerHp\":59,\"enemyHp\":58,\"energy\":2,\"hand\":[\"STRIKE_SILENT\"],\"state\":\"turn=2;hp=59;max_hp=70;block=5;energy=2;stars=0;gold=99;osty=4294967295/0/0;E0=1/CHOMPER/-/58/64/0/SCREECH_MOVE;AI0=CLAMP_MOVE,SCREECH_MOVE;MS0=-/0;H=STRIKE_SILENT\\u002B0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,;D=;C=DEFEND_SILENT\\u002B0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,;X=;Y=0/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=1:12947873316850618191:14759928327109114729:3136438990842698202:8055415582055504849/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116\"},{\"action\":\"STRIKE_SILENT\",\"round\":2,\"playerHp\":59,\"enemyHp\":52,\"energy\":1,\"hand\":[],\"state\":\"turn=2;hp=59;max_hp=70;block=5;energy=1;stars=0;gold=99;osty=4294967295/0/0;E0=1/CHOMPER/-/52/64/0/SCREECH_MOVE;AI0=CLAMP_MOVE,SCREECH_MOVE;MS0=-/0;H=;D=;C=DEFEND_SILENT\\u002B0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,STRIKE_SILENT\\u002B0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,;X=;Y=0/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=1:12947873316850618191:14759928327109114729:3136438990842698202:8055415582055504849/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116\"},{\"action\":\"end_turn\",\"round\":3,\"playerHp\":59,\"enemyHp\":52,\"energy\":3,\"hand\":[\"DAZED\",\"DAZED\",\"DAZED\"],\"state\":\"turn=3;hp=59;max_hp=70;block=0;energy=3;stars=0;gold=99;osty=4294967295/0/0;E0=1/CHOMPER/-/52/64/0/CLAMP_MOVE;AI0=CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE;MS0=-/0;H=DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,;D=STRIKE_SILENT\\u002B0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,DEFEND_SILENT\\u002B0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,;C=;X=;Y=3/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=5:8023234441986057255:7901593927807258067:5526646772728474628:6317811162343551129/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116\"},{\"action\":\"end_turn\",\"round\":4,\"playerHp\":43,\"enemyHp\":52,\"energy\":3,\"hand\":[\"STRIKE_SILENT\",\"DEFEND_SILENT\"],\"state\":\"turn=4;hp=43;max_hp=70;block=0;energy=3;stars=0;gold=99;osty=4294967295/0/0;E0=1/CHOMPER/-/52/64/0/SCREECH_MOVE;AI0=CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE;MS0=-/0;H=STRIKE_SILENT\\u002B0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,DEFEND_SILENT\\u002B0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,;D=;C=;X=DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,;Y=0/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=5:8023234441986057255:7901593927807258067:5526646772728474628:6317811162343551129/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116\"},{\"action\":\"STRIKE_SILENT\",\"round\":4,\"playerHp\":43,\"enemyHp\":46,\"energy\":2,\"hand\":[\"DEFEND_SILENT\"],\"state\":\"turn=4;hp=43;max_hp=70;block=0;energy=2;stars=0;gold=99;osty=4294967295/0/0;E0=1/CHOMPER/-/46/64/0/SCREECH_MOVE;AI0=CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE;MS0=-/0;H=DEFEND_SILENT\\u002B0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,;D=;C=STRIKE_SILENT\\u002B0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,;X=DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,;Y=0/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=5:8023234441986057255:7901593927807258067:5526646772728474628:6317811162343551129/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116\"},{\"action\":\"DEFEND_SILENT\",\"round\":4,\"playerHp\":43,\"enemyHp\":46,\"energy\":1,\"hand\":[],\"state\":\"turn=4;hp=43;max_hp=70;block=5;energy=1;stars=0;gold=99;osty=4294967295/0/0;E0=1/CHOMPER/-/46/64/0/SCREECH_MOVE;AI0=CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE;MS0=-/0;H=;D=;C=STRIKE_SILENT\\u002B0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,DEFEND_SILENT\\u002B0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,;X=DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,;Y=0/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=5:8023234441986057255:7901593927807258067:5526646772728474628:6317811162343551129/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116\"},{\"action\":\"end_turn\",\"round\":5,\"playerHp\":43,\"enemyHp\":46,\"energy\":3,\"hand\":[\"STRIKE_SILENT\",\"DAZED\",\"DAZED\"],\"state\":\"turn=5;hp=43;max_hp=70;block=0;energy=3;stars=0;gold=99;osty=4294967295/0/0;E0=1/CHOMPER/-/46/64/0/CLAMP_MOVE;AI0=CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE;MS0=-/0;H=STRIKE_SILENT\\u002B0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,;D=DEFEND_SILENT\\u002B0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,;C=;X=DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,;Y=2/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=9:8503866521332964759:10769061634057086035:10886642543468712795:13668239680159874584/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116\"},{\"action\":\"STRIKE_SILENT\",\"round\":5,\"playerHp\":43,\"enemyHp\":40,\"energy\":2,\"hand\":[\"DAZED\",\"DAZED\"],\"state\":\"turn=5;hp=43;max_hp=70;block=0;energy=2;stars=0;gold=99;osty=4294967295/0/0;E0=1/CHOMPER/-/40/64/0/CLAMP_MOVE;AI0=CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE;MS0=-/0;H=DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,;D=DEFEND_SILENT\\u002B0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,;C=STRIKE_SILENT\\u002B0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,;X=DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,;Y=2/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=9:8503866521332964759:10769061634057086035:10886642543468712795:13668239680159874584/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116\"},{\"action\":\"end_turn\",\"round\":6,\"playerHp\":27,\"enemyHp\":40,\"energy\":3,\"hand\":[\"DEFEND_SILENT\",\"DAZED\",\"STRIKE_SILENT\"],\"state\":\"turn=6;hp=27;max_hp=70;block=0;energy=3;stars=0;gold=99;osty=4294967295/0/0;E0=1/CHOMPER/-/40/64/0/SCREECH_MOVE;AI0=CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE;MS0=-/0;H=DEFEND_SILENT\\u002B0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,STRIKE_SILENT\\u002B0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,;D=;C=;X=DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,;Y=1/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=9:8503866521332964759:10769061634057086035:10886642543468712795:13668239680159874584/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116\"},{\"action\":\"DEFEND_SILENT\",\"round\":6,\"playerHp\":27,\"enemyHp\":40,\"energy\":2,\"hand\":[\"DAZED\",\"STRIKE_SILENT\"],\"state\":\"turn=6;hp=27;max_hp=70;block=5;energy=2;stars=0;gold=99;osty=4294967295/0/0;E0=1/CHOMPER/-/40/64/0/SCREECH_MOVE;AI0=CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE;MS0=-/0;H=DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,STRIKE_SILENT\\u002B0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,;D=;C=DEFEND_SILENT\\u002B0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,;X=DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,;Y=1/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=9:8503866521332964759:10769061634057086035:10886642543468712795:13668239680159874584/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116\"},{\"action\":\"STRIKE_SILENT\",\"round\":6,\"playerHp\":27,\"enemyHp\":34,\"energy\":1,\"hand\":[\"DAZED\"],\"state\":\"turn=6;hp=27;max_hp=70;block=5;energy=1;stars=0;gold=99;osty=4294967295/0/0;E0=1/CHOMPER/-/34/64/0/SCREECH_MOVE;AI0=CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE;MS0=-/0;H=DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,;D=;C=DEFEND_SILENT\\u002B0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,STRIKE_SILENT\\u002B0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,;X=DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,;Y=1/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=9:8503866521332964759:10769061634057086035:10886642543468712795:13668239680159874584/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116\"},{\"action\":\"end_turn\",\"round\":7,\"playerHp\":27,\"enemyHp\":34,\"energy\":3,\"hand\":[\"DAZED\",\"DAZED\",\"DAZED\"],\"state\":\"turn=7;hp=27;max_hp=70;block=0;energy=3;stars=0;gold=99;osty=4294967295/0/0;E0=1/CHOMPER/-/34/64/0/CLAMP_MOVE;AI0=CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE;MS0=-/0;H=DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,;D=STRIKE_SILENT\\u002B0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,DEFEND_SILENT\\u002B0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,;C=;X=DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,;Y=3/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=13:5890235816350238039:17853338711803098169:13024973749729706295:15158048732726969507/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116\"},{\"action\":\"end_turn\",\"round\":8,\"playerHp\":11,\"enemyHp\":34,\"energy\":3,\"hand\":[\"STRIKE_SILENT\",\"DEFEND_SILENT\"],\"state\":\"turn=8;hp=11;max_hp=70;block=0;energy=3;stars=0;gold=99;osty=4294967295/0/0;E0=1/CHOMPER/-/34/64/0/SCREECH_MOVE;AI0=CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE;MS0=-/0;H=STRIKE_SILENT\\u002B0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,DEFEND_SILENT\\u002B0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,;D=;C=;X=DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,;Y=0/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=13:5890235816350238039:17853338711803098169:13024973749729706295:15158048732726969507/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116\"},{\"action\":\"STRIKE_SILENT\",\"round\":8,\"playerHp\":11,\"enemyHp\":28,\"energy\":2,\"hand\":[\"DEFEND_SILENT\"],\"state\":\"turn=8;hp=11;max_hp=70;block=0;energy=2;stars=0;gold=99;osty=4294967295/0/0;E0=1/CHOMPER/-/28/64/0/SCREECH_MOVE;AI0=CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE;MS0=-/0;H=DEFEND_SILENT\\u002B0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,;D=;C=STRIKE_SILENT\\u002B0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,;X=DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,;Y=0/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=13:5890235816350238039:17853338711803098169:13024973749729706295:15158048732726969507/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116\"},{\"action\":\"DEFEND_SILENT\",\"round\":8,\"playerHp\":11,\"enemyHp\":28,\"energy\":1,\"hand\":[],\"state\":\"turn=8;hp=11;max_hp=70;block=5;energy=1;stars=0;gold=99;osty=4294967295/0/0;E0=1/CHOMPER/-/28/64/0/SCREECH_MOVE;AI0=CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE;MS0=-/0;H=;D=;C=STRIKE_SILENT\\u002B0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,DEFEND_SILENT\\u002B0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,;X=DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,;Y=0/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=13:5890235816350238039:17853338711803098169:13024973749729706295:15158048732726969507/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116\"},{\"action\":\"end_turn\",\"round\":9,\"playerHp\":11,\"enemyHp\":28,\"energy\":3,\"hand\":[\"DAZED\",\"DAZED\",\"DAZED\"],\"state\":\"turn=9;hp=11;max_hp=70;block=0;energy=3;stars=0;gold=99;osty=4294967295/0/0;E0=1/CHOMPER/-/28/64/0/CLAMP_MOVE;AI0=CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE;MS0=-/0;H=DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,;D=STRIKE_SILENT\\u002B0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,DEFEND_SILENT\\u002B0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,;C=;X=DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,;Y=3/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=17:7618109964459187251:9975117414509584012:17575555045133959281:1182607264964084826/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116\"},{\"action\":\"end_turn\",\"round\":9,\"playerHp\":0,\"enemyHp\":28,\"energy\":3,\"hand\":[],\"state\":\"turn=9;hp=0;max_hp=70;block=0;energy=3;stars=0;gold=99;osty=4294967295/0/0;E0=1/CHOMPER/-/28/64/0/CLAMP_MOVE;AI0=CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE,SCREECH_MOVE,CLAMP_MOVE;MS0=-/0;H=;D=STRIKE_SILENT\\u002B0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,DEFEND_SILENT\\u002B0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,;C=;X=DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,DAZED\\u002B0/False:-1/False:-1/0/False/False/False/False/False/-:0:0/-:0[]/private=-/baselib=-,;Y=3/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=17:7618109964459187251:9975117414509584012:17575555045133959281:1182607264964084826/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116\"}]}}\n",
+    "stderr": ""
+  },
+  "victoryProbe": {
+    "exitCode": 0,
+    "timedOut": false,
+    "wallSeconds": 1.4620337910018861,
+    "records": [
+      {
+        "stage": "native_test_host"
+      },
+      {
+        "stage": "model_catalog"
+      },
+      {
+        "stage": "player"
+      },
+      {
+        "stage": "unlock_state"
+      },
+      {
+        "stage": "create_player"
+      },
+      {
+        "stage": "player_factory"
+      },
+      {
+        "stage": "test_mod_environment"
+      },
+      {
+        "stage": "run"
+      },
+      {
+        "stage": "offline_platform"
+      },
+      {
+        "stage": "combat"
+      },
+      {
+        "stage": "monster"
+      },
+      {
+        "stage": "monster_state_machine"
+      },
+      {
+        "stage": "cards"
+      },
+      {
+        "stage": "solver"
+      },
+      {
+        "stage": "simulator"
+      },
+      {
+        "stage": "localization"
+      },
+      {
+        "stage": "localization_loaded",
+        "tables": 46,
+        "bytes": 613387
+      },
+      {
+        "stage": "search_root_capture"
+      },
+      {
+        "status": "search_root_captured"
+      },
+      {
+        "stage": "battle_replay"
+      },
+      {
+        "status": "battle_pair_passed",
+        "productionReady": false,
+        "productionLabels": false,
+        "policy": "play legal fixture cards in hand order; no teacher search",
+        "syntheticBattles": 2,
+        "elapsedMilliseconds": 170.5387,
+        "deterministic": true,
+        "rootUnchanged": true,
+        "battle": {
+          "outcome": "win",
+          "trace": [
+            {
+              "action": "start",
+              "round": 1,
+              "playerHp": 70,
+              "enemyHp": 12,
+              "energy": 3,
+              "hand": [
+                "STRIKE_SILENT",
+                "DEFEND_SILENT"
+              ],
+              "state": "turn=1;hp=70;max_hp=70;block=0;energy=3;stars=0;gold=99;osty=4294967295/0/0;E0=1/CHOMPER/-/12/64/0/CLAMP_MOVE;AI0=CLAMP_MOVE;MS0=-/0;H=STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,;D=;C=;X=;Y=0/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=0:2154658693951041819:8902999016366367411:12303517906231339201:15409975333933292775/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116"
+            },
+            {
+              "action": "STRIKE_SILENT",
+              "round": 1,
+              "playerHp": 70,
+              "enemyHp": 6,
+              "energy": 2,
+              "hand": [
+                "DEFEND_SILENT"
+              ],
+              "state": "turn=1;hp=70;max_hp=70;block=0;energy=2;stars=0;gold=99;osty=4294967295/0/0;E0=1/CHOMPER/-/6/64/0/CLAMP_MOVE;AI0=CLAMP_MOVE;MS0=-/0;H=DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,;D=;C=STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,;X=;Y=0/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=0:2154658693951041819:8902999016366367411:12303517906231339201:15409975333933292775/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116"
+            },
+            {
+              "action": "DEFEND_SILENT",
+              "round": 1,
+              "playerHp": 70,
+              "enemyHp": 6,
+              "energy": 1,
+              "hand": [],
+              "state": "turn=1;hp=70;max_hp=70;block=5;energy=1;stars=0;gold=99;osty=4294967295/0/0;E0=1/CHOMPER/-/6/64/0/CLAMP_MOVE;AI0=CLAMP_MOVE;MS0=-/0;H=;D=;C=STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,;X=;Y=0/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=0:2154658693951041819:8902999016366367411:12303517906231339201:15409975333933292775/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116"
+            },
+            {
+              "action": "end_turn",
+              "round": 2,
+              "playerHp": 59,
+              "enemyHp": 6,
+              "energy": 3,
+              "hand": [
+                "DEFEND_SILENT",
+                "STRIKE_SILENT"
+              ],
+              "state": "turn=2;hp=59;max_hp=70;block=0;energy=3;stars=0;gold=99;osty=4294967295/0/0;E0=1/CHOMPER/-/6/64/0/SCREECH_MOVE;AI0=CLAMP_MOVE,SCREECH_MOVE;MS0=-/0;H=DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,;D=;C=;X=;Y=0/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=1:12947873316850618191:14759928327109114729:3136438990842698202:8055415582055504849/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116"
+            },
+            {
+              "action": "DEFEND_SILENT",
+              "round": 2,
+              "playerHp": 59,
+              "enemyHp": 6,
+              "energy": 2,
+              "hand": [
+                "STRIKE_SILENT"
+              ],
+              "state": "turn=2;hp=59;max_hp=70;block=5;energy=2;stars=0;gold=99;osty=4294967295/0/0;E0=1/CHOMPER/-/6/64/0/SCREECH_MOVE;AI0=CLAMP_MOVE,SCREECH_MOVE;MS0=-/0;H=STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,;D=;C=DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,;X=;Y=0/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=1:12947873316850618191:14759928327109114729:3136438990842698202:8055415582055504849/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116"
+            },
+            {
+              "action": "STRIKE_SILENT",
+              "round": 2,
+              "playerHp": 59,
+              "enemyHp": 0,
+              "energy": 1,
+              "hand": [],
+              "state": "turn=2;hp=59;max_hp=70;block=5;energy=1;stars=0;gold=99;osty=4294967295/0/0;H=;D=;C=DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,;X=;Y=0/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=1:12947873316850618191:14759928327109114729:3136438990842698202:8055415582055504849/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116"
+            }
+          ]
+        }
+      }
+    ],
+    "stdout": "{\"stage\":\"native_test_host\"}\nSentryGodotInitializer: Sentry GDExtension not loaded in this process; skipping. If you see this in a running game (not during project export or IDE script analysis), check Godot's log for extension load failures.\n{\"stage\":\"model_catalog\"}\n{\"stage\":\"player\"}\n{\"stage\":\"unlock_state\"}\n{\"stage\":\"create_player\"}\n{\"stage\":\"player_factory\"}\n{\"stage\":\"test_mod_environment\"}\n{\"stage\":\"run\"}\n{\"stage\":\"offline_platform\"}\n{\"stage\":\"combat\"}\n{\"stage\":\"monster\"}\n{\"stage\":\"monster_state_machine\"}\n{\"stage\":\"cards\"}\n{\"stage\":\"solver\"}\n{\"stage\":\"simulator\"}\n{\"stage\":\"localization\"}\n{\"stage\":\"localization_loaded\",\"tables\":46,\"bytes\":613387}\n{\"stage\":\"search_root_capture\"}\n{\"status\":\"search_root_captured\"}\n{\"stage\":\"battle_replay\"}\n{\"status\":\"battle_pair_passed\",\"productionReady\":false,\"productionLabels\":false,\"policy\":\"play legal fixture cards in hand order; no teacher search\",\"syntheticBattles\":2,\"elapsedMilliseconds\":170.5387,\"deterministic\":true,\"rootUnchanged\":true,\"battle\":{\"outcome\":\"win\",\"trace\":[{\"action\":\"start\",\"round\":1,\"playerHp\":70,\"enemyHp\":12,\"energy\":3,\"hand\":[\"STRIKE_SILENT\",\"DEFEND_SILENT\"],\"state\":\"turn=1;hp=70;max_hp=70;block=0;energy=3;stars=0;gold=99;osty=4294967295/0/0;E0=1/CHOMPER/-/12/64/0/CLAMP_MOVE;AI0=CLAMP_MOVE;MS0=-/0;H=STRIKE_SILENT\\u002B0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,DEFEND_SILENT\\u002B0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,;D=;C=;X=;Y=0/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=0:2154658693951041819:8902999016366367411:12303517906231339201:15409975333933292775/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116\"},{\"action\":\"STRIKE_SILENT\",\"round\":1,\"playerHp\":70,\"enemyHp\":6,\"energy\":2,\"hand\":[\"DEFEND_SILENT\"],\"state\":\"turn=1;hp=70;max_hp=70;block=0;energy=2;stars=0;gold=99;osty=4294967295/0/0;E0=1/CHOMPER/-/6/64/0/CLAMP_MOVE;AI0=CLAMP_MOVE;MS0=-/0;H=DEFEND_SILENT\\u002B0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,;D=;C=STRIKE_SILENT\\u002B0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,;X=;Y=0/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=0:2154658693951041819:8902999016366367411:12303517906231339201:15409975333933292775/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116\"},{\"action\":\"DEFEND_SILENT\",\"round\":1,\"playerHp\":70,\"enemyHp\":6,\"energy\":1,\"hand\":[],\"state\":\"turn=1;hp=70;max_hp=70;block=5;energy=1;stars=0;gold=99;osty=4294967295/0/0;E0=1/CHOMPER/-/6/64/0/CLAMP_MOVE;AI0=CLAMP_MOVE;MS0=-/0;H=;D=;C=STRIKE_SILENT\\u002B0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,DEFEND_SILENT\\u002B0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,;X=;Y=0/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=0:2154658693951041819:8902999016366367411:12303517906231339201:15409975333933292775/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116\"},{\"action\":\"end_turn\",\"round\":2,\"playerHp\":59,\"enemyHp\":6,\"energy\":3,\"hand\":[\"DEFEND_SILENT\",\"STRIKE_SILENT\"],\"state\":\"turn=2;hp=59;max_hp=70;block=0;energy=3;stars=0;gold=99;osty=4294967295/0/0;E0=1/CHOMPER/-/6/64/0/SCREECH_MOVE;AI0=CLAMP_MOVE,SCREECH_MOVE;MS0=-/0;H=DEFEND_SILENT\\u002B0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,STRIKE_SILENT\\u002B0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,;D=;C=;X=;Y=0/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=1:12947873316850618191:14759928327109114729:3136438990842698202:8055415582055504849/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116\"},{\"action\":\"DEFEND_SILENT\",\"round\":2,\"playerHp\":59,\"enemyHp\":6,\"energy\":2,\"hand\":[\"STRIKE_SILENT\"],\"state\":\"turn=2;hp=59;max_hp=70;block=5;energy=2;stars=0;gold=99;osty=4294967295/0/0;E0=1/CHOMPER/-/6/64/0/SCREECH_MOVE;AI0=CLAMP_MOVE,SCREECH_MOVE;MS0=-/0;H=STRIKE_SILENT\\u002B0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,;D=;C=DEFEND_SILENT\\u002B0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,;X=;Y=0/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=1:12947873316850618191:14759928327109114729:3136438990842698202:8055415582055504849/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116\"},{\"action\":\"STRIKE_SILENT\",\"round\":2,\"playerHp\":59,\"enemyHp\":0,\"energy\":1,\"hand\":[],\"state\":\"turn=2;hp=59;max_hp=70;block=5;energy=1;stars=0;gold=99;osty=4294967295/0/0;H=;D=;C=DEFEND_SILENT\\u002B0/False:1/False:-1/0/False/False/False/False/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,;X=;Y=0/0;O=0:;potions=-,-,-;relicCounters=;mirrorRelics=;P=;R=1:12947873316850618191:14759928327109114729:3136438990842698202:8055415582055504849/0:7836211938745247818:1842337410021321248:5797671433702037708:11618932967352260824/0:7485382012663864397:1148537893718579499:6022527245126629982:4823677268542027558/0:17128348234511159005:12450702518806681547:14489373479915350233:17513166284569445251/0:6156721925430706882:13585661641439361013:9542406453012691662:10176647497187996931/0:13523459800711060310:14181773608484586619:4068519885213222767:3951415970676626622/0:10247958867293949287:12018396823130508766:8142697190285330288:13419810572192368345/0:404751117092871500:12513199783418431346:432667859816732724:3548166942072965101/1:10452546517002840805:16688827525301782386:12198225404411627061:17747600210369904116\"}]}}\n",
+    "stderr": ""
+  },
+  "oracleProbe": {
+    "exitCode": 0,
+    "timedOut": false,
+    "wallSeconds": 1.152055835002102,
+    "records": [
+      {
+        "stage": "native_test_host"
+      },
+      {
+        "stage": "model_catalog"
+      },
+      {
+        "stage": "player"
+      },
+      {
+        "stage": "unlock_state"
+      },
+      {
+        "stage": "create_player"
+      },
+      {
+        "stage": "player_factory"
+      },
+      {
+        "stage": "test_mod_environment"
+      },
+      {
+        "stage": "run"
+      },
+      {
+        "stage": "offline_platform"
+      },
+      {
+        "stage": "combat"
+      },
+      {
+        "stage": "monster"
+      },
+      {
+        "stage": "monster_state_machine"
+      },
+      {
+        "stage": "cards"
+      },
+      {
+        "stage": "solver"
+      },
+      {
+        "stage": "simulator"
+      },
+      {
+        "stage": "localization"
+      },
+      {
+        "stage": "localization_loaded",
+        "tables": 46,
+        "bytes": 613387
+      },
+      {
+        "stage": "search_root_capture"
+      },
+      {
+        "status": "search_root_captured"
+      },
+      {
+        "stage": "original_effect_comparison"
+      },
+      {
+        "status": "original_effects_matched",
+        "scope": "StrikeSilent/DefendSilent OnPlay and Chomper ClampMove effects; excludes play wrapper, cost, piles and turn lifecycle",
+        "enemyHp": 58,
+        "blockBeforeAttack": 5,
+        "playerHpAfterAttack": 59,
+        "playerBlockAfterAttack": 0,
+        "productionReady": false
+      }
+    ],
+    "stdout": "{\"stage\":\"native_test_host\"}\nSentryGodotInitializer: Sentry GDExtension not loaded in this process; skipping. If you see this in a running game (not during project export or IDE script analysis), check Godot's log for extension load failures.\n{\"stage\":\"model_catalog\"}\n{\"stage\":\"player\"}\n{\"stage\":\"unlock_state\"}\n{\"stage\":\"create_player\"}\n{\"stage\":\"player_factory\"}\n{\"stage\":\"test_mod_environment\"}\n{\"stage\":\"run\"}\n{\"stage\":\"offline_platform\"}\n{\"stage\":\"combat\"}\n{\"stage\":\"monster\"}\n{\"stage\":\"monster_state_machine\"}\n{\"stage\":\"cards\"}\n{\"stage\":\"solver\"}\n{\"stage\":\"simulator\"}\n{\"stage\":\"localization\"}\n{\"stage\":\"localization_loaded\",\"tables\":46,\"bytes\":613387}\n{\"stage\":\"search_root_capture\"}\n{\"status\":\"search_root_captured\"}\n{\"stage\":\"original_effect_comparison\"}\n{\"status\":\"original_effects_matched\",\"scope\":\"StrikeSilent/DefendSilent OnPlay and Chomper ClampMove effects; excludes play wrapper, cost, piles and turn lifecycle\",\"enemyHp\":58,\"blockBeforeAttack\":5,\"playerHpAfterAttack\":59,\"playerBlockAfterAttack\":0,\"productionReady\":false}\n",
+    "stderr": ""
+  },
+  "unreviewedRuntime": {
+    "exitCode": 1,
+    "timedOut": false,
+    "wallSeconds": 0.18110972992144525,
+    "records": [
+      {
+        "status": "blocked",
+        "stage": "host_setup",
+        "error": "System.NotSupportedException: Unreviewed runtime assembly: /data1/pl/ImageTask/wxq/Experiments/sts2-standalone-20260921/tmp/sts2-simulator-probe-4ylhadc1/unreviewed/mods/CombatSolver/CombatSolver.dll\n   at HostAdapter.Verify(String path, String expected) in /data1/pl/ImageTask/wxq/Experiments/sts2-standalone-20260921/tmp/sts2-simulator-probe-4ylhadc1/HostAdapter.cs:line 17\n   at Program.<Main>$(String[] args) in /data1/pl/ImageTask/wxq/Experiments/sts2-standalone-20260921/tmp/sts2-simulator-probe-4ylhadc1/Program.cs:line 17",
+        "productionReady": false,
+        "productionLabels": false
+      }
+    ],
+    "stdout": "",
+    "stderr": "{\"status\":\"blocked\",\"stage\":\"host_setup\",\"error\":\"System.NotSupportedException: Unreviewed runtime assembly: /data1/pl/ImageTask/wxq/Experiments/sts2-standalone-20260921/tmp/sts2-simulator-probe-4ylhadc1/unreviewed/mods/CombatSolver/CombatSolver.dll\\n   at HostAdapter.Verify(String path, String expected) in /data1/pl/ImageTask/wxq/Experiments/sts2-standalone-20260921/tmp/sts2-simulator-probe-4ylhadc1/HostAdapter.cs:line 17\\n   at Program.\\u003CMain\\u003E$(String[] args) in /data1/pl/ImageTask/wxq/Experiments/sts2-standalone-20260921/tmp/sts2-simulator-probe-4ylhadc1/Program.cs:line 17\",\"productionReady\":false,\"productionLabels\":false}\n"
+  },
+  "smokePassed": true,
+  "versionGuardPassed": true,
+  "rootForkPassed": true,
+  "fullRootCaptured": true,
+  "originalEffectsMatched": true,
+  "battleFixturesPassed": true,
+  "syntheticBattles": 4,
+  "experimentPassed": true
+}

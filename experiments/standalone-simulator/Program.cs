@@ -5,9 +5,12 @@ using System.Text.Json;
 string stage = "host_setup";
 try
 {
-    if (args.Length is < 1 or > 2) throw new ArgumentException("Usage: SimulatorPrototype <game-directory> [--root-probe|iterations(1..10000)]");
+    if (args.Length is < 1 or > 2) throw new ArgumentException("Usage: SimulatorPrototype <game-directory> [--root-probe|--round-probe|--victory-probe|--oracle-probe|iterations(1..10000)]");
     string root = Path.GetFullPath(args[0]);
-    bool rootProbe = args.Length == 2 && args[1] == "--root-probe";
+    bool oracleProbe = args.Length == 2 && args[1] == "--oracle-probe";
+    bool victoryProbe = args.Length == 2 && args[1] == "--victory-probe";
+    bool roundProbe = oracleProbe || victoryProbe || args.Length == 2 && args[1] == "--round-probe";
+    bool rootProbe = roundProbe || args.Length == 2 && args[1] == "--root-probe";
     int iterations = args.Length == 2 && !rootProbe ? int.Parse(args[1]) : 1000;
     if (iterations is < 1 or > 10000) throw new ArgumentOutOfRangeException(nameof(iterations));
     string data = Path.Combine(root, "data_sts2_windows_x86_64");
@@ -55,6 +58,10 @@ try
     Array players = Array.CreateInstance(playerType, 1); players.SetValue(player, 0);
     object run = Get("Runs.RunState").GetMethod("CreateForTest")!.Invoke(null, [players, null, null, Enum.Parse(Get("Runs.GameMode"), "Standard"), 0, "SIMPROTO1"])!;
     Get("Context.LocalContext").GetProperty("NetId")!.SetValue(null, 1UL);
+    Begin("offline_platform");
+    object manager = Get("Runs.RunManager").GetProperty("Instance")!.GetValue(null)!;
+    var netProperty = manager.GetType().GetProperty("NetService")!;
+    netProperty.SetValue(manager, DispatchProxy.Create(netProperty.PropertyType, typeof(OfflinePlatformService)));
     Begin("combat");
     object combat = Activator.CreateInstance(Get("Combat.CombatState"), [null, run, null, null, null])!;
     combat.GetType().GetMethod("AddPlayer")!.Invoke(combat, [player]);
@@ -65,6 +72,10 @@ try
     monster = monster.GetType().GetMethod("ToMutable")!.Invoke(monster, null)!;
     object enemy = combat.GetType().GetMethod("CreateCreature")!.Invoke(combat, [monster, Enum.Parse(Get("Combat.CombatSide"), "Enemy"), null])!;
     combat.GetType().GetMethod("AddCreature")!.Invoke(combat, [enemy]);
+    if (victoryProbe) enemy.GetType().GetProperty("CurrentHp")!.SetValue(enemy, 12);
+    Begin("monster_state_machine");
+    monster.GetType().GetMethod("SetUpForCombat")!.Invoke(monster, null);
+    monster.GetType().GetMethod("RollMove")!.Invoke(monster, [combat.GetType().GetProperty("PlayerCreatures")!.GetValue(combat)]);
     Begin("cards");
     object hand = pcs.GetType().GetProperty("Hand")!.GetValue(pcs)!;
     foreach (string name in new[] { "StrikeSilent", "DefendSilent" })
@@ -77,12 +88,9 @@ try
     Assembly solver = AssemblyLoadContext.Default.LoadFromAssemblyPath(Path.Combine(root, "mods", "CombatSolver", "CombatSolver.dll"));
     Type simulatorType = solver.GetType("CombatSolver.Engine.InCombat.Simulation.CombatPredictionSimulator", true)!;
     Begin("simulator");
-    if (rootProbe)
-    {
-        // Exercise the unchanged full capture boundary. Do not fabricate a platform/network service.
-        _ = Activator.CreateInstance(solver.GetType("CombatSolver.SimulatedCombatState", true)!, [combat, null]);
-        throw new InvalidOperationException("Root probe unexpectedly advanced; review before extending fixture coverage.");
-    }
+    object simulationRoot = rootProbe
+        ? Activator.CreateInstance(solver.GetType("CombatSolver.SimulatedCombatState", true)!, [combat, null])!
+        : combat;
     object Read(object o, string name) => o.GetType().GetProperty(name)!.GetValue(o)!;
     object[] Items(object o) => ((System.Collections.IEnumerable)o).Cast<object>().ToArray();
     object[] Cards(object pile) => Items(Read(pile, "Cards"));
@@ -102,9 +110,25 @@ try
         rng = Read(run, "Rng").GetType().GetMethod("ToSerializable")!.Invoke(Read(run, "Rng"), null)
     });
     string baseline = Baseline();
+    if (roundProbe)
+    {
+        Begin("localization");
+        PackedLocalization.Configure(Get, Path.Combine(root, "SlayTheSpire2.pck"));
+        Begin("search_root_capture");
+        object searchRoot = solver.GetType("CombatSolver.CombatRootSnapshot", true)!.GetMethod("Capture")!.Invoke(null, [combat])!;
+        Console.WriteLine(JsonSerializer.Serialize(new { status = "search_root_captured" }));
+        Begin(oracleProbe ? "original_effect_comparison" : "battle_replay");
+        Console.WriteLine(JsonSerializer.Serialize(oracleProbe
+            ? OriginalEffectProbe.Run(Get, searchRoot, player, enemy, monster)
+            : RoundProbe.Run(solver, searchRoot, combat, player, enemy)));
+        return;
+    }
+    object? capturedSimulator = rootProbe ? Activator.CreateInstance(simulatorType, [simulationRoot])! : null;
     object RunPair()
     {
-        object sim = Activator.CreateInstance(simulatorType, [combat])!;
+        object sim = capturedSimulator is null
+            ? Activator.CreateInstance(simulatorType, [combat])!
+            : simulatorType.GetMethod("Fork")!.Invoke(capturedSimulator, null)!;
         object state = Read(sim, "State");
         object ps = state.GetType().GetMethod("GetPlayerCombatState")!.Invoke(state, [player])!;
         object ph = Read(ps, "Hand");
@@ -127,7 +151,7 @@ try
     sw.Stop();
     Console.WriteLine(JsonSerializer.Serialize(new
     {
-        status = "smoke_passed",
+        status = rootProbe ? "root_smoke_passed" : "smoke_passed",
         productionReady = false,
         productionLabels = false,
         completeBattles = 0,
@@ -138,7 +162,7 @@ try
         iterations,
         actions = iterations * 2,
         elapsedMilliseconds = sw.Elapsed.TotalMilliseconds,
-        measurement = "fresh simulator + two card plays + assertions + source-state snapshot; excludes search, enemy turns and process startup",
+        measurement = rootProbe ? "fork captured simulator + two card plays + assertions + source-state snapshot" : "fresh simulator + two card plays + assertions + source-state snapshot",
         peakWorkingSetBytes = System.Diagnostics.Process.GetCurrentProcess().PeakWorkingSet64
     }));
 }

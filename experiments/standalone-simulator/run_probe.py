@@ -49,18 +49,21 @@ def main():
         parser.error("dotnet executable not found")
     resource.setrlimit(resource.RLIMIT_CORE, (0, 0))
     report = {"schema": "standalone-simulator-probe/v1", "productionReady": False,
-              "productionLabels": False, "completeBattles": 0,
+              "productionLabels": False, "collectedBattles": 0,
               "checkedAt": datetime.datetime.now(datetime.timezone.utc).isoformat()}
     source = Path(__file__).resolve().parent
     with tempfile.TemporaryDirectory(prefix="sts2-simulator-probe-") as directory:
         work = Path(directory)
-        for name in ("Program.cs", "HostAdapter.cs", "SimulatorPrototype.csproj"):
+        for name in ("Program.cs", "HostAdapter.cs", "OfflinePlatformService.cs", "PackedLocalization.cs", "RoundProbe.cs", "OriginalEffectProbe.cs", "SimulatorPrototype.csproj"):
             shutil.copyfile(source / name, work / name)
         report["build"] = run([dotnet, "build", "-c", "Release", "--nologo"], work, 60)
         if report["build"]["exitCode"] == 0:
             dll = str(work / "bin/Release/net9.0/SimulatorPrototype.dll")
             report["smoke"] = run([dotnet, dll, runtime, str(args.iterations)], work, 30)
             report["rootProbe"] = run([dotnet, dll, runtime, "--root-probe"], work, 30)
+            report["roundProbe"] = run([dotnet, dll, runtime, "--round-probe"], work, 30)
+            report["victoryProbe"] = run([dotnet, dll, runtime, "--victory-probe"], work, 30)
+            report["oracleProbe"] = run([dotnet, dll, runtime, "--oracle-probe"], work, 30)
             # Prove the adapter refuses an unreviewed assembly before attempting game bootstrap.
             bad = work / "unreviewed/mods/CombatSolver"
             bad.mkdir(parents=True)
@@ -71,7 +74,23 @@ def main():
     report["smokePassed"] = smoke.get("exitCode") == 0 and any(
         x.get("status") == "smoke_passed" for x in smoke.get("records", []))
     report["versionGuardPassed"] = guard.get("exitCode") not in (None, 0) and "Unreviewed runtime assembly" in guard.get("stderr", "")
-    report["fullRootCaptured"] = False  # The diagnostic mode never certifies a usable full root.
+    def passed(name, status):
+        result = report.get(name, {})
+        return result.get("exitCode") == 0 and any(x.get("status") == status for x in result.get("records", []))
+    report["rootForkPassed"] = passed("rootProbe", "root_smoke_passed")
+    report["fullRootCaptured"] = passed("roundProbe", "search_root_captured") and passed("victoryProbe", "search_root_captured")
+    report["originalEffectsMatched"] = passed("oracleProbe", "original_effects_matched")
+    report["battleFixturesPassed"] = all(
+        passed(name, "battle_pair_passed") and any(
+            x.get("battle", {}).get("outcome") == expected
+            for x in report.get(name, {}).get("records", []))
+        for name, expected in (("roundProbe", "loss"), ("victoryProbe", "win")))
+    report["syntheticBattles"] = sum(
+        x.get("syntheticBattles", 0) for name in ("roundProbe", "victoryProbe")
+        for x in report.get(name, {}).get("records", []))
+    report["experimentPassed"] = all(report[k] for k in (
+        "smokePassed", "versionGuardPassed", "rootForkPassed", "fullRootCaptured",
+        "originalEffectsMatched", "battleFixturesPassed"))
     payload = json.dumps(report, ensure_ascii=False, indent=2) + "\n"
     if args.report:
         target = args.report.resolve()
@@ -85,7 +104,7 @@ def main():
             raise IOError("Report verification failed")
         temporary.replace(target)
     print(payload)
-    return 0 if report["smokePassed"] and report["versionGuardPassed"] else 1
+    return 0 if report["experimentPassed"] else 1
 
 
 if __name__ == "__main__":
