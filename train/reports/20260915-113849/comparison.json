@@ -1,0 +1,578 @@
+{
+  "generated_at_utc": "2026-09-15T13:33:57.418041+00:00",
+  "snapshot": "data/train-snapshots/20260915-113849",
+  "output": "checkpoints/train/20260915-113849",
+  "models": [
+    {
+      "model": "repo_mlp",
+      "status": "ok",
+      "parameters": 560642,
+      "best_epoch": 27,
+      "best_iterations": null,
+      "training_seconds": 311.4,
+      "device": "cuda:0",
+      "features": 4248,
+      "symbols": 667,
+      "validation": {
+        "pair_mae_hp": 4.45123481831321,
+        "pair_rmse_hp": 7.2497282767027045,
+        "pair_r2": 0.8106867590482143,
+        "row_mae_hp": 6.597709830578141,
+        "row_rmse_hp": 10.351985119393227,
+        "death_brier": 0.02199708591499396,
+        "death_auc": 0.9691945806088063
+      },
+      "test": {
+        "pair_mae_hp": 4.479300060218606,
+        "pair_rmse_hp": 7.18094004159421,
+        "pair_r2": 0.8201500140642322,
+        "row_mae_hp": 6.562523555050623,
+        "row_rmse_hp": 10.141148718126054,
+        "death_brier": 0.021608525182697607,
+        "death_auc": 0.9752726443846139
+      },
+      "test_by_kind": {
+        "mutation": {
+          "pair_mae_hp": 5.93012724429987,
+          "pair_rmse_hp": 9.02879022319388,
+          "pair_r2": 0.7353472673030415,
+          "row_mae_hp": 8.294234239711429,
+          "row_rmse_hp": 12.357275156474595,
+          "death_brier": 0.03052134895395121,
+          "death_auc": 0.9620124286684698
+        },
+        "real": {
+          "pair_mae_hp": 4.10595477370491,
+          "pair_rmse_hp": 6.622535310289566,
+          "pair_r2": 0.8439007261841968,
+          "row_mae_hp": 6.116897757007827,
+          "row_rmse_hp": 9.48748941062712,
+          "death_brier": 0.019314964115562626,
+          "death_auc": 0.9785950647309959
+        }
+      },
+      "test_by_act": {
+        "GLORY": {
+          "pair_mae_hp": 6.52995880136316,
+          "pair_rmse_hp": 9.668150312402641,
+          "pair_r2": 0.7511107410440583,
+          "row_mae_hp": 9.190285640615564,
+          "row_rmse_hp": 13.455423685642472,
+          "death_brier": 0.03935585811439421,
+          "death_auc": 0.9583081347578868
+        },
+        "HIVE": {
+          "pair_mae_hp": 4.968705528037564,
+          "pair_rmse_hp": 7.592585075141446,
+          "pair_r2": 0.7827834958886761,
+          "row_mae_hp": 7.186127693155581,
+          "row_rmse_hp": 10.640782008448031,
+          "death_brier": 0.021279868881722577,
+          "death_auc": 0.9710637713073204
+        },
+        "OVERGROWTH": {
+          "pair_mae_hp": 3.1971267434447377,
+          "pair_rmse_hp": 5.226166670910696,
+          "pair_r2": 0.892242975443209,
+          "row_mae_hp": 4.97022056098705,
+          "row_rmse_hp": 7.786833647254476,
+          "death_brier": 0.012393590715632945,
+          "death_auc": 0.9870485052976868
+        },
+        "UNDERDOCKS": {
+          "pair_mae_hp": 3.3018957257538615,
+          "pair_rmse_hp": 5.519046809083124,
+          "pair_r2": 0.8792120769667375,
+          "row_mae_hp": 4.9914244442876905,
+          "row_rmse_hp": 7.795388206865743,
+          "death_brier": 0.015375279455928587,
+          "death_auc": 0.9839181471717663
+        }
+      }
+    },
+    {
+      "model": "rtdl_mlp",
+      "status": "ok",
+      "parameters": 2701826,
+      "best_epoch": 7,
+      "best_iterations": null,
+      "training_seconds": 65.0,
+      "device": "cuda:3",
+      "features": 4248,
+      "symbols": 667,
+      "validation": {
+        "pair_mae_hp": 4.568880073291954,
+        "pair_rmse_hp": 7.494159012638507,
+        "pair_r2": 0.7977058427543546,
+        "row_mae_hp": 6.639123683796635,
+        "row_rmse_hp": 10.524611875665714,
+        "death_brier": 0.021528295992168864,
+        "death_auc": 0.9714153336757654
+      },
+      "test": {
+        "pair_mae_hp": 4.561063556855268,
+        "pair_rmse_hp": 7.326631546091987,
+        "pair_r2": 0.8127781595192586,
+        "row_mae_hp": 6.5935863176997485,
+        "row_rmse_hp": 10.244829293593945,
+        "death_brier": 0.02078952715680843,
+        "death_auc": 0.9766365436624039
+      },
+      "test_by_kind": {
+        "mutation": {
+          "pair_mae_hp": 5.802796227189949,
+          "pair_rmse_hp": 8.759218973044055,
+          "pair_r2": 0.7509147422474188,
+          "row_mae_hp": 8.118159174082946,
+          "row_rmse_hp": 12.16170684635822,
+          "death_brier": 0.026939945306644196,
+          "death_auc": 0.9673530569551685
+        },
+        "real": {
+          "pair_mae_hp": 4.241525127560472,
+          "pair_rmse_hp": 6.910098065432586,
+          "pair_r2": 0.8300501682036989,
+          "row_mae_hp": 6.201263857707985,
+          "row_rmse_hp": 9.690404359732222,
+          "death_brier": 0.01920682340577492,
+          "death_auc": 0.9790937491977428
+        }
+      },
+      "test_by_act": {
+        "GLORY": {
+          "pair_mae_hp": 6.347524469873708,
+          "pair_rmse_hp": 9.392177961490228,
+          "pair_r2": 0.7651167795607616,
+          "row_mae_hp": 8.992674599886273,
+          "row_rmse_hp": 13.25851812832505,
+          "death_brier": 0.03492545870337161,
+          "death_auc": 0.9647443327828251
+        },
+        "HIVE": {
+          "pair_mae_hp": 5.065983583743926,
+          "pair_rmse_hp": 7.745476404120968,
+          "pair_r2": 0.7739472698705481,
+          "row_mae_hp": 7.236621812938318,
+          "row_rmse_hp": 10.750409218015118,
+          "death_brier": 0.02060667142458938,
+          "death_auc": 0.9741006561038864
+        },
+        "OVERGROWTH": {
+          "pair_mae_hp": 3.3749187479259057,
+          "pair_rmse_hp": 5.650416805017484,
+          "pair_r2": 0.8740378546621637,
+          "row_mae_hp": 5.074548236326114,
+          "row_rmse_hp": 8.077695850232235,
+          "death_brier": 0.012866977751307823,
+          "death_auc": 0.9844657873354898
+        },
+        "UNDERDOCKS": {
+          "pair_mae_hp": 3.5160805309136354,
+          "pair_rmse_hp": 6.065702738467934,
+          "pair_r2": 0.8540992230207309,
+          "row_mae_hp": 5.141696857019245,
+          "row_rmse_hp": 8.191516912413004,
+          "death_brier": 0.016487028772851867,
+          "death_auc": 0.9819875649030879
+        }
+      }
+    },
+    {
+      "model": "rtdl_resnet",
+      "status": "ok",
+      "parameters": 1879042,
+      "best_epoch": 32,
+      "best_iterations": null,
+      "training_seconds": 368.3,
+      "device": "cuda:0",
+      "features": 4248,
+      "symbols": 667,
+      "validation": {
+        "pair_mae_hp": 4.187831342489137,
+        "pair_rmse_hp": 6.850507966243121,
+        "pair_r2": 0.8309624913668162,
+        "row_mae_hp": 6.43551991882664,
+        "row_rmse_hp": 10.076432663441263,
+        "death_brier": 0.0204377360321329,
+        "death_auc": 0.9718805899542461
+      },
+      "test": {
+        "pair_mae_hp": 4.162371857391636,
+        "pair_rmse_hp": 6.774411363661061,
+        "pair_r2": 0.8399370057625939,
+        "row_mae_hp": 6.370597160982422,
+        "row_rmse_hp": 9.857466549086658,
+        "death_brier": 0.0200635009530723,
+        "death_auc": 0.9770589379490294
+      },
+      "test_by_kind": {
+        "mutation": {
+          "pair_mae_hp": 5.512042315127829,
+          "pair_rmse_hp": 8.584021568434466,
+          "pair_r2": 0.7607792444284309,
+          "row_mae_hp": 8.084240464186248,
+          "row_rmse_hp": 12.036138196538769,
+          "death_brier": 0.02857649407924983,
+          "death_auc": 0.9622919388858107
+        },
+        "real": {
+          "pair_mae_hp": 3.815057505088759,
+          "pair_rmse_hp": 6.2241994502162195,
+          "pair_r2": 0.8621142710779826,
+          "row_mae_hp": 5.9296206911164555,
+          "row_rmse_hp": 9.21385587996662,
+          "death_brier": 0.017872829388134327,
+          "death_auc": 0.980866213836137
+        }
+      },
+      "test_by_act": {
+        "GLORY": {
+          "pair_mae_hp": 6.026603580687649,
+          "pair_rmse_hp": 9.088028386466368,
+          "pair_r2": 0.7800830434009749,
+          "row_mae_hp": 8.912524622755004,
+          "row_rmse_hp": 13.044828709147609,
+          "death_brier": 0.036265909187605576,
+          "death_auc": 0.9625808635746604
+        },
+        "HIVE": {
+          "pair_mae_hp": 4.597305713761392,
+          "pair_rmse_hp": 7.094548914207543,
+          "pair_r2": 0.8103455397641709,
+          "row_mae_hp": 6.970853103648752,
+          "row_rmse_hp": 10.291332174413652,
+          "death_brier": 0.019796193527558643,
+          "death_auc": 0.9728643583881277
+        },
+        "OVERGROWTH": {
+          "pair_mae_hp": 3.027161315504066,
+          "pair_rmse_hp": 5.106995975268881,
+          "pair_r2": 0.897101247362768,
+          "row_mae_hp": 4.872004033913273,
+          "row_rmse_hp": 7.707358047283754,
+          "death_brier": 0.011713480796283116,
+          "death_auc": 0.986396395976043
+        },
+        "UNDERDOCKS": {
+          "pair_mae_hp": 3.0657470759860357,
+          "pair_rmse_hp": 5.173548233377023,
+          "pair_r2": 0.8938616423077931,
+          "row_mae_hp": 4.799650235893026,
+          "row_rmse_hp": 7.554720440755528,
+          "death_brier": 0.014243229387945278,
+          "death_auc": 0.9848885648132233
+        }
+      }
+    },
+    {
+      "model": "tabm",
+      "status": "ok",
+      "parameters": 2999104,
+      "best_epoch": 21,
+      "best_iterations": null,
+      "training_seconds": 1124.9,
+      "device": "cuda:2",
+      "features": 4248,
+      "symbols": 667,
+      "validation": {
+        "pair_mae_hp": 4.358114464683826,
+        "pair_rmse_hp": 7.033588942759174,
+        "pair_r2": 0.8218066472838246,
+        "row_mae_hp": 6.553347095897863,
+        "row_rmse_hp": 10.201784610647051,
+        "death_brier": 0.019857277341442495,
+        "death_auc": 0.9765770840490411
+      },
+      "test": {
+        "pair_mae_hp": 4.34521262135899,
+        "pair_rmse_hp": 6.892566971018011,
+        "pair_r2": 0.8343048500919578,
+        "row_mae_hp": 6.496607978292755,
+        "row_rmse_hp": 9.939038026516908,
+        "death_brier": 0.019205539660743932,
+        "death_auc": 0.9803933556283666
+      },
+      "test_by_kind": {
+        "mutation": {
+          "pair_mae_hp": 5.638534509575157,
+          "pair_rmse_hp": 8.56113225048351,
+          "pair_r2": 0.7620533091636469,
+          "row_mae_hp": 8.131898865248086,
+          "row_rmse_hp": 12.019824533227618,
+          "death_brier": 0.026560436672632942,
+          "death_auc": 0.9695487275770692
+        },
+        "real": {
+          "pair_mae_hp": 4.012398598980254,
+          "pair_rmse_hp": 6.393123290113889,
+          "pair_r2": 0.8545283123650008,
+          "row_mae_hp": 6.07579414779178,
+          "row_rmse_hp": 9.328799857623746,
+          "death_brier": 0.017312884103740427,
+          "death_auc": 0.9831144453559546
+        }
+      },
+      "test_by_act": {
+        "GLORY": {
+          "pair_mae_hp": 6.263734423769012,
+          "pair_rmse_hp": 9.288614045315107,
+          "pair_r2": 0.7702681539737392,
+          "row_mae_hp": 9.055105249364216,
+          "row_rmse_hp": 13.185357294425183,
+          "death_brier": 0.03417776493173293,
+          "death_auc": 0.9664121399209504
+        },
+        "HIVE": {
+          "pair_mae_hp": 4.760748129287775,
+          "pair_rmse_hp": 7.163277060380665,
+          "pair_r2": 0.8066532019728027,
+          "row_mae_hp": 7.075610861461665,
+          "row_rmse_hp": 10.338831262372816,
+          "death_brier": 0.018769619415107283,
+          "death_auc": 0.9790816709414693
+        },
+        "OVERGROWTH": {
+          "pair_mae_hp": 3.198169142609956,
+          "pair_rmse_hp": 5.1887928046812535,
+          "pair_r2": 0.8937786694530264,
+          "row_mae_hp": 4.9980310990498475,
+          "row_rmse_hp": 7.761799465832699,
+          "death_brier": 0.011724303021460955,
+          "death_auc": 0.9878433153869168
+        },
+        "UNDERDOCKS": {
+          "pair_mae_hp": 3.2338119003251053,
+          "pair_rmse_hp": 5.300431873544855,
+          "pair_r2": 0.8885916166099206,
+          "row_mae_hp": 4.938019186019448,
+          "row_rmse_hp": 7.642171004431994,
+          "death_brier": 0.013782523881653814,
+          "death_auc": 0.9871828275280163
+        }
+      }
+    },
+    {
+      "model": "set_transformer",
+      "status": "ok",
+      "parameters": 352642,
+      "best_epoch": 22,
+      "best_iterations": null,
+      "training_seconds": 1467.7,
+      "device": "cuda:3",
+      "features": 4248,
+      "symbols": 667,
+      "validation": {
+        "pair_mae_hp": 4.148328542786184,
+        "pair_rmse_hp": 6.712956091305653,
+        "pair_r2": 0.8376825748336459,
+        "row_mae_hp": 6.337792738221891,
+        "row_rmse_hp": 9.983427032234497,
+        "death_brier": 0.01957570129181205,
+        "death_auc": 0.9788955896681443
+      },
+      "test": {
+        "pair_mae_hp": 3.9457587158345984,
+        "pair_rmse_hp": 6.35914015089443,
+        "pair_r2": 0.8589592527018912,
+        "row_mae_hp": 6.170208991025535,
+        "row_rmse_hp": 9.57682937617689,
+        "death_brier": 0.017905107857519642,
+        "death_auc": 0.9830419459341733
+      },
+      "test_by_kind": {
+        "mutation": {
+          "pair_mae_hp": 5.04899028526793,
+          "pair_rmse_hp": 7.800820893742767,
+          "pair_r2": 0.8024405216762613,
+          "row_mae_hp": 7.619408184324287,
+          "row_rmse_hp": 11.49069201636144,
+          "death_brier": 0.02429106416650626,
+          "death_auc": 0.9753780310245123
+        },
+        "real": {
+          "pair_mae_hp": 3.6618611497424176,
+          "pair_rmse_hp": 5.931731344311375,
+          "pair_r2": 0.8747680152260058,
+          "row_mae_hp": 5.797282639783885,
+          "row_rmse_hp": 9.018864569398707,
+          "death_brier": 0.01626179243441478,
+          "death_auc": 0.9849591523489236
+        }
+      },
+      "test_by_act": {
+        "GLORY": {
+          "pair_mae_hp": 5.682895279615248,
+          "pair_rmse_hp": 8.655519989876368,
+          "pair_r2": 0.8005170902628514,
+          "row_mae_hp": 8.50388178334917,
+          "row_rmse_hp": 12.74728686389139,
+          "death_brier": 0.032189636228781154,
+          "death_auc": 0.9694001965711315
+        },
+        "HIVE": {
+          "pair_mae_hp": 4.282068820557656,
+          "pair_rmse_hp": 6.518686611018738,
+          "pair_r2": 0.8398843837044445,
+          "row_mae_hp": 6.7277153401045044,
+          "row_rmse_hp": 9.903139338652338,
+          "death_brier": 0.017553122974331314,
+          "death_auc": 0.9825378197715348
+        },
+        "OVERGROWTH": {
+          "pair_mae_hp": 2.9698053149223074,
+          "pair_rmse_hp": 4.886730711852402,
+          "pair_r2": 0.9057859021453813,
+          "row_mae_hp": 4.8112463601253594,
+          "row_rmse_hp": 7.5632068084756545,
+          "death_brier": 0.01046113730896635,
+          "death_auc": 0.9892748861687187
+        },
+        "UNDERDOCKS": {
+          "pair_mae_hp": 2.9127253440573373,
+          "pair_rmse_hp": 4.768067822852175,
+          "pair_r2": 0.9098469950032656,
+          "row_mae_hp": 4.696490656601717,
+          "row_rmse_hp": 7.2830399132648695,
+          "death_brier": 0.013047660991465053,
+          "death_auc": 0.9897165282811304
+        }
+      }
+    },
+    {
+      "model": "lightgbm",
+      "status": "ok",
+      "parameters": null,
+      "best_epoch": null,
+      "best_iterations": {
+        "regression": 3879,
+        "death": 1269
+      },
+      "training_seconds": 1410.4,
+      "device": "cpu",
+      "features": 4248,
+      "symbols": 667,
+      "validation": {
+        "pair_mae_hp": 5.070971346641205,
+        "pair_rmse_hp": 7.895171260084239,
+        "pair_r2": 0.7754771005696806,
+        "row_mae_hp": 7.21268009702009,
+        "row_rmse_hp": 10.813822869537061,
+        "death_brier": 0.02123728651394656,
+        "death_auc": 0.9738018862494582
+      },
+      "test": {
+        "pair_mae_hp": 4.996357410831817,
+        "pair_rmse_hp": 7.640429842459836,
+        "pair_r2": 0.7963973662837041,
+        "row_mae_hp": 7.10391437542791,
+        "row_rmse_hp": 10.471540747176434,
+        "death_brier": 0.02067909660740958,
+        "death_auc": 0.9774501482421732
+      },
+      "test_by_kind": {
+        "mutation": {
+          "pair_mae_hp": 6.231550592438577,
+          "pair_rmse_hp": 8.979578189070665,
+          "pair_r2": 0.7382244201933881,
+          "row_mae_hp": 8.740666034964358,
+          "row_rmse_hp": 12.321364407120031,
+          "death_brier": 0.027830282452680793,
+          "death_auc": 0.9656546675624819
+        },
+        "real": {
+          "pair_mae_hp": 4.678501805873075,
+          "pair_rmse_hp": 7.255949460383362,
+          "pair_r2": 0.8126124143196626,
+          "row_mae_hp": 6.682724640364477,
+          "row_rmse_hp": 9.93998410220945,
+          "death_brier": 0.018838862596336572,
+          "death_auc": 0.9804285262452838
+        }
+      },
+      "test_by_act": {
+        "GLORY": {
+          "pair_mae_hp": 7.068000145030038,
+          "pair_rmse_hp": 9.820741147219236,
+          "pair_r2": 0.7431923863269017,
+          "row_mae_hp": 9.898285123607282,
+          "row_rmse_hp": 13.565480189678825,
+          "death_brier": 0.03617428337186699,
+          "death_auc": 0.9621119762043433
+        },
+        "HIVE": {
+          "pair_mae_hp": 5.452622804233822,
+          "pair_rmse_hp": 8.063788918850916,
+          "pair_r2": 0.7549854992839415,
+          "row_mae_hp": 7.7154808126798375,
+          "row_rmse_hp": 10.981966370179377,
+          "death_brier": 0.021420410619785148,
+          "death_auc": 0.975754982543669
+        },
+        "OVERGROWTH": {
+          "pair_mae_hp": 3.7945554644410233,
+          "pair_rmse_hp": 6.022174683154192,
+          "pair_r2": 0.856917744841858,
+          "row_mae_hp": 5.510461761176626,
+          "row_rmse_hp": 8.341975071496988,
+          "death_brier": 0.01225229478743282,
+          "death_auc": 0.9857264490584509
+        },
+        "UNDERDOCKS": {
+          "pair_mae_hp": 3.7366932806906434,
+          "pair_rmse_hp": 6.141237127157764,
+          "pair_r2": 0.8504428804204559,
+          "row_mae_hp": 5.373595002119487,
+          "row_rmse_hp": 8.24760529286361,
+          "death_brier": 0.014288840054356836,
+          "death_auc": 0.9860115714312424
+        }
+      }
+    }
+  ],
+  "ensemble": {
+    "members": [
+      "repo_mlp",
+      "rtdl_mlp",
+      "rtdl_resnet",
+      "tabm",
+      "set_transformer",
+      "lightgbm"
+    ],
+    "test": {
+      "pair_mae_hp": 3.9810262060985773,
+      "pair_rmse_hp": 6.275957780914356,
+      "pair_r2": 0.8626249593686538,
+      "row_mae_hp": 6.290428524057795,
+      "row_rmse_hp": 9.521798333825215,
+      "death_brier": 0.018257008684844124,
+      "death_auc": 0.9826393034552908
+    },
+    "test_by_kind": {
+      "mutation": {
+        "pair_mae_hp": 5.166200376618445,
+        "pair_rmse_hp": 7.732714876306217,
+        "pair_r2": 0.8058750971513776,
+        "row_mae_hp": 7.846290078461435,
+        "row_rmse_hp": 11.444565337190763,
+        "death_brier": 0.024996801667243104,
+        "death_auc": 0.9729776855844842
+      },
+      "real": {
+        "pair_mae_hp": 3.676042128658939,
+        "pair_rmse_hp": 5.842619060403907,
+        "pair_r2": 0.8785024669399341,
+        "row_mae_hp": 5.890054458709209,
+        "row_rmse_hp": 8.960506618804416,
+        "death_brier": 0.016522639512771324,
+        "death_auc": 0.9850613133648985
+      }
+    }
+  },
+  "test_noise_floor": {
+    "floor_within_pair_rmse_hp": 8.268916762812886,
+    "floor_loo_seed_mean_mae_hp": 6.0820009075621275,
+    "floor_multi_seed_rows": 74926,
+    "floor_pairs_with_multiple_seeds": 18733
+  },
+  "runs": {}
+}

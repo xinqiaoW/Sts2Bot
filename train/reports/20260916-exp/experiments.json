@@ -1,0 +1,284 @@
+{
+  "snapshot": "/data2/pl/ImageTask/wxq/Projects/Sts2Bot/data/train-snapshots/20260916-054432",
+  "runs": {
+    "set_transformer_huber_pair": {
+      "exit_code": 0,
+      "seconds": 540.1,
+      "gpu": 1
+    },
+    "token_transformer": {
+      "exit_code": 0,
+      "seconds": 3000.0,
+      "gpu": 6
+    },
+    "set_transformer_wide_huber": {
+      "exit_code": 0,
+      "seconds": 1380.0,
+      "gpu": 6
+    },
+    "token_transformer_mse_row": {
+      "exit_code": 0,
+      "seconds": 3210.0,
+      "gpu": 1
+    }
+  },
+  "models": [
+    {
+      "run": "set_transformer_baseline",
+      "model": "set_transformer",
+      "status": "baseline",
+      "test": {
+        "pair_mae_hp": 4.002487764692323,
+        "pair_rmse_hp": 6.450550665954779,
+        "pair_r2": 0.85646861042563,
+        "row_mae_hp": 6.212570754392996,
+        "row_rmse_hp": 9.661954515882691,
+        "death_brier": 0.018362964398068185,
+        "death_auc": 0.9831668646555044
+      },
+      "validation": {
+        "pair_mae_hp": 4.265539810876647,
+        "pair_rmse_hp": 6.875109026030465,
+        "pair_r2": 0.8397574071343377,
+        "row_mae_hp": 6.505007958132728,
+        "row_rmse_hp": 10.197310282885995,
+        "death_brier": 0.020929377409052197,
+        "death_auc": 0.9783901847044695
+      },
+      "parameters": 352642,
+      "best_epoch": 24
+    },
+    {
+      "run": "set_transformer_huber_pair",
+      "model": "set_transformer",
+      "status": "ok",
+      "hparams": {
+        "epochs": 200,
+        "patience": 15,
+        "batch_size": 512,
+        "lr": 0.00025,
+        "weight_decay": 0.0001,
+        "death_loss_weight": 0.1,
+        "seed": 20260911,
+        "min_train_builds": 20,
+        "hp_loss": "huber",
+        "huber_delta": 0.05,
+        "pair_supervise": true,
+        "lr_schedule": "plateau",
+        "d_model": 128,
+        "num_heads": 4,
+        "num_inds": 0,
+        "n_enc": 2,
+        "ln": true,
+        "dropout": 0.1
+      },
+      "test": {
+        "pair_mae_hp": 3.9267096358270206,
+        "pair_rmse_hp": 6.385726001189378,
+        "pair_r2": 0.8593389458873668,
+        "row_mae_hp": 6.143620937227264,
+        "row_rmse_hp": 9.618797104439851,
+        "death_brier": 0.018402615787169486,
+        "death_auc": 0.9826200723404015
+      },
+      "validation": {
+        "pair_mae_hp": 4.14089347967061,
+        "pair_rmse_hp": 6.797503462501269,
+        "pair_r2": 0.8433545952202595,
+        "row_mae_hp": 6.404063705794054,
+        "row_rmse_hp": 10.145149885939198,
+        "death_brier": 0.02046488043501561,
+        "death_auc": 0.9789359229585027
+      },
+      "parameters": 352642,
+      "best_epoch": 52,
+      "training_seconds": 495.7
+    },
+    {
+      "run": "token_transformer",
+      "model": "token_transformer",
+      "status": "ok",
+      "hparams": {
+        "epochs": 200,
+        "patience": 20,
+        "batch_size": 512,
+        "lr": 0.0005,
+        "weight_decay": 0.0001,
+        "death_loss_weight": 0.1,
+        "seed": 20260911,
+        "min_train_builds": 20,
+        "hp_loss": "huber",
+        "huber_delta": 0.05,
+        "pair_supervise": true,
+        "lr_schedule": "plateau",
+        "d_model": 256,
+        "num_heads": 8,
+        "n_enc": 4,
+        "d_ff": 1024,
+        "d_field": 32,
+        "pool": "target",
+        "dropout": 0.1
+      },
+      "test": {
+        "pair_mae_hp": 4.053931750521171,
+        "pair_rmse_hp": 6.69164210408719,
+        "pair_r2": 0.84553904413246,
+        "row_mae_hp": 6.202743487085243,
+        "row_rmse_hp": 9.824552672989341,
+        "death_brier": 0.019498627259545515,
+        "death_auc": 0.9799442699355525
+      },
+      "validation": {
+        "pair_mae_hp": 4.27831521243764,
+        "pair_rmse_hp": 7.115117422347337,
+        "pair_r2": 0.828374060426795,
+        "row_mae_hp": 6.449681991640011,
+        "row_rmse_hp": 10.360642297624368,
+        "death_brier": 0.02138442661085428,
+        "death_auc": 0.977181845807276
+      },
+      "parameters": 3760226,
+      "best_epoch": 68,
+      "training_seconds": 2913.5
+    },
+    {
+      "run": "token_transformer_mse_row",
+      "model": "token_transformer",
+      "status": "ok",
+      "hparams": {
+        "epochs": 200,
+        "patience": 20,
+        "batch_size": 512,
+        "lr": 0.0005,
+        "weight_decay": 0.0001,
+        "death_loss_weight": 0.1,
+        "seed": 20260911,
+        "min_train_builds": 20,
+        "hp_loss": "mse",
+        "huber_delta": 0.05,
+        "pair_supervise": false,
+        "lr_schedule": "plateau",
+        "d_model": 256,
+        "num_heads": 8,
+        "n_enc": 4,
+        "d_ff": 1024,
+        "d_field": 32,
+        "pool": "target",
+        "dropout": 0.1
+      },
+      "test": {
+        "pair_mae_hp": 5.046386759992034,
+        "pair_rmse_hp": 7.908819019590316,
+        "pair_r2": 0.7842371932613899,
+        "row_mae_hp": 7.124411064822982,
+        "row_rmse_hp": 10.690798822320685,
+        "death_brier": 0.021216901481536554,
+        "death_auc": 0.9763337358499315
+      },
+      "validation": {
+        "pair_mae_hp": 5.187168389997791,
+        "pair_rmse_hp": 8.081632426318249,
+        "pair_r2": 0.7785799361000912,
+        "row_mae_hp": 7.327551269928094,
+        "row_rmse_hp": 11.04675497877724,
+        "death_brier": 0.023255558762383888,
+        "death_auc": 0.9718265428404997
+      },
+      "parameters": 3760226,
+      "best_epoch": 5,
+      "training_seconds": 3023.1
+    },
+    {
+      "run": "set_transformer_wide_huber",
+      "model": "set_transformer",
+      "status": "ok",
+      "hparams": {
+        "epochs": 200,
+        "patience": 20,
+        "batch_size": 512,
+        "lr": 0.00025,
+        "weight_decay": 0.0001,
+        "death_loss_weight": 0.1,
+        "seed": 20260911,
+        "min_train_builds": 20,
+        "hp_loss": "huber",
+        "huber_delta": 0.05,
+        "pair_supervise": true,
+        "lr_schedule": "plateau",
+        "d_model": 256,
+        "num_heads": 8,
+        "num_inds": 0,
+        "n_enc": 4,
+        "ln": true,
+        "dropout": 0.1
+      },
+      "test": {
+        "pair_mae_hp": 4.018320243620207,
+        "pair_rmse_hp": 6.615655300187639,
+        "pair_r2": 0.8490270832664728,
+        "row_mae_hp": 6.233385225265542,
+        "row_rmse_hp": 9.772955347519678,
+        "death_brier": 0.018572659526453646,
+        "death_auc": 0.9815229011716928
+      },
+      "validation": {
+        "pair_mae_hp": 4.2036035374357095,
+        "pair_rmse_hp": 6.8987813767620505,
+        "pair_r2": 0.8386520139203499,
+        "row_mae_hp": 6.4764510227782015,
+        "row_rmse_hp": 10.213285336768458,
+        "death_brier": 0.020971885177974933,
+        "death_auc": 0.9779845176925568
+      },
+      "parameters": 1757954,
+      "best_epoch": 35,
+      "training_seconds": 1251.6
+    }
+  ],
+  "best": {
+    "run": "set_transformer_huber_pair",
+    "model": "set_transformer",
+    "status": "ok",
+    "hparams": {
+      "epochs": 200,
+      "patience": 15,
+      "batch_size": 512,
+      "lr": 0.00025,
+      "weight_decay": 0.0001,
+      "death_loss_weight": 0.1,
+      "seed": 20260911,
+      "min_train_builds": 20,
+      "hp_loss": "huber",
+      "huber_delta": 0.05,
+      "pair_supervise": true,
+      "lr_schedule": "plateau",
+      "d_model": 128,
+      "num_heads": 4,
+      "num_inds": 0,
+      "n_enc": 2,
+      "ln": true,
+      "dropout": 0.1
+    },
+    "test": {
+      "pair_mae_hp": 3.9267096358270206,
+      "pair_rmse_hp": 6.385726001189378,
+      "pair_r2": 0.8593389458873668,
+      "row_mae_hp": 6.143620937227264,
+      "row_rmse_hp": 9.618797104439851,
+      "death_brier": 0.018402615787169486,
+      "death_auc": 0.9826200723404015
+    },
+    "validation": {
+      "pair_mae_hp": 4.14089347967061,
+      "pair_rmse_hp": 6.797503462501269,
+      "pair_r2": 0.8433545952202595,
+      "row_mae_hp": 6.404063705794054,
+      "row_rmse_hp": 10.145149885939198,
+      "death_brier": 0.02046488043501561,
+      "death_auc": 0.9789359229585027
+    },
+    "parameters": 352642,
+    "best_epoch": 52,
+    "training_seconds": 495.7
+  }
+}

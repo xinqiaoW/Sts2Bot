@@ -20,3 +20,11 @@ catalogs/counter-inspection.txt
 # Generated shareable viewer snapshot
 /share-viewer-20260910/
 .venv-train/
+
+# Local AI tool skill shims
+.agents/
+.apodex/
+.claude/
+
+# Game decompilation; local reference only
+decompiled/
