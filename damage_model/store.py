@@ -8,6 +8,7 @@ import uuid
 from collections import Counter
 from .schema import Build, canonical, digest
 from .observation import validate_hp, validate_cards
+from .provenance import completed_by_expected_backend
 
 
 class Store:
@@ -119,7 +120,7 @@ class Store:
 
     def finish(self, job, result):
         observation = result.get('trainingObservation')
-        complete = result.get('status') == 'Passed' and result.get('combatEnded') is True and observation and observation.get('complete') is True
+        complete = completed_by_expected_backend(job, result) and result.get('combatEnded') is True and observation and observation.get('complete') is True
         if complete:
             required = ('initialHp','initialMaxHp','finalHp','finalMaxHp','netHpLoss','playerDied','initialBuild')
             if any(k not in observation for k in required): raise ValueError('Incomplete observation')
@@ -169,8 +170,11 @@ class Store:
 
     def retry_or_quarantine_native(self, job, result, *, max_attempts, reason, evidence):
         """Commit an attempt and retry/isolate atomically; peers never see a transient failed job."""
-        from .resilience import NATIVE_FAILURES, cleanup_deadline_failure
-        if (result.get('status') not in NATIVE_FAILURES
+        from .resilience import NATIVE_FAILURES, STANDALONE_FAILURES, cleanup_deadline_failure
+        allowed = NATIVE_FAILURES
+        if job['teacher'].get('execution_backend') == 'standalone-managed-native' and job['teacher'].get('validation_scope') == 'isolated-experiment':
+            allowed = STANDALONE_FAILURES
+        if (result.get('status') not in allowed
                 or ((result.get('trainingObservation') or {}).get('complete') is True
                     and not cleanup_deadline_failure(result))):
             raise ValueError('Only incomplete native failures or diagnosed cleanup timeouts can use autonomous isolation')

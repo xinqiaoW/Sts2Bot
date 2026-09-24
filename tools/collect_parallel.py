@@ -30,9 +30,14 @@ def deadline_reached(stop_at):
 
 def validate_runtimes(paths):
     runtimes=[json.loads(Path(p).read_text()) for p in paths]
-    for key in ('data_dir','prefix'):
-        values=[str(Path(r['data_dir'] if key=='data_dir' else r['env']['WINEPREFIX']).resolve()) for r in runtimes]
-        if len(set(values))!=len(values): raise ValueError(f'Workers share {key}')
+    for runtime in runtimes:
+        if runtime.get('backend', 'native-wine') not in ('native-wine', 'standalone-managed-native'):
+            raise ValueError('Unsupported runtime backend')
+    data = [str(Path(r['data_dir']).resolve()) for r in runtimes]
+    if len(set(data)) != len(data): raise ValueError('Workers share data_dir')
+    prefixes = [str(Path(r['env']['WINEPREFIX']).resolve()) for r in runtimes
+                if r.get('backend', 'native-wine') == 'native-wine']
+    if len(set(prefixes)) != len(prefixes): raise ValueError('Workers share prefix')
     return runtimes
 
 
@@ -46,6 +51,8 @@ def main():
     p=argparse.ArgumentParser()
     p.add_argument('--db',default='data/collection-real-runs-v2.sqlite')
     p.add_argument('--config',default='configs/real-runs.json')
+    p.add_argument('--teacher',default='configs/teacher.json')
+    p.add_argument('--catalog',default='catalogs/game-0.111.0.raw.json')
     p.add_argument('--fallback-db', help='Optional mutation queue sharing these workers')
     p.add_argument('--targeted-db', help='Third queue; replaces worker preferences with a 2:1:1 task cycle')
     p.add_argument('--mutation-workers', type=int, default=0, help='Workers preferring mutation; both groups borrow idle capacity')
@@ -126,7 +133,7 @@ def main():
             log=Path('logs')/(Path(path).stem+'-worker.log');log.parent.mkdir(exist_ok=True)
             log_files.append(log.open('ab'))
         return subprocess.Popen([sys.executable,'-u','-m','damage_model.cli','--db',args.db,
-            '--config',args.config,
+            '--config',args.config,'--teacher',args.teacher,'--catalog',args.catalog,
             'work','--runtime',path,'--limit',str(args.limit_per_worker),
             *(['--targeted-db',args.targeted_db,'--schedule-offset',str(index % 4)] if targeted is not None
               else ['--prefer-dataset',preferences[index]]),
@@ -167,7 +174,7 @@ def main():
             status('batch_complete');return
         if args.train_after:
             status('training')
-            subprocess.run([sys.executable,'-u','-m','damage_model.cli','--db',args.db,'--config',args.config,'train','--device','cpu'],check=True)
+            subprocess.run([sys.executable,'-u','-m','damage_model.cli','--db',args.db,'--config',args.config,'--teacher',args.teacher,'--catalog',args.catalog,'train','--device','cpu'],check=True)
         status('complete')
     except BaseException as error:
         status('draining',error=str(error));drain();status('failed',error=str(error))

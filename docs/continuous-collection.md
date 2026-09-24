@@ -26,6 +26,7 @@ assert not Path(s['active_db']).with_suffix('.continuous.stop').exists()
 subprocess.run([
     sys.executable, '-u', '-m', 'tools.collect_continuous',
     '--db', s['active_db'], '--config', s['config'],
+    '--teacher', s.get('teacher', 'configs/teacher.json'),
     '--runtimes', *s['runtimes'],
     '--reserve-gib', str(s['reserve_gib']),
     '--worker-start-gib', str(s['worker_start_gib']),
@@ -38,6 +39,13 @@ subprocess.run([
 ], check=True)
 PY
 ```
+
+控制器和采集池可通过 `--teacher` 指定冻结教师清单，默认仍为
+`configs/teacher.json`；会话使用非默认教师时应保存 `teacher` 路径，备份会保留
+该文件。控制器会将同一清单传给导入、变异和子worker，现有队列的教师身份必须
+匹配。独立后端目前仅接受 `validation_scope=isolated-experiment`，尚未通过正式
+替代验收；应使用独立队列和会话。每个runtime仍须有独立 `data_dir`，Wine后端
+另须独立prefix；独立后端不需要Wine配置。
 
 `--reserve-gib` 是运行内存预留，设为 0 时关闭基于该预留的排空；`--worker-start-gib` 是新 worker 的启动预算，两者不等于进程实际内存上限。参数应结合共享主机和用户 cgroup 限额设置。`--collect-only` 不训练、不覆盖 `checkpoints/v1`；不传 `--stop-at` 时没有固定截止时间。
 

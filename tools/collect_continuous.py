@@ -87,11 +87,13 @@ class Controller:
             raise ValueError('Initial panel size changed across controller restart')
         self.stop_requested = False
         self.child = None
-        self.command = [sys.executable, '-u', '-m', 'damage_model.cli', '--db', args.db, '--config', args.config]
-        self.catalog = Catalog.load('catalogs/game-0.111.0.raw.json', args.config)
+        self.command = [sys.executable, '-u', '-m', 'damage_model.cli', '--db', args.db, '--config', args.config,
+                        '--teacher', getattr(args, 'teacher', 'configs/teacher.json'),
+                        '--catalog', getattr(args, 'catalog', 'catalogs/game-0.111.0.raw.json')]
+        self.catalog = Catalog.load(getattr(args, 'catalog', 'catalogs/game-0.111.0.raw.json'), args.config)
         from damage_model.target_scope import require_policy
         require_policy(self.store, self.catalog.config)
-        teacher = canonical(teacher_for(self.catalog, 'configs/teacher.json'))
+        teacher = canonical(teacher_for(self.catalog, getattr(self.args, 'teacher', 'configs/teacher.json')))
         if {r[0] for r in self.store.db.execute('SELECT DISTINCT teacher FROM jobs')} - {teacher}:
             raise ValueError('Active dataset must use the current frozen teacher')
         self.mutation_store = None
@@ -189,7 +191,7 @@ class Controller:
         counts = self.store.counts()
         if counts.get('failed', 0) or counts.get('pending', 0) >= self.args.queue_high_water:
             return
-        teacher = teacher_for(self.catalog, 'configs/teacher.json')
+        teacher = teacher_for(self.catalog, getattr(self.args, 'teacher', 'configs/teacher.json'))
         if getattr(self.args, 'backfill_dir', None):
             from damage_model.source_backfill import sync_sources
             report = sync_sources(self.store,self.catalog,teacher,self.args.source_dir,
@@ -281,6 +283,8 @@ class Controller:
                     with Path('logs/continuous-pool.log').open('ab') as stream:
                         self.child = subprocess.Popen([sys.executable, '-u', '-m', 'tools.collect_parallel',
                             '--db', str(self.db_path), '--config', getattr(self.args, 'config', 'configs/real-runs.json'),
+                            '--teacher', getattr(self.args, 'teacher', 'configs/teacher.json'),
+                            '--catalog', getattr(self.args, 'catalog', 'catalogs/game-0.111.0.raw.json'),
                             '--runtimes', *self.args.runtimes,
                             '--reserve-gib', str(self.args.reserve_gib),
                             '--worker-start-gib', str(self.args.worker_start_gib), '--limit-per-worker', '6080',
@@ -301,6 +305,8 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument('--db', default='data/collection-real-runs-v2.sqlite')
     p.add_argument('--config', default='configs/real-runs.json')
+    p.add_argument('--teacher', default='configs/teacher.json')
+    p.add_argument('--catalog', default='catalogs/game-0.111.0.raw.json')
     p.add_argument('--mutation-db', help='Separate one-generation mutation queue')
     p.add_argument('--mutation-workers', type=int, default=0, help='Minority of workers preferring mutation work')
     p.add_argument('--mutation-policy', default='configs/mutations-8s.json')

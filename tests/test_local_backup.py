@@ -160,3 +160,19 @@ def test_snapshot_keeps_one_wal_snapshot_while_another_connection_commits(tmp_pa
             assert backup.execute('SELECT count(*) FROM jobs').fetchone()[0] == 1
     finally:
         writer.close()
+
+
+def test_backup_preserves_explicit_backend_teacher_and_rejects_missing_manifest(tmp_path, monkeypatch):
+    from tools.local_backup import source_metadata
+    monkeypatch.chdir(tmp_path)
+    Path('data').mkdir(); Path('configs').mkdir(); Path('deployment').mkdir()
+    Path('configs/teacher.json').write_text('{"execution_backend":"native-wine"}')
+    custom = Path('deployment/teacher.json')
+    custom.write_text('{"execution_backend":"standalone-managed-native","standalone_host_sha256":"pinned"}')
+    Path('data/collection-session.json').write_text(json.dumps({'teacher': str(custom)}))
+    captured = source_metadata('data/real.sqlite')
+    assert json.loads(captured[Path('teacher.json')])['execution_backend'] == 'standalone-managed-native'
+    assert json.loads(captured[Path('teacher.json')])['standalone_host_sha256'] == 'pinned'
+    custom.unlink()
+    with pytest.raises(FileNotFoundError):
+        source_metadata('data/real.sqlite')

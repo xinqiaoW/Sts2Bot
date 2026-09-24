@@ -147,7 +147,7 @@ def test_memory_pause_cannot_hide_failed_jobs_or_orphaned_leases():
 def test_memory_pause_waits_and_resumes_once_without_changing_jobs(tmp_path, monkeypatch, owned, workers,reserve,budget,low,ready):
     monkeypatch.chdir(tmp_path)
     controller = object.__new__(continuous.Controller)
-    controller.args = Namespace(runtimes=['runtime.json'] * workers, reserve_gib=reserve, worker_start_gib=budget, poll_seconds=1, stop_at=None, collect_only=False)
+    controller.args = Namespace(runtimes=['runtime.json'] * workers, reserve_gib=reserve, worker_start_gib=budget, poll_seconds=1, stop_at=None, collect_only=False, teacher='isolated-teacher.json', catalog='frozen-catalog.json')
     controller.db_path = tmp_path / 'data.sqlite'
     controller.stop_path = tmp_path / 'stop'
     controller.stop_requested = False
@@ -175,6 +175,8 @@ def test_memory_pause_waits_and_resumes_once_without_changing_jobs(tmp_path, mon
         assert memory[0] == ready and counts == {'complete': 7, 'pending': 4}
         assert command[command.index('--reserve-gib')+1] == str(reserve)
         assert command[command.index('--worker-start-gib')+1] == str(budget)
+        assert command[command.index('--teacher')+1] == 'isolated-teacher.json'
+        assert command[command.index('--catalog')+1] == 'frozen-catalog.json'
         events.append(('launched', {}))
         return Namespace(pid=11, poll=lambda: None)
     monkeypatch.setattr(continuous.subprocess, 'Popen', popen)
@@ -309,3 +311,24 @@ def test_expired_pool_preserves_pending_job_without_starting_game(tmp_path):
     state = json.loads(database.with_suffix('.parallel.json').read_text())
     assert state['state'] == 'paused' and state['workers'] == 0
     assert state['counts'] == {'pending': 1}
+
+
+def test_runtime_validation_supports_standalone_without_wine(tmp_path):
+    from tools.collect_parallel import validate_runtimes
+    def runtime(name, value):
+        path = tmp_path / name
+        path.write_text(json.dumps(value))
+        return path
+    a = runtime('a.json', {'backend': 'standalone-managed-native', 'data_dir': str(tmp_path / 'a'), 'host_dll': '/shared/host.dll'})
+    b = runtime('b.json', {'backend': 'standalone-managed-native', 'data_dir': str(tmp_path / 'b'), 'host_dll': '/shared/host.dll'})
+    assert len(validate_runtimes([a, b])) == 2
+    native = runtime('native.json', {'data_dir': str(tmp_path / 'native'), 'env': {'WINEPREFIX': str(tmp_path / 'prefix')}})
+    assert len(validate_runtimes([a, native])) == 2
+    with pytest.raises(ValueError, match='data_dir'):
+        validate_runtimes([a, a])
+    alias = runtime('alias.json', {'data_dir': str(tmp_path / 'other'), 'env': {'WINEPREFIX': str(tmp_path / 'prefix')}})
+    with pytest.raises(ValueError, match='prefix'):
+        validate_runtimes([native, alias])
+    invalid = runtime('invalid.json', {'backend': 'unknown', 'data_dir': str(tmp_path / 'invalid')})
+    with pytest.raises(ValueError, match='Unsupported runtime backend'):
+        validate_runtimes([invalid])

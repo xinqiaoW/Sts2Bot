@@ -1,4 +1,4 @@
-"""Export a consistent, read-only view of completed native battles."""
+"""Export a consistent, read-only view of completed battles with their pinned backend identities."""
 import argparse
 from collections import Counter
 from contextlib import closing
@@ -10,6 +10,7 @@ from pathlib import Path
 import socket
 import sqlite3
 
+from damage_model.provenance import completed_by_expected_backend
 from damage_model.schema import digest
 from damage_model.observation import validate_hp, validate_cards
 from damage_model.schema import Build
@@ -22,7 +23,7 @@ def export_snapshot(database, output):
         db.execute('BEGIN')
         counts = dict(db.execute('SELECT status,count(*) FROM jobs GROUP BY status'))
         stamp = datetime.now(timezone.utc).isoformat()
-        rows = db.execute("SELECT * FROM jobs WHERE status='complete' ORDER BY created,id").fetchall()
+        rows = db.execute("SELECT jobs.*, (SELECT MAX(finished) FROM attempts WHERE job_id=jobs.id AND status='complete') AS completed_at FROM jobs WHERE status='complete' ORDER BY created,id").fetchall()
         queued_teachers = {digest(json.loads(r[0])):json.loads(r[0]) for r in db.execute('SELECT DISTINCT teacher FROM jobs')}
         builds = [{**json.loads(r['body']), 'id': r['id'], 'split': r['split']}
                   for r in db.execute("SELECT * FROM builds WHERE id IN (SELECT build_id FROM jobs WHERE status='complete')")]
@@ -57,23 +58,41 @@ def export_snapshot(database, output):
     for job in rows:
         result, target, teacher = (json.loads(job[k]) for k in ('result', 'target', 'teacher'))
         obs = result['trainingObservation']
-        if not (result['status'] == 'Passed' and result['combatEnded'] and obs['complete']):
-            raise ValueError(f"Incomplete native outcome: {job['id']}")
+        if not (completed_by_expected_backend({'teacher':teacher,'seed':job['seed'],'target':target}, result)
+                and result['combatEnded'] and obs['complete']):
+            raise ValueError(f"Incomplete backend outcome: {job['id']}")
         validate_hp(obs, target)
         validate_cards(obs['initialBuild']['cards'], planned_cards[job['build_id']], teacher.get('collector_protocol',2))
+        backend = teacher.get('execution_backend', 'native-wine')
+        experimental = backend == 'standalone-managed-native'
+        finished_at = result.get('finishedAtUtc')
+        finished_source = 'result.finishedAtUtc'
+        if finished_at is None and experimental:
+            # Legacy experimental rows have no host timestamp. Use the actual persisted
+            # attempt completion time and name its source; never fabricate combat timing.
+            if job['completed_at'] is None:
+                raise ValueError('Standalone result has no recorded completion timestamp')
+            finished_at = datetime.fromtimestamp(job['completed_at'], timezone.utc).isoformat()
+            finished_source = 'attempt.finished'
+        if finished_at is None:
+            raise ValueError('Native result is missing its completion timestamp')
         teacher_id = digest(teacher)
         targets[target['id']], teachers[teacher_id] = target, teacher
         battles.append({'job_id': job['id'], 'build_id': job['build_id'], 'target_id': target['id'],
             'seed': job['seed'], 'teacher_id': teacher_id, 'run_id': result['runId'],
             'initial_hp': obs['initialHp'], 'max_hp': obs['initialMaxHp'], 'final_hp': obs['finalHp'],
             'final_max_hp': obs['finalMaxHp'],
-            'hp_loss': obs['netHpLoss'], 'died': obs['playerDied'], 'finished_turn': result['finishedTurn'],
+            'hp_loss': obs['netHpLoss'], 'died': obs['playerDied'], 'finished_turn': result.get('finishedTurn') if experimental else result['finishedTurn'],
             'elapsed_seconds': round(result['elapsedMilliseconds'] / 1000, 4),
-            'finished_at': result['finishedAtUtc'], 'attempts': job['attempts'],
+            'finished_at': finished_at, 'finished_at_source': finished_source, 'attempts': job['attempts'],
+            'execution_backend': backend, 'result_status': result['status'],
+            'validation_scope': teacher.get('validation_scope', 'native-collection'),
+            'provenance': result.get('provenance'),
             'collector_host': result.get('collector', {}).get('host', '01 (before host tagging)')})
     assert len(battles) == counts.get('complete', 0)
     data = {'schema_version': 1, 'snapshot_at_utc': stamp, 'source_db': str(database),
-            'source_host': socket.gethostname(), 'job_counts': counts, 'builds': builds,
+            'source_host': socket.gethostname(), 'contains_experimental_results': any(
+                t.get('execution_backend') == 'standalone-managed-native' for t in teachers.values()), 'job_counts': counts, 'builds': builds,
             'targets': list(targets.values()), 'teachers': teachers, 'battles': battles, 'build_origins': origins,
             'target_policy': target_policy, 'selected_targets': selected_targets,
             'collector_host_counts': dict(Counter(r['collector_host'] for r in battles))}
@@ -86,7 +105,7 @@ def export_snapshot(database, output):
     with gzip.open(temporary, 'wt', encoding='utf-8', compresslevel=6) as stream:
         json.dump(data, stream, ensure_ascii=False, separators=(',', ':'))
     temporary.replace(output)
-    manifest = {k: data[k] for k in ('snapshot_at_utc', 'source_db', 'source_host', 'job_counts', 'collector_host_counts')}
+    manifest = {k: data[k] for k in ('snapshot_at_utc', 'source_db', 'source_host', 'job_counts', 'collector_host_counts', 'contains_experimental_results')}
     manifest.update(bytes=output.stat().st_size, sha256=hashlib.sha256(output.read_bytes()).hexdigest())
     output.with_name('source-manifest.json').write_text(json.dumps(manifest, indent=2), encoding='utf-8')
     return manifest

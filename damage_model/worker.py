@@ -208,7 +208,7 @@ class GameProcess:
 
 
 def work(store,catalog,runtime_config,limit,teacher=None):
-    from .resilience import NATIVE_FAILURES, native_failure_policy, preserve_failure
+    from .resilience import COLLECTOR_FAILURES, native_failure_policy, preserve_failure
     failure_policy = native_failure_policy(catalog.config)
     consecutive_isolations = 0
     runtime=json.loads(Path(runtime_config).read_text(encoding='utf-8'))
@@ -219,7 +219,16 @@ def work(store,catalog,runtime_config,limit,teacher=None):
         from .schema import canonical
         if any(row[0]!=canonical(teacher) for row in existing):
             raise ValueError('Worker settings do not match queued teacher')
-    game=GameProcess(**runtime)
+    backend = runtime.pop('backend', 'native-wine')
+    if backend == 'standalone-managed-native':
+        if teacher is None:
+            raise ValueError('Standalone worker requires a pinned teacher')
+        from .standalone import StandaloneProcess
+        game = StandaloneProcess(**runtime)
+    else:
+        if backend != 'native-wine':
+            raise ValueError('Unsupported runtime backend')
+        game = GameProcess(**runtime)
     if os.name!='posix': raise ValueError('This collector runtime requires Linux process isolation')
     import fcntl
     lease_file=(game.data_dir/'collector.lock').open('a+')
@@ -247,7 +256,7 @@ def work(store,catalog,runtime_config,limit,teacher=None):
             result['collectionRequest']=request
             result['collector']={'worker':Path(runtime_config).stem,'pid':os.getpid(),
                                  'host':os.uname().nodename}
-            if failure_policy and result.get('status') in NATIVE_FAILURES:
+            if failure_policy and result.get('status') in COLLECTOR_FAILURES:
                 # Every retry starts a fresh owned game process. Preserve evidence before
                 # making the job eligible again, so another worker cannot race the copy.
                 game.stop()

@@ -19,6 +19,9 @@ def source_metadata(db):
         if path.is_file():
             captured[Path(path.name)] = path.read_bytes()
     session = json.loads(captured.get(Path('collection-session.json'), b'{}'))
+    if session.get('teacher'):
+        path = Path(session['teacher'])
+        captured[Path(path.name)] = path.read_bytes()
     if session.get('config'):
         path = Path(session['config'])
         captured[Path(path.name)] = path.read_bytes()
