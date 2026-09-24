@@ -1,0 +1,2024 @@
+{
+  "attemptId": 0,
+  "expected": {
+    "complete": true,
+    "finalHp": 70,
+    "finalMaxHp": 70,
+    "initialBuild": {
+      "actId": "HIVE",
+      "actIndex": 1,
+      "ascension": 10,
+      "cards": [
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "ASCENDERS_BANE",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 1,
+          "enchantmentId": "SWIFT",
+          "id": "BACKSTAB",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 1,
+          "enchantmentId": "SWIFT",
+          "id": "BULLET_TIME",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 1,
+          "enchantmentId": "SWIFT",
+          "id": "DAGGER_THROW",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "DEFEND_SILENT",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "DEFEND_SILENT",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "DEFEND_SILENT",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "DEFEND_SILENT",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "DEFEND_SILENT",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 1,
+          "enchantmentId": "SWIFT",
+          "id": "EXPOSE",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "FLICK_FLACK",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 1,
+          "enchantmentId": "SWIFT",
+          "id": "FOOTWORK",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 1,
+          "enchantmentId": "SWIFT",
+          "id": "INFINITE_BLADES",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "LANTERN_KEY",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "NEUTRALIZE",
+          "persistentState": {},
+          "upgradeLevel": 1
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "NOXIOUS_FUMES",
+          "persistentState": {},
+          "upgradeLevel": 1
+        },
+        {
+          "enchantmentAmount": 1,
+          "enchantmentId": "SWIFT",
+          "id": "PIERCING_WAIL",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "POISONED_STAB",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "PREPARED",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "PROLONG",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "RICOCHET",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "STRIKE_SILENT",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "STRIKE_SILENT",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "STRIKE_SILENT",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "STRIKE_SILENT",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 1,
+          "enchantmentId": "IMBUED",
+          "id": "SURVIVOR",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 1,
+          "enchantmentId": "SWIFT",
+          "id": "THINKING_AHEAD",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 2,
+          "enchantmentId": "NIMBLE",
+          "id": "UNTOUCHABLE",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 2,
+          "enchantmentId": "NIMBLE",
+          "id": "UNTOUCHABLE",
+          "persistentState": {},
+          "upgradeLevel": 0
+        }
+      ],
+      "character": "SILENT",
+      "relics": [
+        {
+          "counters": {},
+          "id": "RING_OF_THE_SNAKE",
+          "state": {
+            "floor_added_to_deck": 1,
+            "id": {
+              "category": "RELIC",
+              "entry": "RING_OF_THE_SNAKE"
+            }
+          }
+        },
+        {
+          "counters": {},
+          "id": "GOLDEN_PEARL",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "GOLDEN_PEARL"
+            }
+          }
+        },
+        {
+          "counters": {},
+          "id": "FRESNEL_LENS",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "FRESNEL_LENS"
+            }
+          }
+        },
+        {
+          "counters": {},
+          "id": "WING_CHARM",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "WING_CHARM"
+            }
+          }
+        },
+        {
+          "counters": {},
+          "id": "RIPPLE_BASIN",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "RIPPLE_BASIN"
+            }
+          }
+        },
+        {
+          "counters": {},
+          "id": "GAMBLING_CHIP",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "GAMBLING_CHIP"
+            }
+          }
+        },
+        {
+          "counters": {},
+          "id": "JUZU_BRACELET",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "JUZU_BRACELET"
+            }
+          }
+        },
+        {
+          "counters": {},
+          "id": "ELECTRIC_SHRYMP",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "ELECTRIC_SHRYMP"
+            }
+          }
+        },
+        {
+          "counters": {},
+          "id": "SPARKLING_ROUGE",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "SPARKLING_ROUGE"
+            }
+          }
+        }
+      ]
+    },
+    "initialHp": 70,
+    "initialMaxHp": 70,
+    "netHpLoss": 0,
+    "playerDied": false
+  },
+  "nativeTrace": {
+    "captureScriptSha256": "8016edc7f1028bc05b26a58d4f1653f42777db2bfb0e46548ce8043a2d2bf956",
+    "complete": true,
+    "directory": "/data1/pl/ImageTask/wxq/Projects/standalone-checkpoints-20260924/campaign/worker-26/persistent-native-trace-vh3y_jr9",
+    "events": [
+      {
+        "kind": "initialized",
+        "sequence": 1,
+        "value": {
+          "assemblySha256": "57b182c5b5c54ccea34b9b82ff80df1e4becb145b58bb3866e3fedf48ca6753f",
+          "collectorSha256": "1950d98b8aa742f651a2c09d59e6044da8c0836a29f4c1258047a8d1048f9bfb",
+          "progressSnapshotSha256": "7e85da8d9e937869e8aaf3a8b559e343683231b5cc05dab2815b91e144365d9f",
+          "reusableProcess": true,
+          "runId": "1dff474100b54bc59c3f61bbd3048d04"
+        }
+      },
+      {
+        "kind": "choice_plan",
+        "sequence": 2,
+        "value": {
+          "choices": [
+            {
+              "Cards": [
+                {
+                  "CardId": "PIERCING_WAIL",
+                  "OptionOccurrence": 0,
+                  "SourceOccurrence": 0,
+                  "StateKey": "PIERCING_WAIL+0|energy=False:1|stars=False:-1|replay=0|exhaust=False|sly=False|retain=False|deck=True|keywords=Exhaust|vars=StrengthLoss=6|SWIFT:1:0|:0|baselib=-",
+                  "Title": "Piercing Wail",
+                  "UpgradeLevel": 0
+                },
+                {
+                  "CardId": "RICOCHET",
+                  "OptionOccurrence": 0,
+                  "SourceOccurrence": 0,
+                  "StateKey": "RICOCHET+0|energy=False:2|stars=False:-1|replay=0|exhaust=False|sly=True|retain=False|deck=True|keywords=Sly|vars=Damage=3;Repeat=4|-|:0|baselib=-",
+                  "Title": "Ricochet",
+                  "UpgradeLevel": 0
+                },
+                {
+                  "CardId": "DEFEND_SILENT",
+                  "OptionOccurrence": 0,
+                  "SourceOccurrence": 0,
+                  "StateKey": "DEFEND_SILENT+0|energy=False:1|stars=False:-1|replay=0|exhaust=False|sly=False|retain=False|deck=True|keywords=|vars=Block=5|-|:0|baselib=-",
+                  "Title": "Defend",
+                  "UpgradeLevel": 0
+                },
+                {
+                  "CardId": "UNTOUCHABLE",
+                  "OptionOccurrence": 0,
+                  "SourceOccurrence": 0,
+                  "StateKey": "UNTOUCHABLE+0|energy=False:2|stars=False:-1|replay=0|exhaust=False|sly=True|retain=False|deck=True|keywords=Sly|vars=Block=6|NIMBLE:2:0|:0|baselib=-",
+                  "Title": "Untouchable",
+                  "UpgradeLevel": 0
+                },
+                {
+                  "CardId": "STRIKE_SILENT",
+                  "OptionOccurrence": 0,
+                  "SourceOccurrence": 0,
+                  "StateKey": "STRIKE_SILENT+0|energy=False:1|stars=False:-1|replay=0|exhaust=False|sly=False|retain=False|deck=True|keywords=|vars=Damage=6|-|:0|baselib=-",
+                  "Title": "Strike",
+                  "UpgradeLevel": 0
+                },
+                {
+                  "CardId": "STRIKE_SILENT",
+                  "OptionOccurrence": 1,
+                  "SourceOccurrence": 1,
+                  "StateKey": "STRIKE_SILENT+0|energy=False:1|stars=False:-1|replay=0|exhaust=False|sly=False|retain=False|deck=True|keywords=|vars=Damage=6|-|:0|baselib=-",
+                  "Title": "Strike",
+                  "UpgradeLevel": 0
+                },
+                {
+                  "CardId": "BACKSTAB",
+                  "OptionOccurrence": 0,
+                  "SourceOccurrence": 0,
+                  "StateKey": "BACKSTAB+0|energy=False:0|stars=False:-1|replay=0|exhaust=False|sly=False|retain=False|deck=True|keywords=Exhaust,Innate|vars=Damage=11|SWIFT:1:0|:0|baselib=-",
+                  "Title": "Backstab",
+                  "UpgradeLevel": 0
+                }
+              ],
+              "ContextId": "AFTER_PLAYER_TURN_START",
+              "Effect": 9,
+              "SourceId": "GAMBLING_CHIP",
+              "SourcePile": 2,
+              "Timing": 3
+            },
+            {
+              "Cards": [
+                {
+                  "CardId": "UNTOUCHABLE",
+                  "OptionOccurrence": 0,
+                  "SourceOccurrence": 0,
+                  "StateKey": "UNTOUCHABLE+0|energy=False:2|stars=False:-1|replay=0|exhaust=False|sly=True|retain=False|deck=True|keywords=Sly|vars=Block=6|NIMBLE:2:0|:0|baselib=-",
+                  "Title": "Untouchable",
+                  "UpgradeLevel": 0
+                }
+              ],
+              "ContextId": "SURVIVOR+0#0",
+              "Effect": 2,
+              "SourceId": "IMBUED",
+              "SourcePile": 2,
+              "Timing": 3
+            }
+          ],
+          "owner": "turn_setup:1"
+        }
+      },
+      {
+        "kind": "choice_plan",
+        "sequence": 3,
+        "value": {
+          "choices": [],
+          "owner": "deployment:1:0:EXPOSE"
+        }
+      },
+      {
+        "kind": "play",
+        "sequence": 4,
+        "value": {
+          "action": {
+            "ActionTitle": "Expose",
+            "CardId": "EXPOSE",
+            "CardOccurrence": 0,
+            "CardStateKey": "EXPOSE+0|energy=False:0|stars=False:-1|replay=0|exhaust=False|sly=False|retain=False|deck=True|keywords=Exhaust|vars=Power=2|SWIFT:1:0|:0|baselib=-",
+            "CardStateOccurrence": 0,
+            "CardTitle": "Expose",
+            "Choice": null,
+            "EndsPlayerTurn": false,
+            "IsExecutable": true,
+            "Kind": 0,
+            "NestedChoices": null,
+            "NestedChoicesBeforePrimary": 0,
+            "PotionId": "",
+            "PotionSlot": -1,
+            "PotionTitle": "",
+            "RelicEffects": [],
+            "ReplayCount": 0,
+            "TargetCombatId": 1,
+            "TargetIndex": 0,
+            "TargetName": "Thieving Hopper",
+            "Turn": 1,
+            "TurnStartChoices": null
+          },
+          "before": "turn=1;hp=70;max_hp=70;block=24;energy=3;stars=0;gold=99;osty=4294967295/0/0;E0=1/THIEVING_HOPPER/-/72/84/0/THIEVERY_MOVE;AI0=THIEVERY_MOVE;MS0=-/0;H=DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,PREPARED+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Cards=1,]/private=-/baselib=-,BULLET_TIME+0/False:3/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[]/private=-/baselib=-,THINKING_AHEAD+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Cards=2,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,EXPOSE+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Power=2,]/private=-/baselib=-,;D=FOOTWORK+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[DexterityPower=2,]/private=-/baselib=-,LANTERN_KEY+0/False:-1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,POISONED_STAB+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,PoisonPower=3,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,DAGGER_THROW+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Damage=9,]/private=-/baselib=-,ASCENDERS_BANE+0/False:-1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,NOXIOUS_FUMES+1/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[PoisonPerTurn=3,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,FLICK_FLACK+0/False:1/False:-1/0/False/True/False/True/False/-:0:0/-:0[Damage=7,]/private=-/baselib=-,INFINITE_BLADES+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,PROLONG+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,NEUTRALIZE+1/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=4,WeakPower=2,]/private=-/baselib=-,;C=PIERCING_WAIL+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[StrengthLoss=6,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,BACKSTAB+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Damage=11,]/private=-/baselib=-,RICOCHET+0/False:2/False:-1/0/False/True/False/True/False/-:0:0/-:0[Damage=3,Repeat=4,]/private=-/baselib=-,UNTOUCHABLE+0/False:2/False:-1/0/False/True/False/True/False/NIMBLE:2:0/-:0[Block=6,]/private=-/baselib=-,UNTOUCHABLE+0/False:2/False:-1/0/False/True/False/True/False/NIMBLE:2:0/-:0[Block=6,]/private=-/baselib=-,SURVIVOR+0/False:1/False:-1/0/False/False/False/True/False/IMBUED:1:0/-:0[Block=8,]/private=-/baselib=-,;X=;Y=0/0;O=0:;potions=-,-;relicCounters=;mirrorRelics=;P=1:ESCAPE_ARTIST_POWER=5/0[],;R=28:4148761340811972820:17064762985218812695:10630232805469695539:17728171462081269814/0:1540175275923826793:6968787407412865572:7388637225700702107:11481089618211334959/0:5934757781998388361:15869045962219491616:15369654540583268111:14069941304612255854/0:11151985130098373254:6399868294416806884:16299991293147775690:1269242897437426686/0:13478539414179622148:6253691135650110595:231189132651270423:4737470750939971824/4:13692164379798535259:3233927567048066725:326862003566694894:17992463887721486413/0:15405376307384934102:6871969513576988392:2075252948626408363:10200190978225942783/0:5480173581589452485:17380693601233773782:16982319539701856557:10297118194812445829/1:6327871633185007828:940634191503254269:3766481505919673418:1988234927933379623"
+        }
+      },
+      {
+        "kind": "action_completed",
+        "sequence": 5,
+        "value": {
+          "after": "turn=1;hp=70;max_hp=70;block=24;energy=3;stars=0;gold=99;osty=4294967295/0/0;E0=1/THIEVING_HOPPER/-/72/84/0/THIEVERY_MOVE;AI0=THIEVERY_MOVE;MS0=-/0;H=DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,PREPARED+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Cards=1,]/private=-/baselib=-,BULLET_TIME+0/False:3/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[]/private=-/baselib=-,THINKING_AHEAD+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Cards=2,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,FOOTWORK+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[DexterityPower=2,]/private=-/baselib=-,;D=LANTERN_KEY+0/False:-1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,POISONED_STAB+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,PoisonPower=3,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,DAGGER_THROW+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Damage=9,]/private=-/baselib=-,ASCENDERS_BANE+0/False:-1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,NOXIOUS_FUMES+1/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[PoisonPerTurn=3,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,FLICK_FLACK+0/False:1/False:-1/0/False/True/False/True/False/-:0:0/-:0[Damage=7,]/private=-/baselib=-,INFINITE_BLADES+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,PROLONG+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,NEUTRALIZE+1/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=4,WeakPower=2,]/private=-/baselib=-,;C=PIERCING_WAIL+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[StrengthLoss=6,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,BACKSTAB+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Damage=11,]/private=-/baselib=-,RICOCHET+0/False:2/False:-1/0/False/True/False/True/False/-:0:0/-:0[Damage=3,Repeat=4,]/private=-/baselib=-,UNTOUCHABLE+0/False:2/False:-1/0/False/True/False/True/False/NIMBLE:2:0/-:0[Block=6,]/private=-/baselib=-,UNTOUCHABLE+0/False:2/False:-1/0/False/True/False/True/False/NIMBLE:2:0/-:0[Block=6,]/private=-/baselib=-,SURVIVOR+0/False:1/False:-1/0/False/False/False/True/False/IMBUED:1:0/-:0[Block=8,]/private=-/baselib=-,;X=EXPOSE+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:1/-:0[Power=2,]/private=-/baselib=-,;Y=0/0;O=0:;potions=-,-;relicCounters=;mirrorRelics=;P=1:ESCAPE_ARTIST_POWER=5/0[],1:VULNERABLE_POWER=2/0[DamageIncrease=1.5,],;R=28:4148761340811972820:17064762985218812695:10630232805469695539:17728171462081269814/0:1540175275923826793:6968787407412865572:7388637225700702107:11481089618211334959/0:5934757781998388361:15869045962219491616:15369654540583268111:14069941304612255854/0:11151985130098373254:6399868294416806884:16299991293147775690:1269242897437426686/0:13478539414179622148:6253691135650110595:231189132651270423:4737470750939971824/4:13692164379798535259:3233927567048066725:326862003566694894:17992463887721486413/0:15405376307384934102:6871969513576988392:2075252948626408363:10200190978225942783/0:5480173581589452485:17380693601233773782:16982319539701856557:10297118194812445829/1:6327871633185007828:940634191503254269:3766481505919673418:1988234927933379623",
+          "owner": "deployment:1:0:EXPOSE"
+        }
+      },
+      {
+        "kind": "choice_plan",
+        "sequence": 6,
+        "value": {
+          "choices": [
+            {
+              "Cards": [
+                {
+                  "CardId": "THINKING_AHEAD",
+                  "OptionOccurrence": 0,
+                  "SourceOccurrence": 0,
+                  "StateKey": "THINKING_AHEAD+0|energy=False:0|stars=False:-1|replay=0|exhaust=False|sly=False|retain=False|deck=True|keywords=Exhaust|vars=Cards=2|SWIFT:1:0|:0|baselib=-",
+                  "Title": "Thinking Ahead",
+                  "UpgradeLevel": 0
+                }
+              ],
+              "ContextId": "",
+              "Effect": 2,
+              "SourceId": "",
+              "SourcePile": 2,
+              "Timing": 0
+            }
+          ],
+          "owner": "deployment:1:1:PREPARED"
+        }
+      },
+      {
+        "kind": "play",
+        "sequence": 7,
+        "value": {
+          "action": {
+            "ActionTitle": "Prepared",
+            "CardId": "PREPARED",
+            "CardOccurrence": 0,
+            "CardStateKey": "PREPARED+0|energy=False:0|stars=False:-1|replay=0|exhaust=False|sly=False|retain=False|deck=True|keywords=|vars=Cards=1|-|:0|baselib=-",
+            "CardStateOccurrence": 0,
+            "CardTitle": "Prepared",
+            "Choice": {
+              "Cards": [
+                {
+                  "CardId": "THINKING_AHEAD",
+                  "OptionOccurrence": 0,
+                  "SourceOccurrence": 0,
+                  "StateKey": "THINKING_AHEAD+0|energy=False:0|stars=False:-1|replay=0|exhaust=False|sly=False|retain=False|deck=True|keywords=Exhaust|vars=Cards=2|SWIFT:1:0|:0|baselib=-",
+                  "Title": "Thinking Ahead",
+                  "UpgradeLevel": 0
+                }
+              ],
+              "ContextId": "",
+              "Effect": 2,
+              "SourceId": "",
+              "SourcePile": 2,
+              "Timing": 0
+            },
+            "EndsPlayerTurn": false,
+            "IsExecutable": true,
+            "Kind": 0,
+            "NestedChoices": null,
+            "NestedChoicesBeforePrimary": 0,
+            "PotionId": "",
+            "PotionSlot": -1,
+            "PotionTitle": "",
+            "RelicEffects": [],
+            "ReplayCount": 0,
+            "TargetCombatId": null,
+            "TargetIndex": -1,
+            "TargetName": "",
+            "Turn": 1,
+            "TurnStartChoices": null
+          },
+          "before": "turn=1;hp=70;max_hp=70;block=24;energy=3;stars=0;gold=99;osty=4294967295/0/0;E0=1/THIEVING_HOPPER/-/72/84/0/THIEVERY_MOVE;AI0=THIEVERY_MOVE;MS0=-/0;H=DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,PREPARED+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Cards=1,]/private=-/baselib=-,BULLET_TIME+0/False:3/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[]/private=-/baselib=-,THINKING_AHEAD+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Cards=2,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,FOOTWORK+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[DexterityPower=2,]/private=-/baselib=-,;D=LANTERN_KEY+0/False:-1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,POISONED_STAB+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,PoisonPower=3,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,DAGGER_THROW+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Damage=9,]/private=-/baselib=-,ASCENDERS_BANE+0/False:-1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,NOXIOUS_FUMES+1/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[PoisonPerTurn=3,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,FLICK_FLACK+0/False:1/False:-1/0/False/True/False/True/False/-:0:0/-:0[Damage=7,]/private=-/baselib=-,INFINITE_BLADES+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,PROLONG+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,NEUTRALIZE+1/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=4,WeakPower=2,]/private=-/baselib=-,;C=PIERCING_WAIL+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[StrengthLoss=6,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,BACKSTAB+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Damage=11,]/private=-/baselib=-,RICOCHET+0/False:2/False:-1/0/False/True/False/True/False/-:0:0/-:0[Damage=3,Repeat=4,]/private=-/baselib=-,UNTOUCHABLE+0/False:2/False:-1/0/False/True/False/True/False/NIMBLE:2:0/-:0[Block=6,]/private=-/baselib=-,UNTOUCHABLE+0/False:2/False:-1/0/False/True/False/True/False/NIMBLE:2:0/-:0[Block=6,]/private=-/baselib=-,SURVIVOR+0/False:1/False:-1/0/False/False/False/True/False/IMBUED:1:0/-:0[Block=8,]/private=-/baselib=-,;X=EXPOSE+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:1/-:0[Power=2,]/private=-/baselib=-,;Y=0/0;O=0:;potions=-,-;relicCounters=;mirrorRelics=;P=1:ESCAPE_ARTIST_POWER=5/0[],1:VULNERABLE_POWER=2/0[DamageIncrease=1.5,],;R=28:4148761340811972820:17064762985218812695:10630232805469695539:17728171462081269814/0:1540175275923826793:6968787407412865572:7388637225700702107:11481089618211334959/0:5934757781998388361:15869045962219491616:15369654540583268111:14069941304612255854/0:11151985130098373254:6399868294416806884:16299991293147775690:1269242897437426686/0:13478539414179622148:6253691135650110595:231189132651270423:4737470750939971824/4:13692164379798535259:3233927567048066725:326862003566694894:17992463887721486413/0:15405376307384934102:6871969513576988392:2075252948626408363:10200190978225942783/0:5480173581589452485:17380693601233773782:16982319539701856557:10297118194812445829/1:6327871633185007828:940634191503254269:3766481505919673418:1988234927933379623"
+        }
+      },
+      {
+        "kind": "action_completed",
+        "sequence": 8,
+        "value": {
+          "after": "turn=1;hp=70;max_hp=70;block=24;energy=3;stars=0;gold=99;osty=4294967295/0/0;E0=1/THIEVING_HOPPER/-/72/84/0/THIEVERY_MOVE;AI0=THIEVERY_MOVE;MS0=-/0;H=DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,BULLET_TIME+0/False:3/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,FOOTWORK+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[DexterityPower=2,]/private=-/baselib=-,LANTERN_KEY+0/False:-1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,;D=POISONED_STAB+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,PoisonPower=3,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,DAGGER_THROW+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Damage=9,]/private=-/baselib=-,ASCENDERS_BANE+0/False:-1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,NOXIOUS_FUMES+1/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[PoisonPerTurn=3,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,FLICK_FLACK+0/False:1/False:-1/0/False/True/False/True/False/-:0:0/-:0[Damage=7,]/private=-/baselib=-,INFINITE_BLADES+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,PROLONG+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,NEUTRALIZE+1/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=4,WeakPower=2,]/private=-/baselib=-,;C=PIERCING_WAIL+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[StrengthLoss=6,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,BACKSTAB+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Damage=11,]/private=-/baselib=-,RICOCHET+0/False:2/False:-1/0/False/True/False/True/False/-:0:0/-:0[Damage=3,Repeat=4,]/private=-/baselib=-,UNTOUCHABLE+0/False:2/False:-1/0/False/True/False/True/False/NIMBLE:2:0/-:0[Block=6,]/private=-/baselib=-,UNTOUCHABLE+0/False:2/False:-1/0/False/True/False/True/False/NIMBLE:2:0/-:0[Block=6,]/private=-/baselib=-,SURVIVOR+0/False:1/False:-1/0/False/False/False/True/False/IMBUED:1:0/-:0[Block=8,]/private=-/baselib=-,THINKING_AHEAD+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Cards=2,]/private=-/baselib=-,PREPARED+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Cards=1,]/private=-/baselib=-,;X=EXPOSE+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:1/-:0[Power=2,]/private=-/baselib=-,;Y=0/0;O=0:;potions=-,-;relicCounters=;mirrorRelics=;P=1:ESCAPE_ARTIST_POWER=5/0[],1:VULNERABLE_POWER=2/0[DamageIncrease=1.5,],;R=28:4148761340811972820:17064762985218812695:10630232805469695539:17728171462081269814/0:1540175275923826793:6968787407412865572:7388637225700702107:11481089618211334959/0:5934757781998388361:15869045962219491616:15369654540583268111:14069941304612255854/0:11151985130098373254:6399868294416806884:16299991293147775690:1269242897437426686/0:13478539414179622148:6253691135650110595:231189132651270423:4737470750939971824/4:13692164379798535259:3233927567048066725:326862003566694894:17992463887721486413/0:15405376307384934102:6871969513576988392:2075252948626408363:10200190978225942783/0:5480173581589452485:17380693601233773782:16982319539701856557:10297118194812445829/1:6327871633185007828:940634191503254269:3766481505919673418:1988234927933379623",
+          "owner": "deployment:1:1:PREPARED"
+        }
+      },
+      {
+        "kind": "choice_plan",
+        "sequence": 9,
+        "value": {
+          "choices": [],
+          "owner": "deployment:1:2:FOOTWORK"
+        }
+      },
+      {
+        "kind": "play",
+        "sequence": 10,
+        "value": {
+          "action": {
+            "ActionTitle": "Footwork",
+            "CardId": "FOOTWORK",
+            "CardOccurrence": 0,
+            "CardStateKey": "FOOTWORK+0|energy=False:1|stars=False:-1|replay=0|exhaust=False|sly=False|retain=False|deck=True|keywords=|vars=DexterityPower=2|SWIFT:1:0|:0|baselib=-",
+            "CardStateOccurrence": 0,
+            "CardTitle": "Footwork",
+            "Choice": null,
+            "EndsPlayerTurn": false,
+            "IsExecutable": true,
+            "Kind": 0,
+            "NestedChoices": null,
+            "NestedChoicesBeforePrimary": 0,
+            "PotionId": "",
+            "PotionSlot": -1,
+            "PotionTitle": "",
+            "RelicEffects": [],
+            "ReplayCount": 0,
+            "TargetCombatId": null,
+            "TargetIndex": -1,
+            "TargetName": "",
+            "Turn": 1,
+            "TurnStartChoices": null
+          },
+          "before": "turn=1;hp=70;max_hp=70;block=24;energy=3;stars=0;gold=99;osty=4294967295/0/0;E0=1/THIEVING_HOPPER/-/72/84/0/THIEVERY_MOVE;AI0=THIEVERY_MOVE;MS0=-/0;H=DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,BULLET_TIME+0/False:3/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,FOOTWORK+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[DexterityPower=2,]/private=-/baselib=-,LANTERN_KEY+0/False:-1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,;D=POISONED_STAB+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,PoisonPower=3,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,DAGGER_THROW+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Damage=9,]/private=-/baselib=-,ASCENDERS_BANE+0/False:-1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,NOXIOUS_FUMES+1/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[PoisonPerTurn=3,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,FLICK_FLACK+0/False:1/False:-1/0/False/True/False/True/False/-:0:0/-:0[Damage=7,]/private=-/baselib=-,INFINITE_BLADES+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,PROLONG+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,NEUTRALIZE+1/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=4,WeakPower=2,]/private=-/baselib=-,;C=PIERCING_WAIL+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[StrengthLoss=6,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,BACKSTAB+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Damage=11,]/private=-/baselib=-,RICOCHET+0/False:2/False:-1/0/False/True/False/True/False/-:0:0/-:0[Damage=3,Repeat=4,]/private=-/baselib=-,UNTOUCHABLE+0/False:2/False:-1/0/False/True/False/True/False/NIMBLE:2:0/-:0[Block=6,]/private=-/baselib=-,UNTOUCHABLE+0/False:2/False:-1/0/False/True/False/True/False/NIMBLE:2:0/-:0[Block=6,]/private=-/baselib=-,SURVIVOR+0/False:1/False:-1/0/False/False/False/True/False/IMBUED:1:0/-:0[Block=8,]/private=-/baselib=-,THINKING_AHEAD+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Cards=2,]/private=-/baselib=-,PREPARED+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Cards=1,]/private=-/baselib=-,;X=EXPOSE+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:1/-:0[Power=2,]/private=-/baselib=-,;Y=0/0;O=0:;potions=-,-;relicCounters=;mirrorRelics=;P=1:ESCAPE_ARTIST_POWER=5/0[],1:VULNERABLE_POWER=2/0[DamageIncrease=1.5,],;R=28:4148761340811972820:17064762985218812695:10630232805469695539:17728171462081269814/0:1540175275923826793:6968787407412865572:7388637225700702107:11481089618211334959/0:5934757781998388361:15869045962219491616:15369654540583268111:14069941304612255854/0:11151985130098373254:6399868294416806884:16299991293147775690:1269242897437426686/0:13478539414179622148:6253691135650110595:231189132651270423:4737470750939971824/4:13692164379798535259:3233927567048066725:326862003566694894:17992463887721486413/0:15405376307384934102:6871969513576988392:2075252948626408363:10200190978225942783/0:5480173581589452485:17380693601233773782:16982319539701856557:10297118194812445829/1:6327871633185007828:940634191503254269:3766481505919673418:1988234927933379623"
+        }
+      },
+      {
+        "kind": "action_completed",
+        "sequence": 11,
+        "value": {
+          "after": "turn=1;hp=70;max_hp=70;block=24;energy=2;stars=0;gold=99;osty=4294967295/0/0;E0=1/THIEVING_HOPPER/-/72/84/0/THIEVERY_MOVE;AI0=THIEVERY_MOVE;MS0=-/0;H=DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,BULLET_TIME+0/False:3/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,LANTERN_KEY+0/False:-1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,POISONED_STAB+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,PoisonPower=3,]/private=-/baselib=-,;D=DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,DAGGER_THROW+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Damage=9,]/private=-/baselib=-,ASCENDERS_BANE+0/False:-1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,NOXIOUS_FUMES+1/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[PoisonPerTurn=3,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,FLICK_FLACK+0/False:1/False:-1/0/False/True/False/True/False/-:0:0/-:0[Damage=7,]/private=-/baselib=-,INFINITE_BLADES+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,PROLONG+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,NEUTRALIZE+1/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=4,WeakPower=2,]/private=-/baselib=-,;C=PIERCING_WAIL+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[StrengthLoss=6,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,BACKSTAB+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Damage=11,]/private=-/baselib=-,RICOCHET+0/False:2/False:-1/0/False/True/False/True/False/-:0:0/-:0[Damage=3,Repeat=4,]/private=-/baselib=-,UNTOUCHABLE+0/False:2/False:-1/0/False/True/False/True/False/NIMBLE:2:0/-:0[Block=6,]/private=-/baselib=-,UNTOUCHABLE+0/False:2/False:-1/0/False/True/False/True/False/NIMBLE:2:0/-:0[Block=6,]/private=-/baselib=-,SURVIVOR+0/False:1/False:-1/0/False/False/False/True/False/IMBUED:1:0/-:0[Block=8,]/private=-/baselib=-,THINKING_AHEAD+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Cards=2,]/private=-/baselib=-,PREPARED+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Cards=1,]/private=-/baselib=-,;X=EXPOSE+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:1/-:0[Power=2,]/private=-/baselib=-,;Y=0/0;O=0:;potions=-,-;relicCounters=;mirrorRelics=;P=0:DEXTERITY_POWER=2/0[],1:ESCAPE_ARTIST_POWER=5/0[],1:VULNERABLE_POWER=2/0[DamageIncrease=1.5,],;R=28:4148761340811972820:17064762985218812695:10630232805469695539:17728171462081269814/0:1540175275923826793:6968787407412865572:7388637225700702107:11481089618211334959/0:5934757781998388361:15869045962219491616:15369654540583268111:14069941304612255854/0:11151985130098373254:6399868294416806884:16299991293147775690:1269242897437426686/0:13478539414179622148:6253691135650110595:231189132651270423:4737470750939971824/4:13692164379798535259:3233927567048066725:326862003566694894:17992463887721486413/0:15405376307384934102:6871969513576988392:2075252948626408363:10200190978225942783/0:5480173581589452485:17380693601233773782:16982319539701856557:10297118194812445829/1:6327871633185007828:940634191503254269:3766481505919673418:1988234927933379623",
+          "owner": "deployment:1:2:FOOTWORK"
+        }
+      },
+      {
+        "kind": "choice_plan",
+        "sequence": 12,
+        "value": {
+          "choices": [],
+          "owner": "deployment:1:3:POISONED_STAB"
+        }
+      },
+      {
+        "kind": "play",
+        "sequence": 13,
+        "value": {
+          "action": {
+            "ActionTitle": "Poisoned Stab",
+            "CardId": "POISONED_STAB",
+            "CardOccurrence": 0,
+            "CardStateKey": "POISONED_STAB+0|energy=False:1|stars=False:-1|replay=0|exhaust=False|sly=False|retain=False|deck=True|keywords=|vars=Damage=6;PoisonPower=3|-|:0|baselib=-",
+            "CardStateOccurrence": 0,
+            "CardTitle": "Poisoned Stab",
+            "Choice": null,
+            "EndsPlayerTurn": false,
+            "IsExecutable": true,
+            "Kind": 0,
+            "NestedChoices": null,
+            "NestedChoicesBeforePrimary": 0,
+            "PotionId": "",
+            "PotionSlot": -1,
+            "PotionTitle": "",
+            "RelicEffects": [],
+            "ReplayCount": 0,
+            "TargetCombatId": 1,
+            "TargetIndex": 0,
+            "TargetName": "Thieving Hopper",
+            "Turn": 1,
+            "TurnStartChoices": null
+          },
+          "before": "turn=1;hp=70;max_hp=70;block=24;energy=2;stars=0;gold=99;osty=4294967295/0/0;E0=1/THIEVING_HOPPER/-/72/84/0/THIEVERY_MOVE;AI0=THIEVERY_MOVE;MS0=-/0;H=DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,BULLET_TIME+0/False:3/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,LANTERN_KEY+0/False:-1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,POISONED_STAB+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,PoisonPower=3,]/private=-/baselib=-,;D=DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,DAGGER_THROW+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Damage=9,]/private=-/baselib=-,ASCENDERS_BANE+0/False:-1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,NOXIOUS_FUMES+1/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[PoisonPerTurn=3,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,FLICK_FLACK+0/False:1/False:-1/0/False/True/False/True/False/-:0:0/-:0[Damage=7,]/private=-/baselib=-,INFINITE_BLADES+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,PROLONG+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,NEUTRALIZE+1/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=4,WeakPower=2,]/private=-/baselib=-,;C=PIERCING_WAIL+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[StrengthLoss=6,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,BACKSTAB+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Damage=11,]/private=-/baselib=-,RICOCHET+0/False:2/False:-1/0/False/True/False/True/False/-:0:0/-:0[Damage=3,Repeat=4,]/private=-/baselib=-,UNTOUCHABLE+0/False:2/False:-1/0/False/True/False/True/False/NIMBLE:2:0/-:0[Block=6,]/private=-/baselib=-,UNTOUCHABLE+0/False:2/False:-1/0/False/True/False/True/False/NIMBLE:2:0/-:0[Block=6,]/private=-/baselib=-,SURVIVOR+0/False:1/False:-1/0/False/False/False/True/False/IMBUED:1:0/-:0[Block=8,]/private=-/baselib=-,THINKING_AHEAD+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Cards=2,]/private=-/baselib=-,PREPARED+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Cards=1,]/private=-/baselib=-,;X=EXPOSE+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:1/-:0[Power=2,]/private=-/baselib=-,;Y=0/0;O=0:;potions=-,-;relicCounters=;mirrorRelics=;P=0:DEXTERITY_POWER=2/0[],1:ESCAPE_ARTIST_POWER=5/0[],1:VULNERABLE_POWER=2/0[DamageIncrease=1.5,],;R=28:4148761340811972820:17064762985218812695:10630232805469695539:17728171462081269814/0:1540175275923826793:6968787407412865572:7388637225700702107:11481089618211334959/0:5934757781998388361:15869045962219491616:15369654540583268111:14069941304612255854/0:11151985130098373254:6399868294416806884:16299991293147775690:1269242897437426686/0:13478539414179622148:6253691135650110595:231189132651270423:4737470750939971824/4:13692164379798535259:3233927567048066725:326862003566694894:17992463887721486413/0:15405376307384934102:6871969513576988392:2075252948626408363:10200190978225942783/0:5480173581589452485:17380693601233773782:16982319539701856557:10297118194812445829/1:6327871633185007828:940634191503254269:3766481505919673418:1988234927933379623"
+        }
+      },
+      {
+        "kind": "action_completed",
+        "sequence": 14,
+        "value": {
+          "after": "turn=1;hp=70;max_hp=70;block=24;energy=1;stars=0;gold=99;osty=4294967295/0/0;E0=1/THIEVING_HOPPER/-/63/84/0/THIEVERY_MOVE;AI0=THIEVERY_MOVE;MS0=-/0;H=DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,BULLET_TIME+0/False:3/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,LANTERN_KEY+0/False:-1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,;D=DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,DAGGER_THROW+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Damage=9,]/private=-/baselib=-,ASCENDERS_BANE+0/False:-1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,NOXIOUS_FUMES+1/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[PoisonPerTurn=3,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,FLICK_FLACK+0/False:1/False:-1/0/False/True/False/True/False/-:0:0/-:0[Damage=7,]/private=-/baselib=-,INFINITE_BLADES+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,PROLONG+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,NEUTRALIZE+1/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=4,WeakPower=2,]/private=-/baselib=-,;C=PIERCING_WAIL+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[StrengthLoss=6,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,BACKSTAB+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Damage=11,]/private=-/baselib=-,RICOCHET+0/False:2/False:-1/0/False/True/False/True/False/-:0:0/-:0[Damage=3,Repeat=4,]/private=-/baselib=-,UNTOUCHABLE+0/False:2/False:-1/0/False/True/False/True/False/NIMBLE:2:0/-:0[Block=6,]/private=-/baselib=-,UNTOUCHABLE+0/False:2/False:-1/0/False/True/False/True/False/NIMBLE:2:0/-:0[Block=6,]/private=-/baselib=-,SURVIVOR+0/False:1/False:-1/0/False/False/False/True/False/IMBUED:1:0/-:0[Block=8,]/private=-/baselib=-,THINKING_AHEAD+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Cards=2,]/private=-/baselib=-,PREPARED+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Cards=1,]/private=-/baselib=-,POISONED_STAB+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,PoisonPower=3,]/private=-/baselib=-,;X=EXPOSE+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:1/-:0[Power=2,]/private=-/baselib=-,;Y=0/0;O=0:;potions=-,-;relicCounters=;mirrorRelics=;P=0:DEXTERITY_POWER=2/0[],1:ESCAPE_ARTIST_POWER=5/0[],1:POISON_POWER=3/0[],1:VULNERABLE_POWER=2/0[DamageIncrease=1.5,],;R=28:4148761340811972820:17064762985218812695:10630232805469695539:17728171462081269814/0:1540175275923826793:6968787407412865572:7388637225700702107:11481089618211334959/0:5934757781998388361:15869045962219491616:15369654540583268111:14069941304612255854/0:11151985130098373254:6399868294416806884:16299991293147775690:1269242897437426686/0:13478539414179622148:6253691135650110595:231189132651270423:4737470750939971824/4:13692164379798535259:3233927567048066725:326862003566694894:17992463887721486413/0:15405376307384934102:6871969513576988392:2075252948626408363:10200190978225942783/0:5480173581589452485:17380693601233773782:16982319539701856557:10297118194812445829/1:6327871633185007828:940634191503254269:3766481505919673418:1988234927933379623",
+          "owner": "deployment:1:3:POISONED_STAB"
+        }
+      },
+      {
+        "kind": "choice_plan",
+        "sequence": 15,
+        "value": {
+          "choices": [],
+          "owner": "deployment:1:4:STRIKE_SILENT"
+        }
+      },
+      {
+        "kind": "play",
+        "sequence": 16,
+        "value": {
+          "action": {
+            "ActionTitle": "Strike",
+            "CardId": "STRIKE_SILENT",
+            "CardOccurrence": 0,
+            "CardStateKey": "STRIKE_SILENT+0|energy=False:1|stars=False:-1|replay=0|exhaust=False|sly=False|retain=False|deck=True|keywords=|vars=Damage=6|-|:0|baselib=-",
+            "CardStateOccurrence": 0,
+            "CardTitle": "Strike",
+            "Choice": null,
+            "EndsPlayerTurn": false,
+            "IsExecutable": true,
+            "Kind": 0,
+            "NestedChoices": null,
+            "NestedChoicesBeforePrimary": 0,
+            "PotionId": "",
+            "PotionSlot": -1,
+            "PotionTitle": "",
+            "RelicEffects": [],
+            "ReplayCount": 0,
+            "TargetCombatId": 1,
+            "TargetIndex": 0,
+            "TargetName": "Thieving Hopper",
+            "Turn": 1,
+            "TurnStartChoices": null
+          },
+          "before": "turn=1;hp=70;max_hp=70;block=24;energy=1;stars=0;gold=99;osty=4294967295/0/0;E0=1/THIEVING_HOPPER/-/63/84/0/THIEVERY_MOVE;AI0=THIEVERY_MOVE;MS0=-/0;H=DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,BULLET_TIME+0/False:3/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,LANTERN_KEY+0/False:-1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,;D=DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,DAGGER_THROW+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Damage=9,]/private=-/baselib=-,ASCENDERS_BANE+0/False:-1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,NOXIOUS_FUMES+1/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[PoisonPerTurn=3,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,FLICK_FLACK+0/False:1/False:-1/0/False/True/False/True/False/-:0:0/-:0[Damage=7,]/private=-/baselib=-,INFINITE_BLADES+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,PROLONG+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,NEUTRALIZE+1/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=4,WeakPower=2,]/private=-/baselib=-,;C=PIERCING_WAIL+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[StrengthLoss=6,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,BACKSTAB+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Damage=11,]/private=-/baselib=-,RICOCHET+0/False:2/False:-1/0/False/True/False/True/False/-:0:0/-:0[Damage=3,Repeat=4,]/private=-/baselib=-,UNTOUCHABLE+0/False:2/False:-1/0/False/True/False/True/False/NIMBLE:2:0/-:0[Block=6,]/private=-/baselib=-,UNTOUCHABLE+0/False:2/False:-1/0/False/True/False/True/False/NIMBLE:2:0/-:0[Block=6,]/private=-/baselib=-,SURVIVOR+0/False:1/False:-1/0/False/False/False/True/False/IMBUED:1:0/-:0[Block=8,]/private=-/baselib=-,THINKING_AHEAD+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Cards=2,]/private=-/baselib=-,PREPARED+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Cards=1,]/private=-/baselib=-,POISONED_STAB+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,PoisonPower=3,]/private=-/baselib=-,;X=EXPOSE+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:1/-:0[Power=2,]/private=-/baselib=-,;Y=0/0;O=0:;potions=-,-;relicCounters=;mirrorRelics=;P=0:DEXTERITY_POWER=2/0[],1:ESCAPE_ARTIST_POWER=5/0[],1:POISON_POWER=3/0[],1:VULNERABLE_POWER=2/0[DamageIncrease=1.5,],;R=28:4148761340811972820:17064762985218812695:10630232805469695539:17728171462081269814/0:1540175275923826793:6968787407412865572:7388637225700702107:11481089618211334959/0:5934757781998388361:15869045962219491616:15369654540583268111:14069941304612255854/0:11151985130098373254:6399868294416806884:16299991293147775690:1269242897437426686/0:13478539414179622148:6253691135650110595:231189132651270423:4737470750939971824/4:13692164379798535259:3233927567048066725:326862003566694894:17992463887721486413/0:15405376307384934102:6871969513576988392:2075252948626408363:10200190978225942783/0:5480173581589452485:17380693601233773782:16982319539701856557:10297118194812445829/1:6327871633185007828:940634191503254269:3766481505919673418:1988234927933379623"
+        }
+      },
+      {
+        "kind": "action_completed",
+        "sequence": 17,
+        "value": {
+          "after": "turn=1;hp=70;max_hp=70;block=24;energy=0;stars=0;gold=99;osty=4294967295/0/0;E0=1/THIEVING_HOPPER/-/54/84/0/THIEVERY_MOVE;AI0=THIEVERY_MOVE;MS0=-/0;H=DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,BULLET_TIME+0/False:3/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[]/private=-/baselib=-,LANTERN_KEY+0/False:-1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,;D=DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,DAGGER_THROW+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Damage=9,]/private=-/baselib=-,ASCENDERS_BANE+0/False:-1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,NOXIOUS_FUMES+1/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[PoisonPerTurn=3,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,FLICK_FLACK+0/False:1/False:-1/0/False/True/False/True/False/-:0:0/-:0[Damage=7,]/private=-/baselib=-,INFINITE_BLADES+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,PROLONG+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,NEUTRALIZE+1/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=4,WeakPower=2,]/private=-/baselib=-,;C=PIERCING_WAIL+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[StrengthLoss=6,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,BACKSTAB+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Damage=11,]/private=-/baselib=-,RICOCHET+0/False:2/False:-1/0/False/True/False/True/False/-:0:0/-:0[Damage=3,Repeat=4,]/private=-/baselib=-,UNTOUCHABLE+0/False:2/False:-1/0/False/True/False/True/False/NIMBLE:2:0/-:0[Block=6,]/private=-/baselib=-,UNTOUCHABLE+0/False:2/False:-1/0/False/True/False/True/False/NIMBLE:2:0/-:0[Block=6,]/private=-/baselib=-,SURVIVOR+0/False:1/False:-1/0/False/False/False/True/False/IMBUED:1:0/-:0[Block=8,]/private=-/baselib=-,THINKING_AHEAD+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Cards=2,]/private=-/baselib=-,PREPARED+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Cards=1,]/private=-/baselib=-,POISONED_STAB+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,PoisonPower=3,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,;X=EXPOSE+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:1/-:0[Power=2,]/private=-/baselib=-,;Y=0/0;O=0:;potions=-,-;relicCounters=;mirrorRelics=;P=0:DEXTERITY_POWER=2/0[],1:ESCAPE_ARTIST_POWER=5/0[],1:POISON_POWER=3/0[],1:VULNERABLE_POWER=2/0[DamageIncrease=1.5,],;R=28:4148761340811972820:17064762985218812695:10630232805469695539:17728171462081269814/0:1540175275923826793:6968787407412865572:7388637225700702107:11481089618211334959/0:5934757781998388361:15869045962219491616:15369654540583268111:14069941304612255854/0:11151985130098373254:6399868294416806884:16299991293147775690:1269242897437426686/0:13478539414179622148:6253691135650110595:231189132651270423:4737470750939971824/4:13692164379798535259:3233927567048066725:326862003566694894:17992463887721486413/0:15405376307384934102:6871969513576988392:2075252948626408363:10200190978225942783/0:5480173581589452485:17380693601233773782:16982319539701856557:10297118194812445829/1:6327871633185007828:940634191503254269:3766481505919673418:1988234927933379623",
+          "owner": "deployment:1:4:STRIKE_SILENT"
+        }
+      },
+      {
+        "kind": "end_turn",
+        "sequence": 18,
+        "value": {
+          "before": "turn=1;hp=70;max_hp=70;block=24;energy=0;stars=0;gold=99;osty=4294967295/0/0;E0=1/THIEVING_HOPPER/-/54/84/0/THIEVERY_MOVE;AI0=THIEVERY_MOVE;MS0=-/0;H=DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,BULLET_TIME+0/False:3/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[]/private=-/baselib=-,LANTERN_KEY+0/False:-1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,;D=DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,DAGGER_THROW+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Damage=9,]/private=-/baselib=-,ASCENDERS_BANE+0/False:-1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,NOXIOUS_FUMES+1/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[PoisonPerTurn=3,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,FLICK_FLACK+0/False:1/False:-1/0/False/True/False/True/False/-:0:0/-:0[Damage=7,]/private=-/baselib=-,INFINITE_BLADES+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,PROLONG+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,NEUTRALIZE+1/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=4,WeakPower=2,]/private=-/baselib=-,;C=PIERCING_WAIL+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[StrengthLoss=6,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,BACKSTAB+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Damage=11,]/private=-/baselib=-,RICOCHET+0/False:2/False:-1/0/False/True/False/True/False/-:0:0/-:0[Damage=3,Repeat=4,]/private=-/baselib=-,UNTOUCHABLE+0/False:2/False:-1/0/False/True/False/True/False/NIMBLE:2:0/-:0[Block=6,]/private=-/baselib=-,UNTOUCHABLE+0/False:2/False:-1/0/False/True/False/True/False/NIMBLE:2:0/-:0[Block=6,]/private=-/baselib=-,SURVIVOR+0/False:1/False:-1/0/False/False/False/True/False/IMBUED:1:0/-:0[Block=8,]/private=-/baselib=-,THINKING_AHEAD+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Cards=2,]/private=-/baselib=-,PREPARED+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Cards=1,]/private=-/baselib=-,POISONED_STAB+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,PoisonPower=3,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,;X=EXPOSE+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:1/-:0[Power=2,]/private=-/baselib=-,;Y=0/0;O=0:;potions=-,-;relicCounters=;mirrorRelics=;P=0:DEXTERITY_POWER=2/0[],1:ESCAPE_ARTIST_POWER=5/0[],1:POISON_POWER=3/0[],1:VULNERABLE_POWER=2/0[DamageIncrease=1.5,],;R=28:4148761340811972820:17064762985218812695:10630232805469695539:17728171462081269814/0:1540175275923826793:6968787407412865572:7388637225700702107:11481089618211334959/0:5934757781998388361:15869045962219491616:15369654540583268111:14069941304612255854/0:11151985130098373254:6399868294416806884:16299991293147775690:1269242897437426686/0:13478539414179622148:6253691135650110595:231189132651270423:4737470750939971824/4:13692164379798535259:3233927567048066725:326862003566694894:17992463887721486413/0:15405376307384934102:6871969513576988392:2075252948626408363:10200190978225942783/0:5480173581589452485:17380693601233773782:16982319539701856557:10297118194812445829/1:6327871633185007828:940634191503254269:3766481505919673418:1988234927933379623"
+        }
+      },
+      {
+        "kind": "choice_plan",
+        "sequence": 19,
+        "value": {
+          "choices": [
+            {
+              "Cards": [
+                {
+                  "CardId": "FLICK_FLACK",
+                  "OptionOccurrence": 0,
+                  "SourceOccurrence": 0,
+                  "StateKey": "FLICK_FLACK+0|energy=False:1|stars=False:-1|replay=0|exhaust=False|sly=True|retain=False|deck=True|keywords=Sly|vars=Damage=7|-|:0|baselib=-",
+                  "Title": "Flick-Flack",
+                  "UpgradeLevel": 0
+                }
+              ],
+              "ContextId": "",
+              "Effect": 2,
+              "SourceId": "",
+              "SourcePile": 2,
+              "Timing": 0
+            }
+          ],
+          "owner": "deployment:2:0:DAGGER_THROW"
+        }
+      },
+      {
+        "kind": "play",
+        "sequence": 20,
+        "value": {
+          "action": {
+            "ActionTitle": "Dagger Throw",
+            "CardId": "DAGGER_THROW",
+            "CardOccurrence": 0,
+            "CardStateKey": "DAGGER_THROW+0|energy=False:1|stars=False:-1|replay=0|exhaust=False|sly=False|retain=False|deck=True|keywords=|vars=Damage=9|SWIFT:1:0|:0|baselib=-",
+            "CardStateOccurrence": 0,
+            "CardTitle": "Dagger Throw",
+            "Choice": {
+              "Cards": [
+                {
+                  "CardId": "FLICK_FLACK",
+                  "OptionOccurrence": 0,
+                  "SourceOccurrence": 0,
+                  "StateKey": "FLICK_FLACK+0|energy=False:1|stars=False:-1|replay=0|exhaust=False|sly=True|retain=False|deck=True|keywords=Sly|vars=Damage=7|-|:0|baselib=-",
+                  "Title": "Flick-Flack",
+                  "UpgradeLevel": 0
+                }
+              ],
+              "ContextId": "",
+              "Effect": 2,
+              "SourceId": "",
+              "SourcePile": 2,
+              "Timing": 0
+            },
+            "EndsPlayerTurn": false,
+            "IsExecutable": true,
+            "Kind": 0,
+            "NestedChoices": null,
+            "NestedChoicesBeforePrimary": 0,
+            "PotionId": "",
+            "PotionSlot": -1,
+            "PotionTitle": "",
+            "RelicEffects": [],
+            "ReplayCount": 0,
+            "TargetCombatId": 1,
+            "TargetIndex": 0,
+            "TargetName": "Thieving Hopper",
+            "Turn": 2,
+            "TurnStartChoices": null
+          },
+          "before": "turn=2;hp=70;max_hp=70;block=0;energy=3;stars=0;gold=99;osty=4294967295/0/0;E0=1/THIEVING_HOPPER/-/51/84/0/FLUTTER_MOVE;AI0=THIEVERY_MOVE,FLUTTER_MOVE;MS0=-/0;H=DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,DAGGER_THROW+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Damage=9,]/private=-/baselib=-,ASCENDERS_BANE+0/False:-1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,;D=FLICK_FLACK+0/False:1/False:-1/0/False/True/False/True/False/-:0:0/-:0[Damage=7,]/private=-/baselib=-,INFINITE_BLADES+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,PROLONG+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,NEUTRALIZE+1/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=4,WeakPower=2,]/private=-/baselib=-,;C=PIERCING_WAIL+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[StrengthLoss=6,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,BACKSTAB+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Damage=11,]/private=-/baselib=-,RICOCHET+0/False:2/False:-1/0/False/True/False/True/False/-:0:0/-:0[Damage=3,Repeat=4,]/private=-/baselib=-,UNTOUCHABLE+0/False:2/False:-1/0/False/True/False/True/False/NIMBLE:2:0/-:0[Block=6,]/private=-/baselib=-,UNTOUCHABLE+0/False:2/False:-1/0/False/True/False/True/False/NIMBLE:2:0/-:0[Block=6,]/private=-/baselib=-,SURVIVOR+0/False:1/False:-1/0/False/False/False/True/False/IMBUED:1:0/-:0[Block=8,]/private=-/baselib=-,THINKING_AHEAD+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Cards=2,]/private=-/baselib=-,PREPARED+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Cards=1,]/private=-/baselib=-,POISONED_STAB+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,PoisonPower=3,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,BULLET_TIME+0/False:3/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[]/private=-/baselib=-,LANTERN_KEY+0/False:-1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,;X=EXPOSE+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:1/-:0[Power=2,]/private=-/baselib=-,;Y=0/0;O=0:;potions=-,-;relicCounters=;mirrorRelics=;P=0:DEXTERITY_POWER=2/0[],1:ESCAPE_ARTIST_POWER=4/0[],1:POISON_POWER=2/0[],1:SWIPE_POWER=1/0[],1:VULNERABLE_POWER=1/0[DamageIncrease=1.5,],;R=28:4148761340811972820:17064762985218812695:10630232805469695539:17728171462081269814/1:16914623363930990946:1396221513423025622:5018530843498471410:14420948203797120316/0:5934757781998388361:15869045962219491616:15369654540583268111:14069941304612255854/0:11151985130098373254:6399868294416806884:16299991293147775690:1269242897437426686/0:13478539414179622148:6253691135650110595:231189132651270423:4737470750939971824/4:13692164379798535259:3233927567048066725:326862003566694894:17992463887721486413/0:15405376307384934102:6871969513576988392:2075252948626408363:10200190978225942783/0:5480173581589452485:17380693601233773782:16982319539701856557:10297118194812445829/1:6327871633185007828:940634191503254269:3766481505919673418:1988234927933379623"
+        }
+      },
+      {
+        "kind": "action_completed",
+        "sequence": 21,
+        "value": {
+          "after": "turn=2;hp=70;max_hp=70;block=0;energy=2;stars=0;gold=99;osty=4294967295/0/0;E0=1/THIEVING_HOPPER/-/28/84/0/FLUTTER_MOVE;AI0=THIEVERY_MOVE,FLUTTER_MOVE;MS0=-/0;H=DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,ASCENDERS_BANE+0/False:-1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,INFINITE_BLADES+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[]/private=-/baselib=-,;D=DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,PROLONG+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,NEUTRALIZE+1/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=4,WeakPower=2,]/private=-/baselib=-,;C=PIERCING_WAIL+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[StrengthLoss=6,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,BACKSTAB+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Damage=11,]/private=-/baselib=-,RICOCHET+0/False:2/False:-1/0/False/True/False/True/False/-:0:0/-:0[Damage=3,Repeat=4,]/private=-/baselib=-,UNTOUCHABLE+0/False:2/False:-1/0/False/True/False/True/False/NIMBLE:2:0/-:0[Block=6,]/private=-/baselib=-,UNTOUCHABLE+0/False:2/False:-1/0/False/True/False/True/False/NIMBLE:2:0/-:0[Block=6,]/private=-/baselib=-,SURVIVOR+0/False:1/False:-1/0/False/False/False/True/False/IMBUED:1:0/-:0[Block=8,]/private=-/baselib=-,THINKING_AHEAD+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Cards=2,]/private=-/baselib=-,PREPARED+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Cards=1,]/private=-/baselib=-,POISONED_STAB+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,PoisonPower=3,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,BULLET_TIME+0/False:3/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[]/private=-/baselib=-,LANTERN_KEY+0/False:-1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,FLICK_FLACK+0/False:1/False:-1/0/False/True/False/True/False/-:0:0/-:0[Damage=7,]/private=-/baselib=-,DAGGER_THROW+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:1/-:0[Damage=9,]/private=-/baselib=-,;X=EXPOSE+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:1/-:0[Power=2,]/private=-/baselib=-,;Y=0/0;O=0:;potions=-,-;relicCounters=;mirrorRelics=;P=0:DEXTERITY_POWER=2/0[],1:ESCAPE_ARTIST_POWER=4/0[],1:POISON_POWER=2/0[],1:SWIPE_POWER=1/0[],1:VULNERABLE_POWER=1/0[DamageIncrease=1.5,],;R=28:4148761340811972820:17064762985218812695:10630232805469695539:17728171462081269814/1:16914623363930990946:1396221513423025622:5018530843498471410:14420948203797120316/0:5934757781998388361:15869045962219491616:15369654540583268111:14069941304612255854/0:11151985130098373254:6399868294416806884:16299991293147775690:1269242897437426686/0:13478539414179622148:6253691135650110595:231189132651270423:4737470750939971824/4:13692164379798535259:3233927567048066725:326862003566694894:17992463887721486413/0:15405376307384934102:6871969513576988392:2075252948626408363:10200190978225942783/0:5480173581589452485:17380693601233773782:16982319539701856557:10297118194812445829/1:6327871633185007828:940634191503254269:3766481505919673418:1988234927933379623",
+          "owner": "deployment:2:0:DAGGER_THROW"
+        }
+      },
+      {
+        "kind": "choice_plan",
+        "sequence": 22,
+        "value": {
+          "choices": [],
+          "owner": "deployment:2:1:STRIKE_SILENT"
+        }
+      },
+      {
+        "kind": "play",
+        "sequence": 23,
+        "value": {
+          "action": {
+            "ActionTitle": "Strike",
+            "CardId": "STRIKE_SILENT",
+            "CardOccurrence": 0,
+            "CardStateKey": "STRIKE_SILENT+0|energy=False:1|stars=False:-1|replay=0|exhaust=False|sly=False|retain=False|deck=True|keywords=|vars=Damage=6|-|:0|baselib=-",
+            "CardStateOccurrence": 0,
+            "CardTitle": "Strike",
+            "Choice": null,
+            "EndsPlayerTurn": false,
+            "IsExecutable": true,
+            "Kind": 0,
+            "NestedChoices": null,
+            "NestedChoicesBeforePrimary": 0,
+            "PotionId": "",
+            "PotionSlot": -1,
+            "PotionTitle": "",
+            "RelicEffects": [],
+            "ReplayCount": 0,
+            "TargetCombatId": 1,
+            "TargetIndex": 0,
+            "TargetName": "Thieving Hopper",
+            "Turn": 2,
+            "TurnStartChoices": null
+          },
+          "before": "turn=2;hp=70;max_hp=70;block=0;energy=2;stars=0;gold=99;osty=4294967295/0/0;E0=1/THIEVING_HOPPER/-/28/84/0/FLUTTER_MOVE;AI0=THIEVERY_MOVE,FLUTTER_MOVE;MS0=-/0;H=DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,ASCENDERS_BANE+0/False:-1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,INFINITE_BLADES+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[]/private=-/baselib=-,;D=DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,PROLONG+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,NEUTRALIZE+1/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=4,WeakPower=2,]/private=-/baselib=-,;C=PIERCING_WAIL+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[StrengthLoss=6,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,BACKSTAB+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Damage=11,]/private=-/baselib=-,RICOCHET+0/False:2/False:-1/0/False/True/False/True/False/-:0:0/-:0[Damage=3,Repeat=4,]/private=-/baselib=-,UNTOUCHABLE+0/False:2/False:-1/0/False/True/False/True/False/NIMBLE:2:0/-:0[Block=6,]/private=-/baselib=-,UNTOUCHABLE+0/False:2/False:-1/0/False/True/False/True/False/NIMBLE:2:0/-:0[Block=6,]/private=-/baselib=-,SURVIVOR+0/False:1/False:-1/0/False/False/False/True/False/IMBUED:1:0/-:0[Block=8,]/private=-/baselib=-,THINKING_AHEAD+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Cards=2,]/private=-/baselib=-,PREPARED+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Cards=1,]/private=-/baselib=-,POISONED_STAB+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,PoisonPower=3,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,BULLET_TIME+0/False:3/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[]/private=-/baselib=-,LANTERN_KEY+0/False:-1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,FLICK_FLACK+0/False:1/False:-1/0/False/True/False/True/False/-:0:0/-:0[Damage=7,]/private=-/baselib=-,DAGGER_THROW+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:1/-:0[Damage=9,]/private=-/baselib=-,;X=EXPOSE+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:1/-:0[Power=2,]/private=-/baselib=-,;Y=0/0;O=0:;potions=-,-;relicCounters=;mirrorRelics=;P=0:DEXTERITY_POWER=2/0[],1:ESCAPE_ARTIST_POWER=4/0[],1:POISON_POWER=2/0[],1:SWIPE_POWER=1/0[],1:VULNERABLE_POWER=1/0[DamageIncrease=1.5,],;R=28:4148761340811972820:17064762985218812695:10630232805469695539:17728171462081269814/1:16914623363930990946:1396221513423025622:5018530843498471410:14420948203797120316/0:5934757781998388361:15869045962219491616:15369654540583268111:14069941304612255854/0:11151985130098373254:6399868294416806884:16299991293147775690:1269242897437426686/0:13478539414179622148:6253691135650110595:231189132651270423:4737470750939971824/4:13692164379798535259:3233927567048066725:326862003566694894:17992463887721486413/0:15405376307384934102:6871969513576988392:2075252948626408363:10200190978225942783/0:5480173581589452485:17380693601233773782:16982319539701856557:10297118194812445829/1:6327871633185007828:940634191503254269:3766481505919673418:1988234927933379623"
+        }
+      },
+      {
+        "kind": "action_completed",
+        "sequence": 24,
+        "value": {
+          "after": "turn=2;hp=70;max_hp=70;block=0;energy=1;stars=0;gold=99;osty=4294967295/0/0;E0=1/THIEVING_HOPPER/-/19/84/0/FLUTTER_MOVE;AI0=THIEVERY_MOVE,FLUTTER_MOVE;MS0=-/0;H=DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,ASCENDERS_BANE+0/False:-1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,INFINITE_BLADES+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[]/private=-/baselib=-,;D=DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,PROLONG+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,NEUTRALIZE+1/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=4,WeakPower=2,]/private=-/baselib=-,;C=PIERCING_WAIL+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[StrengthLoss=6,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,BACKSTAB+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Damage=11,]/private=-/baselib=-,RICOCHET+0/False:2/False:-1/0/False/True/False/True/False/-:0:0/-:0[Damage=3,Repeat=4,]/private=-/baselib=-,UNTOUCHABLE+0/False:2/False:-1/0/False/True/False/True/False/NIMBLE:2:0/-:0[Block=6,]/private=-/baselib=-,UNTOUCHABLE+0/False:2/False:-1/0/False/True/False/True/False/NIMBLE:2:0/-:0[Block=6,]/private=-/baselib=-,SURVIVOR+0/False:1/False:-1/0/False/False/False/True/False/IMBUED:1:0/-:0[Block=8,]/private=-/baselib=-,THINKING_AHEAD+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Cards=2,]/private=-/baselib=-,PREPARED+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Cards=1,]/private=-/baselib=-,POISONED_STAB+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,PoisonPower=3,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,BULLET_TIME+0/False:3/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[]/private=-/baselib=-,LANTERN_KEY+0/False:-1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,FLICK_FLACK+0/False:1/False:-1/0/False/True/False/True/False/-:0:0/-:0[Damage=7,]/private=-/baselib=-,DAGGER_THROW+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:1/-:0[Damage=9,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,;X=EXPOSE+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:1/-:0[Power=2,]/private=-/baselib=-,;Y=0/0;O=0:;potions=-,-;relicCounters=;mirrorRelics=;P=0:DEXTERITY_POWER=2/0[],1:ESCAPE_ARTIST_POWER=4/0[],1:POISON_POWER=2/0[],1:SWIPE_POWER=1/0[],1:VULNERABLE_POWER=1/0[DamageIncrease=1.5,],;R=28:4148761340811972820:17064762985218812695:10630232805469695539:17728171462081269814/1:16914623363930990946:1396221513423025622:5018530843498471410:14420948203797120316/0:5934757781998388361:15869045962219491616:15369654540583268111:14069941304612255854/0:11151985130098373254:6399868294416806884:16299991293147775690:1269242897437426686/0:13478539414179622148:6253691135650110595:231189132651270423:4737470750939971824/4:13692164379798535259:3233927567048066725:326862003566694894:17992463887721486413/0:15405376307384934102:6871969513576988392:2075252948626408363:10200190978225942783/0:5480173581589452485:17380693601233773782:16982319539701856557:10297118194812445829/1:6327871633185007828:940634191503254269:3766481505919673418:1988234927933379623",
+          "owner": "deployment:2:1:STRIKE_SILENT"
+        }
+      },
+      {
+        "kind": "choice_plan",
+        "sequence": 25,
+        "value": {
+          "choices": [],
+          "owner": "deployment:2:2:INFINITE_BLADES"
+        }
+      },
+      {
+        "kind": "play",
+        "sequence": 26,
+        "value": {
+          "action": {
+            "ActionTitle": "Infinite Blades",
+            "CardId": "INFINITE_BLADES",
+            "CardOccurrence": 0,
+            "CardStateKey": "INFINITE_BLADES+0|energy=False:1|stars=False:-1|replay=0|exhaust=False|sly=False|retain=False|deck=True|keywords=|vars=|SWIFT:1:0|:0|baselib=-",
+            "CardStateOccurrence": 0,
+            "CardTitle": "Infinite Blades",
+            "Choice": null,
+            "EndsPlayerTurn": false,
+            "IsExecutable": true,
+            "Kind": 0,
+            "NestedChoices": null,
+            "NestedChoicesBeforePrimary": 0,
+            "PotionId": "",
+            "PotionSlot": -1,
+            "PotionTitle": "",
+            "RelicEffects": [],
+            "ReplayCount": 0,
+            "TargetCombatId": null,
+            "TargetIndex": -1,
+            "TargetName": "",
+            "Turn": 2,
+            "TurnStartChoices": null
+          },
+          "before": "turn=2;hp=70;max_hp=70;block=0;energy=1;stars=0;gold=99;osty=4294967295/0/0;E0=1/THIEVING_HOPPER/-/19/84/0/FLUTTER_MOVE;AI0=THIEVERY_MOVE,FLUTTER_MOVE;MS0=-/0;H=DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,ASCENDERS_BANE+0/False:-1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,INFINITE_BLADES+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[]/private=-/baselib=-,;D=DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,PROLONG+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,NEUTRALIZE+1/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=4,WeakPower=2,]/private=-/baselib=-,;C=PIERCING_WAIL+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[StrengthLoss=6,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,BACKSTAB+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Damage=11,]/private=-/baselib=-,RICOCHET+0/False:2/False:-1/0/False/True/False/True/False/-:0:0/-:0[Damage=3,Repeat=4,]/private=-/baselib=-,UNTOUCHABLE+0/False:2/False:-1/0/False/True/False/True/False/NIMBLE:2:0/-:0[Block=6,]/private=-/baselib=-,UNTOUCHABLE+0/False:2/False:-1/0/False/True/False/True/False/NIMBLE:2:0/-:0[Block=6,]/private=-/baselib=-,SURVIVOR+0/False:1/False:-1/0/False/False/False/True/False/IMBUED:1:0/-:0[Block=8,]/private=-/baselib=-,THINKING_AHEAD+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Cards=2,]/private=-/baselib=-,PREPARED+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Cards=1,]/private=-/baselib=-,POISONED_STAB+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,PoisonPower=3,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,BULLET_TIME+0/False:3/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[]/private=-/baselib=-,LANTERN_KEY+0/False:-1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,FLICK_FLACK+0/False:1/False:-1/0/False/True/False/True/False/-:0:0/-:0[Damage=7,]/private=-/baselib=-,DAGGER_THROW+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:1/-:0[Damage=9,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,;X=EXPOSE+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:1/-:0[Power=2,]/private=-/baselib=-,;Y=0/0;O=0:;potions=-,-;relicCounters=;mirrorRelics=;P=0:DEXTERITY_POWER=2/0[],1:ESCAPE_ARTIST_POWER=4/0[],1:POISON_POWER=2/0[],1:SWIPE_POWER=1/0[],1:VULNERABLE_POWER=1/0[DamageIncrease=1.5,],;R=28:4148761340811972820:17064762985218812695:10630232805469695539:17728171462081269814/1:16914623363930990946:1396221513423025622:5018530843498471410:14420948203797120316/0:5934757781998388361:15869045962219491616:15369654540583268111:14069941304612255854/0:11151985130098373254:6399868294416806884:16299991293147775690:1269242897437426686/0:13478539414179622148:6253691135650110595:231189132651270423:4737470750939971824/4:13692164379798535259:3233927567048066725:326862003566694894:17992463887721486413/0:15405376307384934102:6871969513576988392:2075252948626408363:10200190978225942783/0:5480173581589452485:17380693601233773782:16982319539701856557:10297118194812445829/1:6327871633185007828:940634191503254269:3766481505919673418:1988234927933379623"
+        }
+      },
+      {
+        "kind": "action_completed",
+        "sequence": 27,
+        "value": {
+          "after": "turn=2;hp=70;max_hp=70;block=0;energy=0;stars=0;gold=99;osty=4294967295/0/0;E0=1/THIEVING_HOPPER/-/19/84/0/FLUTTER_MOVE;AI0=THIEVERY_MOVE,FLUTTER_MOVE;MS0=-/0;H=DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,ASCENDERS_BANE+0/False:-1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,;D=PROLONG+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,NEUTRALIZE+1/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=4,WeakPower=2,]/private=-/baselib=-,;C=PIERCING_WAIL+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[StrengthLoss=6,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,BACKSTAB+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Damage=11,]/private=-/baselib=-,RICOCHET+0/False:2/False:-1/0/False/True/False/True/False/-:0:0/-:0[Damage=3,Repeat=4,]/private=-/baselib=-,UNTOUCHABLE+0/False:2/False:-1/0/False/True/False/True/False/NIMBLE:2:0/-:0[Block=6,]/private=-/baselib=-,UNTOUCHABLE+0/False:2/False:-1/0/False/True/False/True/False/NIMBLE:2:0/-:0[Block=6,]/private=-/baselib=-,SURVIVOR+0/False:1/False:-1/0/False/False/False/True/False/IMBUED:1:0/-:0[Block=8,]/private=-/baselib=-,THINKING_AHEAD+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Cards=2,]/private=-/baselib=-,PREPARED+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Cards=1,]/private=-/baselib=-,POISONED_STAB+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,PoisonPower=3,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,BULLET_TIME+0/False:3/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[]/private=-/baselib=-,LANTERN_KEY+0/False:-1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,FLICK_FLACK+0/False:1/False:-1/0/False/True/False/True/False/-:0:0/-:0[Damage=7,]/private=-/baselib=-,DAGGER_THROW+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:1/-:0[Damage=9,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,;X=EXPOSE+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:1/-:0[Power=2,]/private=-/baselib=-,;Y=0/0;O=0:;potions=-,-;relicCounters=;mirrorRelics=;P=0:DEXTERITY_POWER=2/0[],0:INFINITE_BLADES_POWER=1/0[],1:ESCAPE_ARTIST_POWER=4/0[],1:POISON_POWER=2/0[],1:SWIPE_POWER=1/0[],1:VULNERABLE_POWER=1/0[DamageIncrease=1.5,],;R=28:4148761340811972820:17064762985218812695:10630232805469695539:17728171462081269814/1:16914623363930990946:1396221513423025622:5018530843498471410:14420948203797120316/0:5934757781998388361:15869045962219491616:15369654540583268111:14069941304612255854/0:11151985130098373254:6399868294416806884:16299991293147775690:1269242897437426686/0:13478539414179622148:6253691135650110595:231189132651270423:4737470750939971824/4:13692164379798535259:3233927567048066725:326862003566694894:17992463887721486413/0:15405376307384934102:6871969513576988392:2075252948626408363:10200190978225942783/0:5480173581589452485:17380693601233773782:16982319539701856557:10297118194812445829/1:6327871633185007828:940634191503254269:3766481505919673418:1988234927933379623",
+          "owner": "deployment:2:2:INFINITE_BLADES"
+        }
+      },
+      {
+        "kind": "end_turn",
+        "sequence": 28,
+        "value": {
+          "before": "turn=2;hp=70;max_hp=70;block=0;energy=0;stars=0;gold=99;osty=4294967295/0/0;E0=1/THIEVING_HOPPER/-/19/84/0/FLUTTER_MOVE;AI0=THIEVERY_MOVE,FLUTTER_MOVE;MS0=-/0;H=DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,ASCENDERS_BANE+0/False:-1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,;D=PROLONG+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,NEUTRALIZE+1/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=4,WeakPower=2,]/private=-/baselib=-,;C=PIERCING_WAIL+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[StrengthLoss=6,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,BACKSTAB+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Damage=11,]/private=-/baselib=-,RICOCHET+0/False:2/False:-1/0/False/True/False/True/False/-:0:0/-:0[Damage=3,Repeat=4,]/private=-/baselib=-,UNTOUCHABLE+0/False:2/False:-1/0/False/True/False/True/False/NIMBLE:2:0/-:0[Block=6,]/private=-/baselib=-,UNTOUCHABLE+0/False:2/False:-1/0/False/True/False/True/False/NIMBLE:2:0/-:0[Block=6,]/private=-/baselib=-,SURVIVOR+0/False:1/False:-1/0/False/False/False/True/False/IMBUED:1:0/-:0[Block=8,]/private=-/baselib=-,THINKING_AHEAD+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Cards=2,]/private=-/baselib=-,PREPARED+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Cards=1,]/private=-/baselib=-,POISONED_STAB+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,PoisonPower=3,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,BULLET_TIME+0/False:3/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[]/private=-/baselib=-,LANTERN_KEY+0/False:-1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,FLICK_FLACK+0/False:1/False:-1/0/False/True/False/True/False/-:0:0/-:0[Damage=7,]/private=-/baselib=-,DAGGER_THROW+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:1/-:0[Damage=9,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,;X=EXPOSE+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:1/-:0[Power=2,]/private=-/baselib=-,;Y=0/0;O=0:;potions=-,-;relicCounters=;mirrorRelics=;P=0:DEXTERITY_POWER=2/0[],0:INFINITE_BLADES_POWER=1/0[],1:ESCAPE_ARTIST_POWER=4/0[],1:POISON_POWER=2/0[],1:SWIPE_POWER=1/0[],1:VULNERABLE_POWER=1/0[DamageIncrease=1.5,],;R=28:4148761340811972820:17064762985218812695:10630232805469695539:17728171462081269814/1:16914623363930990946:1396221513423025622:5018530843498471410:14420948203797120316/0:5934757781998388361:15869045962219491616:15369654540583268111:14069941304612255854/0:11151985130098373254:6399868294416806884:16299991293147775690:1269242897437426686/0:13478539414179622148:6253691135650110595:231189132651270423:4737470750939971824/4:13692164379798535259:3233927567048066725:326862003566694894:17992463887721486413/0:15405376307384934102:6871969513576988392:2075252948626408363:10200190978225942783/0:5480173581589452485:17380693601233773782:16982319539701856557:10297118194812445829/1:6327871633185007828:940634191503254269:3766481505919673418:1988234927933379623"
+        }
+      },
+      {
+        "kind": "choice_plan",
+        "sequence": 29,
+        "value": {
+          "choices": [
+            {
+              "Cards": [
+                {
+                  "CardId": "RICOCHET",
+                  "OptionOccurrence": 0,
+                  "SourceOccurrence": 0,
+                  "StateKey": "RICOCHET+0|energy=False:2|stars=False:-1|replay=0|exhaust=False|sly=True|retain=False|deck=True|keywords=Sly|vars=Damage=3;Repeat=4|-|:0|baselib=-",
+                  "Title": "Ricochet",
+                  "UpgradeLevel": 0
+                }
+              ],
+              "ContextId": "",
+              "Effect": 2,
+              "SourceId": "",
+              "SourcePile": 2,
+              "Timing": 0
+            }
+          ],
+          "owner": "deployment:3:0:SURVIVOR"
+        }
+      },
+      {
+        "kind": "play",
+        "sequence": 30,
+        "value": {
+          "action": {
+            "ActionTitle": "Survivor",
+            "CardId": "SURVIVOR",
+            "CardOccurrence": 0,
+            "CardStateKey": "SURVIVOR+0|energy=False:1|stars=False:-1|replay=0|exhaust=False|sly=False|retain=False|deck=True|keywords=|vars=Block=8|IMBUED:1:0|:0|baselib=-",
+            "CardStateOccurrence": 0,
+            "CardTitle": "Survivor",
+            "Choice": {
+              "Cards": [
+                {
+                  "CardId": "RICOCHET",
+                  "OptionOccurrence": 0,
+                  "SourceOccurrence": 0,
+                  "StateKey": "RICOCHET+0|energy=False:2|stars=False:-1|replay=0|exhaust=False|sly=True|retain=False|deck=True|keywords=Sly|vars=Damage=3;Repeat=4|-|:0|baselib=-",
+                  "Title": "Ricochet",
+                  "UpgradeLevel": 0
+                }
+              ],
+              "ContextId": "",
+              "Effect": 2,
+              "SourceId": "",
+              "SourcePile": 2,
+              "Timing": 0
+            },
+            "EndsPlayerTurn": false,
+            "IsExecutable": true,
+            "Kind": 0,
+            "NestedChoices": null,
+            "NestedChoicesBeforePrimary": 0,
+            "PotionId": "",
+            "PotionSlot": -1,
+            "PotionTitle": "",
+            "RelicEffects": [],
+            "ReplayCount": 0,
+            "TargetCombatId": null,
+            "TargetIndex": -1,
+            "TargetName": "",
+            "Turn": 3,
+            "TurnStartChoices": null
+          },
+          "before": "turn=3;hp=70;max_hp=70;block=0;energy=3;stars=0;gold=99;osty=4294967295/0/0;E0=1/THIEVING_HOPPER/-/17/84/0/HAT_TRICK_MOVE;AI0=THIEVERY_MOVE,FLUTTER_MOVE,HAT_TRICK_MOVE;MS0=-/0;H=SHIV+0/False:0/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=4,]/private=-/baselib=-,PROLONG+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,NEUTRALIZE+1/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=4,WeakPower=2,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,SURVIVOR+0/False:1/False:-1/0/False/False/False/True/False/IMBUED:1:0/-:0[Block=8,]/private=-/baselib=-,RICOCHET+0/False:2/False:-1/0/False/True/False/True/False/-:0:0/-:0[Damage=3,Repeat=4,]/private=-/baselib=-,;D=FLICK_FLACK+0/False:1/False:-1/0/False/True/False/True/False/-:0:0/-:0[Damage=7,]/private=-/baselib=-,PREPARED+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Cards=1,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,POISONED_STAB+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,PoisonPower=3,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,DAGGER_THROW+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:1/-:0[Damage=9,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,LANTERN_KEY+0/False:-1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,BULLET_TIME+0/False:3/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,BACKSTAB+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Damage=11,]/private=-/baselib=-,UNTOUCHABLE+0/False:2/False:-1/0/False/True/False/True/False/NIMBLE:2:0/-:0[Block=6,]/private=-/baselib=-,THINKING_AHEAD+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Cards=2,]/private=-/baselib=-,UNTOUCHABLE+0/False:2/False:-1/0/False/True/False/True/False/NIMBLE:2:0/-:0[Block=6,]/private=-/baselib=-,PIERCING_WAIL+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[StrengthLoss=6,]/private=-/baselib=-,;C=;X=EXPOSE+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:1/-:0[Power=2,]/private=-/baselib=-,ASCENDERS_BANE+0/False:-1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,;Y=0/0;O=0:;potions=-,-;relicCounters=;mirrorRelics=;P=0:DEXTERITY_POWER=3/0[],0:INFINITE_BLADES_POWER=1/0[],0:STRENGTH_POWER=1/0[],1:ESCAPE_ARTIST_POWER=3/0[],1:FLUTTER_POWER=5/0[DamageDecrease=50,],1:POISON_POWER=1/0[],1:SWIPE_POWER=1/0[],;R=49:4500793840272184025:8538259433545449820:6179033096132519362:14269882456130443224/1:16914623363930990946:1396221513423025622:5018530843498471410:14420948203797120316/0:5934757781998388361:15869045962219491616:15369654540583268111:14069941304612255854/0:11151985130098373254:6399868294416806884:16299991293147775690:1269242897437426686/0:13478539414179622148:6253691135650110595:231189132651270423:4737470750939971824/4:13692164379798535259:3233927567048066725:326862003566694894:17992463887721486413/0:15405376307384934102:6871969513576988392:2075252948626408363:10200190978225942783/0:5480173581589452485:17380693601233773782:16982319539701856557:10297118194812445829/1:6327871633185007828:940634191503254269:3766481505919673418:1988234927933379623"
+        }
+      },
+      {
+        "kind": "action_completed",
+        "sequence": 31,
+        "value": {
+          "after": "turn=3;hp=70;max_hp=70;block=11;energy=2;stars=0;gold=99;osty=4294967295/0/0;E0=1/THIEVING_HOPPER/-/9/84/0/HAT_TRICK_MOVE;AI0=THIEVERY_MOVE,FLUTTER_MOVE,HAT_TRICK_MOVE;MS0=-/0;H=SHIV+0/False:0/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=4,]/private=-/baselib=-,PROLONG+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,NEUTRALIZE+1/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=4,WeakPower=2,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,;D=FLICK_FLACK+0/False:1/False:-1/0/False/True/False/True/False/-:0:0/-:0[Damage=7,]/private=-/baselib=-,PREPARED+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Cards=1,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,POISONED_STAB+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,PoisonPower=3,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,DAGGER_THROW+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:1/-:0[Damage=9,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,LANTERN_KEY+0/False:-1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,BULLET_TIME+0/False:3/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,BACKSTAB+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Damage=11,]/private=-/baselib=-,UNTOUCHABLE+0/False:2/False:-1/0/False/True/False/True/False/NIMBLE:2:0/-:0[Block=6,]/private=-/baselib=-,THINKING_AHEAD+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Cards=2,]/private=-/baselib=-,UNTOUCHABLE+0/False:2/False:-1/0/False/True/False/True/False/NIMBLE:2:0/-:0[Block=6,]/private=-/baselib=-,PIERCING_WAIL+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[StrengthLoss=6,]/private=-/baselib=-,;C=RICOCHET+0/False:2/False:-1/0/False/True/False/True/False/-:0:0/-:0[Damage=3,Repeat=4,]/private=-/baselib=-,SURVIVOR+0/False:1/False:-1/0/False/False/False/True/False/IMBUED:1:0/-:0[Block=8,]/private=-/baselib=-,;X=EXPOSE+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:1/-:0[Power=2,]/private=-/baselib=-,ASCENDERS_BANE+0/False:-1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,;Y=0/0;O=0:;potions=-,-;relicCounters=;mirrorRelics=;P=0:DEXTERITY_POWER=3/0[],0:INFINITE_BLADES_POWER=1/0[],0:STRENGTH_POWER=1/0[],1:ESCAPE_ARTIST_POWER=3/0[],1:FLUTTER_POWER=1/0[DamageDecrease=50,],1:POISON_POWER=1/0[],1:SWIPE_POWER=1/0[],;R=49:4500793840272184025:8538259433545449820:6179033096132519362:14269882456130443224/1:16914623363930990946:1396221513423025622:5018530843498471410:14420948203797120316/0:5934757781998388361:15869045962219491616:15369654540583268111:14069941304612255854/0:11151985130098373254:6399868294416806884:16299991293147775690:1269242897437426686/0:13478539414179622148:6253691135650110595:231189132651270423:4737470750939971824/8:2424209456890470622:4322213534723825186:378314933582159555:11771649408550042093/0:15405376307384934102:6871969513576988392:2075252948626408363:10200190978225942783/0:5480173581589452485:17380693601233773782:16982319539701856557:10297118194812445829/1:6327871633185007828:940634191503254269:3766481505919673418:1988234927933379623",
+          "owner": "deployment:3:0:SURVIVOR"
+        }
+      },
+      {
+        "kind": "choice_plan",
+        "sequence": 32,
+        "value": {
+          "choices": [],
+          "owner": "deployment:3:1:NEUTRALIZE"
+        }
+      },
+      {
+        "kind": "play",
+        "sequence": 33,
+        "value": {
+          "action": {
+            "ActionTitle": "Neutralize+",
+            "CardId": "NEUTRALIZE",
+            "CardOccurrence": 0,
+            "CardStateKey": "NEUTRALIZE+1|energy=False:0|stars=False:-1|replay=0|exhaust=False|sly=False|retain=False|deck=True|keywords=|vars=Damage=4;WeakPower=2|-|:0|baselib=-",
+            "CardStateOccurrence": 0,
+            "CardTitle": "Neutralize+",
+            "Choice": null,
+            "EndsPlayerTurn": false,
+            "IsExecutable": true,
+            "Kind": 0,
+            "NestedChoices": null,
+            "NestedChoicesBeforePrimary": 0,
+            "PotionId": "",
+            "PotionSlot": -1,
+            "PotionTitle": "",
+            "RelicEffects": [],
+            "ReplayCount": 0,
+            "TargetCombatId": 1,
+            "TargetIndex": 0,
+            "TargetName": "Thieving Hopper",
+            "Turn": 3,
+            "TurnStartChoices": null
+          },
+          "before": "turn=3;hp=70;max_hp=70;block=11;energy=2;stars=0;gold=99;osty=4294967295/0/0;E0=1/THIEVING_HOPPER/-/9/84/0/HAT_TRICK_MOVE;AI0=THIEVERY_MOVE,FLUTTER_MOVE,HAT_TRICK_MOVE;MS0=-/0;H=SHIV+0/False:0/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=4,]/private=-/baselib=-,PROLONG+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,NEUTRALIZE+1/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=4,WeakPower=2,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,;D=FLICK_FLACK+0/False:1/False:-1/0/False/True/False/True/False/-:0:0/-:0[Damage=7,]/private=-/baselib=-,PREPARED+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Cards=1,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,POISONED_STAB+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,PoisonPower=3,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,DAGGER_THROW+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:1/-:0[Damage=9,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,LANTERN_KEY+0/False:-1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,BULLET_TIME+0/False:3/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,BACKSTAB+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Damage=11,]/private=-/baselib=-,UNTOUCHABLE+0/False:2/False:-1/0/False/True/False/True/False/NIMBLE:2:0/-:0[Block=6,]/private=-/baselib=-,THINKING_AHEAD+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Cards=2,]/private=-/baselib=-,UNTOUCHABLE+0/False:2/False:-1/0/False/True/False/True/False/NIMBLE:2:0/-:0[Block=6,]/private=-/baselib=-,PIERCING_WAIL+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[StrengthLoss=6,]/private=-/baselib=-,;C=RICOCHET+0/False:2/False:-1/0/False/True/False/True/False/-:0:0/-:0[Damage=3,Repeat=4,]/private=-/baselib=-,SURVIVOR+0/False:1/False:-1/0/False/False/False/True/False/IMBUED:1:0/-:0[Block=8,]/private=-/baselib=-,;X=EXPOSE+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:1/-:0[Power=2,]/private=-/baselib=-,ASCENDERS_BANE+0/False:-1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,;Y=0/0;O=0:;potions=-,-;relicCounters=;mirrorRelics=;P=0:DEXTERITY_POWER=3/0[],0:INFINITE_BLADES_POWER=1/0[],0:STRENGTH_POWER=1/0[],1:ESCAPE_ARTIST_POWER=3/0[],1:FLUTTER_POWER=1/0[DamageDecrease=50,],1:POISON_POWER=1/0[],1:SWIPE_POWER=1/0[],;R=49:4500793840272184025:8538259433545449820:6179033096132519362:14269882456130443224/1:16914623363930990946:1396221513423025622:5018530843498471410:14420948203797120316/0:5934757781998388361:15869045962219491616:15369654540583268111:14069941304612255854/0:11151985130098373254:6399868294416806884:16299991293147775690:1269242897437426686/0:13478539414179622148:6253691135650110595:231189132651270423:4737470750939971824/8:2424209456890470622:4322213534723825186:378314933582159555:11771649408550042093/0:15405376307384934102:6871969513576988392:2075252948626408363:10200190978225942783/0:5480173581589452485:17380693601233773782:16982319539701856557:10297118194812445829/1:6327871633185007828:940634191503254269:3766481505919673418:1988234927933379623"
+        }
+      },
+      {
+        "kind": "action_completed",
+        "sequence": 34,
+        "value": {
+          "after": "turn=3;hp=70;max_hp=70;block=11;energy=2;stars=0;gold=99;osty=4294967295/0/0;E0=1/THIEVING_HOPPER/-/7/84/0/STUNNED;AI0=THIEVERY_MOVE,FLUTTER_MOVE,HAT_TRICK_MOVE;MS0=-/0;H=SHIV+0/False:0/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=4,]/private=-/baselib=-,PROLONG+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,;D=FLICK_FLACK+0/False:1/False:-1/0/False/True/False/True/False/-:0:0/-:0[Damage=7,]/private=-/baselib=-,PREPARED+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Cards=1,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,POISONED_STAB+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,PoisonPower=3,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,DAGGER_THROW+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:1/-:0[Damage=9,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,LANTERN_KEY+0/False:-1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,BULLET_TIME+0/False:3/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,BACKSTAB+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Damage=11,]/private=-/baselib=-,UNTOUCHABLE+0/False:2/False:-1/0/False/True/False/True/False/NIMBLE:2:0/-:0[Block=6,]/private=-/baselib=-,THINKING_AHEAD+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Cards=2,]/private=-/baselib=-,UNTOUCHABLE+0/False:2/False:-1/0/False/True/False/True/False/NIMBLE:2:0/-:0[Block=6,]/private=-/baselib=-,PIERCING_WAIL+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[StrengthLoss=6,]/private=-/baselib=-,;C=RICOCHET+0/False:2/False:-1/0/False/True/False/True/False/-:0:0/-:0[Damage=3,Repeat=4,]/private=-/baselib=-,SURVIVOR+0/False:1/False:-1/0/False/False/False/True/False/IMBUED:1:0/-:0[Block=8,]/private=-/baselib=-,NEUTRALIZE+1/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=4,WeakPower=2,]/private=-/baselib=-,;X=EXPOSE+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:1/-:0[Power=2,]/private=-/baselib=-,ASCENDERS_BANE+0/False:-1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,;Y=0/1;O=0:;potions=-,-;relicCounters=;mirrorRelics=;P=0:DEXTERITY_POWER=3/0[],0:INFINITE_BLADES_POWER=1/0[],0:STRENGTH_POWER=1/0[],1:ESCAPE_ARTIST_POWER=3/0[],1:POISON_POWER=1/0[],1:SWIPE_POWER=1/0[],1:WEAK_POWER=2/0[DamageDecrease=0.75,],;R=49:4500793840272184025:8538259433545449820:6179033096132519362:14269882456130443224/1:16914623363930990946:1396221513423025622:5018530843498471410:14420948203797120316/0:5934757781998388361:15869045962219491616:15369654540583268111:14069941304612255854/0:11151985130098373254:6399868294416806884:16299991293147775690:1269242897437426686/0:13478539414179622148:6253691135650110595:231189132651270423:4737470750939971824/8:2424209456890470622:4322213534723825186:378314933582159555:11771649408550042093/0:15405376307384934102:6871969513576988392:2075252948626408363:10200190978225942783/0:5480173581589452485:17380693601233773782:16982319539701856557:10297118194812445829/1:6327871633185007828:940634191503254269:3766481505919673418:1988234927933379623",
+          "owner": "deployment:3:1:NEUTRALIZE"
+        }
+      },
+      {
+        "kind": "end_turn",
+        "sequence": 35,
+        "value": {
+          "before": "turn=3;hp=70;max_hp=70;block=11;energy=2;stars=0;gold=99;osty=4294967295/0/0;E0=1/THIEVING_HOPPER/-/7/84/0/STUNNED;AI0=THIEVERY_MOVE,FLUTTER_MOVE,HAT_TRICK_MOVE;MS0=-/0;H=SHIV+0/False:0/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=4,]/private=-/baselib=-,PROLONG+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,;D=FLICK_FLACK+0/False:1/False:-1/0/False/True/False/True/False/-:0:0/-:0[Damage=7,]/private=-/baselib=-,PREPARED+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Cards=1,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,POISONED_STAB+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,PoisonPower=3,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,DAGGER_THROW+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:1/-:0[Damage=9,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,LANTERN_KEY+0/False:-1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,BULLET_TIME+0/False:3/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,BACKSTAB+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Damage=11,]/private=-/baselib=-,UNTOUCHABLE+0/False:2/False:-1/0/False/True/False/True/False/NIMBLE:2:0/-:0[Block=6,]/private=-/baselib=-,THINKING_AHEAD+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Cards=2,]/private=-/baselib=-,UNTOUCHABLE+0/False:2/False:-1/0/False/True/False/True/False/NIMBLE:2:0/-:0[Block=6,]/private=-/baselib=-,PIERCING_WAIL+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[StrengthLoss=6,]/private=-/baselib=-,;C=RICOCHET+0/False:2/False:-1/0/False/True/False/True/False/-:0:0/-:0[Damage=3,Repeat=4,]/private=-/baselib=-,SURVIVOR+0/False:1/False:-1/0/False/False/False/True/False/IMBUED:1:0/-:0[Block=8,]/private=-/baselib=-,NEUTRALIZE+1/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=4,WeakPower=2,]/private=-/baselib=-,;X=EXPOSE+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:1/-:0[Power=2,]/private=-/baselib=-,ASCENDERS_BANE+0/False:-1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,;Y=0/1;O=0:;potions=-,-;relicCounters=;mirrorRelics=;P=0:DEXTERITY_POWER=3/0[],0:INFINITE_BLADES_POWER=1/0[],0:STRENGTH_POWER=1/0[],1:ESCAPE_ARTIST_POWER=3/0[],1:POISON_POWER=1/0[],1:SWIPE_POWER=1/0[],1:WEAK_POWER=2/0[DamageDecrease=0.75,],;R=49:4500793840272184025:8538259433545449820:6179033096132519362:14269882456130443224/1:16914623363930990946:1396221513423025622:5018530843498471410:14420948203797120316/0:5934757781998388361:15869045962219491616:15369654540583268111:14069941304612255854/0:11151985130098373254:6399868294416806884:16299991293147775690:1269242897437426686/0:13478539414179622148:6253691135650110595:231189132651270423:4737470750939971824/8:2424209456890470622:4322213534723825186:378314933582159555:11771649408550042093/0:15405376307384934102:6871969513576988392:2075252948626408363:10200190978225942783/0:5480173581589452485:17380693601233773782:16982319539701856557:10297118194812445829/1:6327871633185007828:940634191503254269:3766481505919673418:1988234927933379623"
+        }
+      },
+      {
+        "kind": "choice_plan",
+        "sequence": 36,
+        "value": {
+          "choices": [
+            {
+              "Cards": [
+                {
+                  "CardId": "FLICK_FLACK",
+                  "OptionOccurrence": 0,
+                  "SourceOccurrence": 0,
+                  "StateKey": "FLICK_FLACK+0|energy=False:1|stars=False:-1|replay=0|exhaust=False|sly=True|retain=False|deck=True|keywords=Sly|vars=Damage=7|-|:0|baselib=-",
+                  "Title": "Flick-Flack",
+                  "UpgradeLevel": 0
+                }
+              ],
+              "ContextId": "",
+              "Effect": 2,
+              "SourceId": "",
+              "SourcePile": 2,
+              "Timing": 0
+            }
+          ],
+          "owner": "deployment:4:0:PREPARED"
+        }
+      },
+      {
+        "kind": "play",
+        "sequence": 37,
+        "value": {
+          "action": {
+            "ActionTitle": "Prepared",
+            "CardId": "PREPARED",
+            "CardOccurrence": 0,
+            "CardStateKey": "PREPARED+0|energy=False:0|stars=False:-1|replay=0|exhaust=False|sly=False|retain=False|deck=True|keywords=|vars=Cards=1|-|:0|baselib=-",
+            "CardStateOccurrence": 0,
+            "CardTitle": "Prepared",
+            "Choice": {
+              "Cards": [
+                {
+                  "CardId": "FLICK_FLACK",
+                  "OptionOccurrence": 0,
+                  "SourceOccurrence": 0,
+                  "StateKey": "FLICK_FLACK+0|energy=False:1|stars=False:-1|replay=0|exhaust=False|sly=True|retain=False|deck=True|keywords=Sly|vars=Damage=7|-|:0|baselib=-",
+                  "Title": "Flick-Flack",
+                  "UpgradeLevel": 0
+                }
+              ],
+              "ContextId": "",
+              "Effect": 2,
+              "SourceId": "",
+              "SourcePile": 2,
+              "Timing": 0
+            },
+            "EndsPlayerTurn": false,
+            "IsExecutable": true,
+            "Kind": 0,
+            "NestedChoices": null,
+            "NestedChoicesBeforePrimary": 0,
+            "PotionId": "",
+            "PotionSlot": -1,
+            "PotionTitle": "",
+            "RelicEffects": [],
+            "ReplayCount": 0,
+            "TargetCombatId": null,
+            "TargetIndex": -1,
+            "TargetName": "",
+            "Turn": 4,
+            "TurnStartChoices": null
+          },
+          "before": "turn=4;hp=70;max_hp=70;block=0;energy=3;stars=0;gold=99;osty=4294967295/0/0;E0=1/THIEVING_HOPPER/-/6/84/0/NAB_MOVE;AI0=THIEVERY_MOVE,FLUTTER_MOVE,HAT_TRICK_MOVE,NAB_MOVE;MS0=-/0;H=SHIV+0/False:0/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=4,]/private=-/baselib=-,FLICK_FLACK+0/False:1/False:-1/0/False/True/False/True/False/-:0:0/-:0[Damage=7,]/private=-/baselib=-,PREPARED+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Cards=1,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,;D=STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,POISONED_STAB+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,PoisonPower=3,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,DAGGER_THROW+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:1/-:0[Damage=9,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,LANTERN_KEY+0/False:-1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,BULLET_TIME+0/False:3/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,BACKSTAB+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Damage=11,]/private=-/baselib=-,UNTOUCHABLE+0/False:2/False:-1/0/False/True/False/True/False/NIMBLE:2:0/-:0[Block=6,]/private=-/baselib=-,THINKING_AHEAD+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[Cards=2,]/private=-/baselib=-,UNTOUCHABLE+0/False:2/False:-1/0/False/True/False/True/False/NIMBLE:2:0/-:0[Block=6,]/private=-/baselib=-,PIERCING_WAIL+0/False:1/False:-1/0/False/False/False/True/False/SWIFT:1:0/-:0[StrengthLoss=6,]/private=-/baselib=-,;C=RICOCHET+0/False:2/False:-1/0/False/True/False/True/False/-:0:0/-:0[Damage=3,Repeat=4,]/private=-/baselib=-,SURVIVOR+0/False:1/False:-1/0/False/False/False/True/False/IMBUED:1:0/-:0[Block=8,]/private=-/baselib=-,NEUTRALIZE+1/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=4,WeakPower=2,]/private=-/baselib=-,SHIV+0/False:0/False:-1/0/False/False/False/False/False/-:0:0/-:0[Damage=4,]/private=-/baselib=-,PROLONG+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,;X=EXPOSE+0/False:0/False:-1/0/False/False/False/True/False/SWIFT:1:1/-:0[Power=2,]/private=-/baselib=-,ASCENDERS_BANE+0/False:-1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,;Y=0/0;O=0:;potions=-,-;relicCounters=;mirrorRelics=;P=0:DEXTERITY_POWER=3/0[],0:INFINITE_BLADES_POWER=1/0[],0:STRENGTH_POWER=1/0[],1:ESCAPE_ARTIST_POWER=2/0[],1:SWIPE_POWER=1/0[],1:WEAK_POWER=1/0[DamageDecrease=0.75,],;R=49:4500793840272184025:8538259433545449820:6179033096132519362:14269882456130443224/1:16914623363930990946:1396221513423025622:5018530843498471410:14420948203797120316/0:5934757781998388361:15869045962219491616:15369654540583268111:14069941304612255854/0:11151985130098373254:6399868294416806884:16299991293147775690:1269242897437426686/0:13478539414179622148:6253691135650110595:231189132651270423:4737470750939971824/8:2424209456890470622:4322213534723825186:378314933582159555:11771649408550042093/0:15405376307384934102:6871969513576988392:2075252948626408363:10200190978225942783/0:5480173581589452485:17380693601233773782:16982319539701856557:10297118194812445829/1:6327871633185007828:940634191503254269:3766481505919673418:1988234927933379623"
+        }
+      },
+      {
+        "kind": "action_completed",
+        "sequence": 38,
+        "value": {
+          "after": "turn=4;hp=70;max_hp=70;block=0;energy=3;stars=0;gold=99;osty=4294967295/0/0;H=;D=;C=;X=;Y=0/0;O=0:;potions=-,-;relicCounters=;mirrorRelics=;P=;R=49:4500793840272184025:8538259433545449820:6179033096132519362:14269882456130443224/1:16914623363930990946:1396221513423025622:5018530843498471410:14420948203797120316/0:5934757781998388361:15869045962219491616:15369654540583268111:14069941304612255854/0:11151985130098373254:6399868294416806884:16299991293147775690:1269242897437426686/0:13478539414179622148:6253691135650110595:231189132651270423:4737470750939971824/8:2424209456890470622:4322213534723825186:378314933582159555:11771649408550042093/0:15405376307384934102:6871969513576988392:2075252948626408363:10200190978225942783/0:5480173581589452485:17380693601233773782:16982319539701856557:10297118194812445829/2:4704978802942303758:7969658920963386979:17885103667641765022:12023277105503422507",
+          "owner": "deployment:4:0:PREPARED"
+        }
+      }
+    ],
+    "fixtureSha256": "6e1b79d972ec553c72975e58a0c837c2e049bfe1bc8e7f10d52bfdafd1037f30",
+    "productionLabels": false,
+    "productionReady": false,
+    "progressSnapshotSha256": "7e85da8d9e937869e8aaf3a8b559e343683231b5cc05dab2815b91e144365d9f",
+    "request": {
+      "actIndexForTest": 1,
+      "ascension": 10,
+      "cards": [],
+      "characterId": "SILENT",
+      "clearRunDeck": true,
+      "deploymentFastModeForTest": "Instant",
+      "deploymentInterActionDelaySecondsForTest": 0,
+      "enableDetailedDiagnosticLogsForTest": false,
+      "enableNoGcRegionForTest": false,
+      "encounterId": "THIEVING_HOPPER_WEAK",
+      "exitOnComplete": false,
+      "forceShortSearchOnly": true,
+      "headlessFastModeForTest": "Instant",
+      "performancePresetForTest": "Medium",
+      "potionPolicyForTest": "Disabled",
+      "potions": [],
+      "relics": [
+        {
+          "addWithoutObtainedEffects": true,
+          "booleanMembers": {},
+          "integerMembers": {},
+          "relicId": "GOLDEN_PEARL"
+        },
+        {
+          "addWithoutObtainedEffects": true,
+          "booleanMembers": {},
+          "integerMembers": {},
+          "relicId": "FRESNEL_LENS"
+        },
+        {
+          "addWithoutObtainedEffects": true,
+          "booleanMembers": {},
+          "integerMembers": {},
+          "relicId": "WING_CHARM"
+        },
+        {
+          "addWithoutObtainedEffects": true,
+          "booleanMembers": {},
+          "integerMembers": {},
+          "relicId": "RIPPLE_BASIN"
+        },
+        {
+          "addWithoutObtainedEffects": true,
+          "booleanMembers": {},
+          "integerMembers": {},
+          "relicId": "GAMBLING_CHIP"
+        },
+        {
+          "addWithoutObtainedEffects": true,
+          "booleanMembers": {},
+          "integerMembers": {},
+          "relicId": "JUZU_BRACELET"
+        },
+        {
+          "addWithoutObtainedEffects": true,
+          "booleanMembers": {},
+          "integerMembers": {},
+          "relicId": "ELECTRIC_SHRYMP"
+        },
+        {
+          "addWithoutObtainedEffects": true,
+          "booleanMembers": {},
+          "integerMembers": {},
+          "relicId": "SPARKLING_ROUGE"
+        }
+      ],
+      "runCards": [
+        {
+          "cardId": "ASCENDERS_BANE",
+          "count": 1,
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "BACKSTAB",
+          "count": 1,
+          "enchantmentAmount": 1,
+          "enchantmentId": "SWIFT",
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "BULLET_TIME",
+          "count": 1,
+          "enchantmentAmount": 1,
+          "enchantmentId": "SWIFT",
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "DAGGER_THROW",
+          "count": 1,
+          "enchantmentAmount": 1,
+          "enchantmentId": "SWIFT",
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "DEFEND_SILENT",
+          "count": 1,
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "DEFEND_SILENT",
+          "count": 1,
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "DEFEND_SILENT",
+          "count": 1,
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "DEFEND_SILENT",
+          "count": 1,
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "DEFEND_SILENT",
+          "count": 1,
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "EXPOSE",
+          "count": 1,
+          "enchantmentAmount": 1,
+          "enchantmentId": "SWIFT",
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "FLICK_FLACK",
+          "count": 1,
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "FOOTWORK",
+          "count": 1,
+          "enchantmentAmount": 1,
+          "enchantmentId": "SWIFT",
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "INFINITE_BLADES",
+          "count": 1,
+          "enchantmentAmount": 1,
+          "enchantmentId": "SWIFT",
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "LANTERN_KEY",
+          "count": 1,
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "NEUTRALIZE",
+          "count": 1,
+          "upgradeLevels": 1
+        },
+        {
+          "cardId": "NOXIOUS_FUMES",
+          "count": 1,
+          "upgradeLevels": 1
+        },
+        {
+          "cardId": "PIERCING_WAIL",
+          "count": 1,
+          "enchantmentAmount": 1,
+          "enchantmentId": "SWIFT",
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "POISONED_STAB",
+          "count": 1,
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "PREPARED",
+          "count": 1,
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "PROLONG",
+          "count": 1,
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "RICOCHET",
+          "count": 1,
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "STRIKE_SILENT",
+          "count": 1,
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "STRIKE_SILENT",
+          "count": 1,
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "STRIKE_SILENT",
+          "count": 1,
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "STRIKE_SILENT",
+          "count": 1,
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "SURVIVOR",
+          "count": 1,
+          "enchantmentAmount": 1,
+          "enchantmentId": "IMBUED",
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "THINKING_AHEAD",
+          "count": 1,
+          "enchantmentAmount": 1,
+          "enchantmentId": "SWIFT",
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "UNTOUCHABLE",
+          "count": 1,
+          "enchantmentAmount": 2,
+          "enchantmentId": "NIMBLE",
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "UNTOUCHABLE",
+          "count": 1,
+          "enchantmentAmount": 2,
+          "enchantmentId": "NIMBLE",
+          "upgradeLevels": 0
+        }
+      ],
+      "runId": "1dff474100b54bc59c3f61bbd3048d04",
+      "scenarioId": "HP-4780057bc4c2ba06",
+      "schemaVersion": 1,
+      "searchMaxDegreeOfParallelismForTest": 1,
+      "seed": "024c6eff66d79429",
+      "shortSearchBudgetOverrideMilliseconds": 8000,
+      "timeoutSeconds": 120,
+      "trainingActId": "HIVE",
+      "trainingCollection": true
+    },
+    "result": {
+      "characterId": "CHARACTER.SILENT",
+      "combatEnded": true,
+      "completedChecks": [
+        "PerformancePreset:Medium:8000/120000ms:Beam=24/60:Nodes=2400/12000:Branches=20/32:NoGC=False/16000000000"
+      ],
+      "elapsedMilliseconds": 45148.8967,
+      "encounterId": "ENCOUNTER.THIEVING_HOPPER_WEAK",
+      "error": null,
+      "finishedAtUtc": "2026-09-23T17:04:42.0523458+00:00",
+      "finishedTurn": 4,
+      "mainThread": true,
+      "managedFragmentedBytes": 424848,
+      "managedHeapBytes": 108634384,
+      "privateMemoryBytes": 0,
+      "runId": "1dff474100b54bc59c3f61bbd3048d04",
+      "scenarioId": "HP-4780057bc4c2ba06",
+      "schemaVersion": 1,
+      "seed": "024c6eff66d79429",
+      "solverMetrics": null,
+      "stage": "passed",
+      "stageTimings": [
+        {
+          "durationMilliseconds": 46.9217,
+          "stage": "created",
+          "startedMilliseconds": 0
+        },
+        {
+          "durationMilliseconds": 7219.3914,
+          "stage": "game_startup",
+          "startedMilliseconds": 46.9217
+        },
+        {
+          "durationMilliseconds": 9285.869000000002,
+          "stage": "start_run",
+          "startedMilliseconds": 7266.3131
+        },
+        {
+          "durationMilliseconds": 502.9315999999999,
+          "stage": "inject_run_relics",
+          "startedMilliseconds": 16552.1821
+        },
+        {
+          "durationMilliseconds": 2792.8307999999997,
+          "stage": "enter_encounter",
+          "startedMilliseconds": 17055.1137
+        },
+        {
+          "durationMilliseconds": 12141.973599999998,
+          "stage": "wait_player_turn",
+          "startedMilliseconds": 19847.9445
+        },
+        {
+          "durationMilliseconds": 74.9375,
+          "stage": "inject_state",
+          "startedMilliseconds": 31989.9181
+        },
+        {
+          "durationMilliseconds": 127.48489999999947,
+          "stage": "full_auto",
+          "startedMilliseconds": 32064.8556
+        },
+        {
+          "durationMilliseconds": 12457.4392,
+          "stage": "wait_combat_end",
+          "startedMilliseconds": 32192.3405
+        },
+        {
+          "durationMilliseconds": 454.9256999999998,
+          "stage": "cleanup",
+          "startedMilliseconds": 44649.7797
+        },
+        {
+          "durationMilliseconds": 44.65269999999873,
+          "stage": "passed",
+          "startedMilliseconds": 45104.7054
+        }
+      ],
+      "startedAtUtc": "2026-09-23T17:03:56.9036846+00:00",
+      "startedTurn": 1,
+      "status": "Passed",
+      "trainingObservation": {
+        "complete": true,
+        "finalHp": 70,
+        "finalMaxHp": 70,
+        "initialBuild": {
+          "actId": "HIVE",
+          "actIndex": 1,
+          "ascension": 10,
+          "cards": [
+            {
+              "enchantmentAmount": 0,
+              "enchantmentId": null,
+              "id": "ASCENDERS_BANE",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 1,
+              "enchantmentId": "SWIFT",
+              "id": "BACKSTAB",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 1,
+              "enchantmentId": "SWIFT",
+              "id": "BULLET_TIME",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 1,
+              "enchantmentId": "SWIFT",
+              "id": "DAGGER_THROW",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 0,
+              "enchantmentId": null,
+              "id": "DEFEND_SILENT",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 0,
+              "enchantmentId": null,
+              "id": "DEFEND_SILENT",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 0,
+              "enchantmentId": null,
+              "id": "DEFEND_SILENT",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 0,
+              "enchantmentId": null,
+              "id": "DEFEND_SILENT",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 0,
+              "enchantmentId": null,
+              "id": "DEFEND_SILENT",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 1,
+              "enchantmentId": "SWIFT",
+              "id": "EXPOSE",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 0,
+              "enchantmentId": null,
+              "id": "FLICK_FLACK",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 1,
+              "enchantmentId": "SWIFT",
+              "id": "FOOTWORK",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 1,
+              "enchantmentId": "SWIFT",
+              "id": "INFINITE_BLADES",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 0,
+              "enchantmentId": null,
+              "id": "LANTERN_KEY",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 0,
+              "enchantmentId": null,
+              "id": "NEUTRALIZE",
+              "persistentState": {},
+              "upgradeLevel": 1
+            },
+            {
+              "enchantmentAmount": 0,
+              "enchantmentId": null,
+              "id": "NOXIOUS_FUMES",
+              "persistentState": {},
+              "upgradeLevel": 1
+            },
+            {
+              "enchantmentAmount": 1,
+              "enchantmentId": "SWIFT",
+              "id": "PIERCING_WAIL",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 0,
+              "enchantmentId": null,
+              "id": "POISONED_STAB",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 0,
+              "enchantmentId": null,
+              "id": "PREPARED",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 0,
+              "enchantmentId": null,
+              "id": "PROLONG",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 0,
+              "enchantmentId": null,
+              "id": "RICOCHET",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 0,
+              "enchantmentId": null,
+              "id": "STRIKE_SILENT",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 0,
+              "enchantmentId": null,
+              "id": "STRIKE_SILENT",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 0,
+              "enchantmentId": null,
+              "id": "STRIKE_SILENT",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 0,
+              "enchantmentId": null,
+              "id": "STRIKE_SILENT",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 1,
+              "enchantmentId": "IMBUED",
+              "id": "SURVIVOR",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 1,
+              "enchantmentId": "SWIFT",
+              "id": "THINKING_AHEAD",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 2,
+              "enchantmentId": "NIMBLE",
+              "id": "UNTOUCHABLE",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 2,
+              "enchantmentId": "NIMBLE",
+              "id": "UNTOUCHABLE",
+              "persistentState": {},
+              "upgradeLevel": 0
+            }
+          ],
+          "character": "SILENT",
+          "relics": [
+            {
+              "counters": {},
+              "id": "RING_OF_THE_SNAKE",
+              "state": {
+                "floor_added_to_deck": 1,
+                "id": {
+                  "category": "RELIC",
+                  "entry": "RING_OF_THE_SNAKE"
+                }
+              }
+            },
+            {
+              "counters": {},
+              "id": "GOLDEN_PEARL",
+              "state": {
+                "floor_added_to_deck": 0,
+                "id": {
+                  "category": "RELIC",
+                  "entry": "GOLDEN_PEARL"
+                }
+              }
+            },
+            {
+              "counters": {},
+              "id": "FRESNEL_LENS",
+              "state": {
+                "floor_added_to_deck": 0,
+                "id": {
+                  "category": "RELIC",
+                  "entry": "FRESNEL_LENS"
+                }
+              }
+            },
+            {
+              "counters": {},
+              "id": "WING_CHARM",
+              "state": {
+                "floor_added_to_deck": 0,
+                "id": {
+                  "category": "RELIC",
+                  "entry": "WING_CHARM"
+                }
+              }
+            },
+            {
+              "counters": {},
+              "id": "RIPPLE_BASIN",
+              "state": {
+                "floor_added_to_deck": 0,
+                "id": {
+                  "category": "RELIC",
+                  "entry": "RIPPLE_BASIN"
+                }
+              }
+            },
+            {
+              "counters": {},
+              "id": "GAMBLING_CHIP",
+              "state": {
+                "floor_added_to_deck": 0,
+                "id": {
+                  "category": "RELIC",
+                  "entry": "GAMBLING_CHIP"
+                }
+              }
+            },
+            {
+              "counters": {},
+              "id": "JUZU_BRACELET",
+              "state": {
+                "floor_added_to_deck": 0,
+                "id": {
+                  "category": "RELIC",
+                  "entry": "JUZU_BRACELET"
+                }
+              }
+            },
+            {
+              "counters": {},
+              "id": "ELECTRIC_SHRYMP",
+              "state": {
+                "floor_added_to_deck": 0,
+                "id": {
+                  "category": "RELIC",
+                  "entry": "ELECTRIC_SHRYMP"
+                }
+              }
+            },
+            {
+              "counters": {},
+              "id": "SPARKLING_ROUGE",
+              "state": {
+                "floor_added_to_deck": 0,
+                "id": {
+                  "category": "RELIC",
+                  "entry": "SPARKLING_ROUGE"
+                }
+              }
+            }
+          ]
+        },
+        "initialHp": 70,
+        "initialMaxHp": 70,
+        "netHpLoss": 0,
+        "playerDied": false
+      },
+      "workingSetBytes": 1475158016
+    },
+    "reusedProcess": false,
+    "schema": "native-fixed-action-trace/v1",
+    "scope": "Instrumented native fixed-action semantics; request-separated trace and original progress restoration; not a speed benchmark.",
+    "teacher": {
+      "collector_protocol": 3,
+      "collector_sha256": "1950d98b8aa742f651a2c09d59e6044da8c0836a29f4c1258047a8d1048f9bfb",
+      "collector_source": "cca0fb3+saved_card_state_v3",
+      "game_sha256": "0861bfa1df347538d932f22d580e75420f08082792eb914e53b4882764acdbe9",
+      "game_version": "0.111.0",
+      "ritsu_sha256": "5be797e3ee68bbd261228ad617cc67fd6eba5ed23e5e94674888938399465dcc",
+      "runtime": "Windows game via Wine 11.0 on Ubuntu 22.04",
+      "solver_base": "31899af"
+    },
+    "traceModSha256": "57b182c5b5c54ccea34b9b82ff80df1e4becb145b58bb3866e3fedf48ca6753f",
+    "wallSeconds": 713.6566152739979
+  },
+  "request": {
+    "actIndexForTest": 1,
+    "ascension": 10,
+    "cards": [],
+    "characterId": "SILENT",
+    "clearRunDeck": true,
+    "deploymentFastModeForTest": "Instant",
+    "deploymentInterActionDelaySecondsForTest": 0,
+    "enableDetailedDiagnosticLogsForTest": false,
+    "enableNoGcRegionForTest": false,
+    "encounterId": "THIEVING_HOPPER_WEAK",
+    "exitOnComplete": false,
+    "forceShortSearchOnly": true,
+    "headlessFastModeForTest": "Instant",
+    "performancePresetForTest": "Medium",
+    "potionPolicyForTest": "Disabled",
+    "potions": [],
+    "relics": [
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "GOLDEN_PEARL"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "FRESNEL_LENS"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "WING_CHARM"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "RIPPLE_BASIN"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "GAMBLING_CHIP"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "JUZU_BRACELET"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "ELECTRIC_SHRYMP"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "SPARKLING_ROUGE"
+      }
+    ],
+    "runCards": [
+      {
+        "cardId": "ASCENDERS_BANE",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "BACKSTAB",
+        "count": 1,
+        "enchantmentAmount": 1,
+        "enchantmentId": "SWIFT",
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "BULLET_TIME",
+        "count": 1,
+        "enchantmentAmount": 1,
+        "enchantmentId": "SWIFT",
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "DAGGER_THROW",
+        "count": 1,
+        "enchantmentAmount": 1,
+        "enchantmentId": "SWIFT",
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "DEFEND_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "DEFEND_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "DEFEND_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "DEFEND_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "DEFEND_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "EXPOSE",
+        "count": 1,
+        "enchantmentAmount": 1,
+        "enchantmentId": "SWIFT",
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "FLICK_FLACK",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "FOOTWORK",
+        "count": 1,
+        "enchantmentAmount": 1,
+        "enchantmentId": "SWIFT",
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "INFINITE_BLADES",
+        "count": 1,
+        "enchantmentAmount": 1,
+        "enchantmentId": "SWIFT",
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "LANTERN_KEY",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "NEUTRALIZE",
+        "count": 1,
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "NOXIOUS_FUMES",
+        "count": 1,
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "PIERCING_WAIL",
+        "count": 1,
+        "enchantmentAmount": 1,
+        "enchantmentId": "SWIFT",
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "POISONED_STAB",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "PREPARED",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "PROLONG",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "RICOCHET",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "STRIKE_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "STRIKE_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "STRIKE_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "STRIKE_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "SURVIVOR",
+        "count": 1,
+        "enchantmentAmount": 1,
+        "enchantmentId": "IMBUED",
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "THINKING_AHEAD",
+        "count": 1,
+        "enchantmentAmount": 1,
+        "enchantmentId": "SWIFT",
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "UNTOUCHABLE",
+        "count": 1,
+        "enchantmentAmount": 2,
+        "enchantmentId": "NIMBLE",
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "UNTOUCHABLE",
+        "count": 1,
+        "enchantmentAmount": 2,
+        "enchantmentId": "NIMBLE",
+        "upgradeLevels": 0
+      }
+    ],
+    "runId": "1dff474100b54bc59c3f61bbd3048d04",
+    "scenarioId": "HP-4780057bc4c2ba06",
+    "schemaVersion": 1,
+    "searchMaxDegreeOfParallelismForTest": 1,
+    "seed": "024c6eff66d79429",
+    "shortSearchBudgetOverrideMilliseconds": 8000,
+    "timeoutSeconds": 120,
+    "trainingActId": "HIVE",
+    "trainingCollection": true
+  },
+  "sourceBuildId": "2986634a1e6d4cce0dddebde1ca2f609939e183d547d80b2d30bf2b2e9737e1f",
+  "sourceJobId": "1c9dd3bc3807d05cb47c486505da46c3959c99d0e924f31408bee757a661bf29"
+}

@@ -1,0 +1,1855 @@
+{
+  "attemptId": 0,
+  "expected": {
+    "complete": true,
+    "finalHp": 70,
+    "finalMaxHp": 70,
+    "initialBuild": {
+      "actId": "GLORY",
+      "actIndex": 2,
+      "ascension": 10,
+      "cards": [
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "ABUNDANCE",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "ACCURACY",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "ADRENALINE",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "AFTERIMAGE",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "ASCENDERS_BANE",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "ASSASSINATE",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "BACKFLIP",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "BUBBLE_BUBBLE",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "DEFEND_SILENT",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "DEFEND_SILENT",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "DEFEND_SILENT",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "DEFEND_SILENT",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "DEFEND_SILENT",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "DISCOVERY",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "DRAMATIC_ENTRANCE",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "ECHOING_SLASH",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 5,
+          "enchantmentId": "MOMENTUM",
+          "id": "ECHOING_SLASH",
+          "persistentState": {},
+          "upgradeLevel": 1
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "ESCAPE_PLAN",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "EXPOSE",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "FOOTWORK",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "FOOTWORK",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "GREED",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "HAND_TRICK",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "NEUTRALIZE",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "NOXIOUS_FUMES",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "NOXIOUS_FUMES",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "PREPARED",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "PREPARED",
+          "persistentState": {},
+          "upgradeLevel": 1
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "RICOCHET",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "SIDESTEP",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "SNAKEBITE",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "STRIKE_SILENT",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "STRIKE_SILENT",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "SURVIVOR",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "UNTOUCHABLE",
+          "persistentState": {},
+          "upgradeLevel": 0
+        }
+      ],
+      "character": "SILENT",
+      "relics": [
+        {
+          "counters": {},
+          "id": "RING_OF_THE_SNAKE",
+          "state": {
+            "floor_added_to_deck": 1,
+            "id": {
+              "category": "RELIC",
+              "entry": "RING_OF_THE_SNAKE"
+            }
+          }
+        },
+        {
+          "counters": {},
+          "id": "DOWSING_ROD",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "DOWSING_ROD"
+            }
+          }
+        },
+        {
+          "counters": {},
+          "id": "SNECKO_SKULL",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "SNECKO_SKULL"
+            }
+          }
+        },
+        {
+          "counters": {},
+          "id": "BAG_OF_MARBLES",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "BAG_OF_MARBLES"
+            }
+          }
+        },
+        {
+          "counters": {},
+          "id": "AMETHYST_AUBERGINE",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "AMETHYST_AUBERGINE"
+            }
+          }
+        },
+        {
+          "counters": {
+            "TimesLifted": 3
+          },
+          "id": "GIRYA",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "GIRYA"
+            },
+            "props": {}
+          }
+        },
+        {
+          "counters": {},
+          "id": "VERY_HOT_COCOA",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "VERY_HOT_COCOA"
+            }
+          }
+        },
+        {
+          "counters": {
+            "CombatsFinished": 3,
+            "GaveRelic": false
+          },
+          "id": "WONGOS_MYSTERY_TICKET",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "WONGOS_MYSTERY_TICKET"
+            },
+            "props": {}
+          }
+        },
+        {
+          "counters": {},
+          "id": "MEMBERSHIP_CARD",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "MEMBERSHIP_CARD"
+            }
+          }
+        },
+        {
+          "counters": {
+            "TurnsSeen": 2
+          },
+          "id": "HAPPY_FLOWER",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "HAPPY_FLOWER"
+            },
+            "props": {}
+          }
+        },
+        {
+          "counters": {},
+          "id": "MINIATURE_CANNON",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "MINIATURE_CANNON"
+            }
+          }
+        },
+        {
+          "counters": {},
+          "id": "WHISPERING_EARRING",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "WHISPERING_EARRING"
+            }
+          }
+        },
+        {
+          "counters": {},
+          "id": "FORGOTTEN_SOUL",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "FORGOTTEN_SOUL"
+            }
+          }
+        },
+        {
+          "counters": {},
+          "id": "TINY_MAILBOX",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "TINY_MAILBOX"
+            }
+          }
+        },
+        {
+          "counters": {},
+          "id": "CENTENNIAL_PUZZLE",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "CENTENNIAL_PUZZLE"
+            }
+          }
+        },
+        {
+          "counters": {},
+          "id": "STONE_CALENDAR",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "STONE_CALENDAR"
+            }
+          }
+        },
+        {
+          "counters": {},
+          "id": "TWISTED_FUNNEL",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "TWISTED_FUNNEL"
+            }
+          }
+        },
+        {
+          "counters": {},
+          "id": "LANTERN",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "LANTERN"
+            }
+          }
+        },
+        {
+          "counters": {},
+          "id": "BLOOD_VIAL",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "BLOOD_VIAL"
+            }
+          }
+        },
+        {
+          "counters": {},
+          "id": "POTION_BELT",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "POTION_BELT"
+            }
+          }
+        },
+        {
+          "counters": {},
+          "id": "PUNCH_DAGGER",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "PUNCH_DAGGER"
+            }
+          }
+        },
+        {
+          "counters": {},
+          "id": "VAJRA",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "VAJRA"
+            }
+          }
+        }
+      ]
+    },
+    "initialHp": 70,
+    "initialMaxHp": 70,
+    "netHpLoss": 0,
+    "playerDied": false
+  },
+  "nativeTrace": {
+    "captureScriptSha256": "8016edc7f1028bc05b26a58d4f1653f42777db2bfb0e46548ce8043a2d2bf956",
+    "complete": true,
+    "directory": "/data1/pl/ImageTask/wxq/Projects/standalone-checkpoints-20260924/campaign/worker-4/persistent-native-trace-yia3madj",
+    "events": [
+      {
+        "kind": "initialized",
+        "sequence": 1,
+        "value": {
+          "assemblySha256": "57b182c5b5c54ccea34b9b82ff80df1e4becb145b58bb3866e3fedf48ca6753f",
+          "collectorSha256": "1950d98b8aa742f651a2c09d59e6044da8c0836a29f4c1258047a8d1048f9bfb",
+          "progressSnapshotSha256": "7e85da8d9e937869e8aaf3a8b559e343683231b5cc05dab2815b91e144365d9f",
+          "reusableProcess": true,
+          "runId": "00af1505f57a4381b13d0547dc618ace"
+        }
+      },
+      {
+        "kind": "end_turn",
+        "sequence": 2,
+        "value": {
+          "before": "turn=1;hp=70;max_hp=70;block=18;energy=4;stars=0;gold=99;osty=4294967295/0/0;E0=3/SCROLL_OF_BITING/-/6/38/0/CHEW;AI0=CHEW;MS0=-/0;H=;D=NOXIOUS_FUMES+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[PoisonPerTurn=2,]/private=-/baselib=-,UNTOUCHABLE+0/False:2/False:-1/0/False/True/False/True/False/-:0:0/-:0[Block=6,]/private=-/baselib=-,FOOTWORK+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[DexterityPower=2,]/private=-/baselib=-,GREED+0/False:-1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,EXPOSE+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Power=2,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,DISCOVERY+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,ABUNDANCE+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,ACCURACY+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[AccuracyPower=4,]/private=-/baselib=-,SIDESTEP+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Energy=1,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,SNAKEBITE+0/False:2/False:-1/0/False/False/True/True/False/-:0:0/-:0[PoisonPower=7,]/private=-/baselib=-,FOOTWORK+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[DexterityPower=2,]/private=-/baselib=-,PREPARED+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Cards=1,]/private=-/baselib=-,PREPARED+1/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Cards=2,]/private=-/baselib=-,NOXIOUS_FUMES+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[PoisonPerTurn=2,]/private=-/baselib=-,AFTERIMAGE+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[AfterimagePower=1,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,ESCAPE_PLAN+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=3,]/private=-/baselib=-,ECHOING_SLASH+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=10,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,ECHOING_SLASH+1/False:1/False:-1/0/False/False/False/True/False/MOMENTUM:5:0:0/-:0[Damage=13,]/private=-/baselib=-,HAND_TRICK+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=7,]/private=-/baselib=-,ADRENALINE+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Cards=2,Energy=1,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,;C=ASCENDERS_BANE+0/False:-1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,SURVIVOR+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=8,]/private=-/baselib=-,BUBBLE_BUBBLE+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[PoisonPower=9,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,BACKFLIP+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,Cards=2,]/private=-/baselib=-,RICOCHET+0/False:2/False:-1/0/False/True/False/True/False/-:0:0/-:0[Damage=3,Repeat=4,]/private=-/baselib=-,NEUTRALIZE+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=3,WeakPower=1,]/private=-/baselib=-,;X=ASSASSINATE+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=10,VulnerablePower=1,]/private=-/baselib=-,DRAMATIC_ENTRANCE+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=11,]/private=-/baselib=-,;Y=0/3;O=0:;potions=-,-;relicCounters=HAPPY_FLOWER/0/0;mirrorRelics=CENTENNIAL_PUZZLE/0;P=0:STRENGTH_POWER=4/0[],3:PAPER_CUTS_POWER=2/0[],3:POISON_POWER=5/0[],3:VULNERABLE_POWER=1/0[DamageIncrease=1.5,],3:WEAK_POWER=1/0[DamageDecrease=0.75,],;R=34:9497912452802765333:5390571087792435513:9274848516531470439:6793148664952132531/0:1379317490599063228:12361541519841436720:16359981761132891643:1329010744953198453/0:3590639458200100029:1072946893680354196:13025854417922060015:15110847302333040698/0:10333633497913338130:17933090020487692084:895229439229327575:10888716751860047330/0:8549117166830843107:4597009711280491923:6053642066883128550:12776164629954091344/6:2548216542339730150:291160756779224984:17027372609681526094:12457066397683392751/0:67161942462380078:5704513847069474049:10107646534296948116:5147167718434465121/0:7962859336992516849:6272373057354158771:16062035517885432641:932886840322029975/4:5999911453204373593:10012623162788252390:344741988083668234:5719430240422567683"
+        }
+      },
+      {
+        "kind": "end_turn",
+        "sequence": 3,
+        "value": {
+          "before": "turn=2;hp=70;max_hp=70;block=0;energy=4;stars=0;gold=99;osty=4294967295/0/0;E0=3/SCROLL_OF_BITING/-/1/38/0/CHEW;AI0=CHEW,CHEW;MS0=-/0;H=NOXIOUS_FUMES+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[PoisonPerTurn=2,]/private=-/baselib=-,UNTOUCHABLE+0/False:2/False:-1/0/False/True/False/True/False/-:0:0/-:0[Block=6,]/private=-/baselib=-,FOOTWORK+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[DexterityPower=2,]/private=-/baselib=-,GREED+0/False:-1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,EXPOSE+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Power=2,]/private=-/baselib=-,;D=DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,DISCOVERY+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,ABUNDANCE+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,ACCURACY+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[AccuracyPower=4,]/private=-/baselib=-,SIDESTEP+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Energy=1,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,SNAKEBITE+0/False:2/False:-1/0/False/False/True/True/False/-:0:0/-:0[PoisonPower=7,]/private=-/baselib=-,FOOTWORK+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[DexterityPower=2,]/private=-/baselib=-,PREPARED+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Cards=1,]/private=-/baselib=-,PREPARED+1/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Cards=2,]/private=-/baselib=-,NOXIOUS_FUMES+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[PoisonPerTurn=2,]/private=-/baselib=-,AFTERIMAGE+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[AfterimagePower=1,]/private=-/baselib=-,STRIKE_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=6,]/private=-/baselib=-,ESCAPE_PLAN+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=3,]/private=-/baselib=-,ECHOING_SLASH+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=10,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,ECHOING_SLASH+1/False:1/False:-1/0/False/False/False/True/False/MOMENTUM:5:0:0/-:0[Damage=13,]/private=-/baselib=-,HAND_TRICK+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=7,]/private=-/baselib=-,ADRENALINE+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Cards=2,Energy=1,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,;C=ASCENDERS_BANE+0/False:-1/False:-1/0/False/False/False/True/False/-:0:0/-:0[]/private=-/baselib=-,SURVIVOR+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=8,]/private=-/baselib=-,BUBBLE_BUBBLE+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[PoisonPower=9,]/private=-/baselib=-,DEFEND_SILENT+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,]/private=-/baselib=-,BACKFLIP+0/False:1/False:-1/0/False/False/False/True/False/-:0:0/-:0[Block=5,Cards=2,]/private=-/baselib=-,RICOCHET+0/False:2/False:-1/0/False/True/False/True/False/-:0:0/-:0[Damage=3,Repeat=4,]/private=-/baselib=-,NEUTRALIZE+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=3,WeakPower=1,]/private=-/baselib=-,;X=ASSASSINATE+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=10,VulnerablePower=1,]/private=-/baselib=-,DRAMATIC_ENTRANCE+0/False:0/False:-1/0/False/False/False/True/False/-:0:0/-:0[Damage=11,]/private=-/baselib=-,;Y=0/0;O=0:;potions=-,-;relicCounters=HAPPY_FLOWER/1/0;mirrorRelics=CENTENNIAL_PUZZLE/0;P=0:STRENGTH_POWER=4/0[],3:PAPER_CUTS_POWER=2/0[],3:POISON_POWER=4/0[],;R=34:9497912452802765333:5390571087792435513:9274848516531470439:6793148664952132531/0:1379317490599063228:12361541519841436720:16359981761132891643:1329010744953198453/0:3590639458200100029:1072946893680354196:13025854417922060015:15110847302333040698/0:10333633497913338130:17933090020487692084:895229439229327575:10888716751860047330/0:8549117166830843107:4597009711280491923:6053642066883128550:12776164629954091344/6:2548216542339730150:291160756779224984:17027372609681526094:12457066397683392751/0:67161942462380078:5704513847069474049:10107646534296948116:5147167718434465121/1:3852961231795372501:16676231581823728387:6072627950488234416:10764882387817359978/4:5999911453204373593:10012623162788252390:344741988083668234:5719430240422567683"
+        }
+      }
+    ],
+    "fixtureSha256": "ee6b942980314857c4dabf16e404dd6ba385a4e0bc55a5c7a3b2cc2041057440",
+    "productionLabels": false,
+    "productionReady": false,
+    "progressSnapshotSha256": "7e85da8d9e937869e8aaf3a8b559e343683231b5cc05dab2815b91e144365d9f",
+    "request": {
+      "actIndexForTest": 2,
+      "ascension": 10,
+      "cards": [],
+      "characterId": "SILENT",
+      "clearRunDeck": true,
+      "deploymentFastModeForTest": "Instant",
+      "deploymentInterActionDelaySecondsForTest": 0,
+      "enableDetailedDiagnosticLogsForTest": false,
+      "enableNoGcRegionForTest": false,
+      "encounterId": "SCROLLS_OF_BITING_NORMAL",
+      "exitOnComplete": false,
+      "forceShortSearchOnly": true,
+      "headlessFastModeForTest": "Instant",
+      "performancePresetForTest": "Medium",
+      "potionPolicyForTest": "Disabled",
+      "potions": [],
+      "relics": [
+        {
+          "addWithoutObtainedEffects": true,
+          "booleanMembers": {},
+          "integerMembers": {},
+          "relicId": "DOWSING_ROD"
+        },
+        {
+          "addWithoutObtainedEffects": true,
+          "booleanMembers": {},
+          "integerMembers": {},
+          "relicId": "SNECKO_SKULL"
+        },
+        {
+          "addWithoutObtainedEffects": true,
+          "booleanMembers": {},
+          "integerMembers": {},
+          "relicId": "BAG_OF_MARBLES"
+        },
+        {
+          "addWithoutObtainedEffects": true,
+          "booleanMembers": {},
+          "integerMembers": {},
+          "relicId": "AMETHYST_AUBERGINE"
+        },
+        {
+          "addWithoutObtainedEffects": true,
+          "booleanMembers": {},
+          "integerMembers": {
+            "TimesLifted": 3
+          },
+          "relicId": "GIRYA"
+        },
+        {
+          "addWithoutObtainedEffects": true,
+          "booleanMembers": {},
+          "integerMembers": {},
+          "relicId": "VERY_HOT_COCOA"
+        },
+        {
+          "addWithoutObtainedEffects": true,
+          "booleanMembers": {
+            "GaveRelic": false
+          },
+          "integerMembers": {
+            "CombatsFinished": 3
+          },
+          "relicId": "WONGOS_MYSTERY_TICKET"
+        },
+        {
+          "addWithoutObtainedEffects": true,
+          "booleanMembers": {},
+          "integerMembers": {},
+          "relicId": "MEMBERSHIP_CARD"
+        },
+        {
+          "addWithoutObtainedEffects": true,
+          "booleanMembers": {},
+          "integerMembers": {
+            "TurnsSeen": 2
+          },
+          "relicId": "HAPPY_FLOWER"
+        },
+        {
+          "addWithoutObtainedEffects": true,
+          "booleanMembers": {},
+          "integerMembers": {},
+          "relicId": "MINIATURE_CANNON"
+        },
+        {
+          "addWithoutObtainedEffects": true,
+          "booleanMembers": {},
+          "integerMembers": {},
+          "relicId": "WHISPERING_EARRING"
+        },
+        {
+          "addWithoutObtainedEffects": true,
+          "booleanMembers": {},
+          "integerMembers": {},
+          "relicId": "FORGOTTEN_SOUL"
+        },
+        {
+          "addWithoutObtainedEffects": true,
+          "booleanMembers": {},
+          "integerMembers": {},
+          "relicId": "TINY_MAILBOX"
+        },
+        {
+          "addWithoutObtainedEffects": true,
+          "booleanMembers": {},
+          "integerMembers": {},
+          "relicId": "CENTENNIAL_PUZZLE"
+        },
+        {
+          "addWithoutObtainedEffects": true,
+          "booleanMembers": {},
+          "integerMembers": {},
+          "relicId": "STONE_CALENDAR"
+        },
+        {
+          "addWithoutObtainedEffects": true,
+          "booleanMembers": {},
+          "integerMembers": {},
+          "relicId": "TWISTED_FUNNEL"
+        },
+        {
+          "addWithoutObtainedEffects": true,
+          "booleanMembers": {},
+          "integerMembers": {},
+          "relicId": "LANTERN"
+        },
+        {
+          "addWithoutObtainedEffects": true,
+          "booleanMembers": {},
+          "integerMembers": {},
+          "relicId": "BLOOD_VIAL"
+        },
+        {
+          "addWithoutObtainedEffects": true,
+          "booleanMembers": {},
+          "integerMembers": {},
+          "relicId": "POTION_BELT"
+        },
+        {
+          "addWithoutObtainedEffects": true,
+          "booleanMembers": {},
+          "integerMembers": {},
+          "relicId": "PUNCH_DAGGER"
+        },
+        {
+          "addWithoutObtainedEffects": true,
+          "booleanMembers": {},
+          "integerMembers": {},
+          "relicId": "VAJRA"
+        }
+      ],
+      "runCards": [
+        {
+          "cardId": "ABUNDANCE",
+          "count": 1,
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "ACCURACY",
+          "count": 1,
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "ADRENALINE",
+          "count": 1,
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "AFTERIMAGE",
+          "count": 1,
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "ASCENDERS_BANE",
+          "count": 1,
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "ASSASSINATE",
+          "count": 1,
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "BACKFLIP",
+          "count": 1,
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "BUBBLE_BUBBLE",
+          "count": 1,
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "DEFEND_SILENT",
+          "count": 1,
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "DEFEND_SILENT",
+          "count": 1,
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "DEFEND_SILENT",
+          "count": 1,
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "DEFEND_SILENT",
+          "count": 1,
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "DEFEND_SILENT",
+          "count": 1,
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "DISCOVERY",
+          "count": 1,
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "DRAMATIC_ENTRANCE",
+          "count": 1,
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "ECHOING_SLASH",
+          "count": 1,
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "ECHOING_SLASH",
+          "count": 1,
+          "enchantmentAmount": 5,
+          "enchantmentId": "MOMENTUM",
+          "upgradeLevels": 1
+        },
+        {
+          "cardId": "ESCAPE_PLAN",
+          "count": 1,
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "EXPOSE",
+          "count": 1,
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "FOOTWORK",
+          "count": 1,
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "FOOTWORK",
+          "count": 1,
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "GREED",
+          "count": 1,
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "HAND_TRICK",
+          "count": 1,
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "NEUTRALIZE",
+          "count": 1,
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "NOXIOUS_FUMES",
+          "count": 1,
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "NOXIOUS_FUMES",
+          "count": 1,
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "PREPARED",
+          "count": 1,
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "PREPARED",
+          "count": 1,
+          "upgradeLevels": 1
+        },
+        {
+          "cardId": "RICOCHET",
+          "count": 1,
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "SIDESTEP",
+          "count": 1,
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "SNAKEBITE",
+          "count": 1,
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "STRIKE_SILENT",
+          "count": 1,
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "STRIKE_SILENT",
+          "count": 1,
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "SURVIVOR",
+          "count": 1,
+          "upgradeLevels": 0
+        },
+        {
+          "cardId": "UNTOUCHABLE",
+          "count": 1,
+          "upgradeLevels": 0
+        }
+      ],
+      "runId": "00af1505f57a4381b13d0547dc618ace",
+      "scenarioId": "HP-175ffdacf731a38c",
+      "schemaVersion": 1,
+      "searchMaxDegreeOfParallelismForTest": 1,
+      "seed": "cb8cba48ec9dfff4",
+      "shortSearchBudgetOverrideMilliseconds": 8000,
+      "timeoutSeconds": 120,
+      "trainingActId": "GLORY",
+      "trainingCollection": true
+    },
+    "result": {
+      "characterId": "CHARACTER.SILENT",
+      "combatEnded": true,
+      "completedChecks": [
+        "PerformancePreset:Medium:8000/120000ms:Beam=24/60:Nodes=2400/12000:Branches=20/32:NoGC=False/16000000000"
+      ],
+      "elapsedMilliseconds": 6583.4573,
+      "encounterId": "ENCOUNTER.SCROLLS_OF_BITING_NORMAL",
+      "error": null,
+      "finishedAtUtc": "2026-09-23T19:16:13.7704496+00:00",
+      "finishedTurn": 2,
+      "mainThread": true,
+      "managedFragmentedBytes": 9555624,
+      "managedHeapBytes": 99690320,
+      "privateMemoryBytes": 0,
+      "runId": "00af1505f57a4381b13d0547dc618ace",
+      "scenarioId": "HP-175ffdacf731a38c",
+      "schemaVersion": 1,
+      "seed": "cb8cba48ec9dfff4",
+      "solverMetrics": null,
+      "stage": "passed",
+      "stageTimings": [
+        {
+          "durationMilliseconds": 0.0316,
+          "stage": "created",
+          "startedMilliseconds": 0
+        },
+        {
+          "durationMilliseconds": 19.8031,
+          "stage": "game_startup",
+          "startedMilliseconds": 0.0316
+        },
+        {
+          "durationMilliseconds": 1559.5903999999998,
+          "stage": "start_run",
+          "startedMilliseconds": 19.8347
+        },
+        {
+          "durationMilliseconds": 499.1794,
+          "stage": "inject_run_relics",
+          "startedMilliseconds": 1579.4251
+        },
+        {
+          "durationMilliseconds": 1131.7537000000002,
+          "stage": "enter_encounter",
+          "startedMilliseconds": 2078.6045
+        },
+        {
+          "durationMilliseconds": 1988.1501999999996,
+          "stage": "wait_player_turn",
+          "startedMilliseconds": 3210.3582
+        },
+        {
+          "durationMilliseconds": 5.667300000000068,
+          "stage": "inject_state",
+          "startedMilliseconds": 5198.5084
+        },
+        {
+          "durationMilliseconds": 84.61599999999999,
+          "stage": "full_auto",
+          "startedMilliseconds": 5204.1757
+        },
+        {
+          "durationMilliseconds": 681.2599,
+          "stage": "wait_combat_end",
+          "startedMilliseconds": 5288.7917
+        },
+        {
+          "durationMilliseconds": 610.4758000000002,
+          "stage": "cleanup",
+          "startedMilliseconds": 5970.0516
+        },
+        {
+          "durationMilliseconds": 2.9323999999996886,
+          "stage": "passed",
+          "startedMilliseconds": 6580.5274
+        }
+      ],
+      "startedAtUtc": "2026-09-23T19:16:07.1869973+00:00",
+      "startedTurn": 1,
+      "status": "Passed",
+      "trainingObservation": {
+        "complete": true,
+        "finalHp": 70,
+        "finalMaxHp": 70,
+        "initialBuild": {
+          "actId": "GLORY",
+          "actIndex": 2,
+          "ascension": 10,
+          "cards": [
+            {
+              "enchantmentAmount": 0,
+              "enchantmentId": null,
+              "id": "ABUNDANCE",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 0,
+              "enchantmentId": null,
+              "id": "ACCURACY",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 0,
+              "enchantmentId": null,
+              "id": "ADRENALINE",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 0,
+              "enchantmentId": null,
+              "id": "AFTERIMAGE",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 0,
+              "enchantmentId": null,
+              "id": "ASCENDERS_BANE",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 0,
+              "enchantmentId": null,
+              "id": "ASSASSINATE",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 0,
+              "enchantmentId": null,
+              "id": "BACKFLIP",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 0,
+              "enchantmentId": null,
+              "id": "BUBBLE_BUBBLE",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 0,
+              "enchantmentId": null,
+              "id": "DEFEND_SILENT",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 0,
+              "enchantmentId": null,
+              "id": "DEFEND_SILENT",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 0,
+              "enchantmentId": null,
+              "id": "DEFEND_SILENT",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 0,
+              "enchantmentId": null,
+              "id": "DEFEND_SILENT",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 0,
+              "enchantmentId": null,
+              "id": "DEFEND_SILENT",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 0,
+              "enchantmentId": null,
+              "id": "DISCOVERY",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 0,
+              "enchantmentId": null,
+              "id": "DRAMATIC_ENTRANCE",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 0,
+              "enchantmentId": null,
+              "id": "ECHOING_SLASH",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 5,
+              "enchantmentId": "MOMENTUM",
+              "id": "ECHOING_SLASH",
+              "persistentState": {},
+              "upgradeLevel": 1
+            },
+            {
+              "enchantmentAmount": 0,
+              "enchantmentId": null,
+              "id": "ESCAPE_PLAN",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 0,
+              "enchantmentId": null,
+              "id": "EXPOSE",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 0,
+              "enchantmentId": null,
+              "id": "FOOTWORK",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 0,
+              "enchantmentId": null,
+              "id": "FOOTWORK",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 0,
+              "enchantmentId": null,
+              "id": "GREED",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 0,
+              "enchantmentId": null,
+              "id": "HAND_TRICK",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 0,
+              "enchantmentId": null,
+              "id": "NEUTRALIZE",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 0,
+              "enchantmentId": null,
+              "id": "NOXIOUS_FUMES",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 0,
+              "enchantmentId": null,
+              "id": "NOXIOUS_FUMES",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 0,
+              "enchantmentId": null,
+              "id": "PREPARED",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 0,
+              "enchantmentId": null,
+              "id": "PREPARED",
+              "persistentState": {},
+              "upgradeLevel": 1
+            },
+            {
+              "enchantmentAmount": 0,
+              "enchantmentId": null,
+              "id": "RICOCHET",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 0,
+              "enchantmentId": null,
+              "id": "SIDESTEP",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 0,
+              "enchantmentId": null,
+              "id": "SNAKEBITE",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 0,
+              "enchantmentId": null,
+              "id": "STRIKE_SILENT",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 0,
+              "enchantmentId": null,
+              "id": "STRIKE_SILENT",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 0,
+              "enchantmentId": null,
+              "id": "SURVIVOR",
+              "persistentState": {},
+              "upgradeLevel": 0
+            },
+            {
+              "enchantmentAmount": 0,
+              "enchantmentId": null,
+              "id": "UNTOUCHABLE",
+              "persistentState": {},
+              "upgradeLevel": 0
+            }
+          ],
+          "character": "SILENT",
+          "relics": [
+            {
+              "counters": {},
+              "id": "RING_OF_THE_SNAKE",
+              "state": {
+                "floor_added_to_deck": 1,
+                "id": {
+                  "category": "RELIC",
+                  "entry": "RING_OF_THE_SNAKE"
+                }
+              }
+            },
+            {
+              "counters": {},
+              "id": "DOWSING_ROD",
+              "state": {
+                "floor_added_to_deck": 0,
+                "id": {
+                  "category": "RELIC",
+                  "entry": "DOWSING_ROD"
+                }
+              }
+            },
+            {
+              "counters": {},
+              "id": "SNECKO_SKULL",
+              "state": {
+                "floor_added_to_deck": 0,
+                "id": {
+                  "category": "RELIC",
+                  "entry": "SNECKO_SKULL"
+                }
+              }
+            },
+            {
+              "counters": {},
+              "id": "BAG_OF_MARBLES",
+              "state": {
+                "floor_added_to_deck": 0,
+                "id": {
+                  "category": "RELIC",
+                  "entry": "BAG_OF_MARBLES"
+                }
+              }
+            },
+            {
+              "counters": {},
+              "id": "AMETHYST_AUBERGINE",
+              "state": {
+                "floor_added_to_deck": 0,
+                "id": {
+                  "category": "RELIC",
+                  "entry": "AMETHYST_AUBERGINE"
+                }
+              }
+            },
+            {
+              "counters": {
+                "TimesLifted": 3
+              },
+              "id": "GIRYA",
+              "state": {
+                "floor_added_to_deck": 0,
+                "id": {
+                  "category": "RELIC",
+                  "entry": "GIRYA"
+                },
+                "props": {}
+              }
+            },
+            {
+              "counters": {},
+              "id": "VERY_HOT_COCOA",
+              "state": {
+                "floor_added_to_deck": 0,
+                "id": {
+                  "category": "RELIC",
+                  "entry": "VERY_HOT_COCOA"
+                }
+              }
+            },
+            {
+              "counters": {
+                "CombatsFinished": 3,
+                "GaveRelic": false
+              },
+              "id": "WONGOS_MYSTERY_TICKET",
+              "state": {
+                "floor_added_to_deck": 0,
+                "id": {
+                  "category": "RELIC",
+                  "entry": "WONGOS_MYSTERY_TICKET"
+                },
+                "props": {}
+              }
+            },
+            {
+              "counters": {},
+              "id": "MEMBERSHIP_CARD",
+              "state": {
+                "floor_added_to_deck": 0,
+                "id": {
+                  "category": "RELIC",
+                  "entry": "MEMBERSHIP_CARD"
+                }
+              }
+            },
+            {
+              "counters": {
+                "TurnsSeen": 2
+              },
+              "id": "HAPPY_FLOWER",
+              "state": {
+                "floor_added_to_deck": 0,
+                "id": {
+                  "category": "RELIC",
+                  "entry": "HAPPY_FLOWER"
+                },
+                "props": {}
+              }
+            },
+            {
+              "counters": {},
+              "id": "MINIATURE_CANNON",
+              "state": {
+                "floor_added_to_deck": 0,
+                "id": {
+                  "category": "RELIC",
+                  "entry": "MINIATURE_CANNON"
+                }
+              }
+            },
+            {
+              "counters": {},
+              "id": "WHISPERING_EARRING",
+              "state": {
+                "floor_added_to_deck": 0,
+                "id": {
+                  "category": "RELIC",
+                  "entry": "WHISPERING_EARRING"
+                }
+              }
+            },
+            {
+              "counters": {},
+              "id": "FORGOTTEN_SOUL",
+              "state": {
+                "floor_added_to_deck": 0,
+                "id": {
+                  "category": "RELIC",
+                  "entry": "FORGOTTEN_SOUL"
+                }
+              }
+            },
+            {
+              "counters": {},
+              "id": "TINY_MAILBOX",
+              "state": {
+                "floor_added_to_deck": 0,
+                "id": {
+                  "category": "RELIC",
+                  "entry": "TINY_MAILBOX"
+                }
+              }
+            },
+            {
+              "counters": {},
+              "id": "CENTENNIAL_PUZZLE",
+              "state": {
+                "floor_added_to_deck": 0,
+                "id": {
+                  "category": "RELIC",
+                  "entry": "CENTENNIAL_PUZZLE"
+                }
+              }
+            },
+            {
+              "counters": {},
+              "id": "STONE_CALENDAR",
+              "state": {
+                "floor_added_to_deck": 0,
+                "id": {
+                  "category": "RELIC",
+                  "entry": "STONE_CALENDAR"
+                }
+              }
+            },
+            {
+              "counters": {},
+              "id": "TWISTED_FUNNEL",
+              "state": {
+                "floor_added_to_deck": 0,
+                "id": {
+                  "category": "RELIC",
+                  "entry": "TWISTED_FUNNEL"
+                }
+              }
+            },
+            {
+              "counters": {},
+              "id": "LANTERN",
+              "state": {
+                "floor_added_to_deck": 0,
+                "id": {
+                  "category": "RELIC",
+                  "entry": "LANTERN"
+                }
+              }
+            },
+            {
+              "counters": {},
+              "id": "BLOOD_VIAL",
+              "state": {
+                "floor_added_to_deck": 0,
+                "id": {
+                  "category": "RELIC",
+                  "entry": "BLOOD_VIAL"
+                }
+              }
+            },
+            {
+              "counters": {},
+              "id": "POTION_BELT",
+              "state": {
+                "floor_added_to_deck": 0,
+                "id": {
+                  "category": "RELIC",
+                  "entry": "POTION_BELT"
+                }
+              }
+            },
+            {
+              "counters": {},
+              "id": "PUNCH_DAGGER",
+              "state": {
+                "floor_added_to_deck": 0,
+                "id": {
+                  "category": "RELIC",
+                  "entry": "PUNCH_DAGGER"
+                }
+              }
+            },
+            {
+              "counters": {},
+              "id": "VAJRA",
+              "state": {
+                "floor_added_to_deck": 0,
+                "id": {
+                  "category": "RELIC",
+                  "entry": "VAJRA"
+                }
+              }
+            }
+          ]
+        },
+        "initialHp": 70,
+        "initialMaxHp": 70,
+        "netHpLoss": 0,
+        "playerDied": false
+      },
+      "workingSetBytes": 1591697408
+    },
+    "reusedProcess": true,
+    "schema": "native-fixed-action-trace/v1",
+    "scope": "Instrumented native fixed-action semantics; request-separated trace and original progress restoration; not a speed benchmark.",
+    "teacher": {
+      "collector_protocol": 3,
+      "collector_sha256": "1950d98b8aa742f651a2c09d59e6044da8c0836a29f4c1258047a8d1048f9bfb",
+      "collector_source": "cca0fb3+saved_card_state_v3",
+      "game_sha256": "0861bfa1df347538d932f22d580e75420f08082792eb914e53b4882764acdbe9",
+      "game_version": "0.111.0",
+      "ritsu_sha256": "5be797e3ee68bbd261228ad617cc67fd6eba5ed23e5e94674888938399465dcc",
+      "runtime": "Windows game via Wine 11.0 on Ubuntu 22.04",
+      "solver_base": "31899af"
+    },
+    "traceModSha256": "57b182c5b5c54ccea34b9b82ff80df1e4becb145b58bb3866e3fedf48ca6753f",
+    "wallSeconds": 7.651986350996594
+  },
+  "request": {
+    "actIndexForTest": 2,
+    "ascension": 10,
+    "cards": [],
+    "characterId": "SILENT",
+    "clearRunDeck": true,
+    "deploymentFastModeForTest": "Instant",
+    "deploymentInterActionDelaySecondsForTest": 0,
+    "enableDetailedDiagnosticLogsForTest": false,
+    "enableNoGcRegionForTest": false,
+    "encounterId": "SCROLLS_OF_BITING_NORMAL",
+    "exitOnComplete": false,
+    "forceShortSearchOnly": true,
+    "headlessFastModeForTest": "Instant",
+    "performancePresetForTest": "Medium",
+    "potionPolicyForTest": "Disabled",
+    "potions": [],
+    "relics": [
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "DOWSING_ROD"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "SNECKO_SKULL"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "BAG_OF_MARBLES"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "AMETHYST_AUBERGINE"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {
+          "TimesLifted": 3
+        },
+        "relicId": "GIRYA"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "VERY_HOT_COCOA"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {
+          "GaveRelic": false
+        },
+        "integerMembers": {
+          "CombatsFinished": 3
+        },
+        "relicId": "WONGOS_MYSTERY_TICKET"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "MEMBERSHIP_CARD"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {
+          "TurnsSeen": 2
+        },
+        "relicId": "HAPPY_FLOWER"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "MINIATURE_CANNON"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "WHISPERING_EARRING"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "FORGOTTEN_SOUL"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "TINY_MAILBOX"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "CENTENNIAL_PUZZLE"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "STONE_CALENDAR"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "TWISTED_FUNNEL"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "LANTERN"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "BLOOD_VIAL"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "POTION_BELT"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "PUNCH_DAGGER"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "VAJRA"
+      }
+    ],
+    "runCards": [
+      {
+        "cardId": "ABUNDANCE",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "ACCURACY",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "ADRENALINE",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "AFTERIMAGE",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "ASCENDERS_BANE",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "ASSASSINATE",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "BACKFLIP",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "BUBBLE_BUBBLE",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "DEFEND_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "DEFEND_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "DEFEND_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "DEFEND_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "DEFEND_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "DISCOVERY",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "DRAMATIC_ENTRANCE",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "ECHOING_SLASH",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "ECHOING_SLASH",
+        "count": 1,
+        "enchantmentAmount": 5,
+        "enchantmentId": "MOMENTUM",
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "ESCAPE_PLAN",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "EXPOSE",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "FOOTWORK",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "FOOTWORK",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "GREED",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "HAND_TRICK",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "NEUTRALIZE",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "NOXIOUS_FUMES",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "NOXIOUS_FUMES",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "PREPARED",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "PREPARED",
+        "count": 1,
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "RICOCHET",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "SIDESTEP",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "SNAKEBITE",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "STRIKE_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "STRIKE_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "SURVIVOR",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "UNTOUCHABLE",
+        "count": 1,
+        "upgradeLevels": 0
+      }
+    ],
+    "runId": "00af1505f57a4381b13d0547dc618ace",
+    "scenarioId": "HP-175ffdacf731a38c",
+    "schemaVersion": 1,
+    "searchMaxDegreeOfParallelismForTest": 1,
+    "seed": "cb8cba48ec9dfff4",
+    "shortSearchBudgetOverrideMilliseconds": 8000,
+    "timeoutSeconds": 120,
+    "trainingActId": "GLORY",
+    "trainingCollection": true
+  },
+  "sourceBuildId": "72db6b021422fbcfd43182a8abe115d6bd8bbe8586a6801022073559a3543904",
+  "sourceJobId": "12920246e2107bd51f44a3f159a9e2df429dfb137519999db0153eeb92e09aab"
+}

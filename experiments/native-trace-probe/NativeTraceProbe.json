@@ -1,0 +1,1 @@
+{"id":"NativeTraceProbe","name":"Isolated native action trace","author":"Sts2Bot experiment","version":"0.1.0","description":"Diagnostic action and state recorder; isolated experiments only.","has_pck":false,"has_dll":true,"affects_gameplay":false,"min_game_version":"0.111.0","dependencies":[{"id":"CombatSolver","min_version":"0.30.0"}]}

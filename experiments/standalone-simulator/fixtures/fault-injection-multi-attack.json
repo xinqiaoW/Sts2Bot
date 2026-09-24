@@ -1,0 +1,151 @@
+{
+  "attemptId": 0,
+  "source": "Synthetic fault-injection setup recorded from the standalone host, not native differential evidence. Ten upgraded Slice cards provide a targeted action and a second play.",
+  "request": {
+    "actIndexForTest": 0,
+    "ascension": 10,
+    "cards": [],
+    "characterId": "SILENT",
+    "clearRunDeck": true,
+    "deploymentFastModeForTest": "Instant",
+    "deploymentInterActionDelaySecondsForTest": 0,
+    "enableDetailedDiagnosticLogsForTest": false,
+    "enableNoGcRegionForTest": false,
+    "encounterId": "TERROR_EEL_ELITE",
+    "exitOnComplete": false,
+    "forceShortSearchOnly": true,
+    "headlessFastModeForTest": "Instant",
+    "performancePresetForTest": "Medium",
+    "potionPolicyForTest": "Disabled",
+    "potions": [],
+    "relics": [],
+    "runCards": [
+      {
+        "cardId": "ASCENDERS_BANE",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "SLICE",
+        "count": 10,
+        "upgradeLevels": 1
+      }
+    ],
+    "runId": "d0181c916c2c44c79ca4a5d416442f3d",
+    "scenarioId": "DIAGNOSTIC-MULTI-ATTACK",
+    "schemaVersion": 1,
+    "searchMaxDegreeOfParallelismForTest": 1,
+    "seed": "024c6eff66d79429",
+    "shortSearchBudgetOverrideMilliseconds": 8000,
+    "timeoutSeconds": 120,
+    "trainingActId": "UNDERDOCKS",
+    "trainingCollection": true
+  },
+  "expected": {
+    "complete": true,
+    "initialHp": 70,
+    "initialMaxHp": 70,
+    "finalHp": 52,
+    "finalMaxHp": 70,
+    "netHpLoss": 18,
+    "playerDied": false,
+    "initialBuild": {
+      "character": "SILENT",
+      "ascension": 10,
+      "actId": "UNDERDOCKS",
+      "actIndex": 0,
+      "cards": [
+        {
+          "id": "ASCENDERS_BANE",
+          "upgradeLevel": 0,
+          "enchantmentId": null,
+          "enchantmentAmount": 0,
+          "persistentState": {}
+        },
+        {
+          "id": "SLICE",
+          "upgradeLevel": 1,
+          "enchantmentId": null,
+          "enchantmentAmount": 0,
+          "persistentState": {}
+        },
+        {
+          "id": "SLICE",
+          "upgradeLevel": 1,
+          "enchantmentId": null,
+          "enchantmentAmount": 0,
+          "persistentState": {}
+        },
+        {
+          "id": "SLICE",
+          "upgradeLevel": 1,
+          "enchantmentId": null,
+          "enchantmentAmount": 0,
+          "persistentState": {}
+        },
+        {
+          "id": "SLICE",
+          "upgradeLevel": 1,
+          "enchantmentId": null,
+          "enchantmentAmount": 0,
+          "persistentState": {}
+        },
+        {
+          "id": "SLICE",
+          "upgradeLevel": 1,
+          "enchantmentId": null,
+          "enchantmentAmount": 0,
+          "persistentState": {}
+        },
+        {
+          "id": "SLICE",
+          "upgradeLevel": 1,
+          "enchantmentId": null,
+          "enchantmentAmount": 0,
+          "persistentState": {}
+        },
+        {
+          "id": "SLICE",
+          "upgradeLevel": 1,
+          "enchantmentId": null,
+          "enchantmentAmount": 0,
+          "persistentState": {}
+        },
+        {
+          "id": "SLICE",
+          "upgradeLevel": 1,
+          "enchantmentId": null,
+          "enchantmentAmount": 0,
+          "persistentState": {}
+        },
+        {
+          "id": "SLICE",
+          "upgradeLevel": 1,
+          "enchantmentId": null,
+          "enchantmentAmount": 0,
+          "persistentState": {}
+        },
+        {
+          "id": "SLICE",
+          "upgradeLevel": 1,
+          "enchantmentId": null,
+          "enchantmentAmount": 0,
+          "persistentState": {}
+        }
+      ],
+      "relics": [
+        {
+          "id": "RING_OF_THE_SNAKE",
+          "state": {
+            "id": {
+              "category": "RELIC",
+              "entry": "RING_OF_THE_SNAKE"
+            },
+            "floor_added_to_deck": 1
+          },
+          "counters": {}
+        }
+      ]
+    }
+  }
+}

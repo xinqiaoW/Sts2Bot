@@ -4,5 +4,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <!-- Optimize generated code immediately: bounded cold searches otherwise spend their budget in tier-0 code. -->
+    <TieredCompilation>false</TieredCompilation>
   </PropertyGroup>
 </Project>

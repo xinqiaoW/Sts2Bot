@@ -1,57 +1,93 @@
-# 独立战斗模拟原型（实验，不能用于采集）
+# 独立战斗模拟宿主（原型）
 
-在 Linux 普通 .NET 9 进程中复用现有 CombatSolver，完成固定测试状态的根捕获、分叉、出牌、怪物行动、回合推进和终局判断，不启动 Wine/Godot 游戏进程。
+**万构筑固定动作差分验收已通过（2026-09-24）**：同一宿主完成 10,036 个不同构筑、532,666 个完整状态检查点，80 个正式目标全部覆盖，未解决差异为 0。同条件实测有效标签吞吐为原生 Wine 采集的 1.924 倍。详见 [万构筑验收](BUILD_VALIDATION_10000.md) 和 [机器可读报告](build-acceptance-20260924.json)。正式生产会话尚未切换，输出仍标记 `productionReady=false` / `productionLabels=false`。
 
-**当前通过小型人工状态的胜负用例与三个原游戏效果的对照，尚未接真实构筑、43 个编组或正式教师搜索。不能生成训练标签。**
+在 Linux 普通 .NET 9 进程中加载已核验的游戏 `sts2.dll` 与 `CombatSolver`，直接执行原游戏的开局、出牌、选择、怪物回合、终局与战后钩子，不启动 Wine/Godot。游戏规则和求解器程序集不做修改；宿主只在临时副本上替换少量编辑器/渲染/平台调用。
+
+## 验收标准
+
+用户确认的正确性标准：**相同初始状态、动作和选择下，完整状态及实际终局标签必须一致**。
+
+- 原生 Wine 游戏实际运行教师并逐动作录制；独立宿主执行相同的动作与选择，不重新搜索。
+- 每个命名检查点比较完整状态文本（费用、HP、格挡、能力、全部牌堆及顺序、怪物 AI、遗物状态、RNG），另外比较终局 HP/最大 HP、回合、死亡和净掉血。
+- 成功的原生录制不得因回放失败而替换；宿主修改后须重新回放全部成功录制。失败、未完成输入与重复回放都不计数。
+- 环境固定为游戏 0.111.0 / 协议 3 / Silent A10、正式教师 Medium short-only、每次搜索 8,000 ms、DOP 1。
+
+两个后端各自限时搜索时可能选出不同路线，因此标签差异只作诊断，不作为规则正确性的门槛。速度对照要求相同任务、种子、教师设置和 CPU 配额，失败与超时计入吞吐分母，交替顺序并重复测量。
+
+## 目录
+
+C# 宿主（`SimulatorPrototype.csproj`，关闭分层编译，避免短时冷搜索主要运行在 tier-0 代码中）：
+
+| 文件 | 作用 |
+| --- | --- |
+| `Program.cs` | 入口与参数分派 |
+| `HostAdapter.cs` | 游戏/求解器 SHA-256 校验；临时游戏副本上的宿主适配；测试存档与进度快照加载 |
+| `HostClock.cs`、`NativeDetourHost.cs` | 进程内单调时钟，以及仅限表现层的 Godot 调用替代 |
+| `OfflinePlatformService.cs`、`PackedLocalization.cs` | 离线平台身份；从原始 PCK 只读加载英文本地化表 |
+| `RequestStartupProbe.cs`、`RequestRestoreProbe.cs` | 按正式请求启动跑局、恢复构筑，并与采集器读回结果比对 |
+| `RequestBattleProbe.cs`、`RequestExecution.cs` | 整场战斗与正式请求的结果输出（`StandaloneCompleted`） |
+| `TeacherBattleProbe.cs`、`TeacherDeploymentProbe.cs`、`OpeningChoiceSearch.cs` | 原教师搜索、原生部署、路线续接与开局选择 |
+| `NativeTraceReplay.cs`、`NativeImplicitChoiceObserver.cs`、`NativePlayerTurnBarrier.cs`、`TerminalCleanupObservation.cs`、`NativeCombatRewards.cs` | 原生录制的固定动作回放、隐式选择、回合边界和终局边界 |
+| `RoundProbe.cs`、`OriginalEffectProbe.cs`、`NativeSetupProbe.cs`、`NativeActionProbe.cs`、`FullBattleReplay.cs` | 早期固定用例探针，仍由功能回归执行 |
+
+Python 工具：
+
+| 文件 | 作用 |
+| --- | --- |
+| `run_probe.py` | 完整功能回归：临时目录构建宿主，运行全部探针、历史请求、原生回放和反例 |
+| `run_native_replay_suite.py` | 用已构建宿主回放 `fixtures/native-replay-*.json` 全部固定录制 |
+| `run_boundary_negative_suite.py` | 篡改选择、RNG、终局 HP 等 8 个反例，要求全部被拒绝 |
+| `prepare_build_panel.py` | 从真实构筑库冻结不同构筑面板（`plan.json` + `cases.sqlite`） |
+| `run_build_panel.py` | 在隔离原生 runtime 中录制并用独立宿主回放面板，可续跑 |
+| `audit_build_panel.py` | 从原始录制与回放日志独立重新计数并判定是否通过 |
+| `build_panel_contract.py` | 构筑去重键、面板校验和万构筑通过门槛 |
+| `replay_evidence.py` | 共享的录制/回放完整状态校验与原子写入 |
+| `run_backend_comparison.py` | 原生与独立宿主同条件速度对照 |
+| `release_tool.py` | 创建、校验、运行冻结发布目录，见 [DEPLOYMENT.md](DEPLOYMENT.md) |
+| `run_backend_rollback.py` | 隔离实例中的原生 → 独立 → 原生切换与回退演练 |
+
+`fixtures/`：`restore-1..6.json` 为历史请求及期望结果，`native-replay-*.json` 为原生录制（功能回归与固定回放集使用），`pilot-progress-v24.json` 为冻结的进度快照，`fault-injection-multi-attack.json` 用于部署漂移注入。原生录制 mod 与采集脚本位于 [`../native-trace-probe`](../native-trace-probe/README.md)。
+
+## 宿主命令
+
+```bash
+dotnet SimulatorPrototype.dll <game-dir> --execute-request <request.json> [progress.json]
+dotnet SimulatorPrototype.dll <game-dir> --replay-native-request <fixture.json> <progress.json>
+```
+
+第一种接受 `damage_model.worker.request_for` 生成的正式请求，用原教师执行整场战斗并输出 `StandaloneCompleted`、实际初始构筑、终局观测和独立来源标记。第二种执行原生录制中的动作和选择，并逐点比较完整状态。其余参数（`--battle-request`、`--teacher-battle-probe` 等）只用于回归探针，参见 `Program.cs`。
 
 ## 运行
 
-需要 Python 3（Linux）、.NET 9 SDK 和已有游戏运行目录。不随代码分发游戏 DLL 或资源。
+需要 Linux、Python 3、.NET 9 SDK 和已核验的游戏运行目录；不随代码分发游戏 DLL 或资源。可用 `TMPDIR` 把临时构建放到空间充足的磁盘。
+
+完整功能回归（返回 0 表示全部检查通过）：
 
 ```bash
 python3 experiments/standalone-simulator/run_probe.py \
-  --runtime /data2/pl/ImageTask/wxq/Projects/Sts2Bot/.runtime/game-card-state-v3 \
-  --dotnet /data2/pl/ImageTask/wxq/Projects/dotnet/dotnet \
-  --report /tmp/standalone-simulator-report.json
+  --runtime /path/to/game-card-state-v3 --dotnet /path/to/dotnet --report /tmp/functional.json
 ```
 
-可通过 `TMPDIR` 将临时构建目录放到有空间的实验磁盘。脚本复制源文件到临时目录构建，依次启动单个实验进程，设置 `DOTNET_PROCESSOR_COUNT=1`（线程提示，不是 CPU 硬配额）。构建限时 60 秒，各进程限时 30 秒，关闭 core dump，结束后清理临时目录。
+用已构建的宿主运行固定回放集与反例：
 
-脚本返回 0 表示所有当前实验检查通过。`productionReady` / `productionLabels` 仍为 false。没有队列导入、数据库、运行锁或生产任务操作。
+```bash
+S=experiments/standalone-simulator
+python3 $S/run_native_replay_suite.py --host-dll <host.dll> --runtime <game-dir> \
+  --progress-snapshot $S/fixtures/pilot-progress-v24.json --dotnet <dotnet> --report /tmp/replays.json
+python3 $S/run_boundary_negative_suite.py --host-dll <host.dll> --runtime <game-dir> \
+  --progress-snapshot $S/fixtures/pilot-progress-v24.json --dotnet <dotnet> --report /tmp/negative.json
+```
 
-## 代码边界
+万构筑面板：先用 `prepare_build_panel.py --source-root <repo> --source-database <builds.sqlite> --directory <campaign>` 冻结输入；`run_build_panel.py --source-root <repo> --directory <campaign> --setup <setup.json> --host-dll <host.dll> --checkpoint-target 500000` 执行，`setup.json` 列出各隔离 worker 的 native runtime 与录制 mod `traceDll`；排空后运行 `audit_build_panel.py --source-root <repo> --directory <campaign> --plan <campaign>/plan.json --host-dll <host.dll> --output <audit.json>`。运行汇总不能代替独立审计。
 
-- `HostAdapter.cs`：校验游戏及求解器 SHA-256；游戏 DLL 仅在临时副本中适配三处宿主方法：编辑器检测、原生控制台输出、离线平台构造。第三项保留离线 ID 1 和原有名称回退，只取消可选的 mp_names.json / Godot 文件读取。日志仍通过 LogCallback 输出；原始游戏与求解器 DLL 不变。
-- 游戏启用 TestMode，使用原始角色、模型、RNG 和 RunState.CreateForTest。存档服务仍只挂载真实 Progress，其他服务不可用；模组初始化为 Skipped，未执行生产中的 Harmony / RitsuLib 启动补丁。这些是局部测试环境约束，不是通用游戏宿主。
-- `OfflinePlatformService.cs`：只提供明确的离线 Platform.None；其他网络调用立即报错。
-- `PackedLocalization.cs`：按 [Godot 4.5 官方 PCK 读取实现](https://github.com/godotengine/godot/blob/4.5/core/io/file_access_pack.cpp) 描述的布局，只读取原始游戏包里的 46 份英文 JSON 表（约 600 KiB），校验各文件 MD5，并使用原游戏的 LocTable 和 SmartFormat。不会整包解压，也不伪造缺失文本；仅支持已核验的非加密 PCK v3 / Godot 4.5.1。
-- `Program.cs`：建立人工状态，初始化原游戏怪物状态机，调用原有 CombatRootSnapshot.Capture。原有捕获前后稳定性与投影一致性检查仍执行。
-- `RoundProbe.cs`：正常构造原有 CombatBeamSolver，通过版本固定的反射入口复用 AdvanceRound；没有重写回合规则。以“按手牌顺序打出合法打击/防御”作为固定测试动作，不运行搜索。未知牌、待选择项、预测风险或非 None 边界立即失败；最多 40 回合、每回合 20 次出牌。
-- `OriginalEffectProbe.cs`：调用原游戏的 StrikeSilent/DefendSilent.OnPlay 与 Chomper.ClampMove，和镜像模拟做效果对照。用原游戏 CombatTurnState 把人工状态标为进行中，避免原效果因战斗未开始而被跳过；没有执行完整游戏启动或战斗开始流程。
+速度对照：`run_backend_comparison.py --mode warm-native-batch --cpu <cpu> --repeats 2`，另需隔离实验目录、native runtime、只读历史库、宿主和进度快照。
 
-## 已验证的范围
+相关单元测试位于仓库 `tests/`：`test_build_panel_contract.py`、`test_build_panel_audit.py`、`test_native_target_artifacts.py`、`test_raw_completion_contract.py`、`test_native_replay_suite.py`、`test_backend_comparison.py`、`test_standalone_*.py`。
 
-`evidence/phase2-20260921.json` 是当前报告，包含 DLL 指纹、检查结果和逐动作完整 ContinuationStamp；`evidence/probe-20260921.json` 保留第一版的有限冒烟结果。
+## 边界
 
-| 检查 | 结果 |
-| --- | --- |
-| 基础模拟器与影子根分叉，各重复 1,000 组打击/防御 | 通过 |
-| CombatRootSnapshot 原有稳定性与投影一致性校验 | 通过 |
-| 64 HP Chomper，70 HP Silent，人工两张牌状态 | 第 9 回合玩家死亡，敌人剩 28 HP |
-| 相同人工状态，但敌人初始生命设为 12 | 第 2 回合获胜，玩家剩 59 HP |
-| 上述胜负用例各运行两次，比较逐动作完整状态文本 | 全部一致，共 4 次人工战斗回放 |
-| 回放前后重新分叉根并比较完整状态文本 | 根未被回放改写 |
-| 原游戏打击、防御、Chomper 两次攻击效果对照 | 敌人 64→58；格挡 0→5；玩家 70→59、格挡归零，均一致 |
-| 不匹配的游戏/求解器版本 | 拒绝运行 |
-
-两组终局回放各包含两次战斗，计时分别约 0.19 秒和 0.17 秒。计时含首次方法 JIT、状态序列化和断言，不含进程启动、根捕获或教师搜索。这只是小型用例的执行时间，不能换算成真实构筑的每小时场数，也不是相对正式采集的加速倍数。
-
-原始对象保护的两张牌冒烟检查比较生命、格挡、能量、五个牌堆的卡牌 ID 顺序、能力 ID/层数和运行 RNG。完整回放的分叉检查使用既有 ContinuationStamp，包含模型、牌堆、怪物状态与 RNG 等状态。
-
-## 尚未验证
-
-这里是手工构造的测试战斗，不是自然开局：手牌只有两张基础牌，未执行开局抽牌、遭遇编组初始化与战斗开始钩子，例如 Chomper 的初始 Artifact 没有自动注入；胜利用例还主动降低了敌人生命。终局仅指模拟器中的胜负边界，不包括战斗后奖励和房间退出。
-
-原游戏效果对照不覆盖出牌包装流程、能量支付、牌堆迁移、原生回合推进或完整游戏宿主。重复模拟一致也不等价于与原生整场一致。
-
-下一步应实现真实构筑与遭遇的完整初始化，选取代表性案例，逐动作对照原生游戏的 HP/格挡/能力、牌堆顺序、怪物 AI、RNG 与最终结算。完成后才能接入原教师的 8 秒搜索，并测真实场次吞吐和标签质量。若改变搜索预算，需要单独评估标签影响；本原型未修改正式教师、补采逻辑或生产数据。
+- 游戏启用 TestMode，模组初始化为 Skipped，未执行生产中的 Harmony / RitsuLib 启动补丁；存档只写内存。
+- 有限面板不能穷尽所有卡牌、遗物与状态组合；验收之外的游戏版本、角色或难度须重新验证。
+- 实测倍率仅代表那次同条件对照，不能当作所有任务的固定倍率。
+- 最终验收使用的完整源码快照保存在 `/data1/pl/ImageTask/wxq/Projects/standalone-10000-builds-20260924/final-review-source.tar.gz`（清单 `final-review-source-manifest.json`）。开发阶段的中间报告已从仓库移除，原始证据保留在该持久目录。

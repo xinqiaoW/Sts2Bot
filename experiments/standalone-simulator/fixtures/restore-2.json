@@ -1,0 +1,320 @@
+{
+  "source": "card-state-20260910/native-pilot.sqlite",
+  "attemptId": 2,
+  "request": {
+    "actIndexForTest": 0,
+    "ascension": 10,
+    "cards": [],
+    "characterId": "SILENT",
+    "clearRunDeck": true,
+    "deploymentFastModeForTest": "Instant",
+    "deploymentInterActionDelaySecondsForTest": 0,
+    "enableDetailedDiagnosticLogsForTest": false,
+    "enableNoGcRegionForTest": false,
+    "encounterId": "BYGONE_EFFIGY_ELITE",
+    "exitOnComplete": false,
+    "forceShortSearchOnly": true,
+    "headlessFastModeForTest": "Instant",
+    "performancePresetForTest": "Medium",
+    "potionPolicyForTest": "Disabled",
+    "potions": [],
+    "relics": [
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "LOST_COFFER"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "CENTENNIAL_PUZZLE"
+      }
+    ],
+    "runCards": [
+      {
+        "cardId": "ACROBATICS",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "ANTICIPATE",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "ASCENDERS_BANE",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "CALCULATED_GAMBLE",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "DEFEND_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "DEFEND_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "DEFEND_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "DEFEND_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "DEFEND_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "GUILTY",
+        "count": 1,
+        "savedIntegerMembers": {
+          "CombatsSeen": 1
+        },
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "NEUTRALIZE",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "STRANGLE",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "STRIKE_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "STRIKE_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "STRIKE_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "SUCKER_PUNCH",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "SURVIVOR",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "TOOLS_OF_THE_TRADE",
+        "count": 1,
+        "upgradeLevels": 1
+      }
+    ],
+    "runId": "0d24414a89ca42b5aa3a83b6e7397991",
+    "scenarioId": "HP-f99eddca7221e30d",
+    "schemaVersion": 1,
+    "searchMaxDegreeOfParallelismForTest": 1,
+    "seed": "024c6eff66d79429",
+    "shortSearchBudgetOverrideMilliseconds": 8000,
+    "timeoutSeconds": 120,
+    "trainingActId": "OVERGROWTH",
+    "trainingCollection": true
+  },
+  "expected": {
+    "complete": true,
+    "finalHp": 30,
+    "finalMaxHp": 70,
+    "initialBuild": {
+      "actId": "OVERGROWTH",
+      "actIndex": 0,
+      "ascension": 10,
+      "cards": [
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "ACROBATICS",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "ANTICIPATE",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "ASCENDERS_BANE",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "CALCULATED_GAMBLE",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "DEFEND_SILENT",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "DEFEND_SILENT",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "DEFEND_SILENT",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "DEFEND_SILENT",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "DEFEND_SILENT",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "GUILTY",
+          "persistentState": {
+            "CombatsSeen": 1
+          },
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "NEUTRALIZE",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "STRANGLE",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "STRIKE_SILENT",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "STRIKE_SILENT",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "STRIKE_SILENT",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "SUCKER_PUNCH",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "SURVIVOR",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "TOOLS_OF_THE_TRADE",
+          "persistentState": {},
+          "upgradeLevel": 1
+        }
+      ],
+      "character": "SILENT",
+      "relics": [
+        {
+          "counters": {},
+          "id": "RING_OF_THE_SNAKE",
+          "state": {
+            "floor_added_to_deck": 1,
+            "id": {
+              "category": "RELIC",
+              "entry": "RING_OF_THE_SNAKE"
+            }
+          }
+        },
+        {
+          "counters": {},
+          "id": "LOST_COFFER",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "LOST_COFFER"
+            }
+          }
+        },
+        {
+          "counters": {},
+          "id": "CENTENNIAL_PUZZLE",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "CENTENNIAL_PUZZLE"
+            }
+          }
+        }
+      ]
+    },
+    "initialHp": 70,
+    "initialMaxHp": 70,
+    "netHpLoss": 40,
+    "playerDied": false
+  }
+}

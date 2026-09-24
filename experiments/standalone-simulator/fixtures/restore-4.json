@@ -1,0 +1,517 @@
+{
+  "source": "card-state-20260910/native-pilot.sqlite",
+  "attemptId": 4,
+  "request": {
+    "actIndexForTest": 1,
+    "ascension": 10,
+    "cards": [],
+    "characterId": "SILENT",
+    "clearRunDeck": true,
+    "deploymentFastModeForTest": "Instant",
+    "deploymentInterActionDelaySecondsForTest": 0,
+    "enableDetailedDiagnosticLogsForTest": false,
+    "enableNoGcRegionForTest": false,
+    "encounterId": "INFESTED_PRISMS_ELITE",
+    "exitOnComplete": false,
+    "forceShortSearchOnly": true,
+    "headlessFastModeForTest": "Instant",
+    "performancePresetForTest": "Medium",
+    "potionPolicyForTest": "Disabled",
+    "potions": [],
+    "relics": [
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "SNECKO_SKULL"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "FRESNEL_LENS"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "CHANDELIER"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "CANDELABRA"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "FESTIVE_POPPER"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "YUMMY_COOKIE"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "ODDLY_SMOOTH_STONE"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "REGAL_PILLOW"
+      }
+    ],
+    "runCards": [
+      {
+        "cardId": "ACCELERANT",
+        "count": 1,
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "ASCENDERS_BANE",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "BLUR",
+        "count": 1,
+        "enchantmentAmount": 2,
+        "enchantmentId": "NIMBLE",
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "BULLET_TIME",
+        "count": 1,
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "CLUMSY",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "DEADLY_POISON",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "DEADLY_POISON",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "DEFEND_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "DEFEND_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "DEFEND_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "DEFEND_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "ESCAPE_PLAN",
+        "count": 1,
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "EXPERTISE",
+        "count": 1,
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "FINESSE",
+        "count": 1,
+        "enchantmentAmount": 2,
+        "enchantmentId": "NIMBLE",
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "FOOTWORK",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "FOOTWORK",
+        "count": 1,
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "LANTERN_KEY",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "NEUTRALIZE",
+        "count": 1,
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "PHANTOM_BLADES",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "PIERCING_WAIL",
+        "count": 1,
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "POISONED_STAB",
+        "count": 1,
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "SNAKEBITE",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "STRIKE_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "STRIKE_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "SURVIVOR",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "WELL_LAID_PLANS",
+        "count": 1,
+        "upgradeLevels": 1
+      }
+    ],
+    "runId": "37974bb6e46f4385b4bbe86c56d3ef51",
+    "scenarioId": "HP-aef147177889c195",
+    "schemaVersion": 1,
+    "searchMaxDegreeOfParallelismForTest": 1,
+    "seed": "024c6eff66d79429",
+    "shortSearchBudgetOverrideMilliseconds": 8000,
+    "timeoutSeconds": 120,
+    "trainingActId": "HIVE",
+    "trainingCollection": true
+  },
+  "expected": {
+    "complete": true,
+    "finalHp": 55,
+    "finalMaxHp": 70,
+    "initialBuild": {
+      "actId": "HIVE",
+      "actIndex": 1,
+      "ascension": 10,
+      "cards": [
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "ACCELERANT",
+          "persistentState": {},
+          "upgradeLevel": 1
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "ASCENDERS_BANE",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 2,
+          "enchantmentId": "NIMBLE",
+          "id": "BLUR",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "BULLET_TIME",
+          "persistentState": {},
+          "upgradeLevel": 1
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "CLUMSY",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "DEADLY_POISON",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "DEADLY_POISON",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "DEFEND_SILENT",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "DEFEND_SILENT",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "DEFEND_SILENT",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "DEFEND_SILENT",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "ESCAPE_PLAN",
+          "persistentState": {},
+          "upgradeLevel": 1
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "EXPERTISE",
+          "persistentState": {},
+          "upgradeLevel": 1
+        },
+        {
+          "enchantmentAmount": 2,
+          "enchantmentId": "NIMBLE",
+          "id": "FINESSE",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "FOOTWORK",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "FOOTWORK",
+          "persistentState": {},
+          "upgradeLevel": 1
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "LANTERN_KEY",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "NEUTRALIZE",
+          "persistentState": {},
+          "upgradeLevel": 1
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "PHANTOM_BLADES",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "PIERCING_WAIL",
+          "persistentState": {},
+          "upgradeLevel": 1
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "POISONED_STAB",
+          "persistentState": {},
+          "upgradeLevel": 1
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "SNAKEBITE",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "STRIKE_SILENT",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "STRIKE_SILENT",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "SURVIVOR",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "WELL_LAID_PLANS",
+          "persistentState": {},
+          "upgradeLevel": 1
+        }
+      ],
+      "character": "SILENT",
+      "relics": [
+        {
+          "counters": {},
+          "id": "RING_OF_THE_SNAKE",
+          "state": {
+            "floor_added_to_deck": 1,
+            "id": {
+              "category": "RELIC",
+              "entry": "RING_OF_THE_SNAKE"
+            }
+          }
+        },
+        {
+          "counters": {},
+          "id": "SNECKO_SKULL",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "SNECKO_SKULL"
+            }
+          }
+        },
+        {
+          "counters": {},
+          "id": "FRESNEL_LENS",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "FRESNEL_LENS"
+            }
+          }
+        },
+        {
+          "counters": {},
+          "id": "CHANDELIER",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "CHANDELIER"
+            }
+          }
+        },
+        {
+          "counters": {},
+          "id": "CANDELABRA",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "CANDELABRA"
+            }
+          }
+        },
+        {
+          "counters": {},
+          "id": "FESTIVE_POPPER",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "FESTIVE_POPPER"
+            }
+          }
+        },
+        {
+          "counters": {},
+          "id": "YUMMY_COOKIE",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "YUMMY_COOKIE"
+            }
+          }
+        },
+        {
+          "counters": {},
+          "id": "ODDLY_SMOOTH_STONE",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "ODDLY_SMOOTH_STONE"
+            }
+          }
+        },
+        {
+          "counters": {},
+          "id": "REGAL_PILLOW",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "REGAL_PILLOW"
+            }
+          }
+        }
+      ]
+    },
+    "initialHp": 70,
+    "initialMaxHp": 70,
+    "netHpLoss": 15,
+    "playerDied": false
+  }
+}

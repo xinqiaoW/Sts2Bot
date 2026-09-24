@@ -1,0 +1,713 @@
+{
+  "source": "card-state-20260910/native-pilot.sqlite",
+  "attemptId": 5,
+  "request": {
+    "actIndexForTest": 2,
+    "ascension": 10,
+    "cards": [],
+    "characterId": "SILENT",
+    "clearRunDeck": true,
+    "deploymentFastModeForTest": "Instant",
+    "deploymentInterActionDelaySecondsForTest": 0,
+    "enableDetailedDiagnosticLogsForTest": false,
+    "enableNoGcRegionForTest": false,
+    "encounterId": "TURRET_OPERATOR_WEAK",
+    "exitOnComplete": false,
+    "forceShortSearchOnly": true,
+    "headlessFastModeForTest": "Instant",
+    "performancePresetForTest": "Medium",
+    "potionPolicyForTest": "Disabled",
+    "potions": [],
+    "relics": [
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "HEFTY_TABLET"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {
+          "TurnsSeen": 2
+        },
+        "relicId": "HAPPY_FLOWER"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "WHITE_BEAST_STATUE"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "VERY_HOT_COCOA"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "DAUGHTER_OF_THE_WIND"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "CANDELABRA"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "WAR_PAINT"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "FROZEN_EGG"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "PRAYER_WHEEL"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "CALLING_BELL"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "TWISTED_FUNNEL"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "AMETHYST_AUBERGINE"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "ART_OF_WAR"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "TINY_MAILBOX"
+      }
+    ],
+    "runCards": [
+      {
+        "cardId": "ACCURACY",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "ACCURACY",
+        "count": 1,
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "AFTERIMAGE",
+        "count": 1,
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "ASCENDERS_BANE",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "BLADE_DANCE",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "BLADE_DANCE",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "BLADE_DANCE",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "CURSE_OF_THE_BELL",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "DEFEND_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "DEFEND_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "DEFEND_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "DEFEND_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "DEFEND_SILENT",
+        "count": 1,
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "DOUBT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "FAN_OF_KNIVES",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "FLASH_OF_STEEL",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "FOOTWORK",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "HIDDEN_DAGGERS",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "LEADING_STRIKE",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "LEG_SWEEP",
+        "count": 1,
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "MAD_SCIENCE",
+        "count": 1,
+        "savedIntegerMembers": {
+          "TinkerTimeRider": 5,
+          "TinkerTimeType": 2
+        },
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "NEUTRALIZE",
+        "count": 1,
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "POUNCE",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "PREDATOR",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "PREPARED",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "REFLEX",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "SERPENT_FORM",
+        "count": 1,
+        "enchantmentAmount": 1,
+        "enchantmentId": "SLITHER",
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "STRIKE_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "STRIKE_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "STRIKE_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "SURVIVOR",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "TRACKING",
+        "count": 1,
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "WELL_LAID_PLANS",
+        "count": 1,
+        "upgradeLevels": 0
+      }
+    ],
+    "runId": "6e4a606393a6436a9327545452eea9f2",
+    "scenarioId": "HP-a8f56627dbbda07b",
+    "schemaVersion": 1,
+    "searchMaxDegreeOfParallelismForTest": 1,
+    "seed": "024c6eff66d79429",
+    "shortSearchBudgetOverrideMilliseconds": 8000,
+    "timeoutSeconds": 120,
+    "trainingActId": "GLORY",
+    "trainingCollection": true
+  },
+  "expected": {
+    "complete": true,
+    "finalHp": 70,
+    "finalMaxHp": 70,
+    "initialBuild": {
+      "actId": "GLORY",
+      "actIndex": 2,
+      "ascension": 10,
+      "cards": [
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "ACCURACY",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "ACCURACY",
+          "persistentState": {},
+          "upgradeLevel": 1
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "AFTERIMAGE",
+          "persistentState": {},
+          "upgradeLevel": 1
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "ASCENDERS_BANE",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "BLADE_DANCE",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "BLADE_DANCE",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "BLADE_DANCE",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "CURSE_OF_THE_BELL",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "DEFEND_SILENT",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "DEFEND_SILENT",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "DEFEND_SILENT",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "DEFEND_SILENT",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "DEFEND_SILENT",
+          "persistentState": {},
+          "upgradeLevel": 1
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "DOUBT",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "FAN_OF_KNIVES",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "FLASH_OF_STEEL",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "FOOTWORK",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "HIDDEN_DAGGERS",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "LEADING_STRIKE",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "LEG_SWEEP",
+          "persistentState": {},
+          "upgradeLevel": 1
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "MAD_SCIENCE",
+          "persistentState": {
+            "TinkerTimeRider": 5,
+            "TinkerTimeType": 2
+          },
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "NEUTRALIZE",
+          "persistentState": {},
+          "upgradeLevel": 1
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "POUNCE",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "PREDATOR",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "PREPARED",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "REFLEX",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 1,
+          "enchantmentId": "SLITHER",
+          "id": "SERPENT_FORM",
+          "persistentState": {},
+          "upgradeLevel": 1
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "STRIKE_SILENT",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "STRIKE_SILENT",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "STRIKE_SILENT",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "SURVIVOR",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "TRACKING",
+          "persistentState": {},
+          "upgradeLevel": 1
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "WELL_LAID_PLANS",
+          "persistentState": {},
+          "upgradeLevel": 0
+        }
+      ],
+      "character": "SILENT",
+      "relics": [
+        {
+          "counters": {},
+          "id": "RING_OF_THE_SNAKE",
+          "state": {
+            "floor_added_to_deck": 1,
+            "id": {
+              "category": "RELIC",
+              "entry": "RING_OF_THE_SNAKE"
+            }
+          }
+        },
+        {
+          "counters": {},
+          "id": "HEFTY_TABLET",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "HEFTY_TABLET"
+            }
+          }
+        },
+        {
+          "counters": {
+            "TurnsSeen": 2
+          },
+          "id": "HAPPY_FLOWER",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "HAPPY_FLOWER"
+            },
+            "props": {}
+          }
+        },
+        {
+          "counters": {},
+          "id": "WHITE_BEAST_STATUE",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "WHITE_BEAST_STATUE"
+            }
+          }
+        },
+        {
+          "counters": {},
+          "id": "VERY_HOT_COCOA",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "VERY_HOT_COCOA"
+            }
+          }
+        },
+        {
+          "counters": {},
+          "id": "DAUGHTER_OF_THE_WIND",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "DAUGHTER_OF_THE_WIND"
+            }
+          }
+        },
+        {
+          "counters": {},
+          "id": "CANDELABRA",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "CANDELABRA"
+            }
+          }
+        },
+        {
+          "counters": {},
+          "id": "WAR_PAINT",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "WAR_PAINT"
+            }
+          }
+        },
+        {
+          "counters": {},
+          "id": "FROZEN_EGG",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "FROZEN_EGG"
+            }
+          }
+        },
+        {
+          "counters": {},
+          "id": "PRAYER_WHEEL",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "PRAYER_WHEEL"
+            }
+          }
+        },
+        {
+          "counters": {},
+          "id": "CALLING_BELL",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "CALLING_BELL"
+            }
+          }
+        },
+        {
+          "counters": {},
+          "id": "TWISTED_FUNNEL",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "TWISTED_FUNNEL"
+            }
+          }
+        },
+        {
+          "counters": {},
+          "id": "AMETHYST_AUBERGINE",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "AMETHYST_AUBERGINE"
+            }
+          }
+        },
+        {
+          "counters": {},
+          "id": "ART_OF_WAR",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "ART_OF_WAR"
+            }
+          }
+        },
+        {
+          "counters": {},
+          "id": "TINY_MAILBOX",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "TINY_MAILBOX"
+            }
+          }
+        }
+      ]
+    },
+    "initialHp": 70,
+    "initialMaxHp": 70,
+    "netHpLoss": 0,
+    "playerDied": false
+  }
+}

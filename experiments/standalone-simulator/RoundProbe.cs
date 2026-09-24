@@ -5,12 +5,15 @@ internal static class RoundProbe
 {
     private static object Read(object o, string name) => o.GetType().GetProperty(name)!.GetValue(o)!;
     private static object[] Items(object o) => ((System.Collections.IEnumerable)o).Cast<object>().ToArray();
-    public static object Run(Assembly solver, object root, object combat, object player, object enemy)
+    public static object CreateBeam(Assembly solver, object root, object? observedDamage = null, bool includeTurnSetup = false)
     {
         Type Get(string name) => solver.GetType("CombatSolver." + name, true)!;
         object potionPolicy = Enum.Parse(Get("SolverPotionPolicy"), "Disabled");
         object potionStrategy = Activator.CreateInstance(Get("PotionStrategySnapshot"), [potionPolicy, Array.CreateInstance(Get("PotionSlotDirective"), 0)])!;
         object shortProfile = Get("SolverSearchProfile").GetProperty("Short")!.GetValue(null)!;
+        foreach (var (name, expected) in new[] { ("BeamWidth", 24), ("MaxExpandedNodes", 2400), ("MaxCardBranchesPerNode", 20), ("SoftTimeBudgetMilliseconds", 8000) })
+            if (Convert.ToInt32(Read(shortProfile, name)) != expected)
+                throw new InvalidOperationException("Unexpected pinned teacher profile: " + name);
         object deepProfile = Get("SolverSearchProfile").GetProperty("Deep")!.GetValue(null)!;
         // Presentation uses the solver's existing ID fallback, without enumerating localized mock powers.
         var namesCtor = Get("SolverDisplayNames").GetConstructors(BindingFlags.NonPublic | BindingFlags.Instance).Single();
@@ -19,14 +22,19 @@ internal static class RoundProbe
         var policyType = Get("SearchPolicySnapshot");
         var constructor = policyType.GetConstructors().Single(c => c.GetParameters().Length > 1);
         object policy = constructor.Invoke([
-            shortProfile,deepProfile,potionPolicy,potionStrategy,false,false,true,false,1,null,null,false,null,
-            Enum.Parse(Get("BossHpStrategy"),"MinimizeHpLoss"),Enum.Parse(Get("BossHpStrategy"),"MinimizeHpLoss"),0,
+            shortProfile,deepProfile,potionPolicy,potionStrategy,false,false,true,false,1,null,null,includeTurnSetup,null,
+            Enum.Parse(Get("BossHpStrategy"),"ProgressionFirst"),Enum.Parse(Get("BossHpStrategy"),"ProgressionFirst"),0,
             diagnostics,Activator.CreateInstance(Get("SearchFramePressureSignal")),Activator.CreateInstance(Get("SearchMemoryPressureSignal"))]);
-        object damage = Activator.CreateInstance(Get("BattleDamageSnapshot"), [0, 0, 0])!;
+        object damage = observedDamage ?? Activator.CreateInstance(Get("BattleDamageSnapshot"), [0, 0, 0])!;
         var ctor = Get("CombatBeamSolver").GetConstructors().Single();
         object?[] arguments = ctor.GetParameters().Select((p, i) => i < 4 ? null : p.HasDefaultValue ? p.DefaultValue : throw new NotSupportedException("Required solver argument: " + p.Name)).ToArray();
         arguments[0] = root; arguments[1] = names; arguments[2] = damage; arguments[3] = policy;
-        object beam = ctor.Invoke(arguments);
+        return ctor.Invoke(arguments);
+    }
+    public static object Run(Assembly solver, object root, object combat, object player, object enemy)
+    {
+        Type Get(string name) => solver.GetType("CombatSolver." + name, true)!;
+        object beam = CreateBeam(solver, root);
         object MakeSimulator() => root.GetType().GetMethod("ForkSimulator")!.Invoke(root, null)!;
         object Stamp(object sim)
         {

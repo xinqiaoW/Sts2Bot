@@ -1,0 +1,749 @@
+{
+  "source": "card-state-20260910/native-pilot.sqlite",
+  "attemptId": 6,
+  "request": {
+    "actIndexForTest": 2,
+    "ascension": 10,
+    "cards": [],
+    "characterId": "SILENT",
+    "clearRunDeck": true,
+    "deploymentFastModeForTest": "Instant",
+    "deploymentInterActionDelaySecondsForTest": 0,
+    "enableDetailedDiagnosticLogsForTest": false,
+    "enableNoGcRegionForTest": false,
+    "encounterId": "TEST_SUBJECT_BOSS",
+    "exitOnComplete": false,
+    "forceShortSearchOnly": true,
+    "headlessFastModeForTest": "Instant",
+    "performancePresetForTest": "Medium",
+    "potionPolicyForTest": "Disabled",
+    "potions": [],
+    "relics": [
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {
+          "IsUsed": false
+        },
+        "integerMembers": {},
+        "relicId": "SILKEN_TRESS"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "FRESNEL_LENS"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "CENTENNIAL_PUZZLE"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "BAG_OF_MARBLES"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "PANTOGRAPH"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "PANDORAS_BOX"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "ICE_CREAM"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "MOLTEN_EGG"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {
+          "SkillsPlayed": 8
+        },
+        "relicId": "TUNING_FORK"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "JEWELED_MASK"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {
+          "AttacksPlayed": 6
+        },
+        "relicId": "NUNCHAKU"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "UNCEASING_TOP"
+      }
+    ],
+    "runCards": [
+      {
+        "cardId": "ACCELERANT",
+        "count": 1,
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "ACCURACY",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "ACCURACY",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "ADRENALINE",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "AFTERIMAGE",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "ASCENDERS_BANE",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "ASSASSINATE",
+        "count": 1,
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "BLADE_DANCE",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "DAGGER_THROW",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "DASH",
+        "count": 1,
+        "enchantmentAmount": 1,
+        "enchantmentId": "GLAM",
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "DODGE_AND_ROLL",
+        "count": 1,
+        "enchantmentAmount": 2,
+        "enchantmentId": "NIMBLE",
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "DODGE_AND_ROLL",
+        "count": 1,
+        "enchantmentAmount": 2,
+        "enchantmentId": "NIMBLE",
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "ECHOING_SLASH",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "ESCAPE_PLAN",
+        "count": 1,
+        "enchantmentAmount": 2,
+        "enchantmentId": "NIMBLE",
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "EXPOSE",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "FLICK_FLACK",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "FOOTWORK",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "HAND_TRICK",
+        "count": 1,
+        "enchantmentAmount": 2,
+        "enchantmentId": "NIMBLE",
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "HIDDEN_DAGGERS",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "HIDDEN_DAGGERS",
+        "count": 1,
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "LEADING_STRIKE",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "MAD_SCIENCE",
+        "count": 1,
+        "savedIntegerMembers": {
+          "TinkerTimeRider": 8,
+          "TinkerTimeType": 3
+        },
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "MIRAGE",
+        "count": 1,
+        "enchantmentAmount": 2,
+        "enchantmentId": "NIMBLE",
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "NEUTRALIZE",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "NOXIOUS_FUMES",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "PREPARED",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "PREPARED",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "PREPARED",
+        "count": 1,
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "REFLEX",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "RESTLESSNESS",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "SIDESTEP",
+        "count": 1,
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "SLICE",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "SNAKEBITE",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "SPEEDSTER",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "SURVIVOR",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "THE_HUNT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "UNTOUCHABLE",
+        "count": 1,
+        "enchantmentAmount": 2,
+        "enchantmentId": "NIMBLE",
+        "upgradeLevels": 0
+      }
+    ],
+    "runId": "f3b29575f6044ab6b9d9ff6e6c96c9c8",
+    "scenarioId": "HP-c9b6a970fd66e4bc",
+    "schemaVersion": 1,
+    "searchMaxDegreeOfParallelismForTest": 1,
+    "seed": "024c6eff66d79429",
+    "shortSearchBudgetOverrideMilliseconds": 8000,
+    "timeoutSeconds": 120,
+    "trainingActId": "GLORY",
+    "trainingCollection": true
+  },
+  "expected": {
+    "complete": true,
+    "finalHp": 49,
+    "finalMaxHp": 70,
+    "initialBuild": {
+      "actId": "GLORY",
+      "actIndex": 2,
+      "ascension": 10,
+      "cards": [
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "ACCELERANT",
+          "persistentState": {},
+          "upgradeLevel": 1
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "ACCURACY",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "ACCURACY",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "ADRENALINE",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "AFTERIMAGE",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "ASCENDERS_BANE",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "ASSASSINATE",
+          "persistentState": {},
+          "upgradeLevel": 1
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "BLADE_DANCE",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "DAGGER_THROW",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 1,
+          "enchantmentId": "GLAM",
+          "id": "DASH",
+          "persistentState": {},
+          "upgradeLevel": 1
+        },
+        {
+          "enchantmentAmount": 2,
+          "enchantmentId": "NIMBLE",
+          "id": "DODGE_AND_ROLL",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 2,
+          "enchantmentId": "NIMBLE",
+          "id": "DODGE_AND_ROLL",
+          "persistentState": {},
+          "upgradeLevel": 1
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "ECHOING_SLASH",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 2,
+          "enchantmentId": "NIMBLE",
+          "id": "ESCAPE_PLAN",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "EXPOSE",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "FLICK_FLACK",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "FOOTWORK",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 2,
+          "enchantmentId": "NIMBLE",
+          "id": "HAND_TRICK",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "HIDDEN_DAGGERS",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "HIDDEN_DAGGERS",
+          "persistentState": {},
+          "upgradeLevel": 1
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "LEADING_STRIKE",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "MAD_SCIENCE",
+          "persistentState": {
+            "TinkerTimeRider": 8,
+            "TinkerTimeType": 3
+          },
+          "upgradeLevel": 1
+        },
+        {
+          "enchantmentAmount": 2,
+          "enchantmentId": "NIMBLE",
+          "id": "MIRAGE",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "NEUTRALIZE",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "NOXIOUS_FUMES",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "PREPARED",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "PREPARED",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "PREPARED",
+          "persistentState": {},
+          "upgradeLevel": 1
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "REFLEX",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "RESTLESSNESS",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "SIDESTEP",
+          "persistentState": {},
+          "upgradeLevel": 1
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "SLICE",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "SNAKEBITE",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "SPEEDSTER",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "SURVIVOR",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 0,
+          "enchantmentId": null,
+          "id": "THE_HUNT",
+          "persistentState": {},
+          "upgradeLevel": 0
+        },
+        {
+          "enchantmentAmount": 2,
+          "enchantmentId": "NIMBLE",
+          "id": "UNTOUCHABLE",
+          "persistentState": {},
+          "upgradeLevel": 0
+        }
+      ],
+      "character": "SILENT",
+      "relics": [
+        {
+          "counters": {},
+          "id": "RING_OF_THE_SNAKE",
+          "state": {
+            "floor_added_to_deck": 1,
+            "id": {
+              "category": "RELIC",
+              "entry": "RING_OF_THE_SNAKE"
+            }
+          }
+        },
+        {
+          "counters": {
+            "IsUsed": false
+          },
+          "id": "SILKEN_TRESS",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "SILKEN_TRESS"
+            },
+            "props": {}
+          }
+        },
+        {
+          "counters": {},
+          "id": "FRESNEL_LENS",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "FRESNEL_LENS"
+            }
+          }
+        },
+        {
+          "counters": {},
+          "id": "CENTENNIAL_PUZZLE",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "CENTENNIAL_PUZZLE"
+            }
+          }
+        },
+        {
+          "counters": {},
+          "id": "BAG_OF_MARBLES",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "BAG_OF_MARBLES"
+            }
+          }
+        },
+        {
+          "counters": {},
+          "id": "PANTOGRAPH",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "PANTOGRAPH"
+            }
+          }
+        },
+        {
+          "counters": {},
+          "id": "PANDORAS_BOX",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "PANDORAS_BOX"
+            }
+          }
+        },
+        {
+          "counters": {},
+          "id": "ICE_CREAM",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "ICE_CREAM"
+            }
+          }
+        },
+        {
+          "counters": {},
+          "id": "MOLTEN_EGG",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "MOLTEN_EGG"
+            }
+          }
+        },
+        {
+          "counters": {
+            "SkillsPlayed": 8
+          },
+          "id": "TUNING_FORK",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "TUNING_FORK"
+            },
+            "props": {}
+          }
+        },
+        {
+          "counters": {},
+          "id": "JEWELED_MASK",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "JEWELED_MASK"
+            }
+          }
+        },
+        {
+          "counters": {
+            "AttacksPlayed": 6
+          },
+          "id": "NUNCHAKU",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "NUNCHAKU"
+            },
+            "props": {}
+          }
+        },
+        {
+          "counters": {},
+          "id": "UNCEASING_TOP",
+          "state": {
+            "floor_added_to_deck": 0,
+            "id": {
+              "category": "RELIC",
+              "entry": "UNCEASING_TOP"
+            }
+          }
+        }
+      ]
+    },
+    "initialHp": 70,
+    "initialMaxHp": 70,
+    "netHpLoss": 21,
+    "playerDied": false
+  }
+}
