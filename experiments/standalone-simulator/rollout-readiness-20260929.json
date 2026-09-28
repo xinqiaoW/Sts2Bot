@@ -12,7 +12,8 @@
     "tools/standalone_rollout_metrics.py": "535a9fb0732fcca3740fb51b01b888ca011e84da1b7a93ae0b403cb4e8bddc84",
     "tools/run_standalone_failure_panel.py": "63703faee90593137bb90b83d3a185c8e3f9e8cce1022c2b3921f9c0f9c1a802",
     "experiments/standalone-simulator/replay_build_panel.py": "fee29cefa6ba6c2232bab06e1588d2fcb284776a65e7f8141d3f4c6767da2170",
-    "experiments/standalone-simulator/audit_build_panel.py": "45aacb3eb5cf24e3d8e5ec4ee97d8beb5ab1ed56103a49b8a17dcb469061083e"
+    "experiments/standalone-simulator/audit_build_panel.py": "45aacb3eb5cf24e3d8e5ec4ee97d8beb5ab1ed56103a49b8a17dcb469061083e",
+    "experiments/standalone-simulator/advance_acceptance.py": "73fd35518f89b6606111112a3286af73cf56957050c2d33cff09bd312f531aa4"
   },
   "tests": [
     {
@@ -29,20 +30,25 @@
       "evidence": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/drained-acceptance-tests.log",
       "passed": 55,
       "stage": "After matching automatic threshold drain; verify controller and orphan worker locks and unused reserve-input accounting"
+    },
+    {
+      "evidence": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/acceptance-controller-tests.log",
+      "passed": 14,
+      "stage": "Verified owner identity, drained thresholds, failed-stage evidence retention and explicit stop before automatic continuation"
     }
   ],
   "activeCampaign": "/data1/pl/ImageTask/wxq/Projects/standalone-full-state-validation-20260929",
   "next": [
-    "Finish frozen correctness panel; after drain execute candidate-preparation.json finalAuditCommand without allow-partial.",
-    "Run current paired performance then concurrency ladder, rollback and genuine 24-hour soak before formal switch."
+    "The acceptance controller may wait on PID 3102122 and its pinned creation time, then run frozen stages in order.",
+    "Independent audit, current paired performance, concurrency ladder, rollback and genuine 24-hour soak must all pass before formal handoff."
   ],
   "candidatePreparation": {
-    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/candidate-preparation.json",
-    "sha256": "03f2a9594836fd6577bd8050502c17fb0aadedb93a75488a5cf0aee749fa5b01"
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/candidate-preparation-v2.json",
+    "sha256": "9b4cb39e8861f4d017288e3fd00c95f0885320b6ecbed8e1fbd42f42f8e7bd34"
   },
   "releaseManifest": {
-    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/candidate-release/release.json",
-    "sha256": "5e146b5412d01730ef81d016be78bdc63faa118467fcb31fc29dff901e768c5f"
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/candidate-release-v2/release.json",
+    "sha256": "a93b6b5b9011bcdad93b0cd13e1628c699b91193daaa4ac26b65a9d875ac72a4"
   },
   "releaseFilesVerified": 75,
   "auditorSmoke": {
@@ -57,5 +63,13 @@
     "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/live-drain-rejection.json",
     "sha256": "996c885e4021b4b9ba7d8b98ee9f44496de433e83934304ff78e30d57f76e867"
   },
-  "candidateRequiresRefresh": true
+  "candidateRequiresRefresh": false,
+  "priorCandidatePreparation": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/candidate-preparation.json",
+    "sha256": "03f2a9594836fd6577bd8050502c17fb0aadedb93a75488a5cf0aee749fa5b01"
+  },
+  "priorReleaseManifest": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/candidate-release/release.json",
+    "sha256": "5e146b5412d01730ef81d016be78bdc63faa118467fcb31fc29dff901e768c5f"
+  }
 }

@@ -2,7 +2,7 @@
 
 当前候选正在 `/data1/pl/ImageTask/wxq/Projects/standalone-full-state-validation-20260929` 进行完整状态万构筑验证，尚未通过本阶段。当前宿主 SHA256 为 `7fa0c19e3e7290c9d65e6d7f0a2a0442804364f8c19d1e4d2a3c7d76b7cba2b9`，教师为 `e4785c9d…`。正式活动指针尚未切换。
 
-候选发布已冻结于 `/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/candidate-release`，75 个文件校验通过，发布清单 SHA256 为 `5e146b5412d01730ef81d016be78bdc63faa118467fcb31fc29dff901e768c5f`。相邻的 `candidate-preparation.json` 固定最终独立审计命令；只在当前验证进程排空后执行。新的独立审计工具在 16 场、789 个动作点上复核通过，报告因未达数量门槛仍为 `passed=false`，冻结启动入口已实测拒绝该报告。冻结发布不代表正确性或投产验收通过。
+候选发布已冻结于 `/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/candidate-release-v2`，75 个文件校验通过，发布清单 SHA256 为 `a93b6b5b9011bcdad93b0cd13e1628c699b91193daaa4ac26b65a9d875ac72a4`。相邻的 `candidate-preparation-v2.json` 固定最终独立审计命令；只在当前验证进程排空后执行。新的独立审计工具在 16 场、789 个动作点上复核通过，报告因未达数量门槛仍为 `passed=false`，冻结启动入口已实测拒绝该报告。冻结发布不代表正确性或投产验收通过。
 
 下面保留的 9 月 25 日并发数据来自历史宿主 `df11b26d…`；其旧版验收缺少完整终局和出牌区检查，不能授权当前候选采集。新候选必须完成包含有序 PlayPile 的完整状态验收，再重新测量性能、选档、演练回退和计满 24 小时。
 
@@ -75,3 +75,9 @@
 - `final-report.json`：全部门槛通过才写 `passed=true`，始终另行注明正式活动指针是否切换。
 
 在运行目录创建 `STOP` 可请求停止；控制器会排空，不删除任务或证据。异常中断的阶段要求诊断，脚本不会默默重新计时、覆盖结果或宣称完成。正式切换步骤仍见 [DEPLOYMENT.md](DEPLOYMENT.md)。
+
+## 自动推进
+
+`advance_acceptance.py` 固定当前验证进程的 PID 与创建时间，等待该进程实际结束并核对所有 worker 的退出码，再按冻结命令执行独立审计、配对性能测量、试运行准备和并发/回退/24 小时验收。它分别验证前一阶段的报告，不会因进程退出码为零就跳过验收。任何失败或既有阶段日志都会停止自动推进，保留原目录供诊断；不会重新启动当前验证或覆盖已完成的录制。
+
+自动推进目录内的 `owner.json` 和 `status.json` 记录真实 PID、阶段和更新时间。创建该目录的 `STOP` 可停止续接并排空它已启动的子进程；等待期间不会终止独立运行的万构筑验证。通过全部隔离门槛后状态为 `ready_for_formal_handoff`，正式活动指针的切换仍需实际执行和核验，不能将该状态当作已投产。
