@@ -1,0 +1,23 @@
+{
+  "schema": "ordered-power-panel-completion/v1",
+  "passed": true,
+  "battles": 123,
+  "actionCheckpoints": 11060,
+  "terminalCheckpoints": 123,
+  "teacher": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/power-application-order-repair/native-check-v2/game/mods/CombatSolver/CombatSolver.dll",
+    "sha256": "28b6b7370b9e5eab303bf29c27b323de028b2b0f201ac0484890dea1da57f3ea"
+  },
+  "host": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/power-application-order-repair/candidate-host/bin/Release/net9.0/SimulatorPrototype.dll",
+    "sha256": "245fd036047504e3db33172cc58f5cb38b365026d4a1aa13e496f9dffd125807"
+  },
+  "audit": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/ordered-power-full-panel/complete-audit.json",
+    "sha256": "5949d85636772a630707297316f4b1470425a933df30c3bdd3d6f2b5d9a373dd"
+  },
+  "freshCases": 122,
+  "reusedOriginalCase": 109,
+  "productionDeployed": false,
+  "scope": "Teacher 28b6 ordered-power regression. New generation-timing teacher b5cade requires its own final build campaign."
+}
