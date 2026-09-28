@@ -14,6 +14,7 @@ from persistent_capture import PersistentCapture
 from replay_evidence import validate_replay,terminal,identity,normalized,write
 from build_panel_contract import validate_build_panel, build_acceptance_passed
 from damage_model.provenance import verify_runtime
+from resource_limits import available_memory_bytes
 plan_path=args.plan or folder/'plan.json';setup_path=args.setup or folder/'setup.json'
 plan=json.loads(plan_path.read_text())
 if args.worker_index is None:validate_build_panel(plan, root)
@@ -27,7 +28,7 @@ env['STS2_NATIVE_STARTUP_LOCK_DIR']=str(folder/'native-startup-slots')
 env['STS2_NATIVE_STARTUP_SLOTS']=os.environ.get('STS2_NATIVE_STARTUP_SLOTS','8')
 
 def wait_for_memory():
-    while psutil.virtual_memory().available < 24 * 2**30:
+    while available_memory_bytes() < 24 * 2**30:
         time.sleep(5)
 
 
@@ -91,6 +92,7 @@ def worker(index):
                             wait_for_memory()
                             persistent=PersistentCapture(isolated,runtime_path,progress,setup['traceDll'])
                             resources.callback(persistent.close)
+                        wait_for_memory()
                         execution=persistent.capture(source,raw,log)
                         write(receipt,dict(runtime=identity(runtime_path),fixture=identity(source),**execution))
                     else:execution=json.loads(receipt.read_text()) if receipt.exists() else dict(exitCode=None,recoveredWithoutExitCode=True)
@@ -107,7 +109,7 @@ def worker(index):
                     failures=0
                     fixture=case_dir/'native-replay.json';write(fixture,dict(attemptId=0,request=native['request'],nativeTrace=native,expected=native['result']['trainingObservation'],sourceJobId=case['sourceJobId'],sourceBuildId=case['sourceBuildId']))
                     command=[dotnet,str(host),runtime['game_dir'],'--replay-native-request',str(fixture),str(progress)]
-                    log=case_dir/('replay.'+host_sha[:12]+'.log');replayed=invoke(command,log,140)
+                    log=case_dir/('replay.'+host_sha[:12]+'.log');replayed=invoke(command,log,120)
                     entry.update(replayCommand=command,replayExecution=replayed,fixture=identity(fixture),replayLog=identity(log))
                     if replayed['exitCode']!=0:entry['failureStage']='standalone_replay'
                     else:

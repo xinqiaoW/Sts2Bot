@@ -4,7 +4,8 @@ from pathlib import Path
 import sqlite3
 
 import pytest
-from test_native_target_artifacts import case, ROOT
+from test_native_target_artifacts import ROOT
+from test_terminal_state_evidence import terminal_case as case
 import audit_build_panel
 from replay_evidence import identity
 
@@ -56,6 +57,8 @@ def test_only_individually_verified_checkpoints_count(tmp_path):
     host, plan, _ = panel(tmp_path)
     report = audit(tmp_path, host, plan)
     assert report['matchedCheckpoints'] == 41
+    assert report['runs'][0]['terminalCheckpoints'] == 1
+    assert report['runs'][0]['terminalStateVerified'] is True
     assert report['matchedBattles'] == 1
     assert report['uniqueBuilds'] == 1
     assert report['unresolvedReplayDifferences'] == [] and report['staleHostResults'] == []
@@ -101,4 +104,20 @@ def test_evidence_cannot_be_inflated_or_replaced(tmp_path, mutation):
         trace.write_text(trace.read_text().replace('"sequence": 1,', '"sequence": 999,', 1))
     result.write_text(json.dumps(entry))
     with pytest.raises(ValueError):
+        audit(tmp_path, host, plan)
+
+
+def test_build_audit_rejects_missing_terminal_even_with_unchanged_actions(tmp_path):
+    host, plan, result = panel(tmp_path)
+    entry = json.loads(result.read_text())
+    raw = Path(entry['captureAttempts'][0]['recording']['path'])
+    native = json.loads(raw.read_text())
+    native['result']['trainingObservation'].pop('finalCombatState')
+    raw.write_text(json.dumps(native))
+    entry['captureAttempts'][0]['recording'] = identity(raw)
+    fixture = Path(entry['fixture']['path'])
+    fixture.write_text(json.dumps(dict(nativeTrace=native, request=native['request'])))
+    entry['fixture'] = identity(fixture)
+    result.write_text(json.dumps(entry))
+    with pytest.raises(ValueError, match='Missing native complete terminal state'):
         audit(tmp_path, host, plan)
