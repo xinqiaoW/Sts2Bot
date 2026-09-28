@@ -199,3 +199,42 @@ def test_backup_preserves_explicit_backend_teacher_and_rejects_missing_manifest(
     custom.unlink()
     with pytest.raises(FileNotFoundError):
         source_metadata('data/real.sqlite')
+
+
+def test_backup_preserves_legacy_embedded_teacher_session(tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
+    Path('data').mkdir(); Path('configs').mkdir()
+    teacher = {'collector_protocol': 3, 'collector_sha256': 'native-pin', 'search_ms': 8000}
+    session = json.dumps({'teacher': teacher, 'state': 'paused', 'active_db': 'data/real.sqlite'})
+    Path('data/collection-session.json').write_text(session)
+    Path('configs/teacher.json').write_text(json.dumps({'collector_sha256': 'native-pin'}))
+    database = Path('data/real.sqlite')
+    with sqlite3.connect(database) as db:
+        db.execute('CREATE TABLE jobs(status TEXT)')
+        db.execute("INSERT INTO jobs VALUES('complete')")
+    result = backup_once(database, tmp_path / 'backups', tmp_path / 'state.json')
+    saved = Path(result['directory'])
+    assert (saved / 'collection-session.json').read_text() == session
+    assert json.loads((saved / 'collection-session.json').read_text())['teacher'] == teacher
+    assert json.loads((saved / 'teacher.json').read_text())['collector_sha256'] == 'native-pin'
+    with sqlite3.connect(saved / database.name) as db:
+        assert db.execute('SELECT status FROM jobs').fetchall() == [('complete',)]
+
+
+def test_backup_keeps_all_runtime_configs_even_with_duplicate_basenames(tmp_path, monkeypatch):
+    from tools.local_backup import source_metadata
+    monkeypatch.chdir(tmp_path)
+    Path('data').mkdir()
+    paths = [Path('native/runtime.json'), Path('standalone/runtime.json')]
+    for i, path in enumerate(paths):
+        path.parent.mkdir(); path.write_text(json.dumps({'data_dir': f'worker-{i}'}))
+    Path('data/collection-session.json').write_text(json.dumps({'runtimes': list(map(str, paths))}))
+    captured = source_metadata('data/real.sqlite')
+    manifest = json.loads(captured[Path('runtime-configs/manifest.json')])
+    assert len(manifest) == 2 and manifest[0]['backup'] != manifest[1]['backup']
+    for path, entry in zip(paths, manifest):
+        assert entry['source'] == str(path)
+        assert captured[Path(entry['backup'])] == path.read_bytes()
+        assert entry['sha256'] == __import__('hashlib').sha256(path.read_bytes()).hexdigest()
+    paths[0].unlink()
+    with pytest.raises(FileNotFoundError): source_metadata('data/real.sqlite')

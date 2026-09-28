@@ -45,6 +45,10 @@ python /path/to/release/release_tool.py run \
 
 以下是待执行的切换边界，尚未执行：
 
+2026-09-29 核对的正式实例是 `/data1/pl/ImageTask/wxq/Projects/Sts2Bot`，其原生采集会话处于暂停状态；`/data2` 下同名目录中的会话是更早的副本，不能据此恢复生产。当前原生三库分别有 14,519 / 1,138 / 772 个 pending，没有 running；控制器、三库池及 4 个 runtime 的锁均已实测可取得。原生游戏/教师/Ritsu 程序集与原会话身份匹配。上述是准备时的观察，正式切换时仍须重新检查。
+
+回退准备位于 `/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/formal-handoff-inventory-v2`；已保存会话、活动指针、配置、来源游标与 4 个 runtime，共 19 个元数据文件。三库的一致性备份与逐行恢复比较在相邻的 `formal-native-backup` 目录执行；仅其 `final-report.json` 的 `passed=true` 表示这项备份完成。验收中的模拟器发布和正在运行的验证进程不受此原生备份影响。
+
 1. 保存原生会话、三队列、教师清单、runtime、来源游标和活动指针的一致备份。先停止原生控制器，再排空其池和在途战斗。
 2. 独立后端使用自己的队列和冻结教师身份；不改写原生历史 attempts、不把 `StandaloneCompleted` 改为 `Passed`，也不在两种教师之间直接改队列身份。
 3. 切换前确认控制器/池/worker 锁均已释放，running=0，旧实例的停止原因已处理；原生回退资料和已验证发布目录都保留。

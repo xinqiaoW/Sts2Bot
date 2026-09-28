@@ -1,6 +1,7 @@
 """Keep two consistent local backup slots without touching the active collection."""
 import argparse
 import fcntl
+import hashlib
 import json
 from pathlib import Path
 import shutil
@@ -19,7 +20,9 @@ def source_metadata(db):
         if path.is_file():
             captured[Path(path.name)] = path.read_bytes()
     session = json.loads(captured.get(Path('collection-session.json'), b'{}'))
-    if session.get('teacher'):
+    # Older production sessions embed the full teacher object. It is already
+    # retained verbatim in collection-session.json; only paths need another read.
+    if session.get('teacher') and not isinstance(session['teacher'], dict):
         path = Path(session['teacher'])
         captured[Path(path.name)] = path.read_bytes()
     if session.get('config'):
@@ -31,6 +34,16 @@ def source_metadata(db):
     if session.get('targeted_policy'):
         path = Path(session['targeted_policy'])
         captured[Path(path.name)] = path.read_bytes()
+    runtimes = []
+    for index, name in enumerate(session.get('runtimes', [])):
+        path = Path(name)
+        relative = Path('runtime-configs') / f'{index:02d}-{path.name}'
+        content = path.read_bytes()
+        captured[relative] = content
+        runtimes.append({'source': str(path), 'backup': str(relative),
+                         'sha256': hashlib.sha256(content).hexdigest()})
+    if runtimes:
+        captured[Path('runtime-configs/manifest.json')] = (json.dumps(runtimes, indent=2) + '\n').encode()
     if session.get('backfill_dir'):
         directory = Path(session['backfill_dir'])
         # Read the plan before phase cursors: restoring an earlier plan simply

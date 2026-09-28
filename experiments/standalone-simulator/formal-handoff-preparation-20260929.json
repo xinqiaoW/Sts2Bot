@@ -1,0 +1,38 @@
+{
+  "createdAt": "2026-09-28T20:12:06.457053+00:00",
+  "productionDeployed": false,
+  "scope": "Read-only formal native inventory and rollback preparation; no production teacher, active pointer, queue or frozen acceptance bundle was changed.",
+  "backupCode": {
+    "tools/local_backup.py": "ca259d905d3a69d8b913818adb8b7000a16af03a3ef2c7697fa343a29c6cfef6",
+    "tools/rental_backup.py": "1bd286b3819b85b4b2ad3c194e7c914a23f825142a8a2cb70b7bacdeab7384a0"
+  },
+  "tests": {
+    "passed": 11,
+    "evidence": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/handoff-metadata-backup-tests.log",
+      "sha256": "d6cff2f2925132c630ef376a17a4aa2060357c2db6186ec0463be31304c90104"
+    }
+  },
+  "actualLegacyFailureAndRepair": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/formal-handoff-inventory/metadata-check.json",
+    "sha256": "6f50587419ca1414206e50dbd37c51124db9072e4f705c3c123ce8721f079a98"
+  },
+  "metadataInventory": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/formal-handoff-inventory-v2/inventory.json",
+    "sha256": "a0748b53bf560c61ccf52b0da90c91218d8697fdf6389e41ca60fe7c704d9824"
+  },
+  "nativeRuntimeIdentityCheck": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/formal-handoff-inventory-v2/native-runtime-check.json",
+    "sha256": "308fb648b0aabf316e944f840fb1f74a8769018afaa3c89fedc4bc1d09217706"
+  },
+  "backupCommand": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/backup_native_handoff.py",
+    "sha256": "3faec1c612988ce12138c08b5a26775a5cbc5bbedeafb8024ba36d168d3e5b4a"
+  },
+  "backupOwner": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/formal-native-backup/owner.json",
+    "sha256": "c13ebb3a1654fa38d24beaf4281b9b208326335065b8a6e0087b53a9279efc15"
+  },
+  "backupFinalReport": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/formal-native-backup/final-report.json",
+  "backupAcceptanceMustBeCheckedAfterDrain": true
+}
