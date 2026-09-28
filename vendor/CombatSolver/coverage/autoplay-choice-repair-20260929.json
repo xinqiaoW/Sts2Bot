@@ -1,0 +1,15 @@
+{
+  "schema": "autoplay-choice-repair-evidence/v1",
+  "passed": true,
+  "teacherSha256": "1342fdf406fed02f730c2e241b740abd9c116c54f62190e5bdb7e041fe5cb707",
+  "fixedActionBattles": 5,
+  "fixedActionCheckpoints": 170,
+  "sourceManifest": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/teacher-choice-repair/applied-source.json",
+  "reports": [
+    "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/teacher-choice-repair/native-check/report.json",
+    "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/teacher-choice-repair/native-adjacent-check/report.json"
+  ],
+  "baseline": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/teacher-choice-repair/baseline/report-policy120.json",
+  "candidate": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/teacher-choice-repair/candidate/report-policy120.json",
+  "productionReady": false
+}

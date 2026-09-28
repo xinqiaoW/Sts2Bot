@@ -1,0 +1,54 @@
+{
+  "actIndexForTest": 2,
+  "ascension": 10,
+  "cards": [],
+  "characterId": "SILENT",
+  "clearRunDeck": true,
+  "deploymentFastModeForTest": "Instant",
+  "deploymentInterActionDelaySecondsForTest": 0,
+  "enableDetailedDiagnosticLogsForTest": false,
+  "enableNoGcRegionForTest": false,
+  "encounterId": "SCROLLS_OF_BITING_WEAK",
+  "exitOnComplete": false,
+  "forceShortSearchOnly": true,
+  "headlessFastModeForTest": "Instant",
+  "performancePresetForTest": "Medium",
+  "potionPolicyForTest": "Disabled",
+  "potions": [],
+  "relics": [
+    {
+      "relicId": "BURNING_STICKS",
+      "integerMembers": {},
+      "booleanMembers": {},
+      "addWithoutObtainedEffects": true
+    }
+  ],
+  "runCards": [
+    {
+      "cardId": "ABUNDANCE",
+      "count": 1,
+      "upgradeLevels": 1,
+      "enchantmentId": "IMBUED",
+      "enchantmentAmount": 1
+    },
+    {
+      "cardId": "STRIKE_SILENT",
+      "count": 5,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "DEFEND_SILENT",
+      "count": 5,
+      "upgradeLevels": 0
+    }
+  ],
+  "runId": "1893f5dd90d54e1a8edba859f475d358",
+  "scenarioId": "DIAGNOSTIC-IMBUED-ABUNDANCE-BURNING",
+  "schemaVersion": 1,
+  "searchMaxDegreeOfParallelismForTest": 1,
+  "seed": "024c6eff66d79429",
+  "shortSearchBudgetOverrideMilliseconds": 8000,
+  "timeoutSeconds": 120,
+  "trainingActId": "GLORY",
+  "trainingCollection": true
+}

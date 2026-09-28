@@ -159,36 +159,15 @@ internal sealed partial class SimulatedCombatState
         TurnStartChoiceCursor choices,
         ISet<uint> processedEnemyDeaths)
     {
-        if (!CardExecutionSupport.AutoPlay(simulator, this, card, null, processedEnemyDeaths))
-            return true;
-        if (HasPendingChoice)
-            return false;
-        CardChoiceSpec? spec = CardChoiceSupport.GetSpec(simulator, card);
-        PlanCardChoice? emptyChoice = CardChoiceSupport.BuildRequiredEmptyChoice(card.Preview);
-        if (spec == null)
-        {
-            if (emptyChoice == null)
-                CardChoiceSupport.ApplyNoChoiceEffects(simulator, this, card);
-            else
-                CardChoiceSupport.Apply(simulator, this, card, emptyChoice, processedEnemyDeaths);
-            return true;
-        }
-
-        TurnStartChoiceRequest request = new(
-            sourceId,
-            spec.Effect,
-            spec.SourcePile,
-            spec.MinCount,
-            spec,
-            contextId,
-            ActiveActionChoiceTiming);
-        if (!choices.TryTake(request, out PlanCardChoice? choice))
-        {
-            SetPendingTurnStartChoice(request);
-            return false;
-        }
-        CardChoiceSupport.Apply(simulator, this, card, choice!, processedEnemyDeaths);
-        return true;
+        if (!ReferenceEquals(_activeActionChoices, choices))
+            throw new InvalidOperationException("Scheduled auto-play requires the active choice cursor.");
+        // Each replay awaits its own choice inside OnPlay, before completion hooks
+        // and movement to the result pile. Resolving once after the whole play loop
+        // loses repeated choices (e.g. Imbued Abundance with Throwing Axe).
+        CardExecutionSupport.AutoPlay(
+            simulator, this, card, null, processedEnemyDeaths,
+            nestedChoiceSourceId: sourceId, nestedChoiceContextId: contextId);
+        return !HasPendingChoice;
     }
 
     private PredictedCard? GetPreviousTurnAttack(CombatPredictionSimulator simulator, Player player)

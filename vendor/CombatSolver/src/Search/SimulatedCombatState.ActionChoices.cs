@@ -89,7 +89,8 @@ internal sealed partial class SimulatedCombatState :
         PredictedCard playedCard,
         string sourceId,
         CardChoiceSpec spec,
-        ISet<uint> processedEnemyDeaths)
+        ISet<uint> processedEnemyDeaths,
+        string? contextId = null)
     {
         TurnStartChoiceCursor choices = _activeActionChoices
             ?? throw new InvalidOperationException($"{sourceId} 在动作选择作用域外请求卡牌选择。");
@@ -99,7 +100,7 @@ internal sealed partial class SimulatedCombatState :
             spec.SourcePile,
             spec.MinCount,
             spec,
-            spec.ContextId,
+            contextId ?? spec.ContextId,
             Timing: _activeActionChoiceTiming);
         if (!choices.TryTake(request, out PlanCardChoice? choice))
         {
@@ -169,7 +170,8 @@ internal sealed partial class SimulatedCombatState :
     bool ICombatPredictionNestedChoiceSink.ResolveNestedCardChoice(
         CombatPredictionSimulator simulator,
         PredictedCard card,
-        string sourceId)
+        string sourceId,
+        string? contextId)
     {
         ISet<uint> processedEnemyDeaths = _activeCardExecutionDeaths ?? new HashSet<uint>();
         CardChoiceSpec? spec = CardChoiceSupport.GetSpec(simulator, card);
@@ -180,7 +182,8 @@ internal sealed partial class SimulatedCombatState :
                 card,
                 sourceId,
                 spec,
-                processedEnemyDeaths);
+                processedEnemyDeaths,
+                contextId);
         }
 
         if (CardChoiceSupport.BuildRequiredEmptyChoice(card.Preview) is { } emptyChoice)

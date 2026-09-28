@@ -23,7 +23,8 @@ internal sealed partial class CombatPredictionSimulator
         Creature? target = null,
         AutoPlayType type = AutoPlayType.Default,
         bool skipXCapture = false,
-        string? nestedChoiceSourceId = null)
+        string? nestedChoiceSourceId = null,
+        string? nestedChoiceContextId = null)
     {
         using IDisposable? modifierScope = (State.CombatState as ICombatPredictionCardExecutionSink)
             ?.BeginHistorySensitiveCardModifierScope(card);
@@ -48,7 +49,7 @@ internal sealed partial class CombatPredictionSimulator
         int historyEntryStart = History.Entries.Count;
         // Game 0.111.0 has no vanilla BeforeCardAutoPlayed listeners; the hook catalog will expose any future addition.
         var resources = SpendResources(card, isAutoPlay: true, skipXCapture);
-        OnPlayWrapper(card, target, isAutoPlay: true, resources, out _, nestedChoiceSourceId);
+        OnPlayWrapper(card, target, isAutoPlay: true, resources, out _, nestedChoiceSourceId, nestedChoiceContextId);
         if (HasCardPlayStartedSince(historyEntryStart, card)
             && !HasPendingChoice
             && State.CombatState is ICombatPredictionCardExecutionSink sink)
@@ -61,10 +62,11 @@ internal sealed partial class CombatPredictionSimulator
     public bool PaidAutoPlay(
         PredictedCard card,
         Creature? target = null,
-        string? nestedChoiceSourceId = null)
+        string? nestedChoiceSourceId = null,
+        string? nestedChoiceContextId = null)
     {
         SpendResources(card, isAutoPlay: false);
-        return AutoPlay(card, target, AutoPlayType.Default, skipXCapture: true, nestedChoiceSourceId);
+        return AutoPlay(card, target, AutoPlayType.Default, skipXCapture: true, nestedChoiceSourceId, nestedChoiceContextId);
     }
 
     /// <summary>
@@ -74,9 +76,9 @@ internal sealed partial class CombatPredictionSimulator
     public bool HasPendingChoice
         => State.CombatState is ICombatPredictionPendingChoiceState { HasPendingChoice: true };
 
-    private bool ResolveNestedAutoPlayChoice(PredictedCard card, string sourceId)
+    private bool ResolveNestedAutoPlayChoice(PredictedCard card, string sourceId, string? contextId)
         => State.CombatState is not ICombatPredictionNestedChoiceSink sink
-            || sink.ResolveNestedCardChoice(this, card, sourceId);
+            || sink.ResolveNestedCardChoice(this, card, sourceId, contextId);
 
     /// <summary>
     /// Mirrors <see cref="CardPileCmd.AutoPlayFromDrawPile"/>.

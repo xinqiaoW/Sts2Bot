@@ -282,7 +282,8 @@ internal sealed partial class CombatPredictionSimulator
         bool isAutoPlay,
         ResourceInfo resources,
         out PredictionTraceFrame frame,
-        string? nestedChoiceSourceId = null)
+        string? nestedChoiceSourceId = null,
+        string? nestedChoiceContextId = null)
     {
         using var _ = PushActionSource(card.Original, PredictionActionKind.CardPlay);
         frame = CurrentFrame ?? throw new UnreachableException("No current frame after pushing action source.");
@@ -387,7 +388,7 @@ internal sealed partial class CombatPredictionSimulator
             // reaches its pile before this card moves to its result pile.
             if (isAutoPlay
                 && nestedChoiceSourceId != null
-                && !ResolveNestedAutoPlayChoice(card, nestedChoiceSourceId))
+                && !ResolveNestedAutoPlayChoice(card, nestedChoiceSourceId, nestedChoiceContextId))
             {
                 HookMirrors.AbortCardPlayed(this, cardPlay);
                 return;
