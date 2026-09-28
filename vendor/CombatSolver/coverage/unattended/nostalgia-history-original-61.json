@@ -1,0 +1,313 @@
+{
+  "request": {
+    "actIndexForTest": 2,
+    "ascension": 10,
+    "cards": [],
+    "characterId": "SILENT",
+    "clearRunDeck": true,
+    "deploymentFastModeForTest": "Instant",
+    "deploymentInterActionDelaySecondsForTest": 0,
+    "enableDetailedDiagnosticLogsForTest": false,
+    "enableNoGcRegionForTest": false,
+    "encounterId": "AEONGLASS_BOSS",
+    "exitOnComplete": false,
+    "forceShortSearchOnly": true,
+    "headlessFastModeForTest": "Instant",
+    "performancePresetForTest": "Medium",
+    "potionPolicyForTest": "Disabled",
+    "potions": [],
+    "relics": [
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "LEAD_PAPERWEIGHT"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "KUNAI"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "TWISTED_FUNNEL"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {
+          "RewardsSacrificed": 0
+        },
+        "relicId": "PAELS_WING"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "THE_ABACUS"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "GAME_PIECE"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "TOUGH_BANDAGES"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "SNECKO_SKULL"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "BOWLER_HAT"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "BEAUTIFUL_BRACELET"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "SHURIKEN"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "RED_MASK"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {
+          "AttacksPlayed": 7
+        },
+        "relicId": "PEN_NIB"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "GREMLIN_HORN"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "PRAYER_WHEEL"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "STONE_CALENDAR"
+      }
+    ],
+    "runCards": [
+      {
+        "cardId": "ABRASIVE",
+        "count": 1,
+        "enchantmentAmount": 2,
+        "enchantmentId": "SWIFT",
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "ACCURACY",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "BACKFLIP",
+        "count": 1,
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "BLADE_OF_INK",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "CALCULATED_GAMBLE",
+        "count": 1,
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "CLOAK_AND_DAGGER",
+        "count": 1,
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "CLUMSY",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "DEFEND_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "DEFEND_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "DEFEND_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "DEFEND_SILENT",
+        "count": 1,
+        "enchantmentAmount": 1,
+        "enchantmentId": "SPIRAL",
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "EXTERMINATE",
+        "count": 1,
+        "enchantmentAmount": 2,
+        "enchantmentId": "SWIFT",
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "FOOTWORK",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "FOOTWORK",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "GREED",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "HAZE",
+        "count": 1,
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "HIDDEN_DAGGERS",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "INFINITE_BLADES",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "MIRAGE",
+        "count": 1,
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "NEUTRALIZE",
+        "count": 1,
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "NOXIOUS_FUMES",
+        "count": 1,
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "PREPARED",
+        "count": 1,
+        "enchantmentAmount": 2,
+        "enchantmentId": "SWIFT",
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "PROLONG",
+        "count": 1,
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "SNAKEBITE",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "STORM_OF_STEEL",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "STRANGLE",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "STRIKE_SILENT",
+        "count": 1,
+        "enchantmentAmount": 2,
+        "enchantmentId": "SWIFT",
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "STRIKE_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "STRIKE_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "STRIKE_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "SURVIVOR",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "BACKFLIP",
+        "count": 1,
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "NOSTALGIA",
+        "count": 1,
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "AFTERIMAGE",
+        "count": 1,
+        "upgradeLevels": 1
+      }
+    ],
+    "runId": "6f432af1a1a3498c94eaef85f828f538",
+    "scenarioId": "HP-59ae6303d2357aa0",
+    "schemaVersion": 1,
+    "searchMaxDegreeOfParallelismForTest": 1,
+    "seed": "cb8cba48ec9dfff4",
+    "shortSearchBudgetOverrideMilliseconds": 8000,
+    "timeoutSeconds": 120,
+    "trainingActId": "GLORY",
+    "trainingCollection": true
+  }
+}

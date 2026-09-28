@@ -1,5 +1,14 @@
 # CombatSolver 开发笔记与未来构想
 
+## NOSTALGIA 回合出牌历史修复（开发中，2026-09-29）
+
+- 原失败构筑在后续回合抽到与计划不同的牌。落牌镜像混用了可变原生历史和全部模拟回合的历史，未按原版 `HappenedThisTurn` 限定当前回合，导致应回到抽牌堆顶的攻击/技能进入弃牌堆。
+- `SimulatedCombatState` 从主线程捕获的根历史物化攻击/技能开始次数，每次开始出牌增加，包括重放与尚未完成的外层出牌；能力牌不计入。镜像只读分支计数。计数在敌我方、轮次或玩家回合编号变化时归零，覆盖额外回合；通过既有 COW 字典隔离 Fork，以稳定 Creature 身份为键，并纳入状态指纹。
+- 存在 NOSTALGIA_POWER 时，actual/predicted 完整状态增加 `nostalgiaStarts`。虽然计数在回合边界清零，但开局自动出牌后可以非零，因此仍参与 continuation 检查。未删字段、放宽相等或对旧录像补造计数；受影响的旧录像需要重新原生录制。
+- 最小未修复基线在切换到敌方回合时应返回抽牌堆、实际返回弃牌堆；候选通过能力排除、开始/完成时点、重复出牌、父/左右分支隔离、敌我切换、额外回合、下一轮、指纹及 continuation 计数断言。隔离宿主从无额外遗物的首次可行动状态调用定向测试 `AssertNostalgiaTurnHistory`。
+- 最终字段版本教师 `a4714059…` 原生重新录制案例 38/61，独立宿主执行相同动作与选择，分别通过 47/126 个完整状态检查点及终局，共 173 个。原录像实际观察到计数 0/1/2/3；仅把一个计数改为 999 的反例在 `after_play_0` 被拒绝。反例报告解析器最初只接受成功终局，后从已保留的拒绝日志恢复报告，未重跑或推测退出码。
+- Release 编译零警告/错误，结构边界及 CoverageCatalog `--verify-state-fields` 通过。8 秒、DOP1、120 秒请求超时保持不变。证据为 `coverage/nostalgia-turn-history-repair-20260929.json`，请求为 `coverage/unattended/nostalgia-history-original-{38,61}.json`。最终教师万构筑回归、全部失败面板和正式采集仍待完成。
+
 ## NINJA_SCROLL 首回合抽牌修复（开发中，2026-09-29）
 
 - 首个偏离点：模拟的首次抽牌前遗漏 NINJA_SCROLL 生成的三张 SHIV，手牌容量与随后 TOASTY_MITTENS 的可选牌因此不同。`PrepareRelicsBeforeHandDraw` 按原版时点调用既有生成卡牌入口；由原有分支牌堆与生成事件拥有状态，不新增可变字段。

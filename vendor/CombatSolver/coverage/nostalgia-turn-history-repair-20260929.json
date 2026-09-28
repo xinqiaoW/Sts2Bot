@@ -1,0 +1,152 @@
+{
+  "schema": "nostalgia-turn-history-repair/v1",
+  "baseline": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nostalgia-repair/baseline-v3/report.json",
+    "sha256": "cfe82528c1d7327e1fb4552465a08837f3cf9138155c23c0e0b0ae989640a463"
+  },
+  "candidate": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nostalgia-repair/candidate-v4/report.json",
+    "sha256": "9aed201f9877da46ef1d52b730aedc9f480610d5f7e2395b77c767aacad66153"
+  },
+  "nativeReport": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nostalgia-repair/native-check-v4/report.json",
+    "sha256": "03de8248e99d2ecbb018897b4ad1421aa4cb50ed16de7bb50b0a63caed9fab05"
+  },
+  "native": {
+    "complete": true,
+    "passed": true,
+    "results": [
+      {
+        "checkpoints": 47,
+        "command": [
+          "/data1/pl/ImageTask/wxq/Projects/standalone-checkpoints-20260924/runtime-tools/dotnet/dotnet",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nostalgia-repair/candidate-v4/host/bin/Release/net9.0/SimulatorPrototype.dll",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nostalgia-repair/native-check-v4/game",
+          "--replay-native-request",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nostalgia-repair/native-check-v4/original-case-38/replay.json",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-20260927-release/progress-snapshot.json"
+        ],
+        "exitCode": 0,
+        "finalHp": 57,
+        "finishedTurn": 7,
+        "name": "original-case-38",
+        "native": {
+          "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nostalgia-repair/native-check-v4/original-case-38/native.json",
+          "sha256": "1e6cb31c0a9e1fcbd2d12d1966ffc25afe60c1991039080b1f0fdb6d83a411db"
+        },
+        "nativeComplete": true,
+        "passed": true,
+        "plays": 20,
+        "replay": {
+          "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nostalgia-repair/native-check-v4/original-case-38/replay.log",
+          "sha256": "96d57b65f8f95c74087fc7acd16e1ad56ec71bac7395b44564b97ec537d24cca"
+        },
+        "terminalBoundaryChoiceCancellations": 0,
+        "terminalCleanupBoundaryComparisons": 0,
+        "terminalRewardBoundaryComparisons": 0
+      },
+      {
+        "checkpoints": 126,
+        "command": [
+          "/data1/pl/ImageTask/wxq/Projects/standalone-checkpoints-20260924/runtime-tools/dotnet/dotnet",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nostalgia-repair/candidate-v4/host/bin/Release/net9.0/SimulatorPrototype.dll",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nostalgia-repair/native-check-v4/game",
+          "--replay-native-request",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nostalgia-repair/native-check-v4/original-case-61/replay.json",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-20260927-release/progress-snapshot.json"
+        ],
+        "exitCode": 0,
+        "finalHp": 49,
+        "finishedTurn": 12,
+        "name": "original-case-61",
+        "native": {
+          "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nostalgia-repair/native-check-v4/original-case-61/native.json",
+          "sha256": "e6a4492856f26f1cff68fe4ad16336a66a2fe6c1fc3bc61cb411ab8f8c63f100"
+        },
+        "nativeComplete": true,
+        "passed": true,
+        "plays": 57,
+        "replay": {
+          "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nostalgia-repair/native-check-v4/original-case-61/replay.log",
+          "sha256": "bc133acf482e26966bffee6c2cb558d7a55afa83c1e9abaae3620ea31d536f85"
+        },
+        "terminalBoundaryChoiceCancellations": 0,
+        "terminalCleanupBoundaryComparisons": 0,
+        "terminalRewardBoundaryComparisons": 0
+      }
+    ]
+  },
+  "negativeReport": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nostalgia-repair/negative-check/report.json",
+    "sha256": "d1c98819fdc5f3d395a8d447ed95c61aa2726c9dbb506855faec1a84680ede23"
+  },
+  "negative": {
+    "passed": true,
+    "source": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nostalgia-repair/native-check-v4/original-case-38/replay.json",
+      "sha256": "d09b7aaea4a33517b5b728c6f8a581f88c4a56c91ee0a42e2520d2c46564f5ea"
+    },
+    "fixture": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nostalgia-repair/negative-check/wrong-count.json",
+      "sha256": "87309fa48c6178e7a46337ab4791eaf224e666a5694c48f94e2cab377df57abf"
+    },
+    "log": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nostalgia-repair/negative-check/wrong-count.log",
+      "sha256": "3faa24b8d6f49a71cde5ba0a4fb96c0cb8148925a99ff037d4bc60b339133c48"
+    },
+    "terminal": {
+      "status": "blocked",
+      "stage": "formal_request_restoration",
+      "error": "System.InvalidOperationException: Cross-runtime state differs at after_play_0\n   at NativeTraceReplay.<>c__DisplayClass3_0.<Run>g__Compare|1(String expected, String point, Boolean finalActionCompletion) in /data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nostalgia-repair/candidate-v4/host/NativeTraceReplay.cs:line 61\n   at NativeTraceReplay.Run(Func`2 get, Assembly solver, Object combat, Object player, Task terminal, JsonElement recording, NativeCombatRewards rewards) in /data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nostalgia-repair/candidate-v4/host/NativeTraceReplay.cs:line 126\n   at RequestBattleProbe.Run(Func`2 get, Assembly solver, Object run, Object player, JsonElement fixture, Boolean compareHistorical, Boolean nativeReplay, Boolean injectExhaustedPlanOnce, Boolean injectDeploymentDriftOnce, Boolean injectMissingCardOnce, Boolean injectUnconsumedChoiceOnce) in /data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nostalgia-repair/candidate-v4/host/RequestBattleProbe.cs:line 137\n   at Program.<Main>$(String[] args) in /data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nostalgia-repair/candidate-v4/host/Program.cs:line 115",
+      "productionReady": false,
+      "productionLabels": false
+    },
+    "changedPath": "/nativeTrace/events/3/value/after",
+    "onlyChange": "nostalgiaStarts replaced by 999",
+    "observedCounts": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "exitCode": null,
+    "originalScript": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nostalgia-repair/check_negative-before-report-fix.py",
+      "sha256": "2a14c36a96954e1dd5b03a83ac6c07a72f39ccd0cab6b1c960c5bb7aae11b1d4"
+    },
+    "recovery": "The original report parser accepts successful battle terminals only and raised on the deliberate blocked result. This report checks the existing blocked terminal and verifies the only input change is the counter; no battle rerun and no inferred process exit code."
+  },
+  "teacher": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nostalgia-repair/candidate-v4-source/.godot/mono/temp/bin/Release/CombatSolver.dll",
+    "sha256": "a4714059e1b0fb491079ecf96dbafaba0981e639d10c1dabd0518c6fe946a009"
+  },
+  "build": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nostalgia-repair/candidate-v4-build.log",
+    "sha256": "9f0d00f86690ae33d237387cd90e7045e0229bc9b89c2e58b2451528a922cee7"
+  },
+  "boundaries": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nostalgia-repair/boundaries.log",
+    "sha256": "deca91a103cbb776e0d96749d3a9a9df66ee078c8c763e793a82e7e81cc80377"
+  },
+  "stateFieldVerification": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nostalgia-repair/coverage-verify.log",
+    "sha256": "6748384f1c8df91437c71b6f7bcea278de128d46b4ffa09e25a21c326adce7f2"
+  },
+  "scripts": {
+    "check_history-v4.py": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nostalgia-repair/check_history-v4.py",
+      "sha256": "96e5aef3df5eda27bd298d471dad6ec91b825f6ccfa2cbbb9fcbc2898b1ba58a"
+    },
+    "check_native-v4.py": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nostalgia-repair/check_native-v4.py",
+      "sha256": "581a3057d8d1a7d1176ce00c6505f0c460e193abb4d41c9a23ab5257748fa844"
+    },
+    "check_negative.py": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nostalgia-repair/check_negative.py",
+      "sha256": "193d8856b9d224514597035889cb9aa533424d2ea1ced85cd499eeab707b33bb"
+    }
+  },
+  "productionReady": false,
+  "productionDeployed": false,
+  "priorNativeRecordings": "Recordings captured without nostalgiaStarts cannot certify the new counter; affected native inputs require fresh capture without altering old evidence."
+}

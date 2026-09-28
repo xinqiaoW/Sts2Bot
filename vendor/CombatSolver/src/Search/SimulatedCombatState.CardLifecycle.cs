@@ -156,9 +156,13 @@ internal sealed partial class SimulatedCombatState
 
     void ICombatPredictionCardExecutionSink.RecordCardPlayStarted(PredictedCard card, CardPlay cardPlay)
     {
+        Creature owner = card.Preview.Owner.Creature;
+        // Nostalgia counts every start, including repeats and the outer card
+        // while a nested auto-play is resolving, rather than completed plays.
+        if (card.Preview.Type is CardType.Attack or CardType.Skill)
+            (_attackOrSkillStartsThisTurn ??= [])[owner] = GetAttackOrSkillStartsThisTurn(owner) + 1;
         if (!cardPlay.IsFirstInSeries)
             return;
-        Creature owner = card.Preview.Owner.Creature;
         (_cardPlaysStartedThisTurn ??= [])[owner] = GetCardPlaysStartedThisTurn(owner) + 1;
         if (card.Preview.Type == CardType.Attack && cardPlay.Resources.EnergyValue == 0)
         {
@@ -488,6 +492,26 @@ internal sealed partial class SimulatedCombatState
             && !entry.CardPlay.IsAutoPlay
             && entry.CardPlay.Player.Creature == owner);
         (_manualCardsPlayedThisTurn ??= [])[owner] = value;
+        return value;
+    }
+
+    private void ResetAttackOrSkillStarts()
+    {
+        // CombatHistoryEntry.HappenedThisTurn matches side, round and each
+        // player's turn number, including an extra turn on the same side.
+        foreach (Creature creature in Creatures)
+            (_attackOrSkillStartsThisTurn ??= [])[creature] = 0;
+    }
+
+    public int GetAttackOrSkillStartsThisTurn(Creature owner)
+    {
+        if (_attackOrSkillStartsThisTurn?.TryGetValue(owner, out int value) == true)
+            return value;
+        value = _rootHistory.CardPlaysStarted.Count(entry =>
+            entry.HappenedThisTurn(this)
+            && entry.CardPlay.Player.Creature == owner
+            && entry.CardPlay.Card.Type is CardType.Attack or CardType.Skill);
+        (_attackOrSkillStartsThisTurn ??= [])[owner] = value;
         return value;
     }
 

@@ -1,4 +1,3 @@
-using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
@@ -109,13 +108,9 @@ internal static class ModifyCardPlayResultLocationMirrors
             return context.Location;
         }
 
-        var count = CombatManager.Instance.History.CardPlaysStarted.Count(entry =>
-            entry.HappenedThisTurn(power.CombatState) &&
-            entry.CardPlay.Card.Type is CardType.Attack or CardType.Skill &&
-            entry.CardPlay.Player == power.Owner.Player);
-        count += context.History.OfType<CombatPredictionCardPlayStartedEntry>().Count(entry =>
-            entry.CardPlay.Card.Type is CardType.Attack or CardType.Skill &&
-            entry.CardPlay.Player == power.Owner.Player);
+        SimulatedCombatState combat = context.CombatState as SimulatedCombatState
+            ?? throw new InvalidOperationException("Nostalgia requires captured branch card history.");
+        int count = combat.GetAttackOrSkillStartsThisTurn(power.Owner);
         if (count >= power.Amount)
         {
             return context.Location;

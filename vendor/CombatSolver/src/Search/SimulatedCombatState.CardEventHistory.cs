@@ -89,13 +89,25 @@ internal sealed partial class SimulatedCombatState
             && entry.CardPlay.Card.Type == CardType.Attack
             && entry.CardPlay.Resources.EnergyValue == 0);
         AppendTurnCardHistory(text, statusCardsDrawn, zeroCostAttackStarts);
+        if (player.Creature.Powers.Any(power => power is NostalgiaPower))
+        {
+            int starts = CombatManager.Instance.History.CardPlaysStarted.Count(entry =>
+                entry.HappenedThisTurn(combatState)
+                && entry.CardPlay.Player == player
+                && entry.CardPlay.Card.Type is CardType.Attack or CardType.Skill);
+            text.Append(";nostalgiaStarts=").Append(starts);
+        }
     }
 
     public void AppendPredictedTurnCardHistory(StringBuilder text, Player player)
-        => AppendTurnCardHistory(
+    {
+        AppendTurnCardHistory(
             text,
             GetStatusCardsDrawnThisTurn(player),
             GetZeroCostAttackStartsThisTurn(player.Creature));
+        if (GetPower<NostalgiaPower>(player.Creature) != null)
+            text.Append(";nostalgiaStarts=").Append(GetAttackOrSkillStartsThisTurn(player.Creature));
+    }
 
     private static void AppendTurnCardHistory(
         StringBuilder text,

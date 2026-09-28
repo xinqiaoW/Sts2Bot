@@ -59,3 +59,13 @@ NativeImplicitChoiceObserver 现在保持相同判断。游戏选牌器、随机
 失败面板中的首回合选牌偏离定位为首次抽牌前缺失三张 SHIV。候选教师 `443eb7d5bb01d5683de1436c421ac239dd2b32905c191f1a0e83c3a901fa3ffd` 补齐原版时序，最小输入由开局完整状态不一致变为一致；原失败案例 8 的开局也一致。两场原生录制和同动作独立重放合计通过 56 个完整状态检查点及终局。
 
 证据目录 `ninja-scroll-repair/` 保存未修复基线、候选开局比较和 `native-check/report.json`。该报告还包含一个不带 NINJA_SCROLL 的历史录制失败输入，仍然在 `wait_player_turn` 超时，因此总报告 `passed=false`；未删去此失败或扩大超时。宿主当前固定教师和正式采集配置没有切换到此候选，正在运行的全量复核仍对应 `02bd107d…`，不能算作该新增修复的最终验收。
+
+## NOSTALGIA 当前回合历史（2026-09-29）
+
+候选教师 `a4714059e1b0fb491079ecf96dbafaba0981e639d10c1dabd0518c6fe946a009` 修复 NOSTALGIA 跨回合累计出牌、读取 live 历史的问题；分支计数覆盖重复出牌、嵌套开始时点、回合切换、COW、状态键及 continuation。存在该 Power 时完整状态增加 `nostalgiaStarts`，不允许旧录像缺失计数被默认为通过。
+
+`nostalgia-repair/baseline-v3/report.json` 保留未修复回合边界失败；`candidate-v4/report.json` 通过定向生命周期和字段断言。`native-check-v4/report.json` 对原失败案例 38、61 重新原生录制，同动作回放通过 47、126 个完整检查点及终局；`negative-check/report.json` 证明仅改动一个计数为 999 被拒绝。中间版本的 `native-check/report.json` 是旧字段验证，不与最终版本重复计数。
+
+本代 `combined-failure-panel/report.json` 已完成：105/123 匹配，18 个原生失败保留。失败输入中 4 个包含 NINJA_SCROLL/TOASTY_MITTENS、10 个包含 NOSTALGIA、2 个 Soul Fysh 暴露 BOLAS 卡牌实例状态偏离、2 个 Fabricator 在结束后仍有存活敌人的断言失败。相同模型出现是分组线索，不表示每个输入均已由定向修复证明通过；最终教师还须完整重验。
+
+`combined-full-replay/final-audit.json` 已独立审计通过：教师 `02bd107d…` / 宿主 `56180233…` 的 10,036 个构筑、532,666 个检查点、80 个目标匹配，无未解决回放差异。9 个原生失败与 455 个未执行输入不计通过。审计首次因冻结控制目录缺少 `build_panel_contract` 未执行；补齐模块搜索路径后仅继续审计，所有 10,045 个源案例均有结果。原错误日志及 `audit-recovery.json` 保留，未重跑战斗或改写录像。此旧字段版本的通过不能转移给新增 NOSTALGIA 计数的教师。
