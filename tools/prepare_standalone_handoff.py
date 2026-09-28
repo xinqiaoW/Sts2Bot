@@ -3,6 +3,7 @@ import argparse
 from contextlib import closing
 import hashlib
 import json
+import os
 from pathlib import Path
 import sqlite3
 import sys
@@ -118,6 +119,17 @@ def prepare_instance(folder, bundle, readiness, native, real_snapshot):
             'Instance requires accepted concurrency selection')
     checked_identity(readiness['releaseManifest'])
     require(readiness['releaseManifest'] == identity(bundle / 'release.json'), 'Accepted bundle differs')
+    checked_identity(readiness['finalReport'])
+    soak = read(readiness['finalReport']['path'])['soak']; checked_identity(soak)
+    launch = Path(soak['path']).parent / 'launch.json'; calibrated = read(launch)
+    cpus = calibrated['cpus']
+    require(cpus and all(type(cpu) is int and cpu >= 0 for cpu in cpus)
+            and len(set(cpus)) == len(cpus) >= readiness['selectedWorkers']
+            and set(cpus) <= os.sched_getaffinity(0), 'Calibrated CPU affinity is unavailable')
+    require(calibrated['command'][:3] == ['taskset', '-c', ','.join(map(str, cpus))],
+            'Soak CPU binding differs from its actual launch command')
+    calibration = dict(launch=identity(launch), cpus=cpus,
+                       minimumCpuQuota=calibrated['resources']['cpuQuotaCores'])
     checked_identity(native['session']); checked_identity(native['activePointer'])
     old_session = read(native['session']['path'])
     metadata = Path(real_snapshot).resolve(strict=True).parent
@@ -164,7 +176,7 @@ def prepare_instance(folder, bundle, readiness, native, real_snapshot):
         source_dir=str(instance / 'data/external/spire-codex'), source_start=start,
         backfill_dir=str(instance / 'data/external/spire-codex-history'),
         runtimes=list(map(str, runtimes)), workers=len(runtimes), selected_workers=len(runtimes),
-        reserve_gib=16, worker_start_gib=2, collect_only=True,
+        reserve_gib=16, worker_start_gib=2, collect_only=True, cpu_calibration=calibration,
         dataset_allocation=dict(real=0.5, mutation=0.25, targeted=0.25),
         controller_pid=None, pool_pid=None, releaseManifest=readiness['releaseManifest'],
         acceptance=identity(folder / 'readiness.json'), nativeSession=native['session'],
@@ -174,7 +186,7 @@ def prepare_instance(folder, bundle, readiness, native, real_snapshot):
                    session=str(instance / 'data/collection-session.json'),
                    releaseManifest=readiness['releaseManifest'], acceptance=session['acceptance'])
     write(instance / 'data/active-collection.json', pointer)
-    command = [sys.executable, str(bundle / 'release_tool.py'), 'run', '--bundle', str(bundle),
+    command = ['taskset', '-c', ','.join(map(str, cpus)), sys.executable, str(bundle / 'release_tool.py'), 'run', '--bundle', str(bundle),
                '--module', 'tools.collect_continuous', '--', '--db', paths['real'],
                '--mutation-db', paths['mutation'], '--targeted-db', paths['targeted'],
                '--config', session['config'], '--teacher', session['teacher'],
@@ -182,7 +194,7 @@ def prepare_instance(folder, bundle, readiness, native, real_snapshot):
                '--source-dir', session['source_dir'], '--source-start', start,
                '--backfill-dir', session['backfill_dir'], '--active-pointer', native['activePointer']['path'],
                '--runtimes', *session['runtimes'], '--reserve-gib', '16', '--worker-start-gib', '2', '--collect-only']
-    result = dict(directory=str(instance), sources=sources,
+    result = dict(directory=str(instance), sources=sources, calibration=calibration,
         runtimes=[identity(path) for path in runtimes], session=identity(instance / 'data/collection-session.json'),
         proposedPointer=identity(instance / 'data/active-collection.json'),
         originalActivePointer=native['activePointer'], command=command, cwd=str(instance),

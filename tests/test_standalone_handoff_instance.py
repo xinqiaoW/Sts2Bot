@@ -1,6 +1,7 @@
 """Synthetic handoff metadata; no production collection or external source calls."""
 import importlib.util
 import json
+import os
 from pathlib import Path
 import sys
 
@@ -21,6 +22,12 @@ def prepared(tmp_path):
     write(bundle / 'runtime-template.json', dict(backend='standalone-managed-native',
           host_dll=str(bundle / 'host/SimulatorPrototype.dll'), progress_snapshot=str(bundle / 'progress-snapshot.json')))
     readiness = dict(passed=True, selectedWorkers=8, releaseManifest=identity(bundle / 'release.json'))
+    cpus = sorted(os.sched_getaffinity(0))[:8]
+    write(tmp_path / 'rollout/soak/launch.json', dict(cpus=cpus,
+          command=['taskset', '-c', ','.join(map(str, cpus)), 'synthetic-launch'], resources={'cpuQuotaCores': 8}))
+    write(tmp_path / 'rollout/soak/report.json', {'fixture': True})
+    write(tmp_path / 'rollout/final-report.json', {'soak': identity(tmp_path / 'rollout/soak/report.json')})
+    readiness['finalReport'] = identity(tmp_path / 'rollout/final-report.json')
     write(folder / 'readiness.json', readiness)
     original = tmp_path / 'native'; original.mkdir()
     cutoff = '2026-09-05T00:00:00Z'
@@ -92,7 +99,9 @@ def test_generated_command_passes_actual_release_launcher_arguments(prepared, mo
     # Release contents are a synthetic fixture; test the real CLI argument and
     # child environment logic without launching a collector or bypassing its guard.
     monkeypatch.setattr(launcher, 'verify', lambda bundle: {})
-    monkeypatch.setattr(sys, 'argv', result['command'][1:])
+    assert result['command'][:2] == ['taskset', '-c']
+    assert result['command'][2] == ','.join(map(str, result['calibration']['cpus']))
+    monkeypatch.setattr(sys, 'argv', result['command'][4:])
     launched = []
     monkeypatch.setattr(launcher.os, 'execve', lambda *args: launched.append(args))
     launcher.main()
@@ -102,7 +111,7 @@ def test_generated_command_passes_actual_release_launcher_arguments(prepared, mo
     assert env['PYTHONSAFEPATH'] == '1' and env['PYTHONPATH'] == str(prepared[1])
 
 
-@pytest.mark.parametrize('change', ['unaccepted', 'workers', 'bundle', 'pointer', 'session', 'scope', 'missing_cursor', 'existing'])
+@pytest.mark.parametrize('change', ['unaccepted', 'workers', 'bundle', 'pointer', 'session', 'scope', 'missing_cursor', 'existing', 'cpus', 'cpu_command'])
 def test_incomplete_or_changed_inputs_do_not_prepare_an_instance(prepared, change):
     folder, bundle, readiness, native, snapshot = prepared
     if change == 'unaccepted': readiness['passed'] = False
@@ -114,6 +123,11 @@ def test_incomplete_or_changed_inputs_do_not_prepare_an_instance(prepared, chang
         p = snapshot.parent / 'source-backfill/plan.json'; value = read(p); value['cutoff'] = 'different'; write(p, value)
     elif change == 'missing_cursor': (snapshot.parent / 'source-backfill/full-archive/cursor.json').unlink()
     elif change == 'existing': (folder / 'instance').mkdir(); (folder / 'instance/evidence').write_text('keep')
+    elif change in ('cpus', 'cpu_command'):
+        launch = Path(readiness['finalReport']['path']).parent / 'soak/launch.json'; value = read(launch)
+        if change == 'cpus': value['cpus'] = [-1]
+        else: value['command'] = ['unbound-search']
+        write(launch, value)
     with pytest.raises((ValueError, FileNotFoundError)):
         prepare_instance(*prepared)
     if change == 'existing': assert (folder / 'instance/evidence').read_text() == 'keep'

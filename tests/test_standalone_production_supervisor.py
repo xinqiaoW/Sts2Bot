@@ -139,3 +139,16 @@ def test_stale_ready_file_is_not_a_live_audit_prerequisite(deployment):
     with pytest.raises(ValueError, match='Audit already started'):
         supervisor.supervise(prepared, deployment.audit, deployment.directory, activate=activate, backup=backup)
     assert not deployment.directory.exists() and not deployment.calls
+
+
+def test_started_session_publication_failure_drains_spawned_controller(deployment):
+    prepared, activate, backup = deployment.make('publication')
+    def fail(controller): raise OSError('synthetic owner publication failure')
+    with pytest.raises(OSError, match='owner publication failure'):
+        supervisor.supervise(prepared, deployment.audit, deployment.directory, activate=activate, backup=backup,
+                             started=fail, interval=.025, drain_timeout=5)
+    assert (deployment.directory / 'controller-owner.json').exists()
+    result = read(deployment.directory / 'status.json')
+    assert result['state'] == 'failed' and result['drain']['drained']
+    with sqlite3.connect(deployment.queues['real']) as db:
+        assert db.execute("SELECT count(*) FROM jobs WHERE status='running'").fetchone()[0] == 0

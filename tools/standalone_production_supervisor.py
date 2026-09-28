@@ -36,7 +36,7 @@ def ready_for(process, path, **expected):
 
 
 def supervise(instance, audit_folder, directory, *, activate, backup,
-              interval=1, backup_interval=1800, drain_timeout=190):
+              started=None, interval=1, backup_interval=1800, drain_timeout=190):
     """Run until explicit stop or failure; activation follows audit and backup readiness.
 
     activate() must perform the already-authorized, verified handoff and return
@@ -171,6 +171,7 @@ def supervise(instance, audit_folder, directory, *, activate, backup,
             monitor('starting_collection')
             controller = launch('controller', instance['command'])
             collection_started = time.monotonic()
+            if started is not None: started(controller)
             status('collecting', activation=activation)
             while True:
                 monitor('collecting')

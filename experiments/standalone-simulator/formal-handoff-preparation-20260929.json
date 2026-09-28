@@ -62,7 +62,7 @@
   "pendingQueuePreparation": {
     "source": {
       "path": "/data2/pl/ImageTask/wxq/Projects/Sts2Bot-simulator-prototype/tools/prepare_standalone_handoff.py",
-      "sha256": "66a0c8f2148d1a2b63dae39a63f0dc32dbc14807a425e80be03ea0fbc932311c"
+      "sha256": "c70764b0af89c2fcbd0216787fb05bc3b3f4591253c3d1296d530f7e11e2431f"
     },
     "tests": {
       "passed": 23,
@@ -75,7 +75,16 @@
     "actualTeacherPolicyCompatibilityChecked": true,
     "productionQueuesPrepared": false,
     "productionDeployed": false,
-    "instancePrepared": false
+    "instancePrepared": false,
+    "cpuAffinityPinnedToAcceptedSoak": true,
+    "regressionEvidence": {
+      "passed": 52,
+      "evidence": {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/deployment-entry-tests-v2.log",
+        "sha256": "f2f2d981c823d101ed0a03d06bd62e56f68c4be26c4bfc1328fb1cdf9cff4b12"
+      },
+      "scope": "Combined deployment/queue/instance/guard/supervisor synthetic regression suite."
+    }
   },
   "productionAuditPreparation": {
     "source": {
@@ -97,7 +106,7 @@
     "auditPrepared": false,
     "auditStarted": false,
     "productionDeployed": false,
-    "remaining": "Complete verified deployment entry point: native ownership/rollback recheck, calibrated CPU affinity, pointer/session handoff, frozen supervisor and backup wiring; then start and verify actual outputs after all acceptance gates."
+    "remaining": "After real acceptance and native backup pass, execute handoff preparation, production audit preparation and frozen deployment preparation/run; verify actual collection outputs and monitoring."
   },
   "productionGuardComponents": {
     "source": {
@@ -118,7 +127,7 @@
   "productionSupervisor": {
     "source": {
       "path": "/data2/pl/ImageTask/wxq/Projects/Sts2Bot-simulator-prototype/tools/standalone_production_supervisor.py",
-      "sha256": "9dd741f64b46bbcaa6f5c9de75f18447372bf80e1be948f098e769e484d07ee1"
+      "sha256": "32d2d09f66bfdc605841aa81e1997865ab42ce87bc96aedf19f87212fff89a21"
     },
     "tests": {
       "passed": 13,
@@ -129,7 +138,38 @@
       "scope": "Six real subprocess/SQLite/local-backup lifecycle tests plus seven guard tests; synthetic game/acceptance prerequisites."
     },
     "loopImplemented": true,
-    "deploymentEntrypointImplemented": false,
-    "productionDeployed": false
+    "deploymentEntrypointImplemented": true,
+    "productionDeployed": false,
+    "regressionEvidence": {
+      "passed": 52,
+      "evidence": {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/deployment-entry-tests-v2.log",
+        "sha256": "f2f2d981c823d101ed0a03d06bd62e56f68c4be26c4bfc1328fb1cdf9cff4b12"
+      }
+    }
+  },
+  "productionDeployment": {
+    "source": {
+      "path": "/data2/pl/ImageTask/wxq/Projects/Sts2Bot-simulator-prototype/tools/deploy_standalone.py",
+      "sha256": "3e13e3b9dec015535ee7e18c9fc91fa8225f1f91fe93beac7b994b67c9d6e357"
+    },
+    "tests": {
+      "passed": 52,
+      "evidence": {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/deployment-entry-tests-v2.log",
+        "sha256": "f2f2d981c823d101ed0a03d06bd62e56f68c4be26c4bfc1328fb1cdf9cff4b12"
+      },
+      "scope": "Synthetic SQLite/metadata plus real child/lock/local-backup tests. Not actual correctness, soak or formal deployment."
+    },
+    "finalEntrypointTests": {
+      "passed": 13,
+      "evidence": {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/deployment-entry-final-tests.log",
+        "sha256": "6e69117e0efcddfb313f754fdf2f139601d1a922e442c5b278f3124e87f96d85"
+      }
+    },
+    "deploymentPrepared": false,
+    "productionDeployed": false,
+    "remaining": "After real acceptance and native backup pass, execute handoff preparation, production audit preparation and frozen deployment preparation/run; verify actual collection outputs and monitoring."
   }
 }
