@@ -53,3 +53,9 @@ NativeImplicitChoiceObserver 现在保持相同判断。游戏选牌器、随机
 `run_backend_comparison.py --teacher-config` 已支持显式候选教师并记录配置文件哈希；默认配置不变，已有报告一律拒绝覆盖。8 项既有后端统计/进程复用测试和新增覆盖拒绝测试通过。`combined-benchmark/prepared-command.json` 已冻结新版对照源码、6 个历史输入、源数据库快照及独立 Wine runtime；这里只完成准备，尚未运行或宣称新版性能结果。
 
 `original-capture-failures/` 另外使用 2 个原生 worker 复测旧万构筑面板中未计入通过的全部 9 个原生失败输入。请求从旧失败录像中提取并核对原证据哈希，旧结果不改写。`combined-release/regression/` 验证旧功能回归和本轮新增语义录像，并保留错误状态/错误选择两个反例；报告尚未完成时不得将其计为通过。
+
+## 首次抽牌与 NINJA_SCROLL（2026-09-29）
+
+失败面板中的首回合选牌偏离定位为首次抽牌前缺失三张 SHIV。候选教师 `443eb7d5bb01d5683de1436c421ac239dd2b32905c191f1a0e83c3a901fa3ffd` 补齐原版时序，最小输入由开局完整状态不一致变为一致；原失败案例 8 的开局也一致。两场原生录制和同动作独立重放合计通过 56 个完整状态检查点及终局。
+
+证据目录 `ninja-scroll-repair/` 保存未修复基线、候选开局比较和 `native-check/report.json`。该报告还包含一个不带 NINJA_SCROLL 的历史录制失败输入，仍然在 `wait_player_turn` 超时，因此总报告 `passed=false`；未删去此失败或扩大超时。宿主当前固定教师和正式采集配置没有切换到此候选，正在运行的全量复核仍对应 `02bd107d…`，不能算作该新增修复的最终验收。

@@ -43,6 +43,13 @@ internal sealed partial class SimulatedCombatState
             StatefulRelicState state;
             switch (relic)
             {
+                case NinjaScroll when turn <= 1:
+                    // Vanilla creates the shivs before drawing the opening hand,
+                    // so they also occupy hand slots for the subsequent draw.
+                    if (!simulator.IsOverOrEnding)
+                        simulator.CreateAndAddGeneratedCardsToCombat<Shiv>(
+                            player, PileType.Hand, relic.DynamicVars["Shivs"].IntValue, player);
+                    break;
                 case Pendulum:
                     state = GetStatefulRelicState(relic);
                     SetStatefulRelicState(

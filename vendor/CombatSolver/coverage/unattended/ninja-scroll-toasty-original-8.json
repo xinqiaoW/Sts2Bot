@@ -1,0 +1,334 @@
+{
+  "request": {
+    "actIndexForTest": 2,
+    "ascension": 10,
+    "cards": [],
+    "characterId": "SILENT",
+    "clearRunDeck": true,
+    "deploymentFastModeForTest": "Instant",
+    "deploymentInterActionDelaySecondsForTest": 0,
+    "enableDetailedDiagnosticLogsForTest": false,
+    "enableNoGcRegionForTest": false,
+    "encounterId": "SCROLLS_OF_BITING_NORMAL",
+    "exitOnComplete": false,
+    "forceShortSearchOnly": true,
+    "headlessFastModeForTest": "Instant",
+    "performancePresetForTest": "Medium",
+    "potionPolicyForTest": "Disabled",
+    "potions": [],
+    "relics": [
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "NEOWS_BONES"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "NEOWS_TORMENT"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "CURSED_PEARL"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "NINJA_SCROLL"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "AMETHYST_AUBERGINE"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "TWISTED_FUNNEL"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "TOASTY_MITTENS"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "FESTIVE_POPPER"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "LOST_WISP"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "GORGET"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "BAG_OF_MARBLES"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {
+          "TurnsSeen": 1
+        },
+        "relicId": "PENDULUM"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "LUCKY_FYSH"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "FIDDLE"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {
+          "TurnsSeen": 1
+        },
+        "relicId": "HAPPY_FLOWER"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "KUSARIGAMA"
+      }
+    ],
+    "runCards": [
+      {
+        "cardId": "ACCURACY",
+        "count": 1,
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "ANTICIPATE",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "ASCENDERS_BANE",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "BACKFLIP",
+        "count": 1,
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "BACKSTAB",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "BACKSTAB",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "BLADE_DANCE",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "BUBBLE_BUBBLE",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "DAGGER_SPRAY",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "DEFEND_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "DEFEND_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "DEFEND_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "DEFEND_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "DEFEND_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "DOUBT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "DUAL_WIELD",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "FASTEN",
+        "count": 1,
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "GREED",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "HIDDEN_DAGGERS",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "INFINITE_BLADES",
+        "count": 1,
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "LEADING_STRIKE",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "LEG_SWEEP",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "MAD_SCIENCE",
+        "count": 1,
+        "savedIntegerMembers": {
+          "TinkerTimeRider": 7,
+          "TinkerTimeType": 3
+        },
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "MASTER_PLANNER",
+        "count": 1,
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "NEOWS_FURY",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "NEUTRALIZE",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "NOXIOUS_FUMES",
+        "count": 1,
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "PIERCING_WAIL",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "PIERCING_WAIL",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "PREPARED",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "RICOCHET",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "SNAKEBITE",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "STRIKE_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "STRIKE_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "STRIKE_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "SURVIVOR",
+        "count": 1,
+        "enchantmentAmount": 2,
+        "enchantmentId": "NIMBLE",
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "TOOLS_OF_THE_TRADE",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "UP_MY_SLEEVE",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "WELL_LAID_PLANS",
+        "count": 1,
+        "upgradeLevels": 1
+      }
+    ],
+    "runId": "783824564a6a4711b96bd712507918e2",
+    "scenarioId": "HP-d7a172d7c9d893b8",
+    "schemaVersion": 1,
+    "searchMaxDegreeOfParallelismForTest": 1,
+    "seed": "024c6eff66d79429",
+    "shortSearchBudgetOverrideMilliseconds": 8000,
+    "timeoutSeconds": 120,
+    "trainingActId": "GLORY",
+    "trainingCollection": true
+  }
+}

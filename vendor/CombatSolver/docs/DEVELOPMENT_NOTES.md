@@ -1,5 +1,12 @@
 # CombatSolver 开发笔记与未来构想
 
+## NINJA_SCROLL 首回合抽牌修复（开发中，2026-09-29）
+
+- 首个偏离点：模拟的首次抽牌前遗漏 NINJA_SCROLL 生成的三张 SHIV，手牌容量与随后 TOASTY_MITTENS 的可选牌因此不同。`PrepareRelicsBeforeHandDraw` 按原版时点调用既有生成卡牌入口；由原有分支牌堆与生成事件拥有状态，不新增可变字段。
+- 开局完整状态对照：未修复教师 `02bd107d…` 的最小输入不一致；修复教师 `443eb7d5…` 的相同输入和原失败案例 8 一致。两场原生完整录制由独立宿主按相同动作及选择重放，分别通过 45、11 个完整状态检查点，终局一致。
+- 原始请求为 `coverage/unattended/ninja-scroll-toasty-opening.json` 和 `ninja-scroll-toasty-original-8.json`，结构化证据为 `coverage/ninja-scroll-opening-repair-20260929.json`。Release 编译零警告/错误，结构门禁通过；沿用 8 秒搜索、DOP1、120 秒请求超时。
+- 同批第三个请求不含 NINJA_SCROLL，仍在 `wait_player_turn` 超时；完整三例报告保持失败，未将此例排除后宣称全部通过。最终教师的万构筑回归、长期试采和正式投产仍待完成。
+
 ## 卡牌预览身份修复（开发中，2026-09-29）
 
 - 首个偏离点：女王的束缚锁链在回合结束时清除附着效果，写时复制更换卡牌预览；同轮稍后执行的 REGRET 钩子仍持有旧预览，查找手牌失败，漏掉扣血所需的手牌计数。完整回放与增量搜索因此产生不同 HP。

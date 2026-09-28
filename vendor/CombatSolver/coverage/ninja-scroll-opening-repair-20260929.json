@@ -1,0 +1,97 @@
+{
+  "schema": "ninja-scroll-opening-repair/v1",
+  "baseline": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/ninja-scroll-repair/baseline-v2/report.json",
+    "sha256": "a11bc6b594faf631fc013bdcc0108e3ab2c3acf8954e936f8e96150194132298"
+  },
+  "candidate": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/ninja-scroll-repair/candidate-v2/report.json",
+    "sha256": "43ddb71a01ff4c933363f1b112d479515286f1b2829c7595507e01cd856827c3"
+  },
+  "nativeReport": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/ninja-scroll-repair/native-check/report.json",
+    "sha256": "bf174aad17ef7885e2b1787e36fe08bf3b6891b689518a35a8a15bc23d2a743a"
+  },
+  "native": {
+    "complete": true,
+    "passed": false,
+    "results": [
+      {
+        "checkpoints": 45,
+        "command": [
+          "/data1/pl/ImageTask/wxq/Projects/standalone-checkpoints-20260924/runtime-tools/dotnet/dotnet",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/ninja-scroll-repair/candidate-v2/host/bin/Release/net9.0/SimulatorPrototype.dll",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/ninja-scroll-repair/native-check/game",
+          "--replay-native-request",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/ninja-scroll-repair/native-check/minimal-ninja-toasty/replay.json",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-20260927-release/progress-snapshot.json"
+        ],
+        "exitCode": 0,
+        "finalHp": 39,
+        "finishedTurn": 5,
+        "name": "minimal-ninja-toasty",
+        "native": {
+          "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/ninja-scroll-repair/native-check/minimal-ninja-toasty/native.json",
+          "sha256": "6df6112eef960c28797bcba7a44733e3abe0a42469a6e2deb5e30a93ce612d6c"
+        },
+        "nativeComplete": true,
+        "passed": true,
+        "plays": 21,
+        "replay": {
+          "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/ninja-scroll-repair/native-check/minimal-ninja-toasty/replay.log",
+          "sha256": "befbb43331e69a8ba63908ba90bb104a073e8075179e4ecf0e8970f3f8651b15"
+        },
+        "terminalBoundaryChoiceCancellations": 0,
+        "terminalCleanupBoundaryComparisons": 0,
+        "terminalRewardBoundaryComparisons": 0
+      },
+      {
+        "checkpoints": 11,
+        "command": [
+          "/data1/pl/ImageTask/wxq/Projects/standalone-checkpoints-20260924/runtime-tools/dotnet/dotnet",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/ninja-scroll-repair/candidate-v2/host/bin/Release/net9.0/SimulatorPrototype.dll",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/ninja-scroll-repair/native-check/game",
+          "--replay-native-request",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/ninja-scroll-repair/native-check/original-case-8/replay.json",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-20260927-release/progress-snapshot.json"
+        ],
+        "exitCode": 0,
+        "finalHp": 70,
+        "finishedTurn": 2,
+        "name": "original-case-8",
+        "native": {
+          "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/ninja-scroll-repair/native-check/original-case-8/native.json",
+          "sha256": "70a4f0d15bf3c3eecfbef71ade6e0928f88873c46306add922e43abb16ce1bce"
+        },
+        "nativeComplete": true,
+        "passed": true,
+        "plays": 5,
+        "replay": {
+          "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/ninja-scroll-repair/native-check/original-case-8/replay.log",
+          "sha256": "dfe529d3e2a6c071e722800c0163a8acbd4435ca0a2695c20333bbe379020700"
+        },
+        "terminalBoundaryChoiceCancellations": 0,
+        "terminalCleanupBoundaryComparisons": 0,
+        "terminalRewardBoundaryComparisons": 0
+      },
+      {
+        "error": "System.TimeoutException: 无人测试在阶段 wait_player_turn 超过 120 秒。\r\n   at CombatSolver.UnattendedTestRunner.EnsureWithinDeadline()\r\n   at CombatSolver.UnattendedTestRunner.WaitForPlayableCombatAsync()\r\n   at CombatSolver.UnattendedTestRunner.ScenarioBuilder.BuildAsync()\r\n   at CombatSolver.UnattendedTestRunner.RunAsync()",
+        "name": "original-capture-failure-9",
+        "native": {
+          "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/ninja-scroll-repair/native-check/original-capture-failure-9/native.json",
+          "sha256": "982c34f69b76433115da2a7a73e67b90f612c1be244ba1d35df4f9810b4444a3"
+        },
+        "nativeComplete": false,
+        "passed": false
+      }
+    ]
+  },
+  "teacher": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/ninja-scroll-repair/source/.godot/mono/temp/bin/Release/CombatSolver.dll",
+    "sha256": "443eb7d5bb01d5683de1436c421ac239dd2b32905c191f1a0e83c3a901fa3ffd"
+  },
+  "directedPassedCheckpoints": 56,
+  "scope": "NINJA_SCROLL before opening draw; third case is an unrelated unresolved native setup timeout and remains failed.",
+  "productionReady": false,
+  "productionDeployed": false
+}
