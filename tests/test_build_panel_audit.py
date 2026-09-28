@@ -61,6 +61,8 @@ def test_only_individually_verified_checkpoints_count(tmp_path):
     assert report['runs'][0]['terminalStateVerified'] is True
     assert report['matchedBattles'] == 1
     assert report['uniqueBuilds'] == 1
+    assert report['teacher'] == json.loads((ROOT / 'configs/teacher.json').read_text())
+    assert report['progressSnapshot'] == identity(ROOT / 'experiments/standalone-simulator/fixtures/pilot-progress-v24.json')
     assert report['unresolvedReplayDifferences'] == [] and report['staleHostResults'] == []
 
 

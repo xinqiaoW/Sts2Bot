@@ -1,0 +1,35 @@
+{
+  "schema": "standalone-rollout-readiness/v1",
+  "createdAt": "2026-09-28T19:47:44.511076+00:00",
+  "productionDeployed": false,
+  "correctnessAccepted": false,
+  "scope": "Controller provenance and operational readiness only; current full-state campaign is still running. No current performance, concurrency, rollback or 24-hour acceptance claimed.",
+  "sourceSha256": {
+    "tools/standalone_rollout_provenance.py": "66fcf24638fada44ca0d9e162b1089f336a931b848639fe666f27243abc32fee",
+    "tools/prepare_standalone_rollout.py": "e0da836b4ed4c609747f5bfbcd76be2c1535ec3522258c5509c52d1a4fbaa418",
+    "tools/run_standalone_rollout.py": "8ed24c55d202e101e1dc7d9f7f7bce42a87033d897533712a67f7efadc412f2b",
+    "tools/standalone_rollout_audit.py": "d0276ec4f7bc87ef1b79fc9385f6d62eb61fad31ed34e945b24b62302f8d307a",
+    "tools/standalone_rollout_metrics.py": "535a9fb0732fcca3740fb51b01b888ca011e84da1b7a93ae0b403cb4e8bddc84",
+    "tools/run_standalone_failure_panel.py": "63703faee90593137bb90b83d3a185c8e3f9e8cce1022c2b3921f9c0f9c1a802",
+    "experiments/standalone-simulator/replay_build_panel.py": "fee29cefa6ba6c2232bab06e1588d2fcb284776a65e7f8141d3f4c6767da2170",
+    "experiments/standalone-simulator/audit_build_panel.py": "f0ec0ab8554b40806df2711aa155f18e8f446197e01849c61c8b20ade1a212e3"
+  },
+  "tests": [
+    {
+      "evidence": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-initial-test-result.json",
+      "passed": 64,
+      "stage": "Initial binding and existing rollout/audit/failure-panel tests"
+    },
+    {
+      "evidence": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-binding-tests.log",
+      "passed": 42,
+      "stage": "Affected provenance/replay tests after current benchmark binding and 120-second timeout"
+    }
+  ],
+  "activeCampaign": "/data1/pl/ImageTask/wxq/Projects/standalone-full-state-validation-20260929",
+  "next": [
+    "Freeze candidate bundle and separate updated independent auditor without changing active campaign sources.",
+    "Finish frozen correctness panel; audit all current full-state evidence.",
+    "Run current paired performance then concurrency ladder, rollback and genuine 24-hour soak before formal switch."
+  ]
+}

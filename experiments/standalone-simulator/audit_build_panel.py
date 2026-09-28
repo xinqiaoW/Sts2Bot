@@ -66,7 +66,7 @@ def audit(source_root,directory,plan_path,host_dll,checkpoint_target):
  return dict(schema='distinct-build-panel-audit/v1',requiredValidatedBuilds=plan['requiredValidatedBuilds'],panelValidation=validation,productionReady=False,productionLabels=False,passed=passed,checkpointTarget=checkpoint_target,matchedCheckpoints=points,
   matchedBattles=len(checked),matchedPlays=sum(x['plays'] for x in checked),uniqueBuilds=len(builds),uniqueTargets=len(targets),plannedCases=plan['caseCount'],unexecutedCases=plan['caseCount']-len(seen),
   actualPlayedCards=sorted(played),newActuallyPlayedCards=sorted(played-set(plan['priorActuallyPlayedCards'])),nonemptyChoicePlans=choices,
-  unresolvedReplayDifferences=unresolved,nativeCaptureFailures=native_failures,staleHostResults=stale,host=host,plan=identity(plan_path),auditor=identity(__file__),
+  unresolvedReplayDifferences=unresolved,nativeCaptureFailures=native_failures,staleHostResults=stale,host=host,teacher=base_teacher,progressSnapshot=progress,plan=identity(plan_path),auditor=identity(__file__),
   counting='One count per individually verified named state checkpoint in each unique completed (build,target,seed) case. Duplicate runs/fields/attempts do not add counts. Every native state text and replay state text is checked independently against the recorded event.',runs=checked)
 
 
