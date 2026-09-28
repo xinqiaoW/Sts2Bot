@@ -69,3 +69,10 @@ NativeImplicitChoiceObserver 现在保持相同判断。游戏选牌器、随机
 本代 `combined-failure-panel/report.json` 已完成：105/123 匹配，18 个原生失败保留。失败输入中 4 个包含 NINJA_SCROLL/TOASTY_MITTENS、10 个包含 NOSTALGIA、2 个 Soul Fysh 暴露 BOLAS 卡牌实例状态偏离、2 个 Fabricator 在结束后仍有存活敌人的断言失败。相同模型出现是分组线索，不表示每个输入均已由定向修复证明通过；最终教师还须完整重验。
 
 `combined-full-replay/final-audit.json` 已独立审计通过：教师 `02bd107d…` / 宿主 `56180233…` 的 10,036 个构筑、532,666 个检查点、80 个目标匹配，无未解决回放差异。9 个原生失败与 455 个未执行输入不计通过。审计首次因冻结控制目录缺少 `build_panel_contract` 未执行；补齐模块搜索路径后仅继续审计，所有 10,045 个源案例均有结果。原错误日志及 `audit-recovery.json` 保留，未重跑战斗或改写录像。此旧字段版本的通过不能转移给新增 NOSTALGIA 计数的教师。
+
+## 返手顺序与实例身份修复（开发中，2026-09-29）
+
+- BOLAS 与 THRUMMING_HATCHET 连续返手时，待返手 HashSet 删除后重新插入会复用空槽；Fork 重建集合消除空槽，导致完整回放与分支在同名原卡/复制卡的手牌顺序上不同。原版 BeforeHandDraw 在执行 Power、遗物之前按牌堆顺序捕获卡牌监听器。
+- 返手按回调前捕获的有序牌堆实例执行；状态指纹用玩家与有序牌堆索引区分具体待返手实例，避免合并同名不同实例的分支。沿用已有待返手状态及 Fork 重映射，不新增字段或放宽相等。
+- 最小旧版在第二次返手失败；候选通过两个模型的连续返手、Fork 顺序及不同实例指纹断言。教师 `42a87e6a…` 对原失败案例 109 重新原生录制，同动作独立宿主通过 90 个完整检查点和第 8 回合终局；严格增量验证通过 1,819 个展开节点、8,171 次转换，路线到第 8 回合，越过原失败第 6 回合边界。这些搜索转换不计入原生检查点数量。
+- 初版增量诊断宿主在 Solve 完成后序列化无关 PotionHpSaved 属性失败，已保留失败报告；修正报告字段后的宿主成功，未改教师。Release 零警告/错误，结构门禁通过，固定 8 秒、DOP1。证据 `coverage/return-to-hand-order-repair-20260929.json`，复现请求 `coverage/unattended/return-to-hand-original-109.json`。Nightmare 选择快照、终局问题及最终全量验收仍待完成。

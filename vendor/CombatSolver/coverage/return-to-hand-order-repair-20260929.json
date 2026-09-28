@@ -1,0 +1,91 @@
+{
+  "schema": "return-to-hand-order-repair/v1",
+  "teacherSha256": "42a87e6a677070a7c625e52cea8619d7ee385da8a354006c1f8575abdfe821e3",
+  "reports": {
+    "baseline/report.json": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/bolas-repair/baseline/report.json",
+      "sha256": "3b02da268b81f5b64d8fc86cb4c32694224b07acbaddeaaae6e71c1ab87b25d3"
+    },
+    "candidate/report.json": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/bolas-repair/candidate/report.json",
+      "sha256": "46fb973e2e786b891931018ca931da8fe70f7e767ed6fb2e4d73e8e8b7cd48f0"
+    },
+    "native-check/report.json": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/bolas-repair/native-check/report.json",
+      "sha256": "ef6f09e89d693be11b85e73f7b904169de75b426c6fdb0263974898a83a919a8"
+    },
+    "incremental-candidate-v2-report.json": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/bolas-repair/incremental-candidate-v2-report.json",
+      "sha256": "3e7c9c7be065e906d9f857cd1064739393b611c10514dde261e12ec0fd46a8e7"
+    },
+    "incremental-candidate-report.json": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/bolas-repair/incremental-candidate-report.json",
+      "sha256": "8a7e7f95d446638c235f5b1367547f01d8776d68eecc941a1632794df56e784e"
+    },
+    "candidate-build.log": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/bolas-repair/candidate-build.log",
+      "sha256": "6642a8ce6cea114d078532d0d46b7f49019af4cf5fc1e869a64050664dd66cc9"
+    },
+    "boundaries.log": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/bolas-repair/boundaries.log",
+      "sha256": "deca91a103cbb776e0d96749d3a9a9df66ee078c8c763e793a82e7e81cc80377"
+    }
+  },
+  "native": {
+    "complete": true,
+    "passed": true,
+    "results": [
+      {
+        "checkpoints": 90,
+        "command": [
+          "/data1/pl/ImageTask/wxq/Projects/standalone-checkpoints-20260924/runtime-tools/dotnet/dotnet",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/bolas-repair/candidate/host/bin/Release/net9.0/SimulatorPrototype.dll",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/bolas-repair/native-check/game",
+          "--replay-native-request",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/bolas-repair/native-check/original-case-109/replay.json",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-20260927-release/progress-snapshot.json"
+        ],
+        "exitCode": 0,
+        "finalHp": 31,
+        "finishedTurn": 8,
+        "name": "original-case-109",
+        "native": {
+          "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/bolas-repair/native-check/original-case-109/native.json",
+          "sha256": "cda503fd0c47ca2b57ed0ed8404c5d21c0b36c503a5a4dc092b81e217eb6b744"
+        },
+        "nativeComplete": true,
+        "passed": true,
+        "plays": 41,
+        "replay": {
+          "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/bolas-repair/native-check/original-case-109/replay.log",
+          "sha256": "803125c01946c9f7f39bcd6ffa733230047373d2348030abeb42bd7770c1446e"
+        },
+        "terminalBoundaryChoiceCancellations": 0,
+        "terminalCleanupBoundaryComparisons": 0,
+        "terminalRewardBoundaryComparisons": 0
+      }
+    ]
+  },
+  "incremental": {
+    "teacherSha256": "42a87e6a677070a7c625e52cea8619d7ee385da8a354006c1f8575abdfe821e3",
+    "command": [
+      "/data1/pl/ImageTask/wxq/Projects/standalone-checkpoints-20260924/runtime-tools/dotnet/dotnet",
+      "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/bolas-repair/incremental-candidate-v2-host/bin/Release/net9.0/SimulatorPrototype.dll",
+      "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/bolas-repair/candidate/game",
+      "--execute-request",
+      "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/bolas-repair/request.json",
+      "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-20260929-release/progress-snapshot.json"
+    ],
+    "exitCode": 0,
+    "terminal": {
+      "status": "incremental_search_passed",
+      "lastActionTurn": 8,
+      "expandedNodes": 1819,
+      "transitions": 8171,
+      "predictedHp": 31
+    }
+  },
+  "harnessFailure": "First incremental harness completed Solve but failed serializing unrelated SolverResult.PotionHpSaved; narrowed report fields in v2. Original failure retained.",
+  "productionReady": false,
+  "productionDeployed": false
+}

@@ -343,6 +343,12 @@ internal sealed partial class SimulatedCombatState
         Player player,
         TurnStartChoiceCursor choices)
     {
+        // Vanilla freezes card listeners in pile order before invoking any power
+        // or relic. A HashSet's slot reuse and fork rebuild order are not hook order.
+        PredictedCard[] returningCards = _returnToHandNextTurn is { Count: > 0 }
+            ? simulator.State.GetPlayerCombatState(player).AllCards
+                .Where(card => _returnToHandNextTurn.Contains(card)).ToArray()
+            : [];
         if (TurnStartPowerSupport.TriggerBeforeHandDraw(simulator, this, player, choices))
             return true;
         if (PrepareRelicsBeforeHandDraw(simulator, player, choices))
@@ -396,15 +402,15 @@ internal sealed partial class SimulatedCombatState
 
         if (_returnToHandNextTurn != null)
         {
-            foreach (PredictedCard card in _returnToHandNextTurn.ToArray())
+            foreach (PredictedCard card in returningCards)
             {
-                if (!ReferenceEquals(card.Preview.Owner, player))
-                    continue;
                 SimCardPile? pile = card.GetPile(simulator.State);
                 if (pile?.Type != PileType.Hand)
                     simulator.AddToPile(card, PileType.Hand);
-                _returnToHandNextTurn.Remove(card);
             }
+            // Cards removed from combat are absent from the listener snapshot,
+            // but their pending mark must not survive into a later player turn.
+            _returnToHandNextTurn.RemoveWhere(card => ReferenceEquals(card.Preview.Owner, player));
         }
         return false;
     }
@@ -560,15 +566,23 @@ internal sealed partial class SimulatedCombatState
         int count = 0;
         if (_returnToHandNextTurn != null)
         {
-            foreach (PredictedCard card in _returnToHandNextTurn)
+            foreach (Player player in Players)
             {
-                StateFingerprintBuilder item = new();
-                item.Add(card.Preview.Owner.NetId);
-                item.Add(card.Preview.Id.Entry);
-                item.Add(card.Preview.CurrentUpgradeLevel);
-                item.Add(card.GetPile(simulator.State)?.Type.ToString());
-                AddUnorderedItem(item.Finish(), ref first, ref second);
-                count++;
+                int index = 0;
+                foreach (PredictedCard card in simulator.State.GetPlayerCombatState(player).AllCards)
+                {
+                    if (_returnToHandNextTurn.Contains(card))
+                    {
+                        StateFingerprintBuilder item = new();
+                        item.Add(player.NetId);
+                        // Ordered piles already encode card semantics. The index
+                        // identifies which particular instance is due to return.
+                        item.Add(index);
+                        AddUnorderedItem(item.Finish(), ref first, ref second);
+                        count++;
+                    }
+                    index++;
+                }
             }
         }
         AddUnordered(ref fingerprint, 'r', count, first, second);

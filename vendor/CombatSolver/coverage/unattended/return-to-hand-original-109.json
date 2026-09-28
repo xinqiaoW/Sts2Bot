@@ -1,0 +1,158 @@
+{
+  "actIndexForTest": 0,
+  "ascension": 10,
+  "cards": [],
+  "characterId": "SILENT",
+  "clearRunDeck": true,
+  "deploymentFastModeForTest": "Instant",
+  "deploymentInterActionDelaySecondsForTest": 0,
+  "enableDetailedDiagnosticLogsForTest": false,
+  "enableNoGcRegionForTest": false,
+  "encounterId": "SOUL_FYSH_BOSS",
+  "exitOnComplete": false,
+  "forceShortSearchOnly": true,
+  "headlessFastModeForTest": "Instant",
+  "performancePresetForTest": "Medium",
+  "potionPolicyForTest": "Disabled",
+  "potions": [],
+  "relics": [
+    {
+      "addWithoutObtainedEffects": true,
+      "booleanMembers": {},
+      "integerMembers": {},
+      "relicId": "PRECARIOUS_SHEARS"
+    },
+    {
+      "addWithoutObtainedEffects": true,
+      "booleanMembers": {},
+      "integerMembers": {},
+      "relicId": "VAJRA"
+    },
+    {
+      "addWithoutObtainedEffects": true,
+      "booleanMembers": {},
+      "integerMembers": {},
+      "relicId": "SNECKO_SKULL"
+    },
+    {
+      "addWithoutObtainedEffects": true,
+      "booleanMembers": {},
+      "integerMembers": {},
+      "relicId": "CHEMICAL_X"
+    },
+    {
+      "addWithoutObtainedEffects": true,
+      "booleanMembers": {},
+      "integerMembers": {
+        "CardsExhausted": 1
+      },
+      "relicId": "JOSS_PAPER"
+    }
+  ],
+  "runCards": [
+    {
+      "cardId": "ACCELERANT",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "ASCENDERS_BANE",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "DEADLY_POISON",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "DEFEND_SILENT",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "DEFEND_SILENT",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "DEFEND_SILENT",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "DEFEND_SILENT",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "ECHOING_SLASH",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "FOOTWORK",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "NEUTRALIZE",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "PIERCING_WAIL",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "RICOCHET",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "SNAKEBITE",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "STRIKE_SILENT",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "SURVIVOR",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "DEFEND_SILENT",
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    {
+      "cardId": "STRIKE_SILENT",
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    {
+      "cardId": "NIGHTMARE",
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    {
+      "cardId": "BOLAS",
+      "count": 1,
+      "upgradeLevels": 1
+    }
+  ],
+  "runId": "c98788d3ff9243f5bb52201ed39c44cf",
+  "scenarioId": "HP-74fda82acb58ab83",
+  "schemaVersion": 1,
+  "searchMaxDegreeOfParallelismForTest": 1,
+  "seed": "024c6eff66d79429",
+  "shortSearchBudgetOverrideMilliseconds": 8000,
+  "timeoutSeconds": 120,
+  "trainingActId": "UNDERDOCKS",
+  "trainingCollection": true
+}
