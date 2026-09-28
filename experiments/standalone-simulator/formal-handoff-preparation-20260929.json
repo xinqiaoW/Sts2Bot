@@ -171,5 +171,26 @@
     "deploymentPrepared": false,
     "productionDeployed": false,
     "remaining": "After real acceptance and native backup pass, execute handoff preparation, production audit preparation and frozen deployment preparation/run; verify actual collection outputs and monitoring."
+  },
+  "frozenPostAcceptanceToolchain": {
+    "manifest": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/formal-handoff-tools-v1/manifest.json",
+      "sha256": "fd3c175426c6e262e459ecc05a2a988a01ea60072256be3127aaa9e8f9c95eb7"
+    },
+    "importChecks": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/formal-handoff-tools-v1/import-checks.json",
+      "sha256": "1dde33f3768f8cd25b3b5b1c8da1cb9a4ddfd8b8658855d5ac75ae4326710c1c"
+    },
+    "sourceRevision": "f2c9002b8f7ca3ca3817d9389da86313ab0161a6",
+    "stagesStarted": false,
+    "productionDeployed": false
+  },
+  "pendingInputReadOnlyPreflight": {
+    "script": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/check_pending_handoff_readonly.py",
+      "sha256": "8bbc20be6382e5e060f18c55f588cb4e33136640ce92802e2ac0c903c03ed4b5"
+    },
+    "report": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/pending-handoff-readonly-check.json",
+    "scope": "Original pending build/target/seed/lineage validation only. Not battle parity, migration, deployment or completion of acceptance."
   }
 }
