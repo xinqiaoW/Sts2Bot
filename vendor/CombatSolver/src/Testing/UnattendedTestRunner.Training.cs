@@ -14,6 +14,7 @@ internal sealed class UnattendedTrainingObservation
     public int? NetHpLoss { get; set; }
     public bool? PlayerDied { get; set; }
     public bool Complete { get; set; }
+    public string? FinalCombatState { get; set; }
     public JsonElement InitialBuild { get; set; }
 }
 
@@ -83,6 +84,9 @@ internal sealed partial class UnattendedTestRunner
         if (!observation.Complete)
             throw new InvalidOperationException("Training battle did not reach a terminal state.");
         observation.NetHpLoss = observation.InitialHp - observation.FinalHp;
+        // Capture before ReturnToMainMenu detaches the combat. End-turn wins
+        // may have no final card completion, so action stamps alone miss this.
+        observation.FinalCombatState = ContinuationStamp.CaptureLive(scenario.CombatState).StateText;
         _writer.TrainingObservation = observation;
     }
 }

@@ -39,3 +39,41 @@ def test_matching_terminal_cannot_hide_missing_or_wrong_checkpoints(points):
     native, replay = observations()
     replay['battle']['compared'] = copy.deepcopy(points)
     assert not suite.matched(native, replay)
+
+
+@pytest.mark.parametrize('forged_state', [False, True])
+def test_suite_uses_strict_evidence_and_counts_terminal_separately(tmp_path, monkeypatch, forged_state):
+    import json
+    from types import SimpleNamespace
+    from test_terminal_state_evidence import terminal_case
+
+    native, replay = terminal_case()
+    if forged_state:
+        replay['battle']['compared'][-1]['actual'] += ';forged-roster'
+    fixtures = tmp_path / 'fixtures'
+    fixtures.mkdir()
+    (fixtures / 'native-replay-terminal.json').write_text(json.dumps(dict(nativeTrace=native)))
+    host, progress = tmp_path / 'host.dll', tmp_path / 'progress.json'
+    host.write_bytes(b'test host')
+    progress.write_text('{}')
+    report = tmp_path / 'report.json'
+    monkeypatch.setattr(sys, 'argv', ['suite', '--host-dll', str(host), '--runtime', str(tmp_path),
+        '--progress-snapshot', str(progress), '--report', str(report), '--dotnet', 'test-dotnet',
+        '--fixtures', str(fixtures)])
+
+    def execute(command, **kwargs):
+        assert kwargs['timeout'] == 120
+        kwargs['stdout'].write(json.dumps(replay) + '\n')
+        return SimpleNamespace(returncode=0)
+
+    monkeypatch.setattr(suite.subprocess, 'run', execute)
+    if forged_state:
+        with pytest.raises(SystemExit):
+            suite.main()
+    else:
+        suite.main()
+    result = json.loads(report.read_text())
+    assert result['passed'] is (not forged_state)
+    if not forged_state:
+        assert result['totalCheckpoints'] == 41
+        assert result['totalTerminalCheckpoints'] == 1

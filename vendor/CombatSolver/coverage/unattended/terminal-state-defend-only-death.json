@@ -1,0 +1,37 @@
+{
+  "request": {
+    "actIndexForTest": 2,
+    "ascension": 10,
+    "cards": [],
+    "characterId": "SILENT",
+    "clearRunDeck": true,
+    "deploymentFastModeForTest": "Instant",
+    "deploymentInterActionDelaySecondsForTest": 0,
+    "enableDetailedDiagnosticLogsForTest": false,
+    "enableNoGcRegionForTest": false,
+    "encounterId": "TEST_SUBJECT_BOSS",
+    "exitOnComplete": false,
+    "forceShortSearchOnly": true,
+    "headlessFastModeForTest": "Instant",
+    "performancePresetForTest": "Medium",
+    "potionPolicyForTest": "Disabled",
+    "potions": [],
+    "relics": [],
+    "runCards": [
+      {
+        "cardId": "DEFEND_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      }
+    ],
+    "runId": "8258d3f93ff7428fad72ac84d8393842",
+    "scenarioId": "TERMINAL-DEATH-DEFEND",
+    "schemaVersion": 1,
+    "searchMaxDegreeOfParallelismForTest": 1,
+    "seed": "024c6eff66d79429",
+    "shortSearchBudgetOverrideMilliseconds": 8000,
+    "timeoutSeconds": 120,
+    "trainingActId": "GLORY",
+    "trainingCollection": true
+  }
+}

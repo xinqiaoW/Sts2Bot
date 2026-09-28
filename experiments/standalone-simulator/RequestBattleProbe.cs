@@ -135,6 +135,8 @@ internal static class RequestBattleProbe
         object hero = Read(player, "Creature");
         int hp = Convert.ToInt32(Read(hero, "CurrentHp")), maxHp = Convert.ToInt32(Read(hero, "MaxHp"));
         int finishedTurn = Convert.ToInt32(Read(playerCombatState, "TurnNumber"));
+        string finalCombatState = (string)Read(solver.GetType("CombatSolver.ContinuationStamp", true)!
+            .GetMethod("CaptureLive")!.Invoke(null, [combat])!, "StateText");
         DateTimeOffset finishedAtUtc = DateTimeOffset.UtcNow;
         bool? historicalTerminalMatched = null;
         if (compareHistorical)
@@ -147,6 +149,6 @@ internal static class RequestBattleProbe
         }
         return new { status = "request_battle_completed", productionReady = false, productionLabels = false,
             attemptId = fixture.GetProperty("attemptId").GetInt32(), historicalTerminalMatched,
-            finalHp = hp, finalMaxHp = maxHp, finishedTurn, finishedAtUtc, battle };
+            finalHp = hp, finalMaxHp = maxHp, finishedTurn, finishedAtUtc, finalCombatState, battle };
     }
 }

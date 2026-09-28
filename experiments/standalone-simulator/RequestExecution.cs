@@ -52,7 +52,8 @@ internal static class RequestExecution
             trainingObservation = new { complete = true, initialHp,
                 initialMaxHp = initial.GetProperty("initialMaxHp").GetInt32(), finalHp = hp,
                 finalMaxHp = terminal.GetProperty("finalMaxHp").GetInt32(), netHpLoss = initialHp - hp,
-                playerDied = hp <= 0, initialBuild = initial.GetProperty("actual") },
+                playerDied = hp <= 0, initialBuild = initial.GetProperty("actual"),
+                finalCombatState = terminal.GetProperty("finalCombatState").GetString() },
             execution = terminal.GetProperty("battle") };
     }
 }

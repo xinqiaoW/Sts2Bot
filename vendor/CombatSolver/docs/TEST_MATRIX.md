@@ -1,5 +1,14 @@
 # CombatSolver 测试清单
 
+## 完整终局状态验收（开发中，2026-09-29）
+
+- 旧回放只保证动作前/后完整状态以及终局 HP、最大 HP、回合数，最后一次结束回合后的敌方阵容等字段没有必检点。新增反例证明旧审计器会接受缺失完整终局状态的录像；该失败基线保留。
+- 原生训练观察在 CaptureTrainingEnd、返回主菜单之前记录 `finalCombatState`。独立宿主等待原版 CombatEnded 及奖励结算后捕获同一完整状态，增加独立 `terminal` 检查点；终局比较不允许替换为更早的死亡清理或奖励边界。独立执行的训练结果也携带相同字段。
+- Python 审计默认要求非空原生终局状态、输出终局状态及逐字段完整检查点全部相等；只比较 HP、伪造 matches、漏点、伪造 expected 或将终局替换为早期边界均失败。历史动作审计必须显式 `require_terminal_state=False`，返回 `terminalStateVerified=False`，不能用于正式验收。逐动作与终局计数分别返回，终局点不计入 50 万逐动作指标；回放套件主入口也调用严格审计，不依赖 summary flags。
+- 教师 `ffe59d5b…` 新录制四场并由独立宿主执行相同动作/选择：原案例 93 为 63 个动作检查点，原案例 109 为 90 个，SOUL_NEXUS_ELITE 为 58 个，只有 DEFEND_SILENT 的 TEST_SUBJECT_BOSS 为 7 个；合计 218 个动作点与 4 个完整终局点。最后一例明确断言死亡，0 HP、第 3 回合。旧死亡案例在新版搜索下获胜，按胜利保留，未冒充死亡覆盖。
+- 黑盒反例：保持全部动作与终局血量不变，只修改终局金币，在 `terminal` 被拒绝；删除 finalCombatState 被明确拒绝。44 项 Python 测试通过，Release 零警告/错误，结构门禁通过。8 秒、DOP1、120 秒请求超时未放大。
+- 证据 `coverage/complete-terminal-state-repair-20260929.json`，死亡请求 `coverage/unattended/terminal-state-defend-only-death.json`。旧 10,036 构筑/532,666 动作点结果仍是旧版本历史证据；因缺少必检终局字段，最终版本须重新原生录制，不补造字段。开局直接终局、回合开始混合效果顺序、最终全量与投产门禁仍待完成。
+
 ## 原生胜利与随从终局验收修复（开发中，2026-09-29）
 
 - FABRICATOR 原失败构筑已有原版胜利和奖励事件，但无人测试要求所有敌人死亡而失败。定向诊断保留失败：`inProgress=False`、`overOrEnding=True`，唯一存活敌人为 STABBOT，22 HP，`primary=False/secondary=True`。原版以无存活主敌人且没有阻止结束的钩子作为胜利条件；受反击死亡的 FABRICATOR 仍可在行动尾部生成随从。

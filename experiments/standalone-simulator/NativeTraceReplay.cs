@@ -11,6 +11,9 @@ internal static class NativeTraceReplay
         JsonElement nativeResult = recording.GetProperty("result");
         if (nativeResult.GetProperty("status").GetString() != "Passed" || !nativeResult.GetProperty("combatEnded").GetBoolean())
             throw new InvalidOperationException("Native trace must have a complete terminal result.");
+        if (!nativeResult.GetProperty("trainingObservation").TryGetProperty("finalCombatState", out JsonElement finalState)
+            || finalState.ValueKind != JsonValueKind.String || string.IsNullOrWhiteSpace(finalState.GetString()))
+            throw new InvalidOperationException("Native recording is missing the required complete terminal state.");
         object cm = get("Combat.CombatManager").GetProperty("Instance")!.GetValue(null)!;
         object pcs = Read(player, "PlayerCombatState"), hero = Read(player, "Creature");
         Type actionType = solver.GetType("CombatSolver.PlanAction", true)!;
@@ -176,6 +179,9 @@ internal static class NativeTraceReplay
             throw new InvalidOperationException("Native fixed-action terminal turn differs.");
         if (hp != observation.GetProperty("finalHp").GetInt32() || maxHp != observation.GetProperty("finalMaxHp").GetInt32())
             throw new InvalidOperationException("Native fixed-action terminal differs.");
+        // This stable terminal checkpoint is independent of the final action's
+        // cleanup/reward observation. Never substitute an earlier boundary.
+        Compare(finalState.GetString()!, "terminal");
         return new { status = "native_fixed_action_replay_matched", productionReady = false, productionLabels = false,
             plays, boundaries, completions, terminalBoundaryChoiceCancellations, terminalCleanupBoundaryComparisons, terminalRewardBoundaryComparisons, terminalActionWithoutPostStamp = pendingPlay, finalHp = hp, finalMaxHp = maxHp, finishedTurn, compared };
     }

@@ -6,7 +6,13 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'experiments/standalone-simulator'))
-from replay_evidence import validate_replay, terminal
+from replay_evidence import validate_replay as validate_current_replay, terminal
+
+
+def validate_replay(native, result):
+    # These immutable v1 recordings predate the complete terminal checkpoint.
+    # Keep testing their action evidence without claiming final-release validity.
+    return validate_current_replay(native, result, require_terminal_state=False)
 
 
 def case(name='native-replay-devoted_sculptor_cleanup.json'):

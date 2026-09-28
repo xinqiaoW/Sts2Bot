@@ -64,7 +64,7 @@ def matched(native, result):
             and observation['initialHp'] - hp == observation['netHpLoss'])
 
 
-def validate_replay(native, result):
+def validate_replay(native, result, *, require_terminal_state=True):
     # Early v1 recorders omitted this summary flag. Derive completeness from
     # the actual terminal and contiguous events below; explicit false still fails.
     require('complete' not in native or native['complete'] is True, 'Native capture incomplete')
@@ -106,6 +106,13 @@ def validate_replay(native, result):
             if kind == 'choice_plan' and value['owner'].startswith('deployment_end_turn:'):
                 planned_boundary_choices = len(value['choices'])
     require(plays + boundaries > 0, 'No recorded combat action')
+    terminal_state = native['result']['trainingObservation'].get('finalCombatState')
+    has_terminal_state = isinstance(terminal_state, str) and bool(terminal_state.strip())
+    require(not require_terminal_state or has_terminal_state, 'Missing native complete terminal state')
+    action_checkpoints = len(expected)
+    if has_terminal_state:
+        require(result.get('finalCombatState') == terminal_state, 'Complete terminal state mismatch')
+        expected.append(('terminal', terminal_state))
     require(matched(native, result), 'Terminal or checkpoint mismatch')
     battle = result['battle']
     points = battle['compared']
@@ -122,7 +129,7 @@ def validate_replay(native, result):
         if any(flag in point for point in points) or counter == 'terminalRewardBoundaryComparisons':
             require(battle.get(counter, 0) == len(uses), 'Terminal boundary count mismatch')
         for point in uses:
-            require(point is points[-1] and events[-1]['kind'] == 'action_completed',
+            require(point is points[action_checkpoints - 1] and events[-1]['kind'] == 'action_completed',
                     'Terminal boundary used before final completion')
             require(isinstance(point.get(observed), str) and point[observed] != point['actual'],
                     'Missing distinct post-boundary observation')
@@ -141,7 +148,8 @@ def validate_replay(native, result):
         setup_choices = sum(len(e['value']['choices']) for e in trailing)
         require(cancelled <= last_boundary_choices + setup_choices,
                 'Cancelled choice count exceeds the recorded terminal boundary plan')
-    return dict(plays=plays, checkpoints=len(points), finalHp=result['finalHp'], finishedTurn=result['finishedTurn'],
+    return dict(plays=plays, checkpoints=action_checkpoints, terminalCheckpoints=int(has_terminal_state),
+                terminalStateVerified=has_terminal_state, finalHp=result['finalHp'], finishedTurn=result['finishedTurn'],
                 terminalCleanupBoundaryComparisons=battle['terminalCleanupBoundaryComparisons'],
                 terminalRewardBoundaryComparisons=battle.get('terminalRewardBoundaryComparisons', 0),
                 terminalBoundaryChoiceCancellations=cancelled)

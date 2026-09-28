@@ -8,7 +8,7 @@ from pathlib import Path
 import subprocess
 import tempfile
 
-from replay_evidence import matched, write
+from replay_evidence import matched, validate_replay, write
 
 
 def main():
@@ -39,9 +39,9 @@ def main():
         env.pop('COMPlus_TieredCompilation', None)
         with log.open('w') as stream:
             try:
-                entry['exitCode'] = subprocess.run(command, env=env, stdout=stream, stderr=subprocess.STDOUT, timeout=140).returncode
+                entry['exitCode'] = subprocess.run(command, env=env, stdout=stream, stderr=subprocess.STDOUT, timeout=120).returncode
             except subprocess.TimeoutExpired:
-                entry['error'] = 'Replay exceeded 140 seconds'
+                entry['error'] = 'Replay exceeded 120 seconds'
         values = []
         for line in log.read_text().splitlines():
             try: values.append(json.loads(line))
@@ -49,16 +49,18 @@ def main():
         terminals = [v for v in values if isinstance(v, dict) and v.get('status') == 'request_battle_completed']
         if len(terminals) == 1:
             result = terminals[0]
-            entry['passed'] = entry.get('exitCode') == 0 and matched(source['nativeTrace'], result)
-            battle = result.get('battle', {})
-            entry.update(plays=battle.get('plays', 0), checkpoints=len(battle.get('compared', [])),
-                         finalHp=result.get('finalHp'), finishedTurn=result.get('finishedTurn'))
+            if entry.get('exitCode') == 0:
+                try:
+                    entry.update(validate_replay(source['nativeTrace'], result), passed=True)
+                except ValueError as error:
+                    entry['error'] = str(error)
         report['runs'].append(entry)
         write(args.report, report)
         print(json.dumps({k:entry[k] for k in ('fixture', 'passed')}), flush=True)
     report.update(complete=True, passed=all(r['passed'] for r in report['runs']),
                   totalPlays=sum(r.get('plays', 0) for r in report['runs']),
-                  totalCheckpoints=sum(r.get('checkpoints', 0) for r in report['runs']))
+                  totalCheckpoints=sum(r.get('checkpoints', 0) for r in report['runs']),
+                  totalTerminalCheckpoints=sum(r.get('terminalCheckpoints', 0) for r in report['runs']))
     write(args.report, report)
     if not report['passed']: raise SystemExit(1)
 
