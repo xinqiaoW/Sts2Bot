@@ -153,7 +153,7 @@ internal sealed partial class SimulatedCombatState
     }
 
     private Dictionary<(Creature Owner, Type Type), PowerModel>? _powers;
-    private List<(Creature Owner, Type Type)>? _powerListenerOrder;
+    private List<PowerModel>? _powerListenerOrder;
     private Dictionary<PowerModel, PowerModel>? _rootMultiInstancePowerClones;
     private List<PredictedCard>? _generatedCombatCards;
     private List<PredictedCard>? _registeredCombatCards;
@@ -276,6 +276,7 @@ internal sealed partial class SimulatedCombatState
         PowerModel[] rootPowers = _rootCreatures
             .SelectMany(creature => creature.Powers)
             .ToArray();
+        _powerListenerOrder = rootPowers.Where(power => power.Amount != 0).ToList();
         _rootPowerAmounts = rootPowers
             .GroupBy(power => (power.Owner, power.GetType()))
             .ToDictionary(
@@ -574,7 +575,7 @@ internal sealed partial class SimulatedCombatState
         PowerModel simulated = GetOrCreatePower(target, incoming, applier);
         int previousAmount = simulated._amount;
         simulated._amount = Math.Clamp(simulated._amount + amount, -999_999_999, 999_999_999);
-        UpdatePowerListenerOrder((target, typeof(T)), previousAmount, simulated._amount);
+        UpdatePowerListenerOrder(simulated, previousAmount, simulated._amount);
         InvalidateHookListenersForAmountTransition(previousAmount, simulated._amount);
         int applied = simulated._amount - previousAmount;
         RecordPowerAmountChange(simulated, applied, applier);
@@ -707,7 +708,7 @@ internal sealed partial class SimulatedCombatState
         PowerModel simulated = GetOrCreatePower(target, canonical, null);
         int previousAmount = simulated._amount;
         simulated._amount = Math.Clamp(amount, -999_999_999, 999_999_999);
-        UpdatePowerListenerOrder((target, typeof(T)), previousAmount, simulated._amount);
+        UpdatePowerListenerOrder(simulated, previousAmount, simulated._amount);
         InvalidateHookListenersForAmountTransition(previousAmount, simulated._amount);
     }
 
@@ -716,14 +717,7 @@ internal sealed partial class SimulatedCombatState
         PowerModel mutable = GetMutablePowerInstance(power);
         int previousAmount = mutable._amount;
         mutable._amount = Math.Clamp(amount, -999_999_999, 999_999_999);
-        if (!_rootMultiInstancePowers.Contains(power)
-            && _addedPowerInstances?.Contains(mutable) != true)
-        {
-            UpdatePowerListenerOrder(
-                (mutable.Owner, mutable.GetType()),
-                previousAmount,
-                mutable._amount);
-        }
+        UpdatePowerListenerOrder(mutable, previousAmount, mutable._amount);
         InvalidateHookListenersForAmountTransition(previousAmount, mutable._amount);
     }
 
@@ -756,6 +750,7 @@ internal sealed partial class SimulatedCombatState
             rootClone._amount = power.Amount;
             (_addedPowerInstances ??= []).Add(rootClone);
             (_rootMultiInstancePowerClones ??= new(ReferenceEqualityComparer.Instance)).Add(power, rootClone);
+            RemapPowerListenerOrder(power, rootClone);
             InvalidateHookListeners();
             return rootClone;
         }
@@ -770,7 +765,7 @@ internal sealed partial class SimulatedCombatState
         simulated._target = power.Target;
         simulated._amount = power.Amount;
         (_powers ??= []).Add(key, simulated);
-        UpdatePowerListenerOrder(key, 0, simulated._amount);
+        RemapPowerListenerOrder(power, simulated);
         InvalidateHookListeners();
         return simulated;
     }
@@ -790,7 +785,7 @@ internal sealed partial class SimulatedCombatState
         int previousAmount = simulated._amount;
         simulated._target = target;
         simulated._amount = Math.Clamp(simulated._amount + amount, -999_999_999, 999_999_999);
-        UpdatePowerListenerOrder((owner, typeof(T)), previousAmount, simulated._amount);
+        UpdatePowerListenerOrder(simulated, previousAmount, simulated._amount);
         InvalidateHookListenersForAmountTransition(previousAmount, simulated._amount);
     }
 
@@ -869,24 +864,35 @@ internal sealed partial class SimulatedCombatState
         if (existingPower == null)
             simulated.AmountOnTurnStart = 0;
         (_powers ??= []).Add(key, simulated);
+        if (existingPower != null)
+            RemapPowerListenerOrder(existingPower, simulated);
         InvalidateHookListeners();
         return simulated;
     }
 
+    private void RemapPowerListenerOrder(PowerModel source, PowerModel mutable)
+    {
+        int index = _powerListenerOrder?.IndexOf(source) ?? -1;
+        if (index >= 0)
+            _powerListenerOrder![index] = mutable;
+        else if (mutable.Amount != 0)
+            (_powerListenerOrder ??= []).Add(mutable);
+    }
+
     private void UpdatePowerListenerOrder(
-        (Creature Owner, Type Type) key,
+        PowerModel power,
         int previousAmount,
         int currentAmount)
     {
         if (previousAmount == 0 && currentAmount != 0)
         {
             _powerListenerOrder ??= [];
-            if (!_powerListenerOrder.Contains(key))
-                _powerListenerOrder.Add(key);
+            if (!_powerListenerOrder.Contains(power))
+                _powerListenerOrder.Add(power);
             return;
         }
         if (previousAmount != 0 && currentAmount == 0)
-            _powerListenerOrder?.Remove(key);
+            _powerListenerOrder?.Remove(power);
     }
 
     public void AddEnergyNextTurn(Player player, int amount)
@@ -1150,6 +1156,7 @@ internal sealed partial class SimulatedCombatState
             reset.DynamicVars["SlowAmount"].BaseValue = 0;
             reset.DynamicVars["DisplayAmount"].BaseValue = 0;
             (_powers ??= [])[(owner, typeof(SlowPower))] = reset;
+            RemapPowerListenerOrder(slow, reset);
             InvalidateHookListeners();
         }
 
@@ -1520,28 +1527,15 @@ internal sealed partial class SimulatedCombatState
             PowerModel effective = _rootMultiInstancePowerClones?.GetValueOrDefault(power)
                 ?? _powers?.GetValueOrDefault((power.Owner, power.GetType()))
                 ?? power;
-            if (effective.Amount != 0)
+            // Tracked instances are inserted below in their shared application
+            // order. Falling back to their root positions breaks remove/reapply.
+            if (effective.Amount != 0 && _powerListenerOrder?.Contains(effective) != true)
                 listeners.Add(effective);
         }
-        if (_powers != null)
+        foreach (PowerModel power in _powerListenerOrder ?? [])
         {
-            foreach ((Creature Owner, Type Type) key in _powerListenerOrder ?? [])
-            {
-                if (_powers.TryGetValue(key, out PowerModel? power)
-                    && power.Amount != 0
-                    && !ContainsPowerReference(listeners, power))
-                {
-                    InsertPowerAtOwnerPosition(listeners, power);
-                }
-            }
-        }
-        if (_addedPowerInstances != null)
-        {
-            foreach (PowerModel power in _addedPowerInstances)
-            {
-                if (power.Amount != 0 && !ContainsPowerReference(listeners, power))
-                    InsertPowerAtOwnerPosition(listeners, power);
-            }
+            if (power.Amount != 0 && !ContainsPowerReference(listeners, power))
+                InsertPowerAtOwnerPosition(listeners, power);
         }
         _effectiveHookListeners = listeners;
         return _effectiveHookListeners;
@@ -1851,19 +1845,24 @@ internal sealed partial class SimulatedCombatState
         ref StateFingerprintBuilder fingerprint,
         CombatPredictionSimulator simulator)
     {
-        ulong powersFirst = 0;
-        ulong powersSecond = 0;
-        int powerCount = 0;
         IReadOnlyList<PowerModel> effectivePowers = EffectivePowers();
-        for (int index = 0; index < effectivePowers.Count; index++)
+        fingerprint.Add('P');
+        fingerprint.Add(effectivePowers.Count);
+        foreach (PowerModel power in effectivePowers)
         {
-            PowerModel power = effectivePowers[index];
-            if (power.Amount == 0)
-                continue;
-            AddPower(power, ref powersFirst, ref powersSecond);
-            powerCount++;
+            StateFingerprint value = CapturePowerFingerprint(power);
+            fingerprint.Add(value.First);
+            fingerprint.Add(value.Second);
+            if (power is NightmarePower nightmare)
+            {
+                // Equal instances with different delayed cards also have an order.
+                if (_nightmareSelections?.TryGetValue(nightmare, out PredictedCard? selected) != true || selected == null)
+                    throw new InvalidOperationException("Nightmare fingerprint has no selected template.");
+                StateFingerprint card = CombatBeamSolver.CaptureCardStateFingerprint(selected);
+                fingerprint.Add(card.First);
+                fingerprint.Add(card.Second);
+            }
         }
-        AddUnordered(ref fingerprint, 'P', powerCount, powersFirst, powersSecond);
 
         AddPlayerIntMap(ref fingerprint, 'D', _drawNextTurn);
         AddCreatureTypeSet(ref fingerprint, 'K', _skipNextDurationTick);
@@ -1919,7 +1918,7 @@ internal sealed partial class SimulatedCombatState
         fingerprint.Add(OutstandingStolenResource(simulator));
     }
 
-    private static void AddPower(PowerModel power, ref ulong first, ref ulong second)
+    private static StateFingerprint CapturePowerFingerprint(PowerModel power)
     {
         StateFingerprintBuilder item = new();
         item.Add(power.Owner.CombatId ?? uint.MaxValue);
@@ -1951,9 +1950,7 @@ internal sealed partial class SimulatedCombatState
         item.Add(dynamicCount);
         item.Add(dynamicFirst);
         item.Add(dynamicSecond);
-        StateFingerprint value = item.Finish();
-        first += StateFingerprintBuilder.MixFirst(value.First);
-        second += StateFingerprintBuilder.MixSecond(value.Second);
+        return item.Finish();
     }
 
     private void AddFeralStates(

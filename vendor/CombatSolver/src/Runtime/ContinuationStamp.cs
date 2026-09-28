@@ -414,8 +414,7 @@ internal sealed record ContinuationStamp(string StateText)
         text.Append(";P=");
         foreach (PowerModel power in powers
             .Where(power => power.Amount != 0)
-            .OrderBy(power => power.Owner.CombatId)
-            .ThenBy(power => power.Id.Entry, StringComparer.Ordinal))
+            .OrderBy(power => power.Owner.CombatId))
         {
             text.Append(power.Owner.CombatId).Append(':').Append(power.Id.Entry).Append('=')
                 .Append(power.Amount).Append('/')

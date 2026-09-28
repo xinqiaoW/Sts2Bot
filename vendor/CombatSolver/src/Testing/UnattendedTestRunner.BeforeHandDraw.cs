@@ -52,7 +52,7 @@ internal sealed partial class UnattendedTestRunner
         CombatPredictionSimulator root = new(new SimulatedCombatState(live));
         CombatPredictionSimulator fork = root.Fork();
         IntentForecast forecast = IntentForecaster.Build(live, 1);
-        int turn = player.PlayerCombatState.TurnNumber;
+        int turn = player.PlayerCombatState!.TurnNumber;
         await Hook.BeforeHandDraw(live, player, new ThrowingPlayerChoiceContext());
         ContinuationStamp actual = ContinuationStamp.CaptureLive(live);
         foreach (CombatPredictionSimulator simulator in new[] { root, fork })

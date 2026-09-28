@@ -1,0 +1,234 @@
+{
+  "schema": "power-application-order-repair/v1",
+  "teacher": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/power-application-order-repair/candidate-v2-source/.godot/mono/temp/bin/Release/CombatSolver.dll",
+    "sha256": "28b6b7370b9e5eab303bf29c27b323de028b2b0f201ac0484890dea1da57f3ea"
+  },
+  "host": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/power-application-order-repair/candidate-host/bin/Release/net9.0/SimulatorPrototype.dll",
+    "sha256": "245fd036047504e3db33172cc58f5cb38b365026d4a1aa13e496f9dffd125807"
+  },
+  "observer": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/power-application-order-repair/trace/bin/Release/net9.0/NativeTraceProbe.dll",
+    "sha256": "1905dc30d1f645b2870a8cea9266e9a1bb8c01fcfd7a540436457ff3fb2e0e08"
+  },
+  "reports": {
+    "baseline/report.json": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/power-application-order-repair/baseline/report.json",
+      "sha256": "5d2f6a1aa0667d9951d10e77d0211aac16fe4f5b8e5fd4716e66214696d6fcca"
+    },
+    "slow-baseline/report.json": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/power-application-order-repair/slow-baseline/report.json",
+      "sha256": "35b83244ada239385a109a56fdc9aa47757d962bf1d38d8094a5a2f3f2b8f079"
+    },
+    "candidate/report.json": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/power-application-order-repair/candidate/report.json",
+      "sha256": "815276b1d2b0828b5335c99bb5813083ca0477d929d5c432e7e90be76355975b"
+    },
+    "root-check/report.json": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/power-application-order-repair/root-check/report.json",
+      "sha256": "2c1355cee06a0cfd338de532c03469f50e01973527263d081e043c08425bf884"
+    },
+    "candidate-v2/report.json": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/power-application-order-repair/candidate-v2/report.json",
+      "sha256": "3ab48ec9a504614305b8edb91edbb37a79d4a4bee003db451128b8d9b798033f"
+    },
+    "native-check/initialization-error.json": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/power-application-order-repair/native-check/initialization-error.json",
+      "sha256": "1fafd1e3b5954305a5fdea31afc5637de014f83f3d1557bf31315f29a14d3b8d"
+    },
+    "native-check-v2/report.json": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/power-application-order-repair/native-check-v2/report.json",
+      "sha256": "515a0b3f09a62682fbeb66243929e5d622eb65b8009ff35de1d7447d6cd4ff87"
+    },
+    "negative-order/report.json": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/power-application-order-repair/negative-order/report.json",
+      "sha256": "0635394db328ca487d8e92a91040d514659426cf4218943c2297175bfb77440d"
+    },
+    "negative-order/audit-recovery.json": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/power-application-order-repair/negative-order/audit-recovery.json",
+      "sha256": "2820bc3045618e163b4d43ffbb11688845caf15fd16bf2443186501b1a94a08b"
+    },
+    "candidate-v2-build.log": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/power-application-order-repair/candidate-v2-build.log",
+      "sha256": "30d9f8c87bc36b33f46c5be5e1600bd2837da3fb07142609b31a162e9525e541"
+    },
+    "state-fields.log": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/power-application-order-repair/state-fields.log",
+      "sha256": "12fc6e0d7f5dd5f11898c3454b1251a609fda7e2104e2b33a82a1f72f490fe07"
+    },
+    "boundaries-v2.log": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/power-application-order-repair/boundaries-v2.log",
+      "sha256": "deca91a103cbb776e0d96749d3a9a9df66ee078c8c763e793a82e7e81cc80377"
+    },
+    "check_candidate_v2.py": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/power-application-order-repair/check_candidate_v2.py",
+      "sha256": "0cd9f22544759883664c38808f55a350a3c9f4e73a14b383ddb93153ee45e37e"
+    },
+    "check_native_v2.py": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/power-application-order-repair/check_native_v2.py",
+      "sha256": "6bbc6e8c3f973a271f534de21d40bee678c80d01a75716a216590b9d12ea3d43"
+    },
+    "check_negative_order.py": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/power-application-order-repair/check_negative_order.py",
+      "sha256": "ffefe09501b7ce4d1f90b6365db9b87afbdcfa6dabe3a0471751e50a19c63a9a"
+    }
+  },
+  "validation": {
+    "candidate-v2/report.json": {
+      "passed": true,
+      "results": [
+        {
+          "scenario": "added-interleaving",
+          "teacherSha256": "28b6b7370b9e5eab303bf29c27b323de028b2b0f201ac0484890dea1da57f3ea",
+          "exitCode": 0,
+          "terminal": {
+            "status": "hand_draw_order_passed"
+          },
+          "command": [
+            "/data1/pl/ImageTask/wxq/Projects/standalone-checkpoints-20260924/runtime-tools/dotnet/dotnet",
+            "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/power-application-order-repair/candidate-v2/host/bin/Release/net9.0/SimulatorPrototype.dll",
+            "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/power-application-order-repair/candidate-v2/game",
+            "--execute-request",
+            "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/power-application-order-repair/candidate-v2/added-interleaving/request.json",
+            "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-20260929-release/progress-snapshot.json"
+          ]
+        },
+        {
+          "scenario": "remove-reapply-root",
+          "teacherSha256": "28b6b7370b9e5eab303bf29c27b323de028b2b0f201ac0484890dea1da57f3ea",
+          "exitCode": 0,
+          "terminal": {
+            "status": "hand_draw_order_passed"
+          },
+          "command": [
+            "/data1/pl/ImageTask/wxq/Projects/standalone-checkpoints-20260924/runtime-tools/dotnet/dotnet",
+            "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/power-application-order-repair/candidate-v2/host/bin/Release/net9.0/SimulatorPrototype.dll",
+            "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/power-application-order-repair/candidate-v2/game",
+            "--execute-request",
+            "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/power-application-order-repair/candidate-v2/remove-reapply-root/request.json",
+            "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-20260929-release/progress-snapshot.json"
+          ]
+        },
+        {
+          "scenario": "fingerprint-order",
+          "teacherSha256": "28b6b7370b9e5eab303bf29c27b323de028b2b0f201ac0484890dea1da57f3ea",
+          "exitCode": 0,
+          "terminal": {
+            "status": "hand_draw_order_passed"
+          },
+          "command": [
+            "/data1/pl/ImageTask/wxq/Projects/standalone-checkpoints-20260924/runtime-tools/dotnet/dotnet",
+            "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/power-application-order-repair/candidate-v2/host/bin/Release/net9.0/SimulatorPrototype.dll",
+            "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/power-application-order-repair/candidate-v2/game",
+            "--execute-request",
+            "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/power-application-order-repair/candidate-v2/fingerprint-order/request.json",
+            "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-20260929-release/progress-snapshot.json"
+          ]
+        },
+        {
+          "scenario": "continuation-order",
+          "teacherSha256": "28b6b7370b9e5eab303bf29c27b323de028b2b0f201ac0484890dea1da57f3ea",
+          "exitCode": 0,
+          "terminal": {
+            "status": "hand_draw_order_passed"
+          },
+          "command": [
+            "/data1/pl/ImageTask/wxq/Projects/standalone-checkpoints-20260924/runtime-tools/dotnet/dotnet",
+            "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/power-application-order-repair/candidate-v2/host/bin/Release/net9.0/SimulatorPrototype.dll",
+            "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/power-application-order-repair/candidate-v2/game",
+            "--execute-request",
+            "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/power-application-order-repair/candidate-v2/continuation-order/request.json",
+            "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-20260929-release/progress-snapshot.json"
+          ]
+        },
+        {
+          "scenario": "template-order",
+          "teacherSha256": "28b6b7370b9e5eab303bf29c27b323de028b2b0f201ac0484890dea1da57f3ea",
+          "exitCode": 0,
+          "terminal": {
+            "status": "hand_draw_order_passed"
+          },
+          "command": [
+            "/data1/pl/ImageTask/wxq/Projects/standalone-checkpoints-20260924/runtime-tools/dotnet/dotnet",
+            "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/power-application-order-repair/candidate-v2/host/bin/Release/net9.0/SimulatorPrototype.dll",
+            "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/power-application-order-repair/candidate-v2/game",
+            "--execute-request",
+            "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/power-application-order-repair/candidate-v2/template-order/request.json",
+            "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-20260929-release/progress-snapshot.json"
+          ]
+        },
+        {
+          "scenario": "slow-reset",
+          "teacherSha256": "28b6b7370b9e5eab303bf29c27b323de028b2b0f201ac0484890dea1da57f3ea",
+          "exitCode": 0,
+          "terminal": {
+            "status": "hand_draw_order_passed"
+          },
+          "command": [
+            "/data1/pl/ImageTask/wxq/Projects/standalone-checkpoints-20260924/runtime-tools/dotnet/dotnet",
+            "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/power-application-order-repair/candidate-v2/host/bin/Release/net9.0/SimulatorPrototype.dll",
+            "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/power-application-order-repair/candidate-v2/game",
+            "--execute-request",
+            "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/power-application-order-repair/candidate-v2/slow-reset/request.json",
+            "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-20260929-release/progress-snapshot.json"
+          ]
+        }
+      ]
+    },
+    "native-check-v2/report.json": {
+      "complete": true,
+      "passed": true,
+      "results": [
+        {
+          "checkpoints": 90,
+          "command": [
+            "/data1/pl/ImageTask/wxq/Projects/standalone-checkpoints-20260924/runtime-tools/dotnet/dotnet",
+            "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/power-application-order-repair/candidate-host/bin/Release/net9.0/SimulatorPrototype.dll",
+            "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/power-application-order-repair/native-check-v2/game",
+            "--replay-native-request",
+            "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/power-application-order-repair/native-check-v2/ordinary-win/replay.json",
+            "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-20260927-release/progress-snapshot.json"
+          ],
+          "exitCode": 0,
+          "finalHp": 31,
+          "finishedTurn": 8,
+          "name": "ordinary-win",
+          "native": {
+            "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/power-application-order-repair/native-check-v2/ordinary-win/native.json",
+            "sha256": "d39cf09fbfa7bae69e71db1803878dfd1f1ff5d07ea63c68a2b7e099909446d0"
+          },
+          "nativeComplete": true,
+          "openingBoundaryMatches": true,
+          "openingTerminal": false,
+          "passed": true,
+          "plays": 41,
+          "replay": {
+            "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/power-application-order-repair/native-check-v2/ordinary-win/replay.log",
+            "sha256": "fd51f7d555d713fe700cf8009280bceb2697b8eb38118ddf139d15addab14009"
+          },
+          "terminalBoundaryChoiceCancellations": 0,
+          "terminalCheckpoints": 1,
+          "terminalCleanupBoundaryComparisons": 0,
+          "terminalRewardBoundaryComparisons": 0,
+          "terminalStateVerified": true
+        }
+      ]
+    }
+  },
+  "negativeOrder": {
+    "passed": true,
+    "onlyPowerOrderDiffers": true,
+    "point": "after_play_1",
+    "audit": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/power-application-order-repair/negative-order/audit-recovery.json",
+      "sha256": "2820bc3045618e163b4d43ffbb11688845caf15fd16bf2443186501b1a94a08b"
+    }
+  },
+  "scope": "Ordered root and newly applied power instances, remove/reapply, Fork remapping, Slow reset, search fingerprints and full continuation; 90 native action checkpoints plus one separate terminal checkpoint.",
+  "pending": [
+    "Fresh 123-case regression panel",
+    "Fresh final 10000-build / 500000-action / 80-target campaign",
+    "Performance, rollback, 24h soak and production"
+  ]
+}

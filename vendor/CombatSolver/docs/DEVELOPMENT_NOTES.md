@@ -1,10 +1,20 @@
 # CombatSolver 开发笔记与未来构想
 
+## 能力实例顺序与状态等价修复（开发中，2026-09-29）
+
+- 五项失败基线分别证实：新施加 NIGHTMARE/INFINITE_BLADES/NIGHTMARE 被重排；根能力移除再施加仍回到旧位置；反向能力顺序得到同一搜索指纹；完整续用文本按能力 ID 排序而漏掉真实差异；两个复制模板交换先后仍得到同一指纹。
+- 主线程按原版 Creature.Powers 捕获有序实例列表，物化时在原位置替换成分支克隆。普通与多实例能力共用此顺序；归零移除，重新施加追加。Fork 在所有能力克隆注册后通过同一个 context.RequireRemap 复制顺序，不保留父分支可变引用。重建监听器不再用根位置覆盖新顺序。
+- Power 指纹逐实例按顺序追加，Nightmare 的完整选牌快照与对应实例绑定，不再作为无序平行集合。完整续用文本只按拥有者分组，保留拥有者内部的原版施加顺序；旧录像不能重排文本来冒充新验收。
+- 相邻生命周期审查发现 Slow 回合重置替换字典实例，新增失败夹具证明顺序表会留下旧监听器；替换时同步重映射原位置。最终 6 项夹具全部通过，包含父/子完整状态、移除重加、指纹/续用反例、模板顺序、Slow 重置后继续 Fork。前一候选还通过 5 项根能力/遗物完整状态对照；后续唯一语义变动是 Slow 实例重映射。
+- 最终教师 `28b6b737…` 重新原生录制原案例 109：90 个逐动作完整状态点 + 1 个完整终局点，41 次出牌，31 HP，第 8 回合；独立宿主执行相同动作/选择全部一致。仅交换同一拥有者两个能力的录像在 after_play_1 被拒绝，独立审计确认除 P 顺序外所有字段相同、能力集合完全相同。
+- Release 零警告/错误，结构与 CoverageCatalog `--verify-state-fields` 门禁通过。修正上一项文档中“零警告”的不准确记录：其构建实际有 2 条可空性警告，本项已消除。首次整场初始化因捕获器仍固定旧教师哈希被拒绝，保留失败并重新固定教师/观察器；反例脚本最初误从异常消息查字段细节，原始失败保留，随后只审计已有结构化 mismatch，不重复回放。
+- 证据 `coverage/power-application-order-repair-20260929.json`。隔离夹具 `AssertPowerApplicationOrderAsync(combat, player, scenario)` 经证据中的宿主脚本调用；正式配置未切换。123 个旧失败/隔离输入面板、最终万构筑新录制、并发性能与长期试采仍待完成。
+
 ## 抽牌前能力与遗物结算顺序（开发中，2026-09-29）
 
 - 最小失败基线：先施加 INFINITE_BLADES_POWER，再施加 NIGHTMARE_POWER。原版 Hook.BeforeHandDraw 先生成小刀，再生成选定卡的复制；旧模拟按效果类别分组，先复制后生成小刀，完整状态在 H[7] 出现首个差异。
 - TurnStartPowerSupport 在同一个能力监听器快照中按顺序执行固定生成、随机生成与选牌效果，随后才进入遗物与已捕获的返手卡牌。Nightmare 延迟模板仍由分支状态持有，逐张克隆并加入牌堆；SentryMode 同样逐张生成，小刀保留原版终局保护。删除原先在遗物之后补跑的重复分类循环。
-- 隔离宿主直接调用原版 Hook.BeforeHandDraw，与同根预测及 Fork 分别比较完整 ContinuationStamp。五例通过：正序、反序、两个 Nightmare 实例交错、小刀/HelloWorld/复制混合、NinjaScroll 满手牌溢出。每例独立进程，保留原版与预测差分异常；不是只比较 HP 或牌数。Release 零警告/错误，结构门禁通过，120 秒上限未增加。
+- 隔离宿主直接调用原版 Hook.BeforeHandDraw，与同根预测及 Fork 分别比较完整 ContinuationStamp。五例通过：正序、反序、两个 Nightmare 实例交错、小刀/HelloWorld/复制混合、NinjaScroll 满手牌溢出。每例独立进程，保留原版与预测差分异常；不是只比较 HP 或牌数。Release 成功（2 条可空性警告，0 错误），结构门禁通过，120 秒上限未增加。
 - 可重跑夹具为 `UnattendedTestRunner.BeforeHandDraw.cs` 中的 `AssertBeforeHandDrawOrderAsync`，参数依次为 combat、player、scenario；通过证据中的隔离宿主脚本反射调用，避免污染普通测试的 live 战斗。基础请求 `coverage/unattended/before-hand-draw-order-minimal.json`，证据 `coverage/before-hand-draw-order-repair-20260929.json`。
 - 范围边界：本次覆盖根中已经生效的能力顺序。新施加的普通/多实例能力交错、移除重加，以及顺序进入状态指纹和完整续用文本仍待处理。最终万构筑新录制、性能/长期试采与正式采集尚未完成。
 

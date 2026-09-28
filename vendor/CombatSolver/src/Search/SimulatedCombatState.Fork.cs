@@ -97,7 +97,7 @@ internal sealed partial class SimulatedCombatState
                 fork._powers.Add((owner, type), ForkPower(power, context));
         }
         if (_powerListenerOrder is not null)
-            fork._powerListenerOrder = new List<(MegaCrit.Sts2.Core.Entities.Creatures.Creature Owner, Type Type)>(_powerListenerOrder);
+            fork._powerListenerOrder = _powerListenerOrder.Select(context.RequireRemap).ToList();
 
         if (_nightmareSelections is not null)
         {

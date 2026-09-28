@@ -49,6 +49,7 @@ internal sealed partial class SimulatedCombatState
         power._target = owner;
         power._amount = amount;
         (_addedPowerInstances ??= []).Add(power);
+        UpdatePowerListenerOrder(power, 0, amount);
         InvalidateHookListeners();
         return power;
     }
@@ -85,7 +86,7 @@ internal sealed partial class SimulatedCombatState
         NightmarePower power,
         Player player)
     {
-        if (_nightmareSelections?.TryGetValue(power, out PredictedCard? selected) != true)
+        if (_nightmareSelections?.TryGetValue(power, out PredictedCard? selected) != true || selected == null)
             throw new InvalidOperationException("Nightmare selection was not captured before hand draw.");
         // Vanilla clones and inserts each copy before creating the next one.
         for (int index = 0; index < power.Amount; index++)
@@ -600,26 +601,5 @@ internal sealed partial class SimulatedCombatState
             }
         }
         AddUnordered(ref fingerprint, 'f', count, first, second);
-
-        first = 0;
-        second = 0;
-        count = 0;
-        if (_nightmareSelections != null)
-        {
-            foreach ((NightmarePower power, PredictedCard selected) in _nightmareSelections)
-            {
-                if (power.Amount <= 0)
-                    continue;
-                StateFingerprintBuilder item = new();
-                item.Add(power.Owner.CombatId ?? uint.MaxValue);
-                item.Add(power.Amount);
-                StateFingerprint card = CombatBeamSolver.CaptureCardStateFingerprint(selected);
-                item.Add(card.First);
-                item.Add(card.Second);
-                AddUnorderedItem(item.Finish(), ref first, ref second);
-                count++;
-            }
-        }
-        AddUnordered(ref fingerprint, 'n', count, first, second);
     }
 }

@@ -105,6 +105,8 @@ Entry / turn hooks
 
 卡牌格挡历史由引擎 `GainBlock` 按当前 `CardPlay` 和 `ValueProp.IsCardOrMonsterMove` 记录事件数，完成一次出牌后交给 `CardPowerHistory` 的现有回合计数。它与卡牌执行期间玩家格挡的净变化含义不同，遗物额外格挡不占用“坚定不移”的翻倍次数。
 
+能力监听器顺序由 `SimulatedCombatState` 的有序实例列表持有：主线程根捕获 Creature.Powers 顺序，物化克隆保留位置，普通和多实例新能力共用追加顺序，移除重加进入末尾。Fork 在克隆登记完成后 RequireRemap；替换分支实例（例如 Slow 回合重置）须同步更新列表。能力顺序与逐实例延迟模板进入搜索指纹和 ContinuationStamp，不可按 ID 排序或用无序聚合消除。
+
 活动 roster 只决定当前可行动、可选目标和 listener。已经捕获的怪物 AI/静态参数属于已知怪物和分支生命周期，不能在移出活动 roster 时提前删除。
 
 ## 4. 内嵌模拟引擎
