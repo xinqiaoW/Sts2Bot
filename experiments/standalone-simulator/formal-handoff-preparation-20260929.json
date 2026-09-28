@@ -97,7 +97,7 @@
     "auditPrepared": false,
     "auditStarted": false,
     "productionDeployed": false,
-    "remaining": "Supervisor must require auditor readiness, stop and drain on auditor failure, and own backups/resource monitoring before actual deployment."
+    "remaining": "Complete verified deployment entry point: native ownership/rollback recheck, calibrated CPU affinity, pointer/session handoff, frozen supervisor and backup wiring; then start and verify actual outputs after all acceptance gates."
   },
   "productionGuardComponents": {
     "source": {
@@ -112,7 +112,24 @@
       },
       "scope": "Seven guard tests (including real subprocess parent death, independent worker drain, SQLite leases) plus ten instance regression tests. No actual game collection."
     },
-    "supervisorIntegrated": false,
+    "supervisorIntegrated": true,
+    "productionDeployed": false
+  },
+  "productionSupervisor": {
+    "source": {
+      "path": "/data2/pl/ImageTask/wxq/Projects/Sts2Bot-simulator-prototype/tools/standalone_production_supervisor.py",
+      "sha256": "9dd741f64b46bbcaa6f5c9de75f18447372bf80e1be948f098e769e484d07ee1"
+    },
+    "tests": {
+      "passed": 13,
+      "evidence": {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/production-supervisor-tests.log",
+        "sha256": "4347cbc01a9cc8956a83cfdbb7537079cca78eec09d5db590ebb607d580c1119"
+      },
+      "scope": "Six real subprocess/SQLite/local-backup lifecycle tests plus seven guard tests; synthetic game/acceptance prerequisites."
+    },
+    "loopImplemented": true,
+    "deploymentEntrypointImplemented": false,
     "productionDeployed": false
   }
 }
