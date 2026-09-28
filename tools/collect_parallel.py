@@ -5,6 +5,7 @@ import json
 import math
 from pathlib import Path
 import signal
+from contextlib import ExitStack
 import subprocess
 import sys
 import time
@@ -45,6 +46,25 @@ def worker_preferences(total, mutation_workers):
     if not 0 <= mutation_workers <= total or (mutation_workers and mutation_workers * 2 >= total):
         raise ValueError('Mutation workers must be a minority of the pool')
     return ['real'] * (total - mutation_workers) + ['mutation'] * mutation_workers
+
+
+def recover_receipts(store, configs):
+    """Only reconcile after all configured runtime owners have released their locks."""
+    from damage_model.result_outbox import recover
+    outcomes = []
+    with ExitStack() as locks:
+        for runtime in configs:
+            path = Path(runtime['data_dir']) / 'collector.lock'
+            path.parent.mkdir(parents=True, exist_ok=True)
+            lock = locks.enter_context(path.open('a+'))
+            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        for runtime in configs:
+            result = recover(store, runtime['data_dir'])
+            if result is not None:
+                outcomes.append(dict(directory=runtime['data_dir'], status=result))
+    if outcomes:
+        print(json.dumps(dict(event='result_receipts_recovered', outcomes=outcomes)), flush=True)
+    return outcomes
 
 
 def main():
@@ -121,6 +141,7 @@ def main():
         for child in children:
             try: child.wait(timeout=10)
             except subprocess.TimeoutExpired: child.kill();child.wait(timeout=5)
+        recover_receipts(store, configs)
     def stop_at_deadline():
         if not deadline_reached(args.stop_at): return False
         status('draining',reason='Requested collection deadline')
@@ -140,6 +161,7 @@ def main():
             *(['--fallback-db',args.fallback_db] if args.fallback_db else [])],
             stdout=log_files[index],stderr=subprocess.STDOUT)
     try:
+        recover_receipts(store, configs)
         if store.counts().get('failed',0): raise ValueError('Diagnose failed jobs before starting pool')
         for index,marker in enumerate(markers):
             if stop_at_deadline(): return

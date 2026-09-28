@@ -44,6 +44,9 @@ def snapshot(db_path, directory):
             source.execute('SELECT count(*) FROM sqlite_schema').fetchone()
         with closing(sqlite3.connect(temporary)) as destination:
             source.backup(destination, pages=1024, sleep=.05)
+            # Release the pinned WAL reader before scanning the entire copy.
+            # Integrity checking a large backup must not retain a growing live WAL.
+            source.rollback()
             destination.execute('PRAGMA journal_mode=DELETE')
             with cached_snapshot_pages(temporary):
                 if destination.execute('PRAGMA quick_check').fetchone()[0] != 'ok':

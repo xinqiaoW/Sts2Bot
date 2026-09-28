@@ -69,13 +69,19 @@ def test_persistent_finish_lock_preserves_lease_result_and_attempts(queue, monke
     before = list(queue.db.iterdump())
     holder = hold(queue)
     delays, trace = [], []
-    monkeypatch.setattr('damage_model.store.time.sleep', delays.append)
+    clock = [0.0]
+    queue.write_wait_seconds = .25
+    monkeypatch.setattr('damage_model.store.time.monotonic', lambda: clock[0])
+    monkeypatch.setattr('damage_model.store.random.uniform', lambda *args: .1)
+    def advance(delay):
+        delays.append(delay); clock[0] += delay
+    monkeypatch.setattr('damage_model.store.time.sleep', advance)
     queue.db.set_trace_callback(trace.append)
     try:
         with pytest.raises(sqlite3.OperationalError) as error:
             queue.finish(job, observation(job))
         assert error.value.sqlite_errorcode == sqlite3.SQLITE_BUSY
-        assert trace.count('BEGIN IMMEDIATE') == 3 and delays == [0.25, 0.5]
+        assert trace.count('BEGIN IMMEDIATE') == 4 and delays == pytest.approx([.1, .1, .05])
         assert list(queue.db.iterdump()) == before
         assert not queue.db.in_transaction
     finally:

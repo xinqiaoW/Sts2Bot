@@ -43,8 +43,10 @@ PY
 控制器和采集池可通过 `--teacher` 指定冻结教师清单，默认仍为
 `configs/teacher.json`；会话使用非默认教师时应保存 `teacher` 路径，备份会保留
 该文件。控制器会将同一清单传给导入、变异和子worker，现有队列的教师身份必须
-匹配。独立后端目前仅接受 `validation_scope=isolated-experiment`，尚未通过正式
-替代验收；应使用独立队列和会话。每个runtime仍须有独立 `data_dir`，Wine后端
+匹配。独立后端目前仅接受 `validation_scope=isolated-experiment`，最新版仍在进行
+[万构筑完整状态验收](../experiments/standalone-simulator/BUILD_VALIDATION_10000.md)，
+正式生产尚未切换。旧版数量结果不能代替新版逐动作、终局与出牌区验证。
+仍使用独立队列和会话；每个 runtime 须有独立 `data_dir`，Wine 后端
 另须独立prefix；独立后端不需要Wine配置。
 
 `--reserve-gib` 是运行内存预留，设为 0 时关闭基于该预留的排空；`--worker-start-gib` 是新 worker 的启动预算，两者不等于进程实际内存上限。参数应结合共享主机和用户 cgroup 限额设置。`--collect-only` 不训练、不覆盖 `checkpoints/v1`；不传 `--stop-at` 时没有固定截止时间。
@@ -84,3 +86,9 @@ PY
 读取主库旁的 `.parallel.json`、`.continuous.json`、各库备份状态，以及实际进程和锁；判断产出看近期 complete 增量和有效原生结果。控制器导入来源或启动时校验数据库可能暂不刷新状态，应结合 CPU、I/O、日志和进程身份判断，不能仅凭状态文件年龄重启。
 
 数据验收和已知限制见[验证与审计](validation.md)。
+
+每个 worker 在 runtime 数据目录保存 `pending-submission.json`：先保存领取凭据，
+得到结果后先持久化原结果再写数据库。重启仅在取得 collector 锁后恢复；已提交的同租约
+结果精确去重，过期结果不会覆盖新租约。只领取但未持久化结果的中断任务记录 interrupted
+尝试后重新排队。数据库写锁只在尚未开启事务时等待，最长 90 秒；不重放事务体或提交。
+故障证据和历史验证见 [写锁恢复](../experiments/standalone-simulator/RECOVERY.md)。

@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 import sqlite3
+import random
 import time
 import uuid
 from collections import Counter
@@ -12,7 +13,8 @@ from .provenance import completed_by_expected_backend
 
 
 class Store:
-    def __init__(self, path):
+    def __init__(self, path, *, write_wait_seconds=90):
+        self.write_wait_seconds = write_wait_seconds
         self.avoid_build_stores = ()
         Path(path).parent.mkdir(parents=True, exist_ok=True)
         self.db = sqlite3.connect(path, timeout=30)
@@ -42,6 +44,7 @@ class Store:
                 source_status TEXT,source_teacher TEXT,result_sha256 TEXT,
                 PRIMARY KEY(build_id,target_id,seed));
         ''')
+        self.db.execute('PRAGMA busy_timeout=250')
 
     def add_build(self, build):
         encoded = canonical(build.to_dict())
@@ -81,18 +84,36 @@ class Store:
     def _begin_write(self, operation):
         # Retry only a BUSY BEGIN before this connection owns a transaction.
         # Never replay statements or commits: their effects may be ambiguous.
-        for attempt in range(3):
+        deadline = time.monotonic() + self.write_wait_seconds
+        attempt = 0
+        while True:
             try:
                 self.db.execute('BEGIN IMMEDIATE')
                 break
             except sqlite3.OperationalError as error:
                 code = getattr(error, 'sqlite_errorcode', None)
                 if (not isinstance(code, int) or code & 0xff != sqlite3.SQLITE_BUSY
-                        or self.db.in_transaction or attempt == 2):
+                        or self.db.in_transaction or time.monotonic() >= deadline):
                     raise
                 print(json.dumps({'event': operation + '_busy', 'retry': attempt + 1,
                                   'sqlite_errorcode': code}), flush=True)
-                time.sleep(0.25 * 2 ** attempt)
+                # Randomized retries prevent the same workers repeatedly losing
+                # the writer race. The wall-clock budget includes SQLite waits.
+                time.sleep(min(random.uniform(.05, .25), max(0, deadline - time.monotonic())))
+                attempt += 1
+
+    def abandon_claim(self, job, *, evidence):
+        """Return this exact stopped owner's claim, recording the interruption."""
+        self._begin_write('abandon_claim')
+        with self.db:
+            changed = self.db.execute("UPDATE jobs SET status='pending',lease=NULL,lease_until=NULL WHERE id=? AND lease=? AND status='running'",
+                                      (job['id'], job['lease'])).rowcount
+            if changed != 1:
+                raise ValueError('Stale interrupted lease')
+            result = canonical(dict(status='CollectorInterrupted', receiptPath=evidence, claim=job,
+                                    reason='Owning collector stopped before preserving a result'))
+            self.db.execute('INSERT INTO attempts(job_id,lease,status,result,finished) VALUES(?,?,?,?,?)',
+                            (job['id'], job['lease'], 'interrupted', result, time.time()))
 
     def claim(self, seconds=180):
         self._begin_write('claim')

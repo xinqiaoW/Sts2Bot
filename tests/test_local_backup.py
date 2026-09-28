@@ -1,6 +1,29 @@
 import json
 import sqlite3
 from contextlib import nullcontext
+
+
+def test_backup_releases_live_wal_before_verifying_copy(tmp_path, monkeypatch):
+    from contextlib import contextmanager
+    from tools import rental_backup
+    path=tmp_path/'live.sqlite'
+    writer=sqlite3.connect(path)
+    writer.execute('PRAGMA journal_mode=WAL')
+    writer.execute('PRAGMA wal_autocheckpoint=0')
+    writer.execute('CREATE TABLE jobs(id INTEGER PRIMARY KEY,status TEXT)')
+    writer.execute("INSERT INTO jobs VALUES(1,'complete')");writer.commit()
+    @contextmanager
+    def check_reader_released(_):
+        writer.execute("INSERT INTO jobs VALUES(2,'complete')");writer.commit()
+        # A pinned source snapshot prevents TRUNCATE from completing here.
+        assert writer.execute('PRAGMA wal_checkpoint(TRUNCATE)').fetchone()[0]==0
+        yield
+    monkeypatch.setattr(rental_backup,'cached_snapshot_pages',check_reader_released)
+    try:
+        manifest=rental_backup.snapshot(path,tmp_path/'backup')
+        assert manifest['counts']=={'complete':1}
+        assert writer.execute('SELECT count(*) FROM jobs').fetchone()[0]==2
+    finally:writer.close()
 from pathlib import Path
 from unittest.mock import patch
 

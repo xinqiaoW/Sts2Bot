@@ -1,0 +1,33 @@
+{
+  "schema": "collector-recovery-acceptance/v1",
+  "productionDeployed": false,
+  "sourceMatchesPriorVerifiedCopy": {
+    "damage_model/store.py": "816346b081f4fb96e7fef3319a5ac46b88c228b25fdeb58012ce2b393d7caa29",
+    "damage_model/worker.py": "9e294e3af6a48ec6aba74007e91559c44597e6c4ceabccfb6e69e52fc44a59e7",
+    "damage_model/result_outbox.py": "a0e61ee96d22cd474270213c0e964e63111aba603237586c6b0cf87e2bc3584d",
+    "tools/collect_parallel.py": "a679e5ad5151a09512325f36c49d74710647ab9bd66e7fbe277494029f770d15",
+    "tools/rental_backup.py": "1bd286b3819b85b4b2ad3c194e7c914a23f825142a8a2cb70b7bacdeab7384a0",
+    "tools/probe_result_recovery.py": "ca507452d55c4e58315990b4a956919ec21e710abe705d29dc9f57a4a40bf8a4",
+    "tests/test_result_outbox.py": "ff7cfd13c6378385f612c122ecd5fed9a13deb321fc89866c556ab2c8841262e",
+    "tests/test_claim_lock_retry.py": "1bd5730f93d8546b186a1393026ae708c7926d4aff752d4574adb036fe5dcb3b",
+    "tests/test_local_backup.py": "2d122f0ecd1a2f33303933b458d1d6fffeffe244d8849766ddfbcc69af6c3dab",
+    "tests/test_write_lock_retry.py": "84c286b7c53fcfa48679dc458189dc1d09b56d3ca829b8e1fdda655dd024a0d7"
+  },
+  "priorPressureTest": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-recovery-20260927/contention-probe/report.json",
+    "sha256": "f5f77455dcbd5a1179d103ab4650ea6859e8dbd0d65f26672c5e8a6a23322ae3"
+  },
+  "priorRecoveredResult": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-recovery-20260927/orphan-recovery-result.json",
+    "sha256": "daa2d00c031c5fffc6c92edec83cbd97914a71778c1e033305878ede39516588"
+  },
+  "currentTests": {
+    "command": "python -m pytest -q tests/test_result_outbox.py tests/test_write_lock_retry.py tests/test_claim_lock_retry.py tests/test_local_backup.py",
+    "passed": 33,
+    "log": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/recovery-tests.log",
+      "sha256": "dda9d46f7c1c98f76303c6c89069b11eb2f35a2adf1ffd2b952eb5a05fac4826"
+    }
+  },
+  "scope": "SQLite/outbox/backup reliability; synthetic pressure test is reused because its reviewed sources are identical; no combat parity or production acceptance claim."
+}

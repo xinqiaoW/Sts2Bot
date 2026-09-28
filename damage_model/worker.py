@@ -239,11 +239,15 @@ def work(store,catalog,runtime_config,limit,teacher=None):
         raise RuntimeError('Another collector owns this game data directory') from None
     handlers={sig:signal.signal(sig,interrupt_collector) for sig in (signal.SIGINT,signal.SIGTERM)}
     try:
+        from .result_outbox import record_claim, recover, submit
+        recover(store, game.data_dir)
         for _ in range(limit):
             if (game.data_dir/'collector.stop').exists(): break
             if store.counts().get('failed',0): return False
-            job=store.claim(catalog.config['battle_timeout_seconds']+90)
+            # Leave room for database contention after the battle has finished.
+            job=store.claim(catalog.config['battle_timeout_seconds']+210)
             if job is None: break
+            record_claim(game.data_dir, job)
             build=Build.from_dict(job['build']); catalog.validate(build)
             if build.mutation == 'real_run_mutation_v1':
                 from .mutations import validate_lineage
@@ -265,7 +269,7 @@ def work(store,catalog,runtime_config,limit,teacher=None):
                     mutation_policy = json.loads(owner.db.execute("SELECT value FROM collection_settings WHERE key='mutation_policy'").fetchone()[0])
                     evidence_dir = mutation_policy['evidence_directory']
                 evidence, reason = preserve_failure(game, job, result, log_offset, evidence_dir)
-                status = store.retry_or_quarantine_native(job, result,
+                status = submit(store, game.data_dir, job, result, 'retry_or_quarantine_native',
                     max_attempts=failure_policy['max_attempts'], reason=reason, evidence=evidence)
                 print(json.dumps({'job':job['id'],'target':job['target']['id'],'status':status,
                                   'native_status':result['status'],'evidence':evidence}),flush=True)
@@ -275,14 +279,11 @@ def work(store,catalog,runtime_config,limit,teacher=None):
                         raise RuntimeError('Three consecutive native job isolations; diagnose systemic runtime failure')
                 continue
             if result.get('status') in ('NativeStartupCacheFailure','NativeEnumCacheFailure','NativeWinePageFault','NativeMenuCleanupFailure','NativeFinalizerCleanupFailure','NativeFinalizerReuseFailure','NativeAssetLoadingFailure'):
-                status=store.retry_startup(job,result)
+                status=submit(store, game.data_dir, job, result, 'retry_startup')
                 print(json.dumps({'job':job['id'],'status':status,'reason':result['error']}),flush=True)
                 if status=='failed': return False
                 continue
-            try:
-                status=store.finish(job,result)
-            except ValueError as error:
-                status=store.finish(job,{'status':'InvalidObservation','error':str(error),'native_result':result})
+            status=submit(store, game.data_dir, job, result)
             print(json.dumps({'job':job['id'],'target':job['target']['id'],'status':status,
                              'observation':result.get('trainingObservation')},ensure_ascii=False),flush=True)
             # A failed native scenario is a diagnostic boundary, not a reason to create

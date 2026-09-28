@@ -1,8 +1,8 @@
 # 独立采集发布目录与回退
 
-当前冻结发布通过了 10,036 个不同构筑、532,666 个完整状态检查点的验收，以及完整功能回归和三队列采集/备份恢复。可以按本文入口运行隔离的独立采集；正式生产会话尚未切换，保留 `productionReady=false` / `productionLabels=false` 与独立后端来源身份。
+最新版正在进行 [万构筑完整状态验收](BUILD_VALIDATION_10000.md)，正式生产会话尚未切换。完整正确性、当前版本性能与并发校准、回退演练、24 小时试采通过后才能切换。
 
-当前发布：`/data1/pl/ImageTask/wxq/Projects/standalone-10000-builds-20260924/terminal-sly-release`。宿主 SHA256：`df11b26dedac0ff07f55eb09c4b81542c23760e8fb672def951628d8093f152e`；发布清单 SHA256：`9da0a2135bdeae2ff2dcf0e628efaeceb41ecc8f934b48d1fd7158e4d533f267`。66 个发布文件已校验。验收范围见 [万构筑验收](BUILD_VALIDATION_10000.md)。
+历史发布 `/data1/pl/ImageTask/wxq/Projects/standalone-10000-builds-20260924/terminal-sly-release` 的宿主为 `df11b26d…`。当时的 10,036 构筑、532,666 个动作检查点缺少后来增加的完整终局/出牌区验证，不是当前候选的通过证据。旧发布与原生回退资料继续保留；新候选必须重新冻结产物、教师与来源身份。
 
 ## 冻结发布目录
 
@@ -12,7 +12,7 @@
 python experiments/standalone-simulator/release_tool.py create \
   --host-dll <host.dll> --game-directory <game-dir> \
   --progress-snapshot experiments/standalone-simulator/fixtures/pilot-progress-v24.json \
-  --dotnet <dotnet> --output <release-dir>
+  --dotnet <dotnet> --teacher-config <validated-teacher.json> --output <release-dir>
 ```
 
 发布包含 `damage_model`、`tools`、`train` 的 Python 代码，正式采集/变异配置、目录数据、实验教师清单、宿主 DLL/runtimeconfig/deps 和进度快照。每个输入文件均记录 SHA256；先完整复制校验，再发布目录。原游戏程序集和 Python/.NET 安装仍是外部依赖，清单记录本次环境，worker 启动仍验证游戏/求解器/宿主与进度身份。这不是独立容器镜像。

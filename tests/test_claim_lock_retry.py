@@ -52,17 +52,23 @@ def test_released_lock_expires_and_claims_exactly_once(queue, monkeypatch, capsy
     assert '"event": "claim_busy"' in capsys.readouterr().out
 
 
-def test_persistent_lock_stops_after_three_begins_without_changes(queue, monkeypatch):
+def test_persistent_lock_stops_at_deadline_without_changes(queue, monkeypatch):
     before = list(queue.db.iterdump())
     holder = holder_for(queue)
     trace, delays = [], []
     queue.db.set_trace_callback(trace.append)
-    monkeypatch.setattr('damage_model.store.time.sleep', delays.append)
+    clock = [0.0]
+    queue.write_wait_seconds = .25
+    monkeypatch.setattr('damage_model.store.time.monotonic', lambda: clock[0])
+    monkeypatch.setattr('damage_model.store.random.uniform', lambda *args: .1)
+    def advance(delay):
+        delays.append(delay); clock[0] += delay
+    monkeypatch.setattr('damage_model.store.time.sleep', advance)
     try:
         with pytest.raises(sqlite3.OperationalError) as error:
             queue.claim()
         assert error.value.sqlite_errorcode == sqlite3.SQLITE_BUSY
-        assert trace.count('BEGIN IMMEDIATE') == 3 and delays == [0.25, 0.5]
+        assert trace.count('BEGIN IMMEDIATE') == 4 and delays == pytest.approx([.1, .1, .05])
         assert not queue.db.in_transaction
         assert list(queue.db.iterdump()) == before
     finally:
