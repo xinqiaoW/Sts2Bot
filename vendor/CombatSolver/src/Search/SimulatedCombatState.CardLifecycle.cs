@@ -54,7 +54,31 @@ internal sealed partial class SimulatedCombatState
     }
 
     public void SetNightmareSelection(NightmarePower power, PredictedCard selected)
-        => (_nightmareSelections ??= [])[power] = selected;
+    {
+        // Vanilla snapshots at selection, before later plays can mutate the source.
+        PredictedCard snapshot = selected.CreateClone();
+        snapshot.ClearAffliction();
+        (_nightmareSelections ??= [])[power] = snapshot;
+    }
+
+    internal static CardModel ReadLiveNightmareSelection(NightmarePower power)
+    {
+        object data = PowerInternalDataField.GetValue(power)
+            ?? throw new InvalidOperationException("Nightmare power has no internal data.");
+        return data.GetType().GetField("selectedCard")?.GetValue(data) as CardModel
+            ?? throw new InvalidOperationException("Nightmare power has no selected card at a stable boundary.");
+    }
+
+    internal CardModel GetNightmareSelection(NightmarePower power)
+        => _nightmareSelections?.TryGetValue(power, out PredictedCard? selected) == true
+            ? selected.Preview
+            : throw new InvalidOperationException("Nightmare selection was not captured in the prediction state.");
+
+    private void CaptureNightmareRootState(NightmarePower mutable, NightmarePower live)
+    {
+        CardModel snapshot = PredictionUtils.CloneCardStateForSimulation(ReadLiveNightmareSelection(live));
+        (_nightmareSelections ??= [])[mutable] = PredictedCard.FromGenerated(snapshot);
+    }
 
     public void SummonOsty(CombatPredictionSimulator simulator, Player player, int amount)
     {
@@ -364,7 +388,6 @@ internal sealed partial class SimulatedCombatState
                 for (int index = 0; index < power.Amount; index++)
                 {
                     PredictedCard copy = selected.CreateClone();
-                    copy.ClearAffliction();
                     copies.Add(copy);
                 }
                 simulator.AddGeneratedCardsToCombat(
@@ -615,18 +638,12 @@ internal sealed partial class SimulatedCombatState
             {
                 if (power.Amount <= 0)
                     continue;
-                CardModel card = selected.Preview;
                 StateFingerprintBuilder item = new();
                 item.Add(power.Owner.CombatId ?? uint.MaxValue);
                 item.Add(power.Amount);
-                item.Add(card.Id.Entry);
-                item.Add(card.CurrentUpgradeLevel);
-                item.Add(card.EnergyCost.GetWithModifiers(CostModifiers.Local));
-                item.Add(card.CurrentStarCost);
-                item.Add(card.BaseReplayCount);
-                EnchantmentStateSupport.Append(ref item, card.Enchantment);
-                item.Add(card.Affliction?.Id.Entry);
-                item.Add(card.Affliction?.Amount ?? 0);
+                StateFingerprint card = CombatBeamSolver.CaptureCardStateFingerprint(selected);
+                item.Add(card.First);
+                item.Add(card.Second);
                 AddUnorderedItem(item.Finish(), ref first, ref second);
                 count++;
             }

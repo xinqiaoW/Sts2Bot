@@ -1,5 +1,14 @@
 # CombatSolver 测试清单
 
+## NIGHTMARE 选牌快照修复（开发中，2026-09-29）
+
+- 原版 `SetSelectedCard` 立即生成卡牌快照并清除其附着效果。旧模拟保留原卡包装，等到下一回合才克隆；选牌后升级原卡会错误改变将要生成的牌。原生方法的最小对照已复现该差异，旧版明确失败。
+- 选牌时冻结游戏克隆，清除快照附着效果且不改原卡。已存在 NIGHTMARE_POWER 的主线程根额外捕获内部 selectedCard；原版 Power 深克隆会清空内部数据，不能仅克隆 Power。独立快照随既有 Fork context 重映射，生成后消耗对应 Power，父/子互不影响。
+- 选牌快照指纹复用现有完整卡牌状态指纹函数（移除仅供测试的命名，原算法不变），包含动态变量和私有成长值。actual/predicted Power 文本增加 `/nightmare=` 完整卡牌字段；未知/缺失快照明确失败。新增字段涉及的旧录像不能用默认值补齐，应重新原生录制。
+- 候选教师 `b714041a…` 定向测试通过：原生选牌后升级对照、附着效果隔离、父/子延迟生成、已生效 Power 的根捕获、捕获后 live 模板变更隔离、消耗时点及实际状态字段。原失败案例 109 新录制通过 90 个逐动作完整状态检查点及第 8 回合终局；仅将一个隐藏快照的升级等级改为 999 的反例被状态差分拒绝。
+- Release 零警告/错误，结构门禁及 CoverageCatalog `--verify-state-fields` 通过。首次候选构建因旧测试引用尚未同步改名失败，记录保留；第二版完成同步并通过。证据 `coverage/nightmare-selection-snapshot-repair-20260929.json`，隔离测试建局 `coverage/unattended/nightmare-snapshot-minimal.json`，整场复用 `return-to-hand-original-109.json`。固定 8 秒、DOP1、120 秒请求超时。
+- 本项不宣称全部规则或正式采集通过。另发现回合开始效果按 Power 类别分批、遗物穿插的顺序可能不同于原版，需要单独原生最小对照；开局直接终局、FABRICATOR 验收及最终全量仍待完成。
+
 ## 返手顺序与实例身份修复（开发中，2026-09-29）
 
 - BOLAS 与 THRUMMING_HATCHET 连续返手时，待返手 HashSet 删除后重新插入会复用空槽；Fork 重建集合消除空槽，导致完整回放与分支在同名原卡/复制卡的手牌顺序上不同。原版 BeforeHandDraw 在执行 Power、遗物之前按牌堆顺序捕获卡牌监听器。

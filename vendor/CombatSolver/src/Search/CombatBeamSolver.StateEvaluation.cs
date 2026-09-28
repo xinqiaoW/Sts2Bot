@@ -1200,13 +1200,13 @@ internal sealed partial class CombatBeamSolver
         if (card.TryGetCachedFingerprint(out ulong cachedFirst, out ulong cachedSecond))
             return new StateFingerprint(cachedFirst, cachedSecond);
         SearchMeasurement measurement = _run.Performance.Begin();
-        StateFingerprint fingerprint = CaptureCardStateFingerprintForTesting(card);
+        StateFingerprint fingerprint = CaptureCardStateFingerprint(card);
         card.SetCachedFingerprint(fingerprint.First, fingerprint.Second);
         _run.Performance.End(SearchMetricPhase.CardFingerprintMiss, measurement);
         return fingerprint;
     }
 
-    internal static StateFingerprint CaptureCardStateFingerprintForTesting(PredictedCard card)
+    internal static StateFingerprint CaptureCardStateFingerprint(PredictedCard card)
     {
         CardModel preview = card.Preview;
         StateFingerprintBuilder key = new();

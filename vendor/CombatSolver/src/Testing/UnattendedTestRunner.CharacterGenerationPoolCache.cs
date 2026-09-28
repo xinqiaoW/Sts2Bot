@@ -121,8 +121,8 @@ internal sealed partial class UnattendedTestRunner
                             != cached[index].Preview.CurrentUpgradeLevel
                         || !ReferenceEquals(card.Preview.Owner, player)
                         || !ReferenceEquals(cached[index].Preview.Owner, player)
-                        || CombatBeamSolver.CaptureCardStateFingerprintForTesting(card)
-                            != CombatBeamSolver.CaptureCardStateFingerprintForTesting(cached[index]))
+                        || CombatBeamSolver.CaptureCardStateFingerprint(card)
+                            != CombatBeamSolver.CaptureCardStateFingerprint(cached[index]))
                     .Any()
                 || !SameFiveFieldRngState(baselineState, cachedState))
             {
@@ -155,8 +155,8 @@ internal sealed partial class UnattendedTestRunner
         if (ReferenceEquals(first, second)
             || ReferenceEquals(first.Original, second.Original)
             || first.Preview.Id != second.Preview.Id
-            || CombatBeamSolver.CaptureCardStateFingerprintForTesting(first)
-                != CombatBeamSolver.CaptureCardStateFingerprintForTesting(second))
+            || CombatBeamSolver.CaptureCardStateFingerprint(first)
+                != CombatBeamSolver.CaptureCardStateFingerprint(second))
         {
             throw new InvalidOperationException("角色生成牌缓存没有创建隔离的等价分支卡牌。");
         }

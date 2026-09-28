@@ -1,0 +1,149 @@
+{
+  "schema": "nightmare-selection-snapshot-repair/v1",
+  "teacherSha256": "b714041ab92807a7b26c95d232a3097790e855ead88c4b10166846965982823e",
+  "reports": {
+    "baseline/report.json": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nightmare-repair/baseline/report.json",
+      "sha256": "ebe7763c20e981c37a888b1548717c0e17969e45fbf7db3b4592fa6dbd3b7493"
+    },
+    "candidate-v2/report.json": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nightmare-repair/candidate-v2/report.json",
+      "sha256": "1998488a54a21348d9e38f30f3bf650a560712565efed16a7b41320f0d8422d5"
+    },
+    "native-check/report.json": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nightmare-repair/native-check/report.json",
+      "sha256": "acc7fb16675f54136dfb6e98c59c3052943c990dd5477797b0f5af5a66029866"
+    },
+    "negative-check/report.json": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nightmare-repair/negative-check/report.json",
+      "sha256": "775fc3266191fa41ebfe3bf2f9083763fa3ec01696edd216058b0a45954bf787"
+    },
+    "candidate-build.log": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nightmare-repair/candidate-build.log",
+      "sha256": "dea358927fdf6b076df4307cd6b6626f0fc6f3d8786746839a3b811d84c1ce5b"
+    },
+    "candidate-v2-build.log": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nightmare-repair/candidate-v2-build.log",
+      "sha256": "3e7185ec5a5b92dcbcf887f8cee22265562be1aacefa75c5cf9f0b68741dddd5"
+    },
+    "coverage-command.json": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nightmare-repair/coverage-command.json",
+      "sha256": "e66ca71f6ed59971ed413f0542b7a37abcb55e683ede25d737d06e9ee70166ab"
+    },
+    "coverage-verify.log": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nightmare-repair/coverage-verify.log",
+      "sha256": "f7e896ae0bb102a46c7ab865c5a0367f6f57abab49d8a354a30746a39dc95e4b"
+    },
+    "boundaries-result.json": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nightmare-repair/boundaries-result.json",
+      "sha256": "506bc30feb6a902f8ccd32afdc1072a7c3d884532dc2eea8afae13416125f5ef"
+    }
+  },
+  "native": {
+    "complete": true,
+    "passed": true,
+    "results": [
+      {
+        "checkpoints": 90,
+        "command": [
+          "/data1/pl/ImageTask/wxq/Projects/standalone-checkpoints-20260924/runtime-tools/dotnet/dotnet",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nightmare-repair/candidate-v2/host/bin/Release/net9.0/SimulatorPrototype.dll",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nightmare-repair/native-check/game",
+          "--replay-native-request",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nightmare-repair/native-check/original-case-109/replay.json",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-20260927-release/progress-snapshot.json"
+        ],
+        "exitCode": 0,
+        "finalHp": 31,
+        "finishedTurn": 8,
+        "name": "original-case-109",
+        "native": {
+          "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nightmare-repair/native-check/original-case-109/native.json",
+          "sha256": "dba23dc00f957067151af01b3a5905dcf87e32dc73f926ca19129911430f1b0f"
+        },
+        "nativeComplete": true,
+        "passed": true,
+        "plays": 41,
+        "replay": {
+          "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nightmare-repair/native-check/original-case-109/replay.log",
+          "sha256": "282e8197c221c9cf60fbdca263f538a4e198bb858bbc9b4463f14634daf596a1"
+        },
+        "terminalBoundaryChoiceCancellations": 0,
+        "terminalCleanupBoundaryComparisons": 0,
+        "terminalRewardBoundaryComparisons": 0
+      }
+    ]
+  },
+  "negative": {
+    "passed": true,
+    "exitCode": 1,
+    "changedPath": "/nativeTrace/events/29/value/after",
+    "onlyChange": "Nightmare template upgrade level changed to 999",
+    "source": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nightmare-repair/native-check/original-case-109/replay.json",
+      "sha256": "f604736ad17395cb2204890af800f31a81220cdb38463d6b64ffbf135cf9b98e"
+    },
+    "fixture": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nightmare-repair/negative-check/wrong-template.json",
+      "sha256": "186de4a80854021c29b3b2b6c558014765021f07f394a9dd4276ae1740156f10"
+    },
+    "log": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nightmare-repair/negative-check/wrong-template.log",
+      "sha256": "3cd7d9d8ae833d1bb4b1bce1e63dd696b9b4f0983e905499f238ce9017c520e2"
+    },
+    "command": [
+      "/data1/pl/ImageTask/wxq/Projects/standalone-checkpoints-20260924/runtime-tools/dotnet/dotnet",
+      "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nightmare-repair/candidate-v2/host/bin/Release/net9.0/SimulatorPrototype.dll",
+      "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nightmare-repair/native-check/game",
+      "--replay-native-request",
+      "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nightmare-repair/negative-check/wrong-template.json",
+      "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-20260927-release/progress-snapshot.json"
+    ],
+    "terminal": {
+      "status": "blocked",
+      "stage": "formal_request_restoration",
+      "error": "System.InvalidOperationException: Cross-runtime state differs at after_play_8\n   at NativeTraceReplay.<>c__DisplayClass3_0.<Run>g__Compare|1(String expected, String point, Boolean finalActionCompletion) in /data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nightmare-repair/candidate-v2/host/NativeTraceReplay.cs:line 61\n   at NativeTraceReplay.Run(Func`2 get, Assembly solver, Object combat, Object player, Task terminal, JsonElement recording, NativeCombatRewards rewards) in /data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nightmare-repair/candidate-v2/host/NativeTraceReplay.cs:line 126\n   at RequestBattleProbe.Run(Func`2 get, Assembly solver, Object run, Object player, JsonElement fixture, Boolean compareHistorical, Boolean nativeReplay, Boolean injectExhaustedPlanOnce, Boolean injectDeploymentDriftOnce, Boolean injectMissingCardOnce, Boolean injectUnconsumedChoiceOnce) in /data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nightmare-repair/candidate-v2/host/RequestBattleProbe.cs:line 137\n   at Program.<Main>$(String[] args) in /data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nightmare-repair/candidate-v2/host/Program.cs:line 115",
+      "productionReady": false,
+      "productionLabels": false
+    }
+  },
+  "scripts": {
+    "build_baseline.py": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nightmare-repair/build_baseline.py",
+      "sha256": "57a75f6cef525bd464307ab4823462a518cd296ac826ffb473880a4c9e114463"
+    },
+    "check_baseline.py": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nightmare-repair/check_baseline.py",
+      "sha256": "4904d503509c7d9b2fa31878e3f507b5eb8aad8165e19464ee53cbf2ac5be6b2"
+    },
+    "build_candidate-v2.py": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nightmare-repair/build_candidate-v2.py",
+      "sha256": "9db67d4d1c5bd502e7de2f19ee08cc7ad4a96c4ea173c880cefa6cb0589199fb"
+    },
+    "check_candidate-v2.py": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nightmare-repair/check_candidate-v2.py",
+      "sha256": "5b2023d4ff6af034299d48e3b868ac197c1e0f7fa587f3fc35de7bc2c1554b91"
+    },
+    "prepare_native.py": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nightmare-repair/prepare_native.py",
+      "sha256": "d9577057977366413ff5a005bcc4cf093c85601db8e5fd6776422e1380d5e134"
+    },
+    "check_native.py": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nightmare-repair/check_native.py",
+      "sha256": "c03725e04c6426d723cdb692620d88399185c03673b06064b50ab1541d604f8b"
+    },
+    "check_negative.py": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/nightmare-repair/check_negative.py",
+      "sha256": "9e261d7ee4e1427ab9361cd8cf6d48a60e69d63f5803736365387a782dff18f7"
+    }
+  },
+  "productionReady": false,
+  "productionDeployed": false,
+  "oldRecordings": "Affected recordings without /nightmare= do not prove the new hidden state; fresh native capture is required.",
+  "remaining": [
+    "mixed power/relic BeforeHandDraw ordering investigation",
+    "opening terminal support",
+    "Fabricator terminal assertion",
+    "final full panel and rollout gates"
+  ]
+}

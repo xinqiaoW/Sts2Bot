@@ -1700,6 +1700,8 @@ internal sealed partial class SimulatedCombatState
             PowerPredictionStateSupport.CaptureRootState(simulator, mutable, power);
             if (power is DampenPower dampen)
                 CaptureDampenRootState(simulator, dampen);
+            if (power is NightmarePower { Amount: > 0 } nightmare)
+                CaptureNightmareRootState((NightmarePower)mutable, nightmare);
         }
         foreach (Player player in Players)
         {

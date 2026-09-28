@@ -96,7 +96,8 @@ internal sealed record ContinuationStamp(string StateText)
         AppendPotions(text, player, player.GetPotionAtSlotIndex);
         SimulatedCombatState.AppendLiveStatefulRelics(text, player);
         RelicPredictionStateSupport.AppendLiveContinuation(text, player);
-        AppendPowers(text, state.Creatures.SelectMany(creature => creature.Powers));
+        AppendPowers(text, state.Creatures.SelectMany(creature => creature.Powers),
+            SimulatedCombatState.ReadLiveNightmareSelection, discoverUnregisteredBaseLibModifiers: true);
         AppendRng(text,
             state.RunState.Rng.Shuffle.CaptureState(),
             state.RunState.Rng.CombatCardGeneration.CaptureState(),
@@ -155,7 +156,8 @@ internal sealed record ContinuationStamp(string StateText)
             text,
             simulator,
             combat.RelicsOf(player));
-        AppendPowers(text, combat.EffectivePowers());
+        AppendPowers(text, combat.EffectivePowers(), combat.GetNightmareSelection,
+            discoverUnregisteredBaseLibModifiers: false);
         AppendRng(text,
             simulator.Rng.Shuffle.CaptureState(),
             simulator.Rng.CombatCardGeneration.CaptureState(),
@@ -403,7 +405,11 @@ internal sealed record ContinuationStamp(string StateText)
                 .Append(OrbMirrors.GetEvokeValue(simulator, orb)).Append("],");
     }
 
-    private static void AppendPowers(StringBuilder text, IEnumerable<PowerModel> powers)
+    private static void AppendPowers(
+        StringBuilder text,
+        IEnumerable<PowerModel> powers,
+        Func<NightmarePower, CardModel> nightmareSelection,
+        bool discoverUnregisteredBaseLibModifiers)
     {
         text.Append(";P=");
         foreach (PowerModel power in powers
@@ -424,7 +430,13 @@ internal sealed record ContinuationStamp(string StateText)
                     text.Append(':').Append(stringVar.StringValue);
                 text.Append(',');
             }
-            text.Append("],");
+            text.Append(']');
+            if (power is NightmarePower nightmare)
+            {
+                text.Append("/nightmare=");
+                AppendCard(text, nightmareSelection(nightmare), discoverUnregisteredBaseLibModifiers);
+            }
+            text.Append(',');
         }
     }
 

@@ -256,9 +256,9 @@ internal sealed partial class UnattendedTestRunner
                     "BaseLib 外部可变状态仍错误复用了卡牌或牌堆 fingerprint 缓存。");
             }
             StateFingerprint parentOtherFingerprintBefore =
-                CombatBeamSolver.CaptureCardStateFingerprintForTesting(parentUnmodifiedCard);
+                CombatBeamSolver.CaptureCardStateFingerprint(parentUnmodifiedCard);
             StateFingerprint childOtherFingerprintBefore =
-                CombatBeamSolver.CaptureCardStateFingerprintForTesting(childUnmodifiedCard);
+                CombatBeamSolver.CaptureCardStateFingerprint(childUnmodifiedCard);
             if (parentOtherFingerprintBefore != childOtherFingerprintBefore)
             {
                 throw new InvalidOperationException(
@@ -301,9 +301,9 @@ internal sealed partial class UnattendedTestRunner
             try
             {
                 StateFingerprint childOtherFingerprintAfterAdd =
-                    CombatBeamSolver.CaptureCardStateFingerprintForTesting(childUnmodifiedCard);
+                    CombatBeamSolver.CaptureCardStateFingerprint(childUnmodifiedCard);
                 StateFingerprint parentOtherFingerprintAfterChildAdd =
-                    CombatBeamSolver.CaptureCardStateFingerprintForTesting(parentUnmodifiedCard);
+                    CombatBeamSolver.CaptureCardStateFingerprint(parentUnmodifiedCard);
                 if (childOtherFingerprintAfterAdd == childOtherFingerprintBefore
                     || parentOtherFingerprintAfterChildAdd != parentOtherFingerprintBefore)
                 {
@@ -335,7 +335,7 @@ internal sealed partial class UnattendedTestRunner
                 }
                 amountField.SetValue(firstModifierOnOtherCard, 17);
                 StateFingerprint childOtherFingerprintAfterAmount =
-                    CombatBeamSolver.CaptureCardStateFingerprintForTesting(childUnmodifiedCard);
+                    CombatBeamSolver.CaptureCardStateFingerprint(childUnmodifiedCard);
                 string childOtherChoiceKeyAfterAmount = CardChoiceSupport.ChoiceCardKey(childUnmodifiedCard);
                 ContinuationStamp childContinuationAfterAmount = ContinuationStamp.CapturePredicted(
                     player,
@@ -355,7 +355,7 @@ internal sealed partial class UnattendedTestRunner
                 }
                 priorityProperty.SetValue(firstModifierOnOtherCard, 5);
                 StateFingerprint childOtherFingerprintAfterPriority =
-                    CombatBeamSolver.CaptureCardStateFingerprintForTesting(childUnmodifiedCard);
+                    CombatBeamSolver.CaptureCardStateFingerprint(childUnmodifiedCard);
                 string childOtherChoiceKeyAfterPriority = CardChoiceSupport.ChoiceCardKey(childUnmodifiedCard);
                 ContinuationStamp childContinuationAfterPriority = ContinuationStamp.CapturePredicted(
                     player,
@@ -409,7 +409,7 @@ internal sealed partial class UnattendedTestRunner
                 childInitiallyEmpty.Remove(firstModifierOnOtherCard);
                 ownerProperty.SetValue(childOnlyModifier, null);
                 ownerProperty.SetValue(firstModifierOnOtherCard, null);
-                if (CombatBeamSolver.CaptureCardStateFingerprintForTesting(childUnmodifiedCard)
+                if (CombatBeamSolver.CaptureCardStateFingerprint(childUnmodifiedCard)
                     != childOtherFingerprintBefore)
                 {
                     throw new InvalidOperationException(
