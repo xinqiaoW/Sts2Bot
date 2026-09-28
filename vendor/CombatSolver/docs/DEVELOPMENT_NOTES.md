@@ -1,5 +1,13 @@
 # CombatSolver 开发笔记与未来构想
 
+## 随机能力牌逐张生成时序（开发中，2026-09-29）
+
+- CREATIVE_AI_POWER 原版每次随机选择一张能力牌，加入牌堆并完成生成钩子，再随机选择下一张。旧模拟先随机生成整批卡牌，再逐张加入；整步结束时可能一致，但中间钩子看到的 RNG 不同。
+- 最小夹具仅在隔离进程中安装观察补丁，分别记录原版 Hook 与预测 HookMirrors 的 AfterCardGeneratedForCombat 入口完整 ContinuationStamp，finally 撤销补丁。三层能力的第一张牌明确失败：原版生成计数 12，旧模拟已到 36；CALL_OF_THE_VOID_POWER 作为原版整批生成对照，旧实现通过。
+- CreativeAi 每次选择后立即调用单张生成入口，完成插入、生成钩子与历史后再消耗下一次随机数；CallOfTheVoid 保留先生成整批、加关键词、再插入的原版顺序。
+- 两个场景均通过原版与预测根/Fork 对照：每张牌的完整钩子入口状态及最终完整状态一致。Release 零警告/错误，结构门禁通过，120 秒上限未增加。钩子采样不计入 50 万逐动作验收数量。
+- 夹具 `UnattendedTestRunner.GenerationTiming.cs` 的 `AssertGenerationTimingAsync(combat, player, scenario)` 经证据中的隔离宿主调用；使用现有 `before-hand-draw-order-minimal.json` 建局。证据 `coverage/generation-timing-repair-20260929.json`。正式配置未切换，新的最终万构筑/完整终局验收及投产门禁仍待完成。
+
 ## 能力实例顺序与状态等价修复（开发中，2026-09-29）
 
 - 五项失败基线分别证实：新施加 NIGHTMARE/INFINITE_BLADES/NIGHTMARE 被重排；根能力移除再施加仍回到旧位置；反向能力顺序得到同一搜索指纹；完整续用文本按能力 ID 排序而漏掉真实差异；两个复制模板交换先后仍得到同一指纹。

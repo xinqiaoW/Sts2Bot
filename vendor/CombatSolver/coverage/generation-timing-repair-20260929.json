@@ -1,0 +1,73 @@
+{
+  "schema": "generation-timing-repair/v1",
+  "teacher": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/generation-timing-repair/candidate-source/.godot/mono/temp/bin/Release/CombatSolver.dll",
+    "sha256": "b5cade2f6752887fff97c5a9cf3e99b4f58a8dcd322d28f50af397f0e50f97ec"
+  },
+  "reports": {
+    "baseline/report.json": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/generation-timing-repair/baseline/report.json",
+      "sha256": "3ebc29f591e2e5e12e906b889fd1b6926d0fbcd1fe1002a1bd18f7ba796cb9c1"
+    },
+    "candidate/report.json": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/generation-timing-repair/candidate/report.json",
+      "sha256": "f30ae5a0259746bf84bcf7bda41895130fcacfaa8f12572e495c49efb6a9660a"
+    },
+    "candidate-build.log": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/generation-timing-repair/candidate-build.log",
+      "sha256": "258ccc9d81b9f2cf7d8a4aa796bb2aa7bdd5f9dabc1b879fb617a79c4c2866db"
+    },
+    "boundaries.log": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/generation-timing-repair/boundaries.log",
+      "sha256": "deca91a103cbb776e0d96749d3a9a9df66ee078c8c763e793a82e7e81cc80377"
+    },
+    "check_baseline.py": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/generation-timing-repair/check_baseline.py",
+      "sha256": "36c56609181cbec4decde5bd66b1cacd695b1ce6904b82ed1110e7f2e120cfe9"
+    },
+    "check_candidate.py": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/generation-timing-repair/check_candidate.py",
+      "sha256": "a4c0d97bdea5d7fdde286b7284ff450e02818f63d96eb1ad17feacb30c8947f7"
+    }
+  },
+  "validation": {
+    "passed": true,
+    "results": [
+      {
+        "scenario": "creative-ai",
+        "teacherSha256": "b5cade2f6752887fff97c5a9cf3e99b4f58a8dcd322d28f50af397f0e50f97ec",
+        "exitCode": 0,
+        "terminal": {
+          "status": "hand_draw_order_passed"
+        },
+        "command": [
+          "/data1/pl/ImageTask/wxq/Projects/standalone-checkpoints-20260924/runtime-tools/dotnet/dotnet",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/generation-timing-repair/candidate/host/bin/Release/net9.0/SimulatorPrototype.dll",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/generation-timing-repair/candidate/game",
+          "--execute-request",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/generation-timing-repair/candidate/creative-ai/request.json",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-20260929-release/progress-snapshot.json"
+        ]
+      },
+      {
+        "scenario": "call-of-void-control",
+        "teacherSha256": "b5cade2f6752887fff97c5a9cf3e99b4f58a8dcd322d28f50af397f0e50f97ec",
+        "exitCode": 0,
+        "terminal": {
+          "status": "hand_draw_order_passed"
+        },
+        "command": [
+          "/data1/pl/ImageTask/wxq/Projects/standalone-checkpoints-20260924/runtime-tools/dotnet/dotnet",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/generation-timing-repair/candidate/host/bin/Release/net9.0/SimulatorPrototype.dll",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/generation-timing-repair/candidate/game",
+          "--execute-request",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/generation-timing-repair/candidate/call-of-void-control/request.json",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-20260929-release/progress-snapshot.json"
+        ]
+      }
+    ]
+  },
+  "scope": "Original and predicted AfterCardGeneratedForCombat entry: full state after each of three cards and final state, root and Fork. CallOfTheVoid batch generation remains a control. These hook samples are not counted as formal action checkpoints.",
+  "baselineDifference": "First CreativeAi card: prediction CombatCardGeneration counter 36, original 12.",
+  "productionDeployed": false
+}

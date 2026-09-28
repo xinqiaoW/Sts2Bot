@@ -198,8 +198,20 @@ internal static class TurnStartPowerSupport
                             combat.CardMultiplayerConstraint)
                         .FirstOrDefault();
                     if (card != null)
-                        generated.Add(card);
+                    {
+                        // Creative AI settles each card's insertion and generation
+                        // hooks before consuming RNG for the next card. Call of the
+                        // Void samples all cards first, then inserts the batch.
+                        if (power is CreativeAiPower)
+                            simulator.AddGeneratedCardToCombat(
+                                card, PileType.Hand, player,
+                                CardPilePosition.Bottom, CardGenerationResultKind.Random);
+                        else
+                            generated.Add(card);
+                    }
                 }
+                if (power is CreativeAiPower)
+                    continue;
             }
             else
             {
