@@ -2,6 +2,8 @@
 
 当前候选正在 `/data1/pl/ImageTask/wxq/Projects/standalone-full-state-validation-20260929` 进行完整状态万构筑验证，尚未通过本阶段。当前宿主 SHA256 为 `7fa0c19e3e7290c9d65e6d7f0a2a0442804364f8c19d1e4d2a3c7d76b7cba2b9`，教师为 `e4785c9d…`。正式活动指针尚未切换。
 
+候选发布已冻结于 `/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/candidate-release`，75 个文件校验通过，发布清单 SHA256 为 `5e146b5412d01730ef81d016be78bdc63faa118467fcb31fc29dff901e768c5f`。相邻的 `candidate-preparation.json` 固定最终独立审计命令；只在当前验证进程排空后执行。新的独立审计工具在 16 场、789 个动作点上复核通过，报告因未达数量门槛仍为 `passed=false`，冻结启动入口已实测拒绝该报告。冻结发布不代表正确性或投产验收通过。
+
 下面保留的 9 月 25 日并发数据来自历史宿主 `df11b26d…`；其旧版验收缺少完整终局和出牌区检查，不能授权当前候选采集。新候选必须完成包含有序 PlayPile 的完整状态验收，再重新测量性能、选档、演练回退和计满 24 小时。
 
 历史运行目录：`/data1/pl/ImageTask/wxq/Projects/standalone-rollout-20260925-v3`，已于 9 月 26 日因数据库写锁中断，未完成长跑验收。后续 v4 也因原生抽检差异停止。修复与恢复流程见 [RECOVERY.md](RECOVERY.md)。**启动或正在运行不代表长跑验收通过**；当前候选对应的 `final-report.json` 必须 `passed=true`，报告不存在则尚未完成。

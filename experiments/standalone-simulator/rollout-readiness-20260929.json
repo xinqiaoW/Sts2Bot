@@ -28,8 +28,24 @@
   ],
   "activeCampaign": "/data1/pl/ImageTask/wxq/Projects/standalone-full-state-validation-20260929",
   "next": [
-    "Freeze candidate bundle and separate updated independent auditor without changing active campaign sources.",
-    "Finish frozen correctness panel; audit all current full-state evidence.",
+    "Finish frozen correctness panel; after drain execute candidate-preparation.json finalAuditCommand without allow-partial.",
     "Run current paired performance then concurrency ladder, rollback and genuine 24-hour soak before formal switch."
-  ]
+  ],
+  "candidatePreparation": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/candidate-preparation.json",
+    "sha256": "03f2a9594836fd6577bd8050502c17fb0aadedb93a75488a5cf0aee749fa5b01"
+  },
+  "releaseManifest": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/candidate-release/release.json",
+    "sha256": "5e146b5412d01730ef81d016be78bdc63faa118467fcb31fc29dff901e768c5f"
+  },
+  "releaseFilesVerified": 75,
+  "auditorSmoke": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/auditor-smoke-result.json",
+    "sha256": "83d761447e28e31cdcffedb1f03093e887bf9d10791ad3967f523cf3736eae8d"
+  },
+  "incompleteAuditRejection": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/incomplete-audit-rejection.json",
+    "sha256": "aaad5eb95ed8aaa9a61970911a167675ab670d7165c067bc21c7a27095204eb1"
+  }
 }
