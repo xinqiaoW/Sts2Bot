@@ -11,12 +11,12 @@ import sys
 import time
 
 from damage_model.store import Store
+from damage_model.resource_limits import available_memory_bytes
 from damage_model.worker import interrupt_collector
 
 
 def available_gib():
-    values=dict(line.split(':',1) for line in Path('/proc/meminfo').read_text().splitlines())
-    return int(values['MemAvailable'].split()[0])/1024**2
+    return available_memory_bytes() / 1024**3
 
 
 def validate_memory_bounds(reserve_gib, worker_start_gib):

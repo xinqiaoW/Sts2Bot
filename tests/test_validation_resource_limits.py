@@ -49,3 +49,15 @@ def test_over_limit_has_no_available_memory(tmp_path):
 def test_unlimited_hierarchy_uses_host_available(tmp_path):
     inputs = memory_fixture(tmp_path, {'user.slice': ('max', 200)})
     assert resources.available_memory_bytes(**inputs) == 131072 * 1024
+
+
+def test_collection_and_continuous_admission_use_account_limit(tmp_path, monkeypatch):
+    from tools import collect_parallel, collect_continuous
+    inputs = memory_fixture(tmp_path, {
+        'user.slice/user-1014.slice/session.scope': ('max', 10),
+        'user.slice/user-1014.slice': (1000, 700),
+    })
+    monkeypatch.setattr(collect_parallel, 'available_memory_bytes',
+                        lambda: resources.available_memory_bytes(**inputs))
+    assert collect_parallel.available_gib() == 300 / 1024**3
+    assert collect_continuous.available_gib() == 300 / 1024**3

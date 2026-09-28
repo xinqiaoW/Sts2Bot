@@ -49,6 +49,10 @@ PY
 仍使用独立队列和会话；每个 runtime 须有独立 `data_dir`，Wine 后端
 另须独立prefix；独立后端不需要Wine配置。
 
+采集池和持续控制器的可用内存取整机 `MemAvailable` 与所有 cgroup v2 祖先
+`memory.max - memory.current` 的最小值。即使当前会话没有限额，也必须遵守账户层限额；
+新 worker 启动、补充 worker 和低内存排空共用此口径。验收脚本使用同一个实现。
+
 `--reserve-gib` 是运行内存预留，设为 0 时关闭基于该预留的排空；`--worker-start-gib` 是新 worker 的启动预算，两者不等于进程实际内存上限。参数应结合共享主机和用户 cgroup 限额设置。`--collect-only` 不训练、不覆盖 `checkpoints/v1`；不传 `--stop-at` 时没有固定截止时间。
 
 ## 来源补充与种子
