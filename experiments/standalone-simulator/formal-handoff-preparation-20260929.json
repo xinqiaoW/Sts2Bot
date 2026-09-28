@@ -191,6 +191,17 @@
       "sha256": "8bbc20be6382e5e060f18c55f588cb4e33136640ce92802e2ac0c903c03ed4b5"
     },
     "report": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/pending-handoff-readonly-check.json",
-    "scope": "Original pending build/target/seed/lineage validation only. Not battle parity, migration, deployment or completion of acceptance."
+    "scope": "Original pending build/target/seed/lineage validation only. Not battle parity, migration, deployment or completion of acceptance.",
+    "passed": true,
+    "pendingValidated": 16429,
+    "reportIdentity": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/pending-handoff-readonly-check.json",
+      "sha256": "aab72935471ef3305b5fe0e7f15134a48c291c803ddb1114d6c4eee338b0d1bb"
+    },
+    "pendingByDataset": {
+      "real": 14519,
+      "mutation": 1138,
+      "targeted": 772
+    }
   }
 }
