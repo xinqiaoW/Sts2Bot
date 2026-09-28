@@ -1,0 +1,281 @@
+{
+  "actIndexForTest": 2,
+  "ascension": 10,
+  "cards": [],
+  "characterId": "SILENT",
+  "clearRunDeck": true,
+  "deploymentFastModeForTest": "Instant",
+  "deploymentInterActionDelaySecondsForTest": 0,
+  "enableDetailedDiagnosticLogsForTest": false,
+  "enableNoGcRegionForTest": false,
+  "encounterId": "QUEEN_BOSS",
+  "exitOnComplete": false,
+  "forceShortSearchOnly": true,
+  "headlessFastModeForTest": "Instant",
+  "performancePresetForTest": "Medium",
+  "potionPolicyForTest": "Disabled",
+  "potions": [],
+  "relics": [
+    {
+      "addWithoutObtainedEffects": true,
+      "booleanMembers": {},
+      "integerMembers": {},
+      "relicId": "POMANDER"
+    },
+    {
+      "addWithoutObtainedEffects": true,
+      "booleanMembers": {},
+      "integerMembers": {},
+      "relicId": "FRESNEL_LENS"
+    },
+    {
+      "addWithoutObtainedEffects": true,
+      "booleanMembers": {},
+      "integerMembers": {},
+      "relicId": "WHITE_BEAST_STATUE"
+    },
+    {
+      "addWithoutObtainedEffects": true,
+      "booleanMembers": {},
+      "integerMembers": {},
+      "relicId": "BAG_OF_MARBLES"
+    },
+    {
+      "addWithoutObtainedEffects": true,
+      "booleanMembers": {},
+      "integerMembers": {},
+      "relicId": "TWISTED_FUNNEL"
+    },
+    {
+      "addWithoutObtainedEffects": true,
+      "booleanMembers": {},
+      "integerMembers": {},
+      "relicId": "WHETSTONE"
+    },
+    {
+      "addWithoutObtainedEffects": true,
+      "booleanMembers": {},
+      "integerMembers": {},
+      "relicId": "ARCHAIC_TOOTH"
+    },
+    {
+      "addWithoutObtainedEffects": true,
+      "booleanMembers": {},
+      "integerMembers": {},
+      "relicId": "HORN_CLEAT"
+    },
+    {
+      "addWithoutObtainedEffects": true,
+      "booleanMembers": {},
+      "integerMembers": {},
+      "relicId": "UNSETTLING_LAMP"
+    },
+    {
+      "addWithoutObtainedEffects": true,
+      "booleanMembers": {},
+      "integerMembers": {},
+      "relicId": "TOUGH_BANDAGES"
+    },
+    {
+      "addWithoutObtainedEffects": true,
+      "booleanMembers": {},
+      "integerMembers": {},
+      "relicId": "GREMLIN_HORN"
+    },
+    {
+      "addWithoutObtainedEffects": true,
+      "booleanMembers": {},
+      "integerMembers": {},
+      "relicId": "SHOVEL"
+    },
+    {
+      "addWithoutObtainedEffects": true,
+      "booleanMembers": {},
+      "integerMembers": {},
+      "relicId": "STRIKE_DUMMY"
+    },
+    {
+      "addWithoutObtainedEffects": true,
+      "booleanMembers": {},
+      "integerMembers": {},
+      "relicId": "FRAGRANT_MUSHROOM"
+    },
+    {
+      "addWithoutObtainedEffects": true,
+      "booleanMembers": {},
+      "integerMembers": {},
+      "relicId": "REGAL_PILLOW"
+    },
+    {
+      "addWithoutObtainedEffects": true,
+      "booleanMembers": {},
+      "integerMembers": {},
+      "relicId": "ODDLY_SMOOTH_STONE"
+    },
+    {
+      "addWithoutObtainedEffects": true,
+      "booleanMembers": {},
+      "integerMembers": {},
+      "relicId": "ANCHOR"
+    }
+  ],
+  "runCards": [
+    {
+      "cardId": "ACCURACY",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "ACCURACY",
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    {
+      "cardId": "ASCENDERS_BANE",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "BACKFLIP",
+      "count": 1,
+      "enchantmentAmount": 2,
+      "enchantmentId": "NIMBLE",
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "BULLET_TIME",
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    {
+      "cardId": "CLOAK_AND_DAGGER",
+      "count": 1,
+      "enchantmentAmount": 2,
+      "enchantmentId": "NIMBLE",
+      "upgradeLevels": 1
+    },
+    {
+      "cardId": "CLOAK_AND_DAGGER",
+      "count": 1,
+      "enchantmentAmount": 2,
+      "enchantmentId": "NIMBLE",
+      "upgradeLevels": 1
+    },
+    {
+      "cardId": "DEFEND_SILENT",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "DEFEND_SILENT",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "DEFEND_SILENT",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "DEFEND_SILENT",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "FOOTWORK",
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    {
+      "cardId": "GREED",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "KNIFE_TRAP",
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    {
+      "cardId": "LEADING_STRIKE",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "PHANTOM_BLADES",
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    {
+      "cardId": "PIERCING_WAIL",
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    {
+      "cardId": "PIERCING_WAIL",
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    {
+      "cardId": "PREPARED",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "PREPARED",
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    {
+      "cardId": "REGRET",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "STRIKE_SILENT",
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    {
+      "cardId": "STRIKE_SILENT",
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    {
+      "cardId": "SUCKER_PUNCH",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "SUPPRESS",
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    {
+      "cardId": "SURVIVOR",
+      "count": 1,
+      "enchantmentAmount": 2,
+      "enchantmentId": "NIMBLE",
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "TACTICIAN",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "WELL_LAID_PLANS",
+      "count": 1,
+      "upgradeLevels": 1
+    }
+  ],
+  "runId": "0134ad75ddda4f98bc24c0652ecad54e",
+  "scenarioId": "HP-9215f9a2b9cdfefd",
+  "schemaVersion": 1,
+  "searchMaxDegreeOfParallelismForTest": 1,
+  "seed": "024c6eff66d79429",
+  "shortSearchBudgetOverrideMilliseconds": 8000,
+  "timeoutSeconds": 120,
+  "trainingActId": "GLORY",
+  "trainingCollection": true
+}

@@ -1,15 +1,33 @@
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Models;
+using System.Runtime.CompilerServices;
 
 namespace CombatSolver.Engine.Common;
 
 internal sealed class PredictedCard : IComparable<PredictedCard>
 {
-    private sealed class PreviewStorage(CardModel original, CardModel? preview)
+    // Hook snapshots may still hold a preview replaced by an earlier hook's COW write.
+    // This is immutable identity metadata, never a source of branch gameplay values.
+    // Weak keys let discarded search previews die without retaining a clone ancestry.
+    private static readonly ConditionalWeakTable<CardModel, CardModel> PreviewOriginals = new();
+
+    private sealed class PreviewStorage
     {
-        public CardModel Original { get; } = original;
-        public CardModel? Preview { get; } = preview;
+        public CardModel Original { get; }
+        public CardModel? Preview { get; }
         public volatile bool Shared;
+
+        public PreviewStorage(CardModel original, CardModel? preview)
+        {
+            Original = original;
+            Preview = preview;
+            if (preview is not null && !ReferenceEquals(original, preview))
+            {
+                CardModel identity = PreviewOriginals.GetValue(preview, _ => original);
+                if (!ReferenceEquals(identity, original))
+                    throw new InvalidOperationException("A prediction preview cannot represent two card identities.");
+            }
+        }
 
         private bool _hasCachedFingerprint;
         private ulong _cachedFingerprintFirst;
@@ -132,7 +150,10 @@ internal sealed class PredictedCard : IComparable<PredictedCard>
     public bool References(object? card)
     {
         return ReferenceEquals(_previewStorage.Original, card)
-            || ReferenceEquals(_previewStorage.Preview, card);
+            || ReferenceEquals(_previewStorage.Preview, card)
+            || (card is CardModel model
+                && PreviewOriginals.TryGetValue(model, out CardModel? original)
+                && ReferenceEquals(_previewStorage.Original, original));
     }
 
     // Clones the prediction wrapper state only. Combat effects that generate a gameplay

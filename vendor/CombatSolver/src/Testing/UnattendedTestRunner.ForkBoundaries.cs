@@ -38,6 +38,7 @@ internal sealed partial class UnattendedTestRunner
             ?? throw new InvalidOperationException("Fork 边界测试要求手牌中至少有一张牌。");
         SimulatedCombatState simulatedCombat = new(combat);
         CombatPredictionSimulator simulator = new(simulatedCombat);
+        AssertCardIdentitySurvivesPreviewReplacement(player);
         AssertSimulationCardPileLookupFastPath(player, card);
         AssertRootColorlessGenerationPoolCache(simulator, player);
         AssertRootCharacterAttackGenerationPoolCache(simulator, player);

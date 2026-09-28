@@ -1,0 +1,89 @@
+{
+  "schema": "card-preview-identity-repair/v1",
+  "rootCause": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/teacher-choice-repair/route-hook-debug/report.json",
+    "sha256": "d85f43fc9513d65cd34c3d9ac295de653dfc6e5d35c0480904141cd689a86b82"
+  },
+  "baseline": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/teacher-choice-repair/identity-baseline/report.json",
+    "sha256": "c4eae8f2a42244ab89488ee7f27a844fba8a1af6edd47972b0e44ce00b23fe8c"
+  },
+  "candidate": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/teacher-choice-repair/identity-candidate/report.json",
+    "sha256": "e8bff4eb7b95e0d31f0363ba7667da2d993b8e819a5736ce3c03fad6af139c2c"
+  },
+  "native": {
+    "complete": true,
+    "passed": true,
+    "results": [
+      {
+        "checkpoints": 139,
+        "command": [
+          "/data1/pl/ImageTask/wxq/Projects/standalone-checkpoints-20260924/runtime-tools/dotnet/dotnet",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/teacher-choice-repair/identity-candidate/host/bin/Release/net9.0/SimulatorPrototype.dll",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/teacher-choice-repair/identity-native-check/game",
+          "--replay-native-request",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/teacher-choice-repair/identity-native-check/original-case-4/replay.json",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-20260927-release/progress-snapshot.json"
+        ],
+        "exitCode": 0,
+        "finalHp": 15,
+        "finishedTurn": 14,
+        "name": "original-case-4",
+        "native": {
+          "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/teacher-choice-repair/identity-native-check/original-case-4/native.json",
+          "sha256": "146e4083aa851580004cff5c7bc454f09f250d78262323abbf4ab501366d0e77"
+        },
+        "nativeComplete": true,
+        "passed": true,
+        "plays": 63,
+        "replay": {
+          "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/teacher-choice-repair/identity-native-check/original-case-4/replay.log",
+          "sha256": "b0bc0aa12f7c473e30d86086ef0061fc9c3a8423e3564c3b3bd957d9bd4bd1d1"
+        },
+        "terminalBoundaryChoiceCancellations": 0,
+        "terminalCleanupBoundaryComparisons": 0,
+        "terminalRewardBoundaryComparisons": 0
+      },
+      {
+        "checkpoints": 106,
+        "command": [
+          "/data1/pl/ImageTask/wxq/Projects/standalone-checkpoints-20260924/runtime-tools/dotnet/dotnet",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/teacher-choice-repair/identity-candidate/host/bin/Release/net9.0/SimulatorPrototype.dll",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/teacher-choice-repair/identity-native-check/game",
+          "--replay-native-request",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/teacher-choice-repair/identity-native-check/original-case-2/replay.json",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-20260927-release/progress-snapshot.json"
+        ],
+        "exitCode": 0,
+        "finalHp": 2,
+        "finishedTurn": 10,
+        "name": "original-case-2",
+        "native": {
+          "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/teacher-choice-repair/identity-native-check/original-case-2/native.json",
+          "sha256": "03bbaf8b34dba2e4a2e7595ba2035b35f7c25ae5ac940b8530f6dd409acd6014"
+        },
+        "nativeComplete": true,
+        "passed": true,
+        "plays": 48,
+        "replay": {
+          "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/teacher-choice-repair/identity-native-check/original-case-2/replay.log",
+          "sha256": "cb318f049ed04098b6eb725eade9f543ce7caeeff128150231df564655787101"
+        },
+        "terminalBoundaryChoiceCancellations": 0,
+        "terminalCleanupBoundaryComparisons": 0,
+        "terminalRewardBoundaryComparisons": 0
+      }
+    ]
+  },
+  "nativeReport": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/teacher-choice-repair/identity-native-check/report.json",
+    "sha256": "35ecd5e8bbad0fb66e701376eeb099d449c82debd03f30dd692d093c595de765"
+  },
+  "teacher": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/teacher-choice-repair/identity-candidate-source/.godot/mono/temp/bin/Release/CombatSolver.dll",
+    "sha256": "02bd107d204b4c4a5b28a7d305489aa8c937b62e0cfc8104f73a3f7a96687af9"
+  },
+  "productionReady": false,
+  "productionDeployed": false
+}

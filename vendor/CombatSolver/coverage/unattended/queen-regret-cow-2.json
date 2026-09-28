@@ -1,0 +1,331 @@
+{
+  "actIndexForTest": 2,
+  "ascension": 10,
+  "cards": [],
+  "characterId": "SILENT",
+  "clearRunDeck": true,
+  "deploymentFastModeForTest": "Instant",
+  "deploymentInterActionDelaySecondsForTest": 0,
+  "enableDetailedDiagnosticLogsForTest": false,
+  "enableNoGcRegionForTest": false,
+  "encounterId": "QUEEN_BOSS",
+  "exitOnComplete": false,
+  "forceShortSearchOnly": true,
+  "headlessFastModeForTest": "Instant",
+  "performancePresetForTest": "Medium",
+  "potionPolicyForTest": "Disabled",
+  "potions": [],
+  "relics": [
+    {
+      "addWithoutObtainedEffects": true,
+      "booleanMembers": {},
+      "integerMembers": {
+        "SkillsPlayed": 9
+      },
+      "relicId": "TUNING_FORK"
+    },
+    {
+      "addWithoutObtainedEffects": true,
+      "booleanMembers": {},
+      "integerMembers": {},
+      "relicId": "BAG_OF_PREPARATION"
+    },
+    {
+      "addWithoutObtainedEffects": true,
+      "booleanMembers": {},
+      "integerMembers": {},
+      "relicId": "JUZU_BRACELET"
+    },
+    {
+      "addWithoutObtainedEffects": true,
+      "booleanMembers": {},
+      "integerMembers": {},
+      "relicId": "SNECKO_SKULL"
+    },
+    {
+      "addWithoutObtainedEffects": true,
+      "booleanMembers": {},
+      "integerMembers": {},
+      "relicId": "BAG_OF_MARBLES"
+    },
+    {
+      "addWithoutObtainedEffects": true,
+      "booleanMembers": {},
+      "integerMembers": {},
+      "relicId": "PAELS_LEGION"
+    },
+    {
+      "addWithoutObtainedEffects": true,
+      "booleanMembers": {},
+      "integerMembers": {},
+      "relicId": "RED_MASK"
+    },
+    {
+      "addWithoutObtainedEffects": true,
+      "booleanMembers": {},
+      "integerMembers": {},
+      "relicId": "VEXING_PUZZLEBOX"
+    },
+    {
+      "addWithoutObtainedEffects": true,
+      "booleanMembers": {},
+      "integerMembers": {
+        "TurnsSeen": 2
+      },
+      "relicId": "HAPPY_FLOWER"
+    },
+    {
+      "addWithoutObtainedEffects": true,
+      "booleanMembers": {
+        "GainEnergyInNextCombat": true
+      },
+      "integerMembers": {},
+      "relicId": "VENERABLE_TEA_SET"
+    },
+    {
+      "addWithoutObtainedEffects": true,
+      "booleanMembers": {},
+      "integerMembers": {},
+      "relicId": "DIAMOND_DIADEM"
+    },
+    {
+      "addWithoutObtainedEffects": true,
+      "booleanMembers": {},
+      "integerMembers": {},
+      "relicId": "KUSARIGAMA"
+    },
+    {
+      "addWithoutObtainedEffects": true,
+      "booleanMembers": {},
+      "integerMembers": {},
+      "relicId": "TOXIC_EGG"
+    },
+    {
+      "addWithoutObtainedEffects": true,
+      "booleanMembers": {},
+      "integerMembers": {},
+      "relicId": "STRIKE_DUMMY"
+    },
+    {
+      "addWithoutObtainedEffects": true,
+      "booleanMembers": {},
+      "integerMembers": {},
+      "relicId": "UNSETTLING_LAMP"
+    },
+    {
+      "addWithoutObtainedEffects": true,
+      "booleanMembers": {},
+      "integerMembers": {},
+      "relicId": "ODDLY_SMOOTH_STONE"
+    },
+    {
+      "addWithoutObtainedEffects": true,
+      "booleanMembers": {},
+      "integerMembers": {},
+      "relicId": "BLOOD_VIAL"
+    }
+  ],
+  "runCards": [
+    {
+      "cardId": "ACCELERANT",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "ASCENDERS_BANE",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "BLADE_DANCE",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "BLADE_DANCE",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "CLOAK_AND_DAGGER",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "CLOAK_AND_DAGGER",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "CLOAK_AND_DAGGER",
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    {
+      "cardId": "CLOAK_AND_DAGGER",
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    {
+      "cardId": "DEFEND_SILENT",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "DEFEND_SILENT",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "DEFEND_SILENT",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "DEFEND_SILENT",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "DEFEND_SILENT",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "DODGE_AND_ROLL",
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    {
+      "cardId": "ENVENOM",
+      "count": 1,
+      "enchantmentAmount": 2,
+      "enchantmentId": "SWIFT",
+      "upgradeLevels": 1
+    },
+    {
+      "cardId": "ESCAPE_PLAN",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "EXTERMINATE",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "FAN_OF_KNIVES",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "HAZE",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "HIDDEN_DAGGERS",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "INFINITE_BLADES",
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    {
+      "cardId": "LEADING_STRIKE",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "METAMORPHOSIS",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "NEUTRALIZE",
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    {
+      "cardId": "NOXIOUS_FUMES",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "OUTBREAK",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "PHANTOM_BLADES",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "PINPOINT",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "POUNCE",
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    {
+      "cardId": "PRECISE_CUT",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "PREPARED",
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    {
+      "cardId": "REGRET",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "STRIKE_SILENT",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "STRIKE_SILENT",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "STRIKE_SILENT",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "STRIKE_SILENT",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "SURVIVOR",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "UNTOUCHABLE",
+      "count": 1,
+      "upgradeLevels": 1
+    }
+  ],
+  "runId": "0db06bfe6dd84086942a1fb7ed399ff7",
+  "scenarioId": "HP-0705a51a8fc86715",
+  "schemaVersion": 1,
+  "searchMaxDegreeOfParallelismForTest": 1,
+  "seed": "024c6eff66d79429",
+  "shortSearchBudgetOverrideMilliseconds": 8000,
+  "timeoutSeconds": 120,
+  "trainingActId": "GLORY",
+  "trainingCollection": true
+}
