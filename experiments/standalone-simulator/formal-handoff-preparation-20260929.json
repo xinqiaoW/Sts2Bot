@@ -76,5 +76,27 @@
     "productionQueuesPrepared": false,
     "productionDeployed": false,
     "instancePrepared": false
+  },
+  "productionAuditPreparation": {
+    "source": {
+      "path": "/data2/pl/ImageTask/wxq/Projects/Sts2Bot-simulator-prototype/tools/standalone_production_audit.py",
+      "sha256": "b3aec15b1c69ca3690bbbe76b718a2ae215f785b3bb5e5be35bc5ac558bc488d"
+    },
+    "auditSource": {
+      "path": "/data2/pl/ImageTask/wxq/Projects/Sts2Bot-simulator-prototype/tools/standalone_rollout_audit.py",
+      "sha256": "53696399164d586ed6f837a30398c60e6f7f7208da728211d7c2cf0696f61606"
+    },
+    "tests": {
+      "passed": 27,
+      "evidence": {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/production-audit-tests-v2.log",
+        "sha256": "f26ab30c985dd35059a150a7955d9f93bc9e2846c393f0aaa09628dd9687e1f9"
+      },
+      "scope": "Synthetic acceptance binding, append-only sampling, preserved native failure and existing rollout process tests; not real native parity evidence."
+    },
+    "auditPrepared": false,
+    "auditStarted": false,
+    "productionDeployed": false,
+    "remaining": "Supervisor must require auditor readiness, stop and drain on auditor failure, and own backups/resource monitoring before actual deployment."
   }
 }

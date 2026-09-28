@@ -34,14 +34,16 @@ def isolated_native(plan, directory):
     return path
 
 
-def ingest(index, paths):
+def ingest(index, paths, expected_teacher=None):
     for name, path in paths.items():
         cursor = index.execute('SELECT value FROM cursors WHERE name=?', (name,)).fetchone()
         last = cursor[0] if cursor else 0
         with sqlite3.connect(path.as_uri() + '?mode=ro', uri=True) as database:
-            rows = database.execute("SELECT a.id,j.id,j.build_id,j.target,a.result FROM attempts a JOIN jobs j ON j.id=a.job_id WHERE a.id>? AND a.status='complete' ORDER BY a.id LIMIT 128", (last,))
+            rows = database.execute("SELECT a.id,j.id,j.build_id,j.target,a.result,j.teacher FROM attempts a JOIN jobs j ON j.id=a.job_id WHERE a.id>? AND a.status='complete' ORDER BY a.id LIMIT 128", (last,))
             with index:
-                for aid, jid, bid, target, raw in rows:
+                for aid, jid, bid, target, raw, teacher in rows:
+                    if expected_teacher is not None and json.loads(teacher) != expected_teacher:
+                        raise ValueError('Completed production input uses another teacher')
                     result = json.loads(raw); request = result['collectionRequest']; tid = json.loads(target)['id']
                     fresh = index.execute('INSERT OR IGNORE INTO builds VALUES(?,?,?,?,?)',
                         (bid, name, jid, tid, json.dumps(request))).rowcount
@@ -77,9 +79,19 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--directory', type=Path, required=True)
     parser.add_argument('--panel', type=Path, help='Pinned previously quarantined requests; diagnose every entry')
+    parser.add_argument('--production', action='store_true', help='Audit queues bound by a separately accepted production plan')
     args = parser.parse_args(); folder = args.directory.resolve(strict=True)
-    from run_standalone_rollout import verify_plan
-    plan = verify_plan(folder)
+    expected_teacher = None
+    if args.production:
+        if args.panel is not None: raise ValueError('Production sampling cannot use a replacement input panel')
+        if (folder / 'audit-stop.json').exists() or (folder / 'audit-report.json').exists():
+            raise ValueError('Stopped production audit requires diagnosis; preserve its evidence')
+        from standalone_production_audit import load_context
+        plan, paths, expected_teacher = load_context(folder)
+    else:
+        from run_standalone_rollout import verify_plan
+        plan = verify_plan(folder)
+        paths = {name: folder / 'soak' / (name + '.sqlite') for name in ('real', 'mutation', 'targeted')}
     panel = None
     prefix = 'audit'
     if args.panel is not None:
@@ -121,18 +133,20 @@ def main():
                         (case['build'],case['dataset'],case['job'],case['target'],request))
                     index.execute('INSERT OR IGNORE INTO cases(dataset,job,build,target,request,status) VALUES(?,?,?,?,?,?)',
                         (case['dataset'],case['job'],case['build'],case['target'],request,'pending'))
-        paths = {name: folder / 'soak' / (name + '.sqlite') for name in ('real', 'mutation', 'targeted')}
         capture = None
         try:
+            write(folder / (prefix + '-ready.json'), dict(ready=True, pid=os.getpid(),
+                  productionAudit=args.production, plan=identity(folder / 'plan.json'), updated=time.time()))
             while True:
                 if panel is None:
-                    ingest(index, paths)
+                    ingest(index, paths, expected_teacher)
+                    if args.production: top_up(index)
                 drained = panel is not None or (folder / 'collection-drained.json').exists()
                 if drained and panel is None:
                     # Exhaust incremental pages before declaring sampling complete.
                     while True:
                         previous = list(index.execute('SELECT * FROM cursors ORDER BY name'))
-                        ingest(index, paths)
+                        ingest(index, paths, expected_teacher)
                         if previous == list(index.execute('SELECT * FROM cursors ORDER BY name')):
                             break
                     top_up(index)
@@ -194,6 +208,8 @@ def main():
                     index.execute('UPDATE cases SET status=? WHERE id=?', (status, cid))
                 if status == 'mismatch':
                     raise RuntimeError('Fixed-action audit mismatch: ' + str(case))
+                if args.production and status == 'native_failed':
+                    raise RuntimeError('Selected production sample exhausted native recording attempts: ' + str(case))
             cases = [read(p) for p in sorted(audit_dir.glob('case-*/result.json'))]
             matched = [c for c in cases if c['status'] == 'matched']
             total = index.execute('SELECT count(*) FROM builds').fetchone()[0]
@@ -208,6 +224,11 @@ def main():
                   caseEvidence=[identity(p) for p in sorted(audit_dir.glob('case-*/result.json'))],
                   policy=('Every pinned previously quarantined request must obtain a complete native recording and match the frozen host.' if panel is not None else
                           'Hash-selected new compositions plus target coverage and deterministic final top-up to at least 1%; every selected successful native recording must match. Native failures do not pass.')))
+        except BaseException as error:
+            if args.production:
+                write(folder / 'audit-stop.json', dict(error=repr(error), updated=time.time(),
+                      action='Drain formal collection and retain all output for diagnosis'))
+            raise
         finally:
             if capture is not None:
                 capture.close()

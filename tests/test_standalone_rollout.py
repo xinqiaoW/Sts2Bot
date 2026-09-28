@@ -120,11 +120,11 @@ def test_audit_pages_completed_attempts_without_duplicate_builds(tmp_path):
     path = tmp_path/'real.sqlite'
     with sqlite3.connect(path) as db:
         db.executescript('''
-            CREATE TABLE jobs(id TEXT PRIMARY KEY,build_id TEXT,target TEXT);
+            CREATE TABLE jobs(id TEXT PRIMARY KEY,build_id TEXT,target TEXT,teacher TEXT);
             CREATE TABLE attempts(id INTEGER PRIMARY KEY,job_id TEXT,status TEXT,result TEXT);
         ''')
         for i in range(260):
-            db.execute('INSERT INTO jobs VALUES(?,?,?)', (str(i),str(i//2),json.dumps({'id':str(i%80)})))
+            db.execute('INSERT INTO jobs VALUES(?,?,?,?)', (str(i),str(i//2),json.dumps({'id':str(i%80)}),'{}'))
             db.execute('INSERT INTO attempts VALUES(?,?,?,?)', (i+1,str(i),'complete',
                        json.dumps({'collectionRequest':{'runId':str(i)}})))
         # Failed attempts contain no usable request and must never enter the audit.
@@ -138,7 +138,7 @@ def test_audit_pages_completed_attempts_without_duplicate_builds(tmp_path):
     assert before == list(index.execute('SELECT * FROM cases ORDER BY id'))
     # Completion records are appended by Store.finish; a later completion stays visible.
     with sqlite3.connect(path) as db:
-        db.execute('INSERT INTO jobs VALUES(?,?,?)', ('late','late',json.dumps({'id':'late-target'})))
+        db.execute('INSERT INTO jobs VALUES(?,?,?,?)', ('late','late',json.dumps({'id':'late-target'}),'{}'))
         db.execute('INSERT INTO attempts VALUES(1000,?,?,?)', ('late','complete',
                    json.dumps({'collectionRequest':{'runId':'late'}})))
     ingest(index, {'real':path})
