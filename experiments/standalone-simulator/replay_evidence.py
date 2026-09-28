@@ -120,6 +120,13 @@ def validate_replay(native, result, *, require_terminal_state=True):
     if has_terminal_state:
         require(result.get('finalCombatState') == terminal_state, 'Complete terminal state mismatch')
         expected.append(('terminal', terminal_state))
+    # Earlier stamps omitted the play pile because it is normally empty at a
+    # decision boundary. Lethal turn-end effects can leave cards there. Those
+    # historical traces remain diagnostic evidence, never full-state acceptance.
+    play_pile_verified = bool(expected) and all(
+        sum(field.startswith('V=') for field in stamp.split(';')) == 1
+        for _, stamp in expected)
+    require(not require_terminal_state or play_pile_verified, 'Missing complete play-pile state')
     require(matched(native, result), 'Terminal or checkpoint mismatch')
     battle = result['battle']
     points = battle['compared']
@@ -156,7 +163,8 @@ def validate_replay(native, result, *, require_terminal_state=True):
         require(cancelled <= last_boundary_choices + setup_choices,
                 'Cancelled choice count exceeds the recorded terminal boundary plan')
     return dict(plays=plays, checkpoints=action_checkpoints, openingTerminal=opening_terminal, terminalCheckpoints=int(has_terminal_state),
-                terminalStateVerified=has_terminal_state, finalHp=result['finalHp'], finishedTurn=result['finishedTurn'],
+                terminalStateVerified=has_terminal_state, playPileStateVerified=play_pile_verified,
+                finalHp=result['finalHp'], finishedTurn=result['finishedTurn'],
                 terminalCleanupBoundaryComparisons=battle['terminalCleanupBoundaryComparisons'],
                 terminalRewardBoundaryComparisons=battle.get('terminalRewardBoundaryComparisons', 0),
                 terminalBoundaryChoiceCancellations=cancelled)

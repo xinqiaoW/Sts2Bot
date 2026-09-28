@@ -73,6 +73,7 @@ internal static class HostClock
         args[0] = original; args[1] = prefix;
         patch.Invoke(patcher, args);
         Assembly game = Assembly.Load("sts2");
+        NativeTurnEndScheduling.Configure(game, harmony);
         args[0] = game.GetType("MegaCrit.Sts2.Core.Nodes.HoverTips.NHoverTipSet", true)!.GetMethod("Clear")!;
         args[1] = Activator.CreateInstance(harmony.GetType("HarmonyLib.HarmonyMethod", true)!, [typeof(HostClock).GetMethod(nameof(ClearAbsentHoverTips))!]);
         patch.Invoke(patcher, args);

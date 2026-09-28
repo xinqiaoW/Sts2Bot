@@ -91,6 +91,7 @@ internal sealed record ContinuationStamp(string StateText)
         AppendLivePile(text, pcs.DrawPile, 'D');
         AppendLivePile(text, pcs.DiscardPile, 'C');
         AppendLivePile(text, pcs.ExhaustPile, 'X');
+        AppendLivePile(text, pcs.PlayPile, 'V');
         SimulatedCombatState.AppendLiveTurnCardHistory(text, state, player);
         AppendOrbs(text, pcs.OrbQueue.Capacity, pcs.OrbQueue.Orbs);
         AppendPotions(text, player, player.GetPotionAtSlotIndex);
@@ -148,6 +149,7 @@ internal sealed record ContinuationStamp(string StateText)
         AppendPredictedPile(text, pcs.DrawPile, 'D');
         AppendPredictedPile(text, pcs.DiscardPile, 'C');
         AppendPredictedPile(text, pcs.ExhaustPile, 'X');
+        AppendPredictedPile(text, pcs.PlayPile, 'V');
         combat.AppendPredictedTurnCardHistory(text, player);
         AppendPredictedOrbs(text, simulator, pcs.OrbQueue.Capacity, pcs.OrbQueue.Orbs);
         AppendPotions(text, player, slot => combat.GetPotionAtSlot(player, slot));
@@ -212,7 +214,7 @@ internal sealed record ContinuationStamp(string StateText)
             }
         }
 
-        if (name is "H" or "D" or "C" or "X" or "P")
+        if (name is "H" or "D" or "C" or "X" or "V" or "P")
         {
             IReadOnlyList<string> expectedItems = SplitTopLevelItems(expected);
             IReadOnlyList<string> actualItems = SplitTopLevelItems(actual);

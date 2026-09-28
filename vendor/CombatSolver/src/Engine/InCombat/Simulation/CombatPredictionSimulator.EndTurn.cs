@@ -93,9 +93,16 @@ internal sealed partial class CombatPredictionSimulator
     /// </summary>
     private void DoTurnEndCards(IEnumerable<PredictedCard> cards)
     {
-        foreach (var card in cards)
-        {
+        // Native Instant mode starts every transfer before the first tween
+        // resumes its effect. Snapshot first: these transfers mutate Hand.
+        // Staging one card at a time leaves later cards in Hand after a lethal
+        // effect, since the original pile command rejects a dead owner.
+        PredictedCard[] batch = cards.ToArray();
+        foreach (PredictedCard card in batch)
             AddToPile(card, PileType.Play);
+
+        foreach (PredictedCard card in batch)
+        {
             CardOnTurnEndInHandMirrors.Invoke(this, card);
 
             // Vanilla does not check Hook.ShouldEtherealTrigger here, so we keep the same behavior.

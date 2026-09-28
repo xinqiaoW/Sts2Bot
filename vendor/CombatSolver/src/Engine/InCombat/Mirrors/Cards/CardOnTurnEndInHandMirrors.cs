@@ -103,7 +103,7 @@ internal static class CardOnTurnEndInHandMirrors
     private static void DamageOwner(CardOnTurnEndInHandMirrorContext context, decimal amount, ValueProp props)
     {
         var owner = context.PreviewCard.Owner.Creature;
-        context.Simulator.Damage([owner], amount, props, owner, context.Card, cardPlay: null);
+        context.Simulator.Damage([owner], amount, props, dealer: null, context.Card, cardPlay: null);
     }
 }
 

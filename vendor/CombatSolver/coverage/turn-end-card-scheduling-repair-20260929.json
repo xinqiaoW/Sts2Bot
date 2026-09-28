@@ -1,0 +1,80 @@
+{
+  "schema": "turn-end-card-scheduling-repair/v1",
+  "productionReady": false,
+  "countsTowardFinalAcceptance": false,
+  "nativeTimingObservations": 31,
+  "baseline": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-turn-end-timing-20260929/semantic-baseline-v2/report.json",
+    "sha256": "cce4ea8574601fef31d925b52c8db7294056a5b2ee03a0f69385dd5155ff2745"
+  },
+  "intermediateFailure": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-turn-end-timing-20260929/semantic-candidate/report.json",
+    "sha256": "93b828d1205ef4bcfd4f0759c9f57beb3c53f7ecd8bb53ea81a4173a88119de3"
+  },
+  "nativeRootAndFork": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-turn-end-timing-20260929/semantic-candidate-v2/report.json",
+    "sha256": "e146f4cb3285a46083d8a9e46887f2983bab08c4ef9c2f09c76bbe7e0620bb71"
+  },
+  "hostHistoricalReplays": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-turn-end-timing-20260929/candidate/report.json",
+    "sha256": "2fa3fb5433f84e94aaea34d9f01feee9fb9a5604b69ae1890d312b01336f7ac7"
+  },
+  "hostHistoricalActionCheckpoints": 601,
+  "hostHistoricalTerminalCheckpoints": 8,
+  "finalTeacher": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-turn-end-timing-20260929/final-source/.godot/mono/temp/bin/Release/CombatSolver.dll",
+    "sha256": "e4785c9d02832896333590f40f7b8c81ed642de6025a0bc72c7b7ef98568bc68"
+  },
+  "finalHost": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-turn-end-timing-20260929/final-host/bin/Release/net9.0/SimulatorPrototype.dll",
+    "sha256": "7fa0c19e3e7290c9d65e6d7f0a2a0442804364f8c19d1e4d2a3c7d76b7cba2b9"
+  },
+  "finalObserver": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-turn-end-timing-20260929/final-trace/bin/Release/net9.0/NativeTraceProbe.dll",
+    "sha256": "8e1e859a0d5e4962a3787e55b68fe12c08c26275747bda7e8943d23205095195"
+  },
+  "scripts": {
+    "check_native.py": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-turn-end-timing-20260929/check_native.py",
+      "sha256": "0088acd7e4070c9a70006ae00168a069dbd0d053b0750c79918a6fa5ae1bcb3d"
+    },
+    "check_candidate.py": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-turn-end-timing-20260929/check_candidate.py",
+      "sha256": "3891fe38448ad5bce8c9c13198fcdc4d19de39fe919d32f82c7fd3695f020973"
+    },
+    "check_semantics.py": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-turn-end-timing-20260929/check_semantics.py",
+      "sha256": "f097630b9aec0fae1148205da4b055f69ff2aa6533ea4ebc8c6dec8d0fc6dd69"
+    },
+    "build_semantics.py": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-turn-end-timing-20260929/build_semantics.py",
+      "sha256": "9b6acb2a6521a22ba41059f6dd108fd09d25d5ace4f3e9ba8c868428279fe9e9"
+    },
+    "prepare_final.py": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-turn-end-timing-20260929/prepare_final.py",
+      "sha256": "533b30fd203f14e960f5d21c6a11df3589923b80f00ea6aa92ad495157be1cfe"
+    }
+  },
+  "nativeObservationLog": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-turn-end-timing-20260929/native/effects.jsonl",
+    "sha256": "2a5abf76e10916c95370cebbd6ed41f833e68e450de1b016c8900aede719aef5"
+  },
+  "validation": {
+    "pythonCommand": "python -m pytest -q tests/test_terminal_state_evidence.py tests/test_build_panel_audit.py tests/test_native_target_artifacts.py",
+    "pythonPassed": 55,
+    "boundaries": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-turn-end-timing-20260929/boundaries-v2.log",
+      "sha256": "deca91a103cbb776e0d96749d3a9a9df66ee078c8c763e793a82e7e81cc80377"
+    },
+    "stateFields": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-turn-end-timing-20260929/state-fields.log",
+      "sha256": "af2ca1a88872613e25f0c1191aa6981516e918ced7c677109dc7592273dd7fda",
+      "exitCode": 0
+    }
+  },
+  "limitations": [
+    "Historical replays omit PlayPile and do not certify final acceptance.",
+    "Final non-injected release requires fresh native recordings with V at every action and terminal.",
+    "Full 10000 builds/500000 action checkpoints, performance calibration, rollback and soak remain pending."
+  ]
+}

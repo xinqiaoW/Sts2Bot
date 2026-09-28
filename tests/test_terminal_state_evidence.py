@@ -7,7 +7,14 @@ from replay_evidence import validate_replay
 def terminal_case():
     native, replay = case()
     # Synthetic terminal fixture, separate from immutable historical recordings.
-    stamp = 'turn=4;hp=67;E0=7/STABBOT/bot3/22/22/0/STAB;R=1:2:3:4:5'
+    for event in native['events']:
+        for field in ('before', 'after'):
+            if field in event['value']:
+                event['value'][field] += ';V='
+    for point in replay['battle']['compared']:
+        point['expected'] += ';V='
+        point['actual'] += ';V='
+    stamp = 'turn=4;hp=67;E0=7/STABBOT/bot3/22/22/0/STAB;V=;R=1:2:3:4:5'
     native['result']['trainingObservation']['finalCombatState'] = stamp
     replay['finalCombatState'] = stamp
     replay['battle']['compared'].append(dict(point='terminal', expected=stamp, actual=stamp, matches=True))
@@ -26,6 +33,32 @@ def test_terminal_checkpoint_is_verified_but_not_counted_as_an_action():
     assert report['checkpoints'] == 41
     assert report['terminalCheckpoints'] == 1
     assert report['terminalStateVerified'] is True
+    assert report['playPileStateVerified'] is True
+
+
+@pytest.mark.parametrize('where', ['action', 'terminal'])
+def test_equal_stamps_without_play_pile_cannot_certify_complete_state(where):
+    native, replay = terminal_case()
+    if where == 'terminal':
+        old = native['result']['trainingObservation']['finalCombatState'].replace(';V=', '')
+        native['result']['trainingObservation']['finalCombatState'] = old
+        replay['finalCombatState'] = old
+        point = replay['battle']['compared'][-1]
+    else:
+        event = next(e for e in native['events'] if e['kind'] == 'play')
+        old = event['value']['before'].removesuffix(';V=')
+        event['value']['before'] = old
+        point = next(p for p in replay['battle']['compared'] if p['point'] == 'before_play_0')
+    point['expected'] = point['actual'] = old
+    with pytest.raises(ValueError, match='play-pile state'):
+        validate_replay(native, replay)
+
+
+def test_same_hp_with_wrong_play_pile_is_rejected():
+    native, replay = terminal_case()
+    replay['battle']['compared'][-1]['actual'] = replay['finalCombatState'].replace(';V=', ';V=BURN')
+    with pytest.raises(ValueError):
+        validate_replay(native, replay)
 
 
 @pytest.mark.parametrize('mutation', ['native_missing', 'empty', 'wrong_roster', 'missing_point',
