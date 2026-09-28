@@ -71,5 +71,11 @@
   "priorReleaseManifest": {
     "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/candidate-release/release.json",
     "sha256": "5e146b5412d01730ef81d016be78bdc63faa118467fcb31fc29dff901e768c5f"
-  }
+  },
+  "automaticLaunch": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/automatic-acceptance-v2/owner.json",
+    "sha256": "161b05722f5767655c1ce1d32afb7552290c352a47406908cade5642c58a067b"
+  },
+  "automaticStatus": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/automatic-acceptance-v2/status.json",
+  "automaticPidConfirmedLive": 3222586
 }
