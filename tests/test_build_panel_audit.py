@@ -2,6 +2,8 @@
 import json
 from pathlib import Path
 import sqlite3
+import fcntl
+from contextlib import ExitStack
 
 import pytest
 from test_native_target_artifacts import ROOT
@@ -61,6 +63,7 @@ def test_only_individually_verified_checkpoints_count(tmp_path):
     assert report['runs'][0]['terminalStateVerified'] is True
     assert report['matchedBattles'] == 1
     assert report['uniqueBuilds'] == 1
+    assert report['campaignDrained'] is False
     assert report['teacher'] == json.loads((ROOT / 'configs/teacher.json').read_text())
     assert report['progressSnapshot'] == identity(ROOT / 'experiments/standalone-simulator/fixtures/pilot-progress-v24.json')
     assert report['unresolvedReplayDifferences'] == [] and report['staleHostResults'] == []
@@ -123,3 +126,29 @@ def test_build_audit_rejects_missing_terminal_even_with_unchanged_actions(tmp_pa
     result.write_text(json.dumps(entry))
     with pytest.raises(ValueError, match='Missing native complete terminal state'):
         audit(tmp_path, host, plan)
+
+
+@pytest.mark.parametrize('owner', ['controller', 'orphan_worker', 'none'])
+def test_final_audit_holds_controller_and_worker_locks(tmp_path, owner):
+    data = tmp_path / 'data'; data.mkdir()
+    runtime = tmp_path / 'runtime.json'; runtime.write_text(json.dumps({'data_dir': str(data)}))
+    (tmp_path / 'setup.json').write_text(json.dumps({'runtimes': [str(runtime)]}))
+    batch = tmp_path / 'batch.lock'; batch.touch()
+    worker = data / 'collector.lock'; worker.touch()
+    with ExitStack() as owners, ExitStack() as audit_locks:
+        if owner != 'none':
+            held = owners.enter_context((batch if owner == 'controller' else worker).open('r'))
+            fcntl.flock(held, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            with pytest.raises(ValueError, match='Campaign still active'):
+                audit_build_panel.lock_drained_campaign(tmp_path, audit_locks)
+        else:
+            audit_build_panel.lock_drained_campaign(tmp_path, audit_locks)
+            for path in (batch, worker):
+                with path.open('r') as probe, pytest.raises(BlockingIOError):
+                    fcntl.flock(probe, fcntl.LOCK_EX | fcntl.LOCK_NB)
+
+
+def test_missing_owner_lock_is_not_proof_of_drain(tmp_path):
+    (tmp_path / 'setup.json').write_text(json.dumps({'runtimes': []}))
+    with ExitStack() as locks, pytest.raises(FileNotFoundError):
+        audit_build_panel.lock_drained_campaign(tmp_path, locks)

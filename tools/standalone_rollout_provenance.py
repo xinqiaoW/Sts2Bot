@@ -22,9 +22,9 @@ def verify_correctness(audit_path, bundle, prior_plan):
     require(report['requiredValidatedBuilds'] >= 10000 and report['uniqueBuilds'] >= report['requiredValidatedBuilds']
             and report['uniqueTargets'] == 80 and report['matchedCheckpoints'] >= report['checkpointTarget'] >= 500000,
             'Correctness acceptance thresholds not met')
-    require(report['unexecutedCases'] == 0 and not any(report[k] for k in
+    require(report.get('campaignDrained') is True and report['unexecutedCases'] >= 0 and not any(report[k] for k in
             ('unresolvedReplayDifferences', 'staleHostResults')),
-            'Correctness panel has unfinished or divergent cases')
+            'Correctness campaign is still active or has divergent cases')
     require(report['panelValidation']['passed'] is True, 'Frozen build panel was not validated')
     require(report['plan'] == identity(prior_plan), 'Excluded builds differ from the accepted panel')
     for key in ('host', 'progressSnapshot', 'plan', 'auditor'):
@@ -41,7 +41,7 @@ def verify_correctness(audit_path, bundle, prior_plan):
     # Exhausted native captures remain explicit failures and contribute no builds
     # or checkpoints; the independent audit must still prove >= 10,000 builds.
     require(len(runs) == report['matchedBattles']
-            and len(runs) + len(report['nativeCaptureFailures']) == report['plannedCases']
+            and len(runs) + len(report['nativeCaptureFailures']) + report['unexecutedCases'] == report['plannedCases']
             and len({r['caseId'] for r in runs}) == len(runs), 'Audit case accounting differs')
     require(sum(r['checkpoints'] for r in runs) == report['matchedCheckpoints'],
             'Audit checkpoint accounting differs')

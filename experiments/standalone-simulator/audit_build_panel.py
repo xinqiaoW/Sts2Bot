@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Independently audit full states for at least 10000 distinct frozen builds."""
-import argparse,json,sqlite3,sys
+import argparse,fcntl,json,sqlite3,sys
+from contextlib import ExitStack
 from pathlib import Path
 sys.dont_write_bytecode=True
 from replay_evidence import validate_replay,terminal,identity,normalized,require,write
@@ -64,10 +65,24 @@ def audit(source_root,directory,plan_path,host_dll,checkpoint_target):
  database.close();points=sum(x['checkpoints'] for x in checked)
  passed=build_acceptance_passed(plan,matched_builds=len(builds),matched_targets=len(targets),unresolved=len(unresolved),stale=len(stale),checkpoint_count=points,checkpoint_target=checkpoint_target)
  return dict(schema='distinct-build-panel-audit/v1',requiredValidatedBuilds=plan['requiredValidatedBuilds'],panelValidation=validation,productionReady=False,productionLabels=False,passed=passed,checkpointTarget=checkpoint_target,matchedCheckpoints=points,
-  matchedBattles=len(checked),matchedPlays=sum(x['plays'] for x in checked),uniqueBuilds=len(builds),uniqueTargets=len(targets),plannedCases=plan['caseCount'],unexecutedCases=plan['caseCount']-len(seen),
+  matchedBattles=len(checked),matchedPlays=sum(x['plays'] for x in checked),uniqueBuilds=len(builds),uniqueTargets=len(targets),plannedCases=plan['caseCount'],unexecutedCases=plan['caseCount']-len(seen),campaignDrained=False,
   actualPlayedCards=sorted(played),newActuallyPlayedCards=sorted(played-set(plan['priorActuallyPlayedCards'])),nonemptyChoicePlans=choices,
   unresolvedReplayDifferences=unresolved,nativeCaptureFailures=native_failures,staleHostResults=stale,host=host,teacher=base_teacher,progressSnapshot=progress,plan=identity(plan_path),auditor=identity(__file__),
   counting='One count per individually verified named state checkpoint in each unique completed (build,target,seed) case. Duplicate runs/fields/attempts do not add counts. Every native state text and replay state text is checked independently against the recorded event.',runs=checked)
+
+
+def lock_drained_campaign(directory,locks):
+ """Hold controller and every native worker lock throughout a final audit."""
+ setup=json.loads((directory/'setup.json').read_text())
+ paths=[directory/'batch.lock']
+ for runtime in setup['runtimes']:
+  data=Path(json.loads(Path(runtime).read_text())['data_dir'])
+  paths.append(data/'collector.lock')
+ for path in paths:
+  # Missing ownership evidence is not proof of drain. Do not create new locks.
+  lock=locks.enter_context(path.open('r'))
+  try:fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
+  except BlockingIOError as error:raise ValueError('Campaign still active: '+str(path)) from error
 
 
 def main():
@@ -76,8 +91,12 @@ def main():
  p.add_argument('--checkpoint-target',type=int,default=500000);p.add_argument('--allow-partial',action='store_true')
  a=p.parse_args()
  require(not a.output.exists(),'Refusing to overwrite audit')
- report=audit(a.source_root,a.directory,a.plan,a.host_dll,a.checkpoint_target)
- write(a.output,report);print(json.dumps({k:v for k,v in report.items() if k not in ['runs','unresolvedReplayDifferences','nativeCaptureFailures','staleHostResults','actualPlayedCards','newActuallyPlayedCards']}))
+ with ExitStack() as locks:
+  if not a.allow_partial:lock_drained_campaign(a.directory,locks)
+  report=audit(a.source_root,a.directory,a.plan,a.host_dll,a.checkpoint_target)
+  report['campaignDrained']=not a.allow_partial
+  write(a.output,report)
+ print(json.dumps({k:v for k,v in report.items() if k not in ['runs','unresolvedReplayDifferences','nativeCaptureFailures','staleHostResults','actualPlayedCards','newActuallyPlayedCards']}))
  if not report['passed'] and not a.allow_partial:raise SystemExit(1)
 
 

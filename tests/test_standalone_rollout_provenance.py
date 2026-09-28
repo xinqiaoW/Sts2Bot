@@ -37,7 +37,7 @@ def accepted(tmp_path_factory):
                          terminalStateVerified=True, playPileStateVerified=True, terminalCheckpoints=1))
     report = dict(schema='distinct-build-panel-audit/v1', passed=True, requiredValidatedBuilds=10000,
                   uniqueBuilds=10000, uniqueTargets=80, matchedCheckpoints=500000, checkpointTarget=500000,
-                  unexecutedCases=0, unresolvedReplayDifferences=[], nativeCaptureFailures=[], staleHostResults=[],
+                  unexecutedCases=0, campaignDrained=True, unresolvedReplayDifferences=[], nativeCaptureFailures=[], staleHostResults=[],
                   panelValidation={'passed': True}, plan=identity(root / 'plan.json'), auditor=identity(root / 'auditor.py'),
                   host=identity(bundle / 'host/SimulatorPrototype.dll'), teacher=teacher,
                   progressSnapshot=identity(bundle / 'progress-snapshot.json'), runs=runs,
@@ -56,7 +56,7 @@ def test_complete_current_audit_authorizes_only_matching_release(accepted, tmp_p
 
 @pytest.mark.parametrize('mutation', [
     'runner_report', 'not_passed', 'too_few_builds', 'too_few_targets', 'too_few_points', 'relaxed_target',
-    'unexecuted', 'difference', 'native_failed', 'stale', 'old_terminal', 'old_playpile',
+    'unaccounted', 'still_active', 'difference', 'native_failed', 'stale', 'old_terminal', 'old_playpile',
     'duplicate_case', 'inflated_points', 'different_teacher', 'missing_progress',
 ])
 def test_partial_historical_or_inconsistent_audit_cannot_authorize(accepted, tmp_path, mutation):
@@ -68,7 +68,8 @@ def test_partial_historical_or_inconsistent_audit_cannot_authorize(accepted, tmp
     elif mutation == 'too_few_targets': report['uniqueTargets'] = 79
     elif mutation == 'too_few_points': report['matchedCheckpoints'] = 499999
     elif mutation == 'relaxed_target': report['checkpointTarget'] = 1
-    elif mutation == 'unexecuted': report['unexecutedCases'] = 1
+    elif mutation == 'unaccounted': report['unexecutedCases'] = 1
+    elif mutation == 'still_active': report['campaignDrained'] = False
     elif mutation == 'difference': report['unresolvedReplayDifferences'] = ['failed']
     elif mutation == 'native_failed': report['nativeCaptureFailures'] = ['failed']
     elif mutation == 'stale': report['staleHostResults'] = ['old']
@@ -98,6 +99,13 @@ def test_changed_result_receipt_cannot_reuse_acceptance(accepted, tmp_path):
     result.write_text('{"changed":true}')
     with pytest.raises(ValueError, match='Frozen evidence changed'):
         verify_correctness(save_audit(tmp_path, report), root / 'bundle', root / 'plan.json')
+
+
+def test_drained_ten_thousand_builds_do_not_require_unused_reserve_inputs(accepted, tmp_path):
+    root, original = accepted; report = copy.deepcopy(original)
+    report.update(plannedCases=10500, unexecutedCases=498,
+                  nativeCaptureFailures=[{'caseId': 'native-failed-1'}, {'caseId': 'native-failed-2'}])
+    assert verify_correctness(save_audit(tmp_path, report), root / 'bundle', root / 'plan.json')['passed']
 
 
 def benchmark_for(tmp_path, report):
