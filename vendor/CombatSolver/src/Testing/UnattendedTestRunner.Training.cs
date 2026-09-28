@@ -14,6 +14,7 @@ internal sealed class UnattendedTrainingObservation
     public int? NetHpLoss { get; set; }
     public bool? PlayerDied { get; set; }
     public bool Complete { get; set; }
+    public bool OpeningTerminal { get; set; }
     public string? FinalCombatState { get; set; }
     public JsonElement InitialBuild { get; set; }
 }

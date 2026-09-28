@@ -52,3 +52,36 @@ def test_legacy_audit_is_explicit_and_never_claims_terminal_state():
     report = validate_replay(native, replay, require_terminal_state=False)
     assert report['terminalCheckpoints'] == 0
     assert report['terminalStateVerified'] is False
+
+
+def opening_terminal_case():
+    native, replay = terminal_case()
+    native['events'] = native['events'][:1]
+    native['result']['trainingObservation']['openingTerminal'] = True
+    replay['openingTerminal'] = True
+    replay['battle'].update(plays=0, boundaries=0, completions=0, openingTerminal=True,
+                           compared=[replay['battle']['compared'][-1]], terminalCleanupBoundaryComparisons=0)
+    return native, replay
+
+
+def test_opening_victory_has_one_terminal_checkpoint_and_no_invented_action():
+    native, replay = opening_terminal_case()
+    report = validate_replay(native, replay)
+    assert report['plays'] == report['checkpoints'] == 0
+    assert report['terminalCheckpoints'] == 1
+    assert report['openingTerminal'] is True
+
+
+@pytest.mark.parametrize('mutation', ['native_marker', 'host_marker', 'battle_marker', 'no_full_state', 'wrong_state', 'truncated_battle'])
+def test_empty_trace_needs_matching_native_and_host_opening_terminal(mutation):
+    native, replay = opening_terminal_case()
+    if mutation == 'native_marker': native['result']['trainingObservation'].pop('openingTerminal')
+    elif mutation == 'host_marker': replay.pop('openingTerminal')
+    elif mutation == 'battle_marker': replay['battle'].pop('openingTerminal')
+    elif mutation == 'no_full_state': native['result']['trainingObservation'].pop('finalCombatState')
+    elif mutation == 'wrong_state': replay['battle']['compared'][-1]['actual'] += ';invented'
+    else:
+        ordinary_native, _ = terminal_case()
+        native['events'] = ordinary_native['events']
+    with pytest.raises(ValueError):
+        validate_replay(native, replay)

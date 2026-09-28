@@ -71,9 +71,11 @@ internal static class RequestBattleProbe
         EventInfo endedEvent = cm.GetType().GetEvent("CombatEnded")!;
         Type handlerType = endedEvent.EventHandlerType!;
         var parameters = handlerType.GetMethod("Invoke")!.GetParameters().Select(p => System.Linq.Expressions.Expression.Parameter(p.ParameterType)).ToArray();
-        Action complete = () => ended.TrySetResult();
+        object? endedCombat = null;
+        Action<object> complete = room => { endedCombat = Read(room, "CombatState"); ended.TrySetResult(); };
         Delegate handler = System.Linq.Expressions.Expression.Lambda(handlerType,
-            System.Linq.Expressions.Expression.Call(System.Linq.Expressions.Expression.Constant(complete), typeof(Action).GetMethod("Invoke")!), parameters).Compile();
+            System.Linq.Expressions.Expression.Call(System.Linq.Expressions.Expression.Constant(complete), typeof(Action<object>).GetMethod("Invoke")!,
+                System.Linq.Expressions.Expression.Convert(parameters.Single(), typeof(object))), parameters).Compile();
         endedEvent.AddEventHandler(cm, handler);
         Console.WriteLine("{\"stage\":\"request_enter_combat_room\"}");
         // Toolbox and similar opening hooks choose before the first playable turn.
@@ -123,13 +125,17 @@ internal static class RequestBattleProbe
             }
         }
         finally { openingScope?.Dispose(); openingImplicitChoices?.Dispose(); openingSearch?.Dispose(); }
-        if (!(bool)Read(cm, "IsInProgress")) throw new InvalidOperationException("Combat ended before opening.");
-        object combat = cm.GetType().GetMethod("DebugOnlyGetState")!.Invoke(cm, null)!;
+        bool openingTerminal = !(bool)Read(cm, "IsInProgress");
+        if (openingTerminal) ended.Task.WaitAsync(TimeSpan.FromSeconds(10)).GetAwaiter().GetResult();
+        object combat = openingTerminal ? endedCombat ?? throw new InvalidOperationException("Opening terminal has no native combat state.")
+            : cm.GetType().GetMethod("DebugOnlyGetState")!.Invoke(cm, null)!;
         // Retain the actual combat state: room cleanup may detach it from player.
         object playerCombatState = Read(player, "PlayerCombatState");
         Console.WriteLine(JsonSerializer.Serialize(new { status = "request_native_opening", productionReady = false,
             stamp = Read(solver.GetType("CombatSolver.ContinuationStamp", true)!.GetMethod("CaptureLive")!.Invoke(null, [combat])!, "StateText") }));
-        object battle = nativeReplay ? NativeTraceReplay.Run(get, solver, combat, player, ended.Task, fixture.GetProperty("nativeTrace"), rewards) : TeacherBattleProbe.Run(get, solver, combat, player, reuseContinuations: true, nativeTurnLoop: true, nativeTerminal: ended.Task, injectExhaustedPlanOnce: injectExhaustedPlanOnce, injectDeploymentDriftOnce: injectDeploymentDriftOnce, injectMissingCardOnce: injectMissingCardOnce, injectUnconsumedChoiceOnce: injectUnconsumedChoiceOnce, openingResult: openingResult);
+        object battle = nativeReplay ? NativeTraceReplay.Run(get, solver, combat, player, ended.Task, fixture.GetProperty("nativeTrace"), rewards, openingTerminal)
+            : openingTerminal ? new { status = "native_opening_terminal", openingTerminal = true }
+            : TeacherBattleProbe.Run(get, solver, combat, player, reuseContinuations: true, nativeTurnLoop: true, nativeTerminal: ended.Task, injectExhaustedPlanOnce: injectExhaustedPlanOnce, injectDeploymentDriftOnce: injectDeploymentDriftOnce, injectMissingCardOnce: injectMissingCardOnce, injectUnconsumedChoiceOnce: injectUnconsumedChoiceOnce, openingResult: openingResult);
         rewards.Wait();
         endedEvent.RemoveEventHandler(cm, handler);
         object hero = Read(player, "Creature");
@@ -149,6 +155,6 @@ internal static class RequestBattleProbe
         }
         return new { status = "request_battle_completed", productionReady = false, productionLabels = false,
             attemptId = fixture.GetProperty("attemptId").GetInt32(), historicalTerminalMatched,
-            finalHp = hp, finalMaxHp = maxHp, finishedTurn, finishedAtUtc, finalCombatState, battle };
+            finalHp = hp, finalMaxHp = maxHp, finishedTurn, finishedAtUtc, finalCombatState, openingTerminal, battle };
     }
 }

@@ -6,7 +6,7 @@ internal static class NativeTraceReplay
     private sealed record Node(object Actions);
     private sealed record Result(object BestNode, object TurnSetupChoices);
     private static object Read(object value, string name) => value.GetType().GetProperty(name)!.GetValue(value)!;
-    public static object Run(Func<string, Type> get, Assembly solver, object combat, object player, Task terminal, JsonElement recording, NativeCombatRewards rewards)
+    public static object Run(Func<string, Type> get, Assembly solver, object combat, object player, Task terminal, JsonElement recording, NativeCombatRewards rewards, bool openingTerminal = false)
     {
         JsonElement nativeResult = recording.GetProperty("result");
         if (nativeResult.GetProperty("status").GetString() != "Passed" || !nativeResult.GetProperty("combatEnded").GetBoolean())
@@ -167,12 +167,15 @@ internal static class NativeTraceReplay
         // loop publishes CombatEnded. Await the original terminal event first.
         terminal.WaitAsync(TimeSpan.FromSeconds(10)).GetAwaiter().GetResult();
         rewards.Wait();
-        // Opening auto-plays and poison/relic effects can win a battle whose
-        // recorded player actions consist solely of ending turns. Those are
-        // real actions; require an observed action, not a manually played card.
-        if (plays + boundaries == 0 || plays - completions != (pendingPlay ? 1 : 0) || (bool)Read(cm, "IsInProgress"))
+        // Zero actions are valid only when this host observed the original
+        // terminal event before its first playable turn and the recorder agrees.
+        // Ordinary battles still require an observed play or end-turn action.
+        if ((plays + boundaries == 0) != openingTerminal || plays - completions != (pendingPlay ? 1 : 0) || (bool)Read(cm, "IsInProgress"))
             throw new InvalidOperationException("Native trace did not replay a complete battle.");
         JsonElement observation = nativeResult.GetProperty("trainingObservation");
+        bool recordedOpeningTerminal = observation.TryGetProperty("openingTerminal", out JsonElement opening) && opening.GetBoolean();
+        if (recordedOpeningTerminal != openingTerminal)
+            throw new InvalidOperationException("Native opening terminal boundary differs.");
         int hp = Convert.ToInt32(Read(hero, "CurrentHp")), maxHp = Convert.ToInt32(Read(hero, "MaxHp"));
         int finishedTurn = Convert.ToInt32(Read(pcs, "TurnNumber"));
         if (finishedTurn != nativeResult.GetProperty("finishedTurn").GetInt32())
@@ -183,6 +186,6 @@ internal static class NativeTraceReplay
         // cleanup/reward observation. Never substitute an earlier boundary.
         Compare(finalState.GetString()!, "terminal");
         return new { status = "native_fixed_action_replay_matched", productionReady = false, productionLabels = false,
-            plays, boundaries, completions, terminalBoundaryChoiceCancellations, terminalCleanupBoundaryComparisons, terminalRewardBoundaryComparisons, terminalActionWithoutPostStamp = pendingPlay, finalHp = hp, finalMaxHp = maxHp, finishedTurn, compared };
+            plays, boundaries, completions, openingTerminal, terminalBoundaryChoiceCancellations, terminalCleanupBoundaryComparisons, terminalRewardBoundaryComparisons, terminalActionWithoutPostStamp = pendingPlay, finalHp = hp, finalMaxHp = maxHp, finishedTurn, compared };
     }
 }

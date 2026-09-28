@@ -36,6 +36,7 @@ internal sealed partial class UnattendedTestRunner
             UnattendedTestRequest request = runner._request;
             runner.SetStage("game_startup");
             await runner._host.GameStartupComplete;
+            runner._nativeCombatOutcome = new NativeCombatOutcome();
             runner.ApplyHeadlessFastModeOverride();
             runner.EnsureWithinDeadline();
             if (RunManager.Instance.IsInProgress)
@@ -166,10 +167,16 @@ internal sealed partial class UnattendedTestRunner
                     [],
                     []);
             }
-            CombatState = await runner.WaitForPlayableCombatAsync();
+            CombatState = await runner.WaitForPlayableCombatAsync(allowTerminal: request.TrainingCollection);
             Player player = LocalContext.GetMe(CombatState)
                 ?? throw new InvalidOperationException("进入战斗后找不到本地玩家。");
             StartedTurn = player.PlayerCombatState!.TurnNumber;
+
+            if (request.TrainingCollection && runner._nativeCombatOutcome.HasEnded(CombatState))
+            {
+                await RunManager.Instance.ActionExecutor.FinishedExecutingActions();
+                return new ScenarioContext(character, encounter, CombatState, player, StartedTurn, [], [], []);
+            }
 
             runner.SetStage("inject_state");
             await RunManager.Instance.ActionExecutor.FinishedExecutingActions();

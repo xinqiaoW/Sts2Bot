@@ -169,6 +169,8 @@ renderer 不得重新读取 `SolverResult`、`PlanAction`、`PlanCardChoice` 或
 
 `UnattendedTestRunner.ReplayState.cs` 属于 `ScenarioBuilder` 的状态注入实现。它只接受同检查点的 `run-state` 与 schema 1 `replay-state` 组合，恢复后必须通过完整 `ContinuationStamp`；不能把部分字段相似的建局称为严格重放。
 
+`UnattendedTestRunner.NativeTerminal.cs` 持有每请求的原生胜利/结束观察。`ScenarioBuilder` 在进入遭遇之前建立观察，Runner 在 finally 解除订阅；事件按房间的 CombatState 身份匹配。训练建局可以返回已由开局效果结束的战斗，Executor 校验真实胜利/死亡并记录 openingTerminal，不伪造可行动回合或空动作。
+
 `UnattendedTestRunner.Training.cs` 只服务显式 `TrainingCollection` 请求：`ScenarioBuilder` 在原版开战前调用起始观察，Runner 在执行器与断言完成后、返回菜单前调用终局观察，由 `Writer` 输出完整净掉血标签。它不拥有搜索、评分或训练算法；训练采样器是外部进程。训练使用原版幕/房间/敌人状态，接受胜利和死亡终局。
 
 `UnattendedCombatStartReplay` 是 `ScenarioBuilder` 持有的单次开战恢复作用域。测试补丁在原版最后一个生物初始化完成后、`BeforeCombatStart` 前恢复 `phase=None` 的首回合快照，随后由原版执行开战效果与抽牌。牌堆恢复直接放回已记录状态，不重复触发生成卡牌效果；正常游戏没有活动作用域时沿原版执行。`Assertions` 可以使用 `ExpectedInitialReplayStatePath` 对比原版准备后的完整检查点，预期文件只用于断言。

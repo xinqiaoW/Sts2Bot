@@ -102,3 +102,12 @@ NativeImplicitChoiceObserver 现在保持相同判断。游戏选牌器、随机
 - 教师 `ffe59d5b…` 新录制四场并由独立宿主执行相同动作/选择：原案例 93 为 63 个动作检查点，原案例 109 为 90 个，SOUL_NEXUS_ELITE 为 58 个，只有 DEFEND_SILENT 的 TEST_SUBJECT_BOSS 为 7 个；合计 218 个动作点与 4 个完整终局点。最后一例明确断言死亡，0 HP、第 3 回合。旧死亡案例在新版搜索下获胜，按胜利保留，未冒充死亡覆盖。
 - 黑盒反例：保持全部动作与终局血量不变，只修改终局金币，在 `terminal` 被拒绝；删除 finalCombatState 被明确拒绝。44 项 Python 测试通过，Release 零警告/错误，结构门禁通过。8 秒、DOP1、120 秒请求超时未放大。
 - 证据 `coverage/complete-terminal-state-repair-20260929.json`，死亡请求 `coverage/unattended/terminal-state-defend-only-death.json`。旧 10,036 构筑/532,666 动作点结果仍是旧版本历史证据；因缺少必检终局字段，最终版本须重新原生录制，不补造字段。开局直接终局、回合开始混合效果顺序、最终全量与投产门禁仍待完成。
+
+## 开局效果直接终局（开发中，2026-09-29）
+
+- 原案例 9332（旧失败面板编号 9）在首次出牌阶段之前已由原版开局效果获胜。旧原生测试器继续等待玩家回合而超时；当前独立宿主最小基线则明确报 `Combat ended before opening`，未把这些失败改记成功。
+- 每请求 NativeCombatOutcome 在 ScenarioBuilder 进入遭遇前订阅 CombatWon/CombatEnded，并按房间 CombatState 身份记录，由 Runner finally 解除订阅。训练建局可返回原版已结束的战斗；Executor 验证原生胜利且无存活主敌人，或真实玩家死亡，记录 openingTerminal 后直接输出终局。普通测试仍等待可行动回合。
+- 独立宿主同样等待开局的原生 CombatEnded，保存事件所属战斗，输出原始完整终局状态。回放仅在原生与宿主都确认 openingTerminal 且没有手动出牌/结束回合时接受零动作；不能通过截断普通战斗录像或伪造单侧标志绕过检查。完整终局仍必检，零动作不产生动作计数。
+- 教师 `f8917ee5…` 同一原生进程连续验证：开局胜利 0 个动作点 + 1 个终局点（70 HP，第 1 回合），普通 FABRICATOR 胜利 110 + 1（45 HP，第 16 回合），仅防御牌死亡 7 + 1（0 HP，第 3 回合）。三场全部按原生动作/选择回放一致，总计 117 个动作点、3 个终局点；原生搜索路线与此前版本不同，未要求独立搜索标签相同。
+- 普通独立采集入口对原始开局请求返回 StandaloneCompleted，openingTerminal/complete 为 true，带完整终局状态。仅将原生 openingTerminal 改成 false 的黑盒反例被拒绝。51 项 Python 测试、Release 零警告/错误及结构门禁通过；固定 8 秒、DOP1、120 秒请求超时。
+- 证据 `coverage/opening-terminal-repair-20260929.json`，原始请求 `coverage/unattended/opening-terminal-original-9332.json`。回合开始混合 Power/遗物顺序、最终新字段万构筑录制、性能/长期试采与正式投产仍待完成。

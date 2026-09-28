@@ -6,7 +6,6 @@ using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions;
 using MegaCrit.Sts2.Core.Nodes.Combat;
-using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.Saves;
 using MegaCrit.Sts2.Core.Settings;
@@ -19,26 +18,6 @@ internal sealed partial class UnattendedTestRunner
     {
         private SolverSettingsData? _settingsBeforeTest;
 
-        private sealed class NativeVictoryObservation : IDisposable
-        {
-            private readonly CombatState _combat;
-            public bool Won { get; private set; }
-
-            public NativeVictoryObservation(CombatState combat)
-            {
-                _combat = combat;
-                CombatManager.Instance.CombatWon += OnWon;
-            }
-
-            private void OnWon(CombatRoom room)
-            {
-                if (ReferenceEquals(room.CombatState, _combat))
-                    Won = true;
-            }
-
-            public void Dispose() => CombatManager.Instance.CombatWon -= OnWon;
-        }
-
         public void RestoreSettings()
         {
             if (_settingsBeforeTest != null)
@@ -49,12 +28,23 @@ internal sealed partial class UnattendedTestRunner
         {
             UnattendedTestRequest request = runner._request;
             CombatState combatState = scenario.CombatState;
-            using NativeVictoryObservation victory = new(combatState);
+            NativeCombatOutcome terminal = runner._nativeCombatOutcome
+                ?? throw new InvalidOperationException("Native terminal observation was not initialized.");
             Player player = scenario.Player;
             int startedTurn = scenario.StartedTurn;
             bool expectedCardPlayed = request.ExpectedPlayedCardId == null;
             bool expectedPotionUsed = request.ExpectedUsedPotionId == null;
             bool expectedPlayerPowerObserved = request.ExpectedObservedPlayerPowerId == null;
+
+            if (request.TrainingCollection && terminal.HasEnded(combatState))
+            {
+                if (!player.Creature.IsDead && (!terminal.HasWon(combatState)
+                    || combatState.Enemies.Any(static enemy => enemy.IsAlive && enemy.IsPrimaryEnemy)))
+                    throw new InvalidOperationException("Opening combat ended without a valid native victory or player death.");
+                runner._trainingObservation!.OpeningTerminal = true;
+                runner._completedChecks.Add("NativeOpeningTerminal");
+                return Observation(combatEnded: true);
+            }
 
             if (request.VerifyTurnSetupSceneExitCancellation
                 || request.VerifyTurnSetupControlsDuringInitialSearch)
@@ -515,7 +505,7 @@ internal sealed partial class UnattendedTestRunner
                 {
                     // IsOverOrEnding can become true before the native victory
                     // pipeline finishes. Require its event for this exact room.
-                    while (!victory.Won)
+                    while (!terminal.HasWon(combatState))
                     {
                         runner.EnsureWithinDeadline();
                         await runner.NextFrameAsync();

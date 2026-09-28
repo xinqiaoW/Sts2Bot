@@ -1,0 +1,296 @@
+{
+  "actIndexForTest": 2,
+  "ascension": 10,
+  "cards": [],
+  "characterId": "SILENT",
+  "clearRunDeck": true,
+  "deploymentFastModeForTest": "Instant",
+  "deploymentInterActionDelaySecondsForTest": 0,
+  "enableDetailedDiagnosticLogsForTest": false,
+  "enableNoGcRegionForTest": false,
+  "encounterId": "SCROLLS_OF_BITING_NORMAL",
+  "exitOnComplete": false,
+  "forceShortSearchOnly": true,
+  "headlessFastModeForTest": "Instant",
+  "performancePresetForTest": "Medium",
+  "potionPolicyForTest": "Disabled",
+  "potions": [],
+  "relics": [
+    {
+      "addWithoutObtainedEffects": true,
+      "booleanMembers": {},
+      "integerMembers": {},
+      "relicId": "CURSED_PEARL"
+    },
+    {
+      "addWithoutObtainedEffects": true,
+      "booleanMembers": {},
+      "integerMembers": {},
+      "relicId": "FRESNEL_LENS"
+    },
+    {
+      "addWithoutObtainedEffects": true,
+      "booleanMembers": {},
+      "integerMembers": {},
+      "relicId": "ANCHOR"
+    },
+    {
+      "addWithoutObtainedEffects": true,
+      "booleanMembers": {},
+      "integerMembers": {},
+      "relicId": "PANTOGRAPH"
+    },
+    {
+      "addWithoutObtainedEffects": true,
+      "booleanMembers": {},
+      "integerMembers": {},
+      "relicId": "JUZU_BRACELET"
+    },
+    {
+      "addWithoutObtainedEffects": true,
+      "booleanMembers": {},
+      "integerMembers": {},
+      "relicId": "MUMMIFIED_HAND"
+    },
+    {
+      "addWithoutObtainedEffects": true,
+      "booleanMembers": {},
+      "integerMembers": {},
+      "relicId": "TINGSHA"
+    },
+    {
+      "addWithoutObtainedEffects": true,
+      "booleanMembers": {},
+      "integerMembers": {},
+      "relicId": "RADIANT_PEARL"
+    },
+    {
+      "addWithoutObtainedEffects": true,
+      "booleanMembers": {},
+      "integerMembers": {},
+      "relicId": "PERMAFROST"
+    },
+    {
+      "addWithoutObtainedEffects": true,
+      "booleanMembers": {},
+      "integerMembers": {
+        "CardsAdded": 3
+      },
+      "relicId": "BOOK_OF_FIVE_RINGS"
+    },
+    {
+      "addWithoutObtainedEffects": true,
+      "booleanMembers": {},
+      "integerMembers": {},
+      "relicId": "CENTENNIAL_PUZZLE"
+    },
+    {
+      "addWithoutObtainedEffects": true,
+      "booleanMembers": {},
+      "integerMembers": {},
+      "relicId": "WHISPERING_EARRING"
+    },
+    {
+      "addWithoutObtainedEffects": true,
+      "booleanMembers": {},
+      "integerMembers": {
+        "SkillsPlayed": 4
+      },
+      "relicId": "TUNING_FORK"
+    },
+    {
+      "addWithoutObtainedEffects": true,
+      "booleanMembers": {},
+      "integerMembers": {},
+      "relicId": "LETTER_OPENER"
+    }
+  ],
+  "runCards": [
+    {
+      "cardId": "ASCENDERS_BANE",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "BACKFLIP",
+      "count": 1,
+      "enchantmentAmount": 2,
+      "enchantmentId": "NIMBLE",
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "BACKFLIP",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "BLUR",
+      "count": 1,
+      "enchantmentAmount": 2,
+      "enchantmentId": "NIMBLE",
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "BUBBLE_BUBBLE",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "DEFEND_SILENT",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "DEFEND_SILENT",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "DEFEND_SILENT",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "DEFEND_SILENT",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "DEFEND_SILENT",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "DEFLECT",
+      "count": 1,
+      "enchantmentAmount": 2,
+      "enchantmentId": "NIMBLE",
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "DODGE_AND_ROLL",
+      "count": 1,
+      "enchantmentAmount": 2,
+      "enchantmentId": "NIMBLE",
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "DRAMATIC_ENTRANCE",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "FAN_OF_KNIVES",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "FOOTWORK",
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    {
+      "cardId": "GREED",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "HAZE",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "LEADING_STRIKE",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "LEADING_STRIKE",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "MAD_SCIENCE",
+      "count": 1,
+      "savedIntegerMembers": {
+        "TinkerTimeRider": 7,
+        "TinkerTimeType": 3
+      },
+      "upgradeLevels": 1
+    },
+    {
+      "cardId": "NEUTRALIZE",
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    {
+      "cardId": "PHANTOM_BLADES",
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    {
+      "cardId": "PIERCING_WAIL",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "PIERCING_WAIL",
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    {
+      "cardId": "PREDATOR",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "PREPARED",
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    {
+      "cardId": "SHADOWMELD",
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    {
+      "cardId": "SIDESTEP",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "SPLASH",
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    {
+      "cardId": "SQUASH",
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    {
+      "cardId": "STRIKE_SILENT",
+      "count": 1,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "STRIKE_SILENT",
+      "count": 1,
+      "upgradeLevels": 1
+    },
+    {
+      "cardId": "SURVIVOR",
+      "count": 1,
+      "upgradeLevels": 0
+    }
+  ],
+  "runId": "40d0450ce4fb46cd8b9ac61a4600dcd3",
+  "scenarioId": "HP-e5ff0d20b067415e",
+  "schemaVersion": 1,
+  "searchMaxDegreeOfParallelismForTest": 1,
+  "seed": "6557367fa7ca2654",
+  "shortSearchBudgetOverrideMilliseconds": 8000,
+  "timeoutSeconds": 120,
+  "trainingActId": "GLORY",
+  "trainingCollection": true
+}

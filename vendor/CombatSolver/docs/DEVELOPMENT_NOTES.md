@@ -1,5 +1,14 @@
 # CombatSolver 开发笔记与未来构想
 
+## 开局效果直接终局（开发中，2026-09-29）
+
+- 原案例 9332（旧失败面板编号 9）在首次出牌阶段之前已由原版开局效果获胜。旧原生测试器继续等待玩家回合而超时；当前独立宿主最小基线则明确报 `Combat ended before opening`，未把这些失败改记成功。
+- 每请求 NativeCombatOutcome 在 ScenarioBuilder 进入遭遇前订阅 CombatWon/CombatEnded，并按房间 CombatState 身份记录，由 Runner finally 解除订阅。训练建局可返回原版已结束的战斗；Executor 验证原生胜利且无存活主敌人，或真实玩家死亡，记录 openingTerminal 后直接输出终局。普通测试仍等待可行动回合。
+- 独立宿主同样等待开局的原生 CombatEnded，保存事件所属战斗，输出原始完整终局状态。回放仅在原生与宿主都确认 openingTerminal 且没有手动出牌/结束回合时接受零动作；不能通过截断普通战斗录像或伪造单侧标志绕过检查。完整终局仍必检，零动作不产生动作计数。
+- 教师 `f8917ee5…` 同一原生进程连续验证：开局胜利 0 个动作点 + 1 个终局点（70 HP，第 1 回合），普通 FABRICATOR 胜利 110 + 1（45 HP，第 16 回合），仅防御牌死亡 7 + 1（0 HP，第 3 回合）。三场全部按原生动作/选择回放一致，总计 117 个动作点、3 个终局点；原生搜索路线与此前版本不同，未要求独立搜索标签相同。
+- 普通独立采集入口对原始开局请求返回 StandaloneCompleted，openingTerminal/complete 为 true，带完整终局状态。仅将原生 openingTerminal 改成 false 的黑盒反例被拒绝。51 项 Python 测试、Release 零警告/错误及结构门禁通过；固定 8 秒、DOP1、120 秒请求超时。
+- 证据 `coverage/opening-terminal-repair-20260929.json`，原始请求 `coverage/unattended/opening-terminal-original-9332.json`。回合开始混合 Power/遗物顺序、最终新字段万构筑录制、性能/长期试采与正式投产仍待完成。
+
 ## 完整终局状态验收（开发中，2026-09-29）
 
 - 旧回放只保证动作前/后完整状态以及终局 HP、最大 HP、回合数，最后一次结束回合后的敌方阵容等字段没有必检点。新增反例证明旧审计器会接受缺失完整终局状态的录像；该失败基线保留。

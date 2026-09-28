@@ -193,6 +193,7 @@ internal sealed partial class UnattendedTestRunner
         }
         finally
         {
+            _nativeCombatOutcome?.Dispose();
             _executor.RestoreSettings();
             RestoreHeadlessFastModeOverride();
         }
@@ -426,7 +427,7 @@ internal sealed partial class UnattendedTestRunner
                 power.Id.Entry.Equals(expectedPowerId, StringComparison.OrdinalIgnoreCase)
                 || power.GetType().Name.Equals(expectedPowerId, StringComparison.OrdinalIgnoreCase));
 
-    private async Task<CombatState> WaitForPlayableCombatAsync()
+    private async Task<CombatState> WaitForPlayableCombatAsync(bool allowTerminal = false)
     {
         bool turnSetupPlanAccepted = false;
         bool initialSetupPauseVerified = false;
@@ -439,6 +440,8 @@ internal sealed partial class UnattendedTestRunner
         {
             EnsureWithinDeadline();
             CombatState? state = CombatManager.Instance.DebugOnlyGetState();
+            if (allowTerminal && _nativeCombatOutcome?.EndedCombat is { } ended)
+                return ended;
             Player? player = state == null ? null : LocalContext.GetMe(state);
             if (_request.VerifyTurnSetupControlsDuringInitialSearch
                 && !initialSearchControlsSubmitted

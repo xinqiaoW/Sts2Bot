@@ -1,0 +1,216 @@
+{
+  "schema": "opening-terminal-repair/v1",
+  "teacher": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/opening-terminal-repair/candidate-source/.godot/mono/temp/bin/Release/CombatSolver.dll",
+    "sha256": "f8917ee5a60bc94c1b8a5cd23318ab6373f46642f6eec49d30a9441e88cc03c0"
+  },
+  "host": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/opening-terminal-repair/candidate-host/bin/Release/net9.0/SimulatorPrototype.dll",
+    "sha256": "046fbc7a6105608e9884031c5f1ed9e657da9d1693cafbe9ae6f457097b3d493"
+  },
+  "reports": {
+    "baseline-report.json": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/opening-terminal-repair/baseline-report.json",
+      "sha256": "11ec6a2c0907c577db77ff8673db72e10d9ac4be618d1c8da92c2446fd172e2f"
+    },
+    "native-check/report.json": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/opening-terminal-repair/native-check/report.json",
+      "sha256": "c2168a5de710a88a5235cbab617886a893f28b0892ed535b2dc2785826af544b"
+    },
+    "direct-report.json": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/opening-terminal-repair/direct-report.json",
+      "sha256": "adf1502824df2e497f69424b65d96803862c9176af9bc79e85ecc630b6be3e16"
+    },
+    "negative-check/report.json": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/opening-terminal-repair/negative-check/report.json",
+      "sha256": "e12494ccce4b22c1767e7e6b9ecdd0fec60ea9c25f0616caba1704e7f0375fa5"
+    },
+    "validator-tests.log": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/opening-terminal-repair/validator-tests.log",
+      "sha256": "299d2c95f346ce8def8e5c381f81068a248276465dc20c200182eb0d6c2d8b62"
+    },
+    "candidate-build.log": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/opening-terminal-repair/candidate-build.log",
+      "sha256": "0c677ae70069233dca4147b51a37a322e0a6636da64960625cf99279d3156688"
+    },
+    "host-build.log": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/opening-terminal-repair/host-build.log",
+      "sha256": "309da4b7a376f356943e48be2d05ae7e6a2a88e0e0817a1dc29e62d2427c2bc4"
+    },
+    "boundaries.log": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/opening-terminal-repair/boundaries.log",
+      "sha256": "deca91a103cbb776e0d96749d3a9a9df66ee078c8c763e793a82e7e81cc80377"
+    }
+  },
+  "native": {
+    "complete": true,
+    "passed": true,
+    "results": [
+      {
+        "checkpoints": 0,
+        "command": [
+          "/data1/pl/ImageTask/wxq/Projects/standalone-checkpoints-20260924/runtime-tools/dotnet/dotnet",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/opening-terminal-repair/candidate-host/bin/Release/net9.0/SimulatorPrototype.dll",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/opening-terminal-repair/native-check/game",
+          "--replay-native-request",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/opening-terminal-repair/native-check/opening-win/replay.json",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-20260927-release/progress-snapshot.json"
+        ],
+        "exitCode": 0,
+        "finalHp": 70,
+        "finishedTurn": 1,
+        "name": "opening-win",
+        "native": {
+          "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/opening-terminal-repair/native-check/opening-win/native.json",
+          "sha256": "2e6e553f2a594368b298e5587edfb34b545902d8bf7119fe0adc8b15388f8da7"
+        },
+        "nativeComplete": true,
+        "openingBoundaryMatches": true,
+        "openingTerminal": true,
+        "passed": true,
+        "plays": 0,
+        "replay": {
+          "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/opening-terminal-repair/native-check/opening-win/replay.log",
+          "sha256": "67bcbb70b253c6b185d11b093478cb9db255de642b959e07719877086546dad3"
+        },
+        "terminalBoundaryChoiceCancellations": 0,
+        "terminalCheckpoints": 1,
+        "terminalCleanupBoundaryComparisons": 0,
+        "terminalRewardBoundaryComparisons": 0,
+        "terminalStateVerified": true
+      },
+      {
+        "checkpoints": 110,
+        "command": [
+          "/data1/pl/ImageTask/wxq/Projects/standalone-checkpoints-20260924/runtime-tools/dotnet/dotnet",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/opening-terminal-repair/candidate-host/bin/Release/net9.0/SimulatorPrototype.dll",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/opening-terminal-repair/native-check/game",
+          "--replay-native-request",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/opening-terminal-repair/native-check/ordinary-win/replay.json",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-20260927-release/progress-snapshot.json"
+        ],
+        "exitCode": 0,
+        "finalHp": 45,
+        "finishedTurn": 16,
+        "name": "ordinary-win",
+        "native": {
+          "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/opening-terminal-repair/native-check/ordinary-win/native.json",
+          "sha256": "c310996c96ae7441d00758bbf8a1a0d4cd9638bc7f13f8e434c377e48dc5d77c"
+        },
+        "nativeComplete": true,
+        "openingBoundaryMatches": true,
+        "openingTerminal": false,
+        "passed": true,
+        "plays": 47,
+        "replay": {
+          "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/opening-terminal-repair/native-check/ordinary-win/replay.log",
+          "sha256": "96b174d0db3828cce8f88d74c91af47abb1699f75a7860856e3f1d3c6aa7b858"
+        },
+        "terminalBoundaryChoiceCancellations": 0,
+        "terminalCheckpoints": 1,
+        "terminalCleanupBoundaryComparisons": 0,
+        "terminalRewardBoundaryComparisons": 0,
+        "terminalStateVerified": true
+      },
+      {
+        "checkpoints": 7,
+        "command": [
+          "/data1/pl/ImageTask/wxq/Projects/standalone-checkpoints-20260924/runtime-tools/dotnet/dotnet",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/opening-terminal-repair/candidate-host/bin/Release/net9.0/SimulatorPrototype.dll",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/opening-terminal-repair/native-check/game",
+          "--replay-native-request",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/opening-terminal-repair/native-check/defend-only-death/replay.json",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-20260927-release/progress-snapshot.json"
+        ],
+        "deathAssertionPassed": true,
+        "exitCode": 0,
+        "finalHp": 0,
+        "finishedTurn": 3,
+        "name": "defend-only-death",
+        "native": {
+          "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/opening-terminal-repair/native-check/defend-only-death/native.json",
+          "sha256": "a1313c7bb9813bedafa344c7cecaa6eaf433cfe23de8f05e2b4d6dc43a2fa680"
+        },
+        "nativeComplete": true,
+        "openingBoundaryMatches": true,
+        "openingTerminal": false,
+        "passed": true,
+        "plays": 2,
+        "replay": {
+          "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/opening-terminal-repair/native-check/defend-only-death/replay.log",
+          "sha256": "21121144dc7c3b61e8d7c43bc6c4d88e59303fb1815eb453b416beaaa175363e"
+        },
+        "terminalBoundaryChoiceCancellations": 0,
+        "terminalCheckpoints": 1,
+        "terminalCleanupBoundaryComparisons": 0,
+        "terminalRewardBoundaryComparisons": 0,
+        "terminalStateVerified": true
+      }
+    ]
+  },
+  "direct": {
+    "passed": true
+  },
+  "negative": {
+    "passed": true,
+    "exitCode": 1,
+    "terminal": {
+      "status": "blocked",
+      "stage": "formal_request_restoration",
+      "error": "System.InvalidOperationException: Native opening terminal boundary differs.\n   at NativeTraceReplay.Run(Func`2 get, Assembly solver, Object combat, Object player, Task terminal, JsonElement recording, NativeCombatRewards rewards, Boolean openingTerminal) in /data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/opening-terminal-repair/candidate-host/NativeTraceReplay.cs:line 178\n   at RequestBattleProbe.Run(Func`2 get, Assembly solver, Object run, Object player, JsonElement fixture, Boolean compareHistorical, Boolean nativeReplay, Boolean injectExhaustedPlanOnce, Boolean injectDeploymentDriftOnce, Boolean injectMissingCardOnce, Boolean injectUnconsumedChoiceOnce) in /data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/opening-terminal-repair/candidate-host/RequestBattleProbe.cs:line 136\n   at Program.<Main>$(String[] args) in /data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/opening-terminal-repair/candidate-host/Program.cs:line 115",
+      "productionReady": false,
+      "productionLabels": false
+    },
+    "source": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/opening-terminal-repair/native-check/opening-win/replay.json",
+      "sha256": "29fdb24161c2f5657d827a9f97d70f2a2e7419819672fd831b4524e16625afd8"
+    },
+    "fixture": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/opening-terminal-repair/negative-check/wrong-opening-marker.json",
+      "sha256": "63c3a6918fdf40683fb4a084e27020735df8384b1599a5058b3cded9f96147aa"
+    },
+    "log": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/opening-terminal-repair/negative-check/replay.log",
+      "sha256": "436c923692efa97a9c184232da19303c641fef84cfcc0bb620077639fa61ff20"
+    },
+    "command": [
+      "/data1/pl/ImageTask/wxq/Projects/standalone-checkpoints-20260924/runtime-tools/dotnet/dotnet",
+      "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/opening-terminal-repair/candidate-host/bin/Release/net9.0/SimulatorPrototype.dll",
+      "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/opening-terminal-repair/native-check/game",
+      "--replay-native-request",
+      "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/opening-terminal-repair/negative-check/wrong-opening-marker.json",
+      "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-20260927-release/progress-snapshot.json"
+    ]
+  },
+  "scripts": {
+    "build_candidate.py": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/opening-terminal-repair/build_candidate.py",
+      "sha256": "9fa21f553b13793967395f73e528b1212584e356886d9aab556dbe03ba2a1f46"
+    },
+    "prepare_candidate.py": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/opening-terminal-repair/prepare_candidate.py",
+      "sha256": "330e0f9aa69198e351dfda8549ff478c96c9d5326c557be8003f8fb1c44f5b3b"
+    },
+    "check_native.py": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/opening-terminal-repair/check_native.py",
+      "sha256": "cd9a4bdb644b3afa4b9f4fb29dc8576eef095dd7db9990e5aa0c3bc7ac4c5726"
+    },
+    "check_direct.py": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/opening-terminal-repair/check_direct.py",
+      "sha256": "1ce0943fb9dd6ed8bec8c403bb79ca485771960fa2e51c4291a61b07dfd7597c"
+    },
+    "check_negative.py": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/opening-terminal-repair/check_negative.py",
+      "sha256": "bedfc0394e18ffd7a3f718dfdfe38e5e9755917a385302fa5643b9f95d93598f"
+    },
+    "validator-source.py": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/opening-terminal-repair/validator-source.py",
+      "sha256": "94df548a778d835a58e524483b3bf123e997c7865f10f7b5232107becd91fbe8"
+    }
+  },
+  "matchedActionCheckpoints": 117,
+  "matchedTerminalCheckpoints": 3,
+  "unitTestsPassed": 51,
+  "productionReady": false,
+  "productionDeployed": false
+}

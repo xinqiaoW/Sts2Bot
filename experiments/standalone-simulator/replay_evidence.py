@@ -105,10 +105,17 @@ def validate_replay(native, result, *, require_terminal_state=True):
             require(kind in ('initialized', 'choice_plan'), f'Unexpected event {kind}')
             if kind == 'choice_plan' and value['owner'].startswith('deployment_end_turn:'):
                 planned_boundary_choices = len(value['choices'])
-    require(plays + boundaries > 0, 'No recorded combat action')
-    terminal_state = native['result']['trainingObservation'].get('finalCombatState')
+    observation = native['result']['trainingObservation']
+    opening_terminal = observation.get('openingTerminal', False)
+    require(type(opening_terminal) is bool, 'Invalid native opening terminal marker')
+    require(plays + boundaries > 0 or opening_terminal, 'No recorded combat action')
+    require((plays + boundaries == 0) == opening_terminal
+            and result.get('openingTerminal', False) is opening_terminal
+            and result['battle'].get('openingTerminal', False) is opening_terminal,
+            'Opening terminal boundary mismatch')
+    terminal_state = observation.get('finalCombatState')
     has_terminal_state = isinstance(terminal_state, str) and bool(terminal_state.strip())
-    require(not require_terminal_state or has_terminal_state, 'Missing native complete terminal state')
+    require(not (require_terminal_state or opening_terminal) or has_terminal_state, 'Missing native complete terminal state')
     action_checkpoints = len(expected)
     if has_terminal_state:
         require(result.get('finalCombatState') == terminal_state, 'Complete terminal state mismatch')
@@ -148,7 +155,7 @@ def validate_replay(native, result, *, require_terminal_state=True):
         setup_choices = sum(len(e['value']['choices']) for e in trailing)
         require(cancelled <= last_boundary_choices + setup_choices,
                 'Cancelled choice count exceeds the recorded terminal boundary plan')
-    return dict(plays=plays, checkpoints=action_checkpoints, terminalCheckpoints=int(has_terminal_state),
+    return dict(plays=plays, checkpoints=action_checkpoints, openingTerminal=opening_terminal, terminalCheckpoints=int(has_terminal_state),
                 terminalStateVerified=has_terminal_state, finalHp=result['finalHp'], finishedTurn=result['finishedTurn'],
                 terminalCleanupBoundaryComparisons=battle['terminalCleanupBoundaryComparisons'],
                 terminalRewardBoundaryComparisons=battle.get('terminalRewardBoundaryComparisons', 0),
