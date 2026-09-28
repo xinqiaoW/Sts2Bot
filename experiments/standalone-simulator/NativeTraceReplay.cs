@@ -78,7 +78,7 @@ internal static class NativeTraceReplay
             switch (kind)
             {
                 case "initialized":
-                    if (sequence != 1 || value.GetProperty("collectorSha256").GetString() != HostAdapter.SolverHash)
+                    if (sequence != 1 || !NativeTraceIdentity.IsReviewedCollector(value.GetProperty("collectorSha256").GetString()))
                         throw new InvalidOperationException("Native trace identity mismatch.");
                     break;
                 case "choice_plan":

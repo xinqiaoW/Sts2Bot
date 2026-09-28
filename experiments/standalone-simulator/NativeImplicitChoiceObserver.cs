@@ -9,6 +9,7 @@ internal sealed class NativeImplicitChoiceObserver : IDisposable
     private static NativeImplicitChoiceObserver? current;
     private static bool installed;
     private readonly object selector, player;
+    private readonly PropertyInfo gameSelector;
     private Exception? failure;
     private static object[] Items(object value) => ((System.Collections.IEnumerable)value).Cast<object>().ToArray();
     private static object Read(object value, string name) => value.GetType().GetProperty(name)!.GetValue(value)!;
@@ -17,6 +18,7 @@ internal sealed class NativeImplicitChoiceObserver : IDisposable
     {
         if (current != null) throw new InvalidOperationException("Nested implicit choice observer.");
         this.selector = selector; this.player = player;
+        gameSelector = get("Commands.CardSelectCmd").GetProperty("Selector")!;
         if (!installed)
         {
             Assembly harmony = Assembly.Load("0Harmony");
@@ -51,6 +53,10 @@ internal sealed class NativeImplicitChoiceObserver : IDisposable
     {
         var scope = current;
         if (scope == null || !ReferenceEquals(scope.player, __args[1]) || (bool)__args[5]) return;
+        // Original NativeChoiceRuntime.Observe ignores deterministic game selectors.
+        // Auto-play installs one above the local teacher selector; its choices
+        // belong to the game's RNG, not to the recorded local choice plan.
+        if (scope.gameSelector.GetValue(null) != null) return;
         try { scope.Consume(__args); }
         catch (Exception error) { scope.failure ??= error; throw; }
     }
