@@ -1,0 +1,124 @@
+{
+  "schema": "before-hand-draw-order-repair/v1",
+  "teacher": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/hand-draw-order-repair/candidate-source/.godot/mono/temp/bin/Release/CombatSolver.dll",
+    "sha256": "9e96a864a983561e926183248213538e87c2b33bed7259480e4b95b80cf57572"
+  },
+  "baseline": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/hand-draw-order-repair/baseline/report.json",
+    "sha256": "e64cfd6b1b2dffca5fc52ef3460ff0c50c1c8508ed568ddeeeb27f1325fbfd03"
+  },
+  "validation": {
+    "passed": true,
+    "results": [
+      {
+        "scenario": "blades-nightmare",
+        "teacherSha256": "9e96a864a983561e926183248213538e87c2b33bed7259480e4b95b80cf57572",
+        "exitCode": 0,
+        "terminal": {
+          "status": "hand_draw_order_passed"
+        },
+        "command": [
+          "/data1/pl/ImageTask/wxq/Projects/standalone-checkpoints-20260924/runtime-tools/dotnet/dotnet",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/hand-draw-order-repair/candidate/host/bin/Release/net9.0/SimulatorPrototype.dll",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/hand-draw-order-repair/candidate/game",
+          "--execute-request",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/hand-draw-order-repair/candidate/blades-nightmare/request.json",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-20260929-release/progress-snapshot.json"
+        ]
+      },
+      {
+        "scenario": "nightmare-blades",
+        "teacherSha256": "9e96a864a983561e926183248213538e87c2b33bed7259480e4b95b80cf57572",
+        "exitCode": 0,
+        "terminal": {
+          "status": "hand_draw_order_passed"
+        },
+        "command": [
+          "/data1/pl/ImageTask/wxq/Projects/standalone-checkpoints-20260924/runtime-tools/dotnet/dotnet",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/hand-draw-order-repair/candidate/host/bin/Release/net9.0/SimulatorPrototype.dll",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/hand-draw-order-repair/candidate/game",
+          "--execute-request",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/hand-draw-order-repair/candidate/nightmare-blades/request.json",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-20260929-release/progress-snapshot.json"
+        ]
+      },
+      {
+        "scenario": "interleaved-instances",
+        "teacherSha256": "9e96a864a983561e926183248213538e87c2b33bed7259480e4b95b80cf57572",
+        "exitCode": 0,
+        "terminal": {
+          "status": "hand_draw_order_passed"
+        },
+        "command": [
+          "/data1/pl/ImageTask/wxq/Projects/standalone-checkpoints-20260924/runtime-tools/dotnet/dotnet",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/hand-draw-order-repair/candidate/host/bin/Release/net9.0/SimulatorPrototype.dll",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/hand-draw-order-repair/candidate/game",
+          "--execute-request",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/hand-draw-order-repair/candidate/interleaved-instances/request.json",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-20260929-release/progress-snapshot.json"
+        ]
+      },
+      {
+        "scenario": "random-after-fixed",
+        "teacherSha256": "9e96a864a983561e926183248213538e87c2b33bed7259480e4b95b80cf57572",
+        "exitCode": 0,
+        "terminal": {
+          "status": "hand_draw_order_passed"
+        },
+        "command": [
+          "/data1/pl/ImageTask/wxq/Projects/standalone-checkpoints-20260924/runtime-tools/dotnet/dotnet",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/hand-draw-order-repair/candidate/host/bin/Release/net9.0/SimulatorPrototype.dll",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/hand-draw-order-repair/candidate/game",
+          "--execute-request",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/hand-draw-order-repair/candidate/random-after-fixed/request.json",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-20260929-release/progress-snapshot.json"
+        ]
+      },
+      {
+        "scenario": "ninja-overflow",
+        "teacherSha256": "9e96a864a983561e926183248213538e87c2b33bed7259480e4b95b80cf57572",
+        "exitCode": 0,
+        "terminal": {
+          "status": "hand_draw_order_passed"
+        },
+        "command": [
+          "/data1/pl/ImageTask/wxq/Projects/standalone-checkpoints-20260924/runtime-tools/dotnet/dotnet",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/hand-draw-order-repair/candidate/host/bin/Release/net9.0/SimulatorPrototype.dll",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/hand-draw-order-repair/candidate/game",
+          "--execute-request",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/hand-draw-order-repair/candidate/ninja-overflow/request.json",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-20260929-release/progress-snapshot.json"
+        ]
+      }
+    ]
+  },
+  "reports": {
+    "candidate/report.json": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/hand-draw-order-repair/candidate/report.json",
+      "sha256": "4caaf0d2843721a43d2db839943bb355e5f0fbed8fdd2c9262f565bb010af752"
+    },
+    "candidate-build.log": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/hand-draw-order-repair/candidate-build.log",
+      "sha256": "e2c32343dc71c4e60bb1563b24d5a5f54ea6dc455a1979d7b7b34b92eeaeaa75"
+    },
+    "boundaries.log": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/hand-draw-order-repair/boundaries.log",
+      "sha256": "deca91a103cbb776e0d96749d3a9a9df66ee078c8c763e793a82e7e81cc80377"
+    },
+    "check_candidate.py": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/hand-draw-order-repair/check_candidate.py",
+      "sha256": "90bfc8d1fa5d789a4983d958e1a5d509d0daf8048df51a429988742e06fe6c40"
+    },
+    "check_baseline.py": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/hand-draw-order-repair/check_baseline.py",
+      "sha256": "a84dcee24f4d427ab5e0735a028b9bbd218b08ad7c8eb9e64b45fa0df23d0e4e"
+    }
+  },
+  "scope": "Original Hook.BeforeHandDraw vs predicted root and fork, complete ContinuationStamp in five isolated processes. No whole-battle or final release claim.",
+  "pending": [
+    "New ordinary/instanced power application interleaving and remove/reapply order",
+    "Power order in fingerprint and continuation",
+    "Fresh final 10000-build/500000-action/80-target campaign and production gates"
+  ]
+}

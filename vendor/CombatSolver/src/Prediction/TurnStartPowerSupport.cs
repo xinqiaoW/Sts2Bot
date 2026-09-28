@@ -107,6 +107,25 @@ internal static class TurnStartPowerSupport
             if (power.Amount <= 0 || !ReferenceEquals(power.Owner.Player, player))
                 continue;
 
+            // Hook.BeforeHandDraw consumes one snapshot in power application
+            // order. Do not defer fixed generators until after other powers/relics.
+            switch (power)
+            {
+                case NightmarePower nightmare:
+                    combat.TriggerNightmareBeforeHandDraw(simulator, nightmare, player);
+                    continue;
+                case InfiniteBladesPower:
+                    if (!simulator.IsOverOrEnding)
+                        simulator.CreateAndAddGeneratedCardsToCombat<Shiv>(
+                            player, PileType.Hand, power.Amount, player);
+                    continue;
+                case SentryModePower:
+                    for (int index = 0; index < power.Amount; index++)
+                        simulator.CreateAndAddGeneratedCardsToCombat<SweepingGaze>(
+                            player, PileType.Hand, 1, player);
+                    continue;
+            }
+
             if (power is ForegoneConclusionPower)
             {
                 SimPlayerCombatState state = simulator.State.GetPlayerCombatState(player);

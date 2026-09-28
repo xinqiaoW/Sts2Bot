@@ -1,5 +1,13 @@
 # CombatSolver 测试清单
 
+## 抽牌前能力与遗物结算顺序（开发中，2026-09-29）
+
+- 最小失败基线：先施加 INFINITE_BLADES_POWER，再施加 NIGHTMARE_POWER。原版 Hook.BeforeHandDraw 先生成小刀，再生成选定卡的复制；旧模拟按效果类别分组，先复制后生成小刀，完整状态在 H[7] 出现首个差异。
+- TurnStartPowerSupport 在同一个能力监听器快照中按顺序执行固定生成、随机生成与选牌效果，随后才进入遗物与已捕获的返手卡牌。Nightmare 延迟模板仍由分支状态持有，逐张克隆并加入牌堆；SentryMode 同样逐张生成，小刀保留原版终局保护。删除原先在遗物之后补跑的重复分类循环。
+- 隔离宿主直接调用原版 Hook.BeforeHandDraw，与同根预测及 Fork 分别比较完整 ContinuationStamp。五例通过：正序、反序、两个 Nightmare 实例交错、小刀/HelloWorld/复制混合、NinjaScroll 满手牌溢出。每例独立进程，保留原版与预测差分异常；不是只比较 HP 或牌数。Release 零警告/错误，结构门禁通过，120 秒上限未增加。
+- 可重跑夹具为 `UnattendedTestRunner.BeforeHandDraw.cs` 中的 `AssertBeforeHandDrawOrderAsync`，参数依次为 combat、player、scenario；通过证据中的隔离宿主脚本反射调用，避免污染普通测试的 live 战斗。基础请求 `coverage/unattended/before-hand-draw-order-minimal.json`，证据 `coverage/before-hand-draw-order-repair-20260929.json`。
+- 范围边界：本次覆盖根中已经生效的能力顺序。新施加的普通/多实例能力交错、移除重加，以及顺序进入状态指纹和完整续用文本仍待处理。最终万构筑新录制、性能/长期试采与正式采集尚未完成。
+
 ## 开局效果直接终局（开发中，2026-09-29）
 
 - 原案例 9332（旧失败面板编号 9）在首次出牌阶段之前已由原版开局效果获胜。旧原生测试器继续等待玩家回合而超时；当前独立宿主最小基线则明确报 `Combat ended before opening`，未把这些失败改记成功。

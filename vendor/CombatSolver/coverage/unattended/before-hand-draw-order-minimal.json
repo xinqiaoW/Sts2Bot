@@ -1,0 +1,40 @@
+{
+  "actIndexForTest": 2,
+  "ascension": 10,
+  "cards": [],
+  "characterId": "SILENT",
+  "clearRunDeck": true,
+  "deploymentFastModeForTest": "Instant",
+  "deploymentInterActionDelaySecondsForTest": 0,
+  "enableDetailedDiagnosticLogsForTest": false,
+  "enableNoGcRegionForTest": false,
+  "encounterId": "SCROLLS_OF_BITING_WEAK",
+  "exitOnComplete": false,
+  "forceShortSearchOnly": true,
+  "headlessFastModeForTest": "Instant",
+  "performancePresetForTest": "Medium",
+  "potionPolicyForTest": "Disabled",
+  "potions": [],
+  "relics": [],
+  "runCards": [
+    {
+      "cardId": "STRIKE_SILENT",
+      "count": 5,
+      "upgradeLevels": 0
+    },
+    {
+      "cardId": "DEFEND_SILENT",
+      "count": 5,
+      "upgradeLevels": 0
+    }
+  ],
+  "runId": "783824564a6a4711b96bd712507918e2",
+  "scenarioId": "DIAGNOSTIC-NINJA-SCROLL-TOASTY",
+  "schemaVersion": 1,
+  "searchMaxDegreeOfParallelismForTest": 1,
+  "seed": "024c6eff66d79429",
+  "shortSearchBudgetOverrideMilliseconds": 8000,
+  "timeoutSeconds": 120,
+  "trainingActId": "GLORY",
+  "trainingCollection": true
+}

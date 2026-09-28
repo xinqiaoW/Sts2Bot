@@ -80,6 +80,23 @@ internal sealed partial class SimulatedCombatState
         (_nightmareSelections ??= [])[mutable] = PredictedCard.FromGenerated(snapshot);
     }
 
+    internal void TriggerNightmareBeforeHandDraw(
+        CombatPredictionSimulator simulator,
+        NightmarePower power,
+        Player player)
+    {
+        if (_nightmareSelections?.TryGetValue(power, out PredictedCard? selected) != true)
+            throw new InvalidOperationException("Nightmare selection was not captured before hand draw.");
+        // Vanilla clones and inserts each copy before creating the next one.
+        for (int index = 0; index < power.Amount; index++)
+        {
+            simulator.AddGeneratedCardsToCombat(
+                [selected.CreateClone()], PileType.Hand, player,
+                CardPilePosition.Bottom, CardGenerationResultKind.Fixed);
+        }
+        SetPowerAmount(power, 0);
+    }
+
     public void SummonOsty(CombatPredictionSimulator simulator, Player player, int amount)
     {
         if (amount <= 0)
@@ -377,51 +394,6 @@ internal sealed partial class SimulatedCombatState
             return true;
         if (PrepareRelicsBeforeHandDraw(simulator, player, choices))
             return true;
-
-        if (_nightmareSelections != null)
-        {
-            foreach ((NightmarePower power, PredictedCard selected) in _nightmareSelections.ToArray())
-            {
-                if (power.Amount <= 0 || !ReferenceEquals(power.Owner.Player, player))
-                    continue;
-                List<PredictedCard> copies = new(power.Amount);
-                for (int index = 0; index < power.Amount; index++)
-                {
-                    PredictedCard copy = selected.CreateClone();
-                    copies.Add(copy);
-                }
-                simulator.AddGeneratedCardsToCombat(
-                    copies,
-                    PileType.Hand,
-                    player,
-                    CardPilePosition.Bottom,
-                    CardGenerationResultKind.Fixed);
-                SetPowerAmount(power, 0);
-            }
-        }
-
-        foreach (PowerModel power in EffectivePowers().ToArray())
-        {
-            if (power.Amount <= 0 || !ReferenceEquals(power.Owner.Player, player))
-                continue;
-            CardModel? canonical = power switch
-            {
-                InfiniteBladesPower => CanonicalModels.Card<Shiv>(),
-                SentryModePower => CanonicalModels.Card<SweepingGaze>(),
-                _ => null,
-            };
-            if (canonical == null)
-                continue;
-            List<PredictedCard> generated = new(power.Amount);
-            for (int index = 0; index < power.Amount; index++)
-                generated.Add(PredictedCard.Create(canonical, player));
-            simulator.AddGeneratedCardsToCombat(
-                generated,
-                PileType.Hand,
-                player,
-                CardPilePosition.Bottom,
-                CardGenerationResultKind.Fixed);
-        }
 
         if (_returnToHandNextTurn != null)
         {
