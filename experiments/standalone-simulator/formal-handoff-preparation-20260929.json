@@ -62,18 +62,19 @@
   "pendingQueuePreparation": {
     "source": {
       "path": "/data2/pl/ImageTask/wxq/Projects/Sts2Bot-simulator-prototype/tools/prepare_standalone_handoff.py",
-      "sha256": "befb92af0999c1f406e018290f9bd73eb3274f825d8e85dfc60fdc638d4dcdfc"
+      "sha256": "66a0c8f2148d1a2b63dae39a63f0dc32dbc14807a425e80be03ea0fbc932311c"
     },
     "tests": {
-      "passed": 13,
+      "passed": 23,
       "evidence": {
-        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/handoff-queue-tests-v2.log",
-        "sha256": "0f1d2b885e58686f6084c885e65e1a59dfab432d03d5e21977463979800f7e84"
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/handoff-instance-tests.log",
+        "sha256": "dd1c08898de63039cd7e86513a386ce1657e5ee15d958edbec2156298aa26d0f"
       },
-      "scope": "Synthetic queue migration and lineage tests; not battle or soak acceptance."
+      "scope": "Synthetic queue lineage, pre-snapshot cursor restoration, private runtimes, and real release CLI argument tests; not battle or soak acceptance."
     },
     "actualTeacherPolicyCompatibilityChecked": true,
     "productionQueuesPrepared": false,
-    "productionDeployed": false
+    "productionDeployed": false,
+    "instancePrepared": false
   }
 }
