@@ -90,7 +90,11 @@ def main():
     parser.add_argument('--cpu', type=int, required=True)
     parser.add_argument('--mode', choices=['cold', 'warm-native-batch'], default='cold')
     parser.add_argument('--repeats', type=int, default=2)
+    parser.add_argument('--teacher-config', type=Path,
+                        help='Explicit candidate identity; defaults to the repository teacher')
     args = parser.parse_args()
+    if args.report.exists():
+        parser.error('Report already exists; preserve prior benchmark evidence')
     if not 1 <= args.repeats <= 20 or args.cpu not in os.sched_getaffinity(0):
         parser.error('Invalid repetition count or unavailable CPU')
     import psutil
@@ -103,7 +107,8 @@ def main():
     runtime['env']['DOTNET_PROCESSOR_COUNT'] = '1'
     folder = Path(tempfile.mkdtemp(prefix='paired-cold-', dir=isolated))
     runtime['log_path'] = str(folder/'native.log')
-    teacher = json.loads((root/'configs/teacher.json').read_text())
+    teacher_config = (args.teacher_config or root/'configs/teacher.json').resolve(strict=True)
+    teacher = json.loads(teacher_config.read_text())
     verify_runtime(runtime, teacher)
     standalone_teacher = dict(teacher, execution_backend='standalone-managed-native', validation_scope='isolated-experiment',
         standalone_host_sha256=sha256(args.host_dll), standalone_unlock_state='progress-snapshot', progress_snapshot_sha256=sha256(args.progress_snapshot))
@@ -132,7 +137,8 @@ def main():
     report = dict(schema='standalone-paired-cold/v1', complete=False, productionReady=False, productionLabels=False,
         mode=args.mode, scope=('Fresh game/host process per trial, alternating pairs.' if args.mode == 'cold' else 'Native process reused within each batch; standalone process per request; alternate whole-batch order. First native startup and final stop included in batch cost.')+' Warmed Wine server; shared pinned CPU; OS cache not controlled.',
         checkedAt=datetime.datetime.now(datetime.timezone.utc).isoformat(), directory=str(folder), cpuAffinity=[args.cpu],
-        cpuCount=os.cpu_count(), repeats=args.repeats, nativeTeacher=teacher, standaloneTeacher=standalone_teacher, progressSnapshotSha256=sha256(args.progress_snapshot),
+        cpuCount=os.cpu_count(), repeats=args.repeats, nativeTeacher=teacher, standaloneTeacher=standalone_teacher,
+        teacherConfig=dict(path=str(teacher_config), sha256=sha256(teacher_config)), progressSnapshotSha256=sha256(args.progress_snapshot),
         hostSha256=sha256(args.host_dll), fixtureHashes={p.name:sha256(p) for p in fixtures},
         sourceHashes={str(p.relative_to(root)):sha256(p) for p in [Path(__file__).resolve(),root/'damage_model/standalone.py',root/'damage_model/worker.py']},
         wallTimeScope='Per-request execution, stop when appropriate, validation and result writing. Fixture preparation and inter-trial report updates excluded; batch first startup/final stop included.',

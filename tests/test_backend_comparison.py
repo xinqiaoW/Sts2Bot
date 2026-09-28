@@ -1,6 +1,7 @@
 import importlib.util
 from pathlib import Path
 import sys
+import pytest
 
 source = Path(__file__).resolve().parents[1] / 'experiments/standalone-simulator'
 sys.path.insert(0, str(source))
@@ -8,6 +9,21 @@ spec = importlib.util.spec_from_file_location('backend_comparison', source / 'ru
 benchmark = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(benchmark)
 sys.path.remove(str(source))
+
+
+def test_existing_report_is_preserved_before_benchmark_start(tmp_path, monkeypatch):
+    report = tmp_path / 'report.json'
+    report.write_text('{"complete": false, "evidence": "original"}\n')
+    original = report.read_bytes()
+    argv = ['run_backend_comparison.py']
+    for name in ('experiment-directory', 'native-runtime', 'source-database', 'host-dll', 'progress-snapshot'):
+        argv += ['--' + name, str(tmp_path / 'unused')]
+    argv += ['--report', str(report), '--dotnet', 'unused', '--cpu', '0']
+    monkeypatch.setattr(sys, 'argv', argv)
+    with pytest.raises(SystemExit) as error:
+        benchmark.main()
+    assert error.value.code == 2
+    assert report.read_bytes() == original
 
 
 def test_failed_attempts_stay_in_throughput_denominator():

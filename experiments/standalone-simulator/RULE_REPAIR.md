@@ -49,3 +49,7 @@ NativeImplicitChoiceObserver 现在保持相同判断。游戏选牌器、随机
 后续试采集候选包已冻结为 `/data1/pl/ImageTask/wxq/Projects/standalone-rollout-20260929-release`，创建时完成文件清单和实际运行依赖核验。`release_tool.py create --teacher-config` 允许显式冻结候选教师，默认仍使用仓库配置；传入文件的内容写入包内 `configs/teacher.json`，由该副本生成标签身份。6 项现有发布包完整性/启动约束测试通过。仓库正式采集的 `configs/teacher.json` 未改变。
 
 旧后端性能报告使用原教师，回退演练要求教师身份一致，因此新包必须生成自己的后端对照证据，不能直接把旧性能报告作为新版回退输入。此项及新包并发校准尚待执行。
+
+`run_backend_comparison.py --teacher-config` 已支持显式候选教师并记录配置文件哈希；默认配置不变，已有报告一律拒绝覆盖。8 项既有后端统计/进程复用测试和新增覆盖拒绝测试通过。`combined-benchmark/prepared-command.json` 已冻结新版对照源码、6 个历史输入、源数据库快照及独立 Wine runtime；这里只完成准备，尚未运行或宣称新版性能结果。
+
+`original-capture-failures/` 另外使用 2 个原生 worker 复测旧万构筑面板中未计入通过的全部 9 个原生失败输入。请求从旧失败录像中提取并核对原证据哈希，旧结果不改写。`combined-release/regression/` 验证旧功能回归和本轮新增语义录像，并保留错误状态/错误选择两个反例；报告尚未完成时不得将其计为通过。
