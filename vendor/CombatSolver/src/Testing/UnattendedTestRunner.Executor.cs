@@ -6,6 +6,7 @@ using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions;
 using MegaCrit.Sts2.Core.Nodes.Combat;
+using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.Saves;
 using MegaCrit.Sts2.Core.Settings;
@@ -18,6 +19,26 @@ internal sealed partial class UnattendedTestRunner
     {
         private SolverSettingsData? _settingsBeforeTest;
 
+        private sealed class NativeVictoryObservation : IDisposable
+        {
+            private readonly CombatState _combat;
+            public bool Won { get; private set; }
+
+            public NativeVictoryObservation(CombatState combat)
+            {
+                _combat = combat;
+                CombatManager.Instance.CombatWon += OnWon;
+            }
+
+            private void OnWon(CombatRoom room)
+            {
+                if (ReferenceEquals(room.CombatState, _combat))
+                    Won = true;
+            }
+
+            public void Dispose() => CombatManager.Instance.CombatWon -= OnWon;
+        }
+
         public void RestoreSettings()
         {
             if (_settingsBeforeTest != null)
@@ -28,6 +49,7 @@ internal sealed partial class UnattendedTestRunner
         {
             UnattendedTestRequest request = runner._request;
             CombatState combatState = scenario.CombatState;
+            using NativeVictoryObservation victory = new(combatState);
             Player player = scenario.Player;
             int startedTurn = scenario.StartedTurn;
             bool expectedCardPlayed = request.ExpectedPlayedCardId == null;
@@ -489,10 +511,22 @@ internal sealed partial class UnattendedTestRunner
                     if (!player.Creature.IsDead)
                         throw new InvalidOperationException("预期玩家死亡，但战斗结束时玩家仍存活。");
                 }
-                else if (!(request.TrainingCollection && player.Creature.IsDead)
-                    && !combatState.Enemies.All(static enemy => enemy.IsDead))
+                else if (!(request.TrainingCollection && player.Creature.IsDead))
                 {
-                    throw new InvalidOperationException("战斗结束，但仍存在未死亡敌人。");
+                    // IsOverOrEnding can become true before the native victory
+                    // pipeline finishes. Require its event for this exact room.
+                    while (!victory.Won)
+                    {
+                        runner.EnsureWithinDeadline();
+                        await runner.NextFrameAsync();
+                    }
+                    // Vanilla ends when no living primary enemy remains. A
+                    // Fabricator killed by retaliation can finish spawning a
+                    // secondary enemy after its own death cleanup.
+                    if (combatState.Enemies.Any(static enemy => enemy.IsAlive && enemy.IsPrimaryEnemy))
+                        throw new InvalidOperationException("原版已报告胜利，但仍存在存活的主敌人。");
+                    runner._completedChecks.Add(
+                        $"NativeVictory:LivingSecondaryEnemies={combatState.Enemies.Count(static enemy => enemy.IsAlive && enemy.IsSecondaryEnemy)}");
                 }
             }
             bool combatEnded = !stoppedAfterExpectedReuse

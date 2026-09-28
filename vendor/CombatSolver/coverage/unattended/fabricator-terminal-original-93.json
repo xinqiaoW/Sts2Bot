@@ -1,0 +1,229 @@
+{
+  "build": "8d7401a5f66fca0d38b84894bb7077e36536b07a6b5dc53d32002b4c6b28ea39",
+  "category": "System.InvalidOperationException: Invalid native victory.",
+  "dataset": "mutation",
+  "job": "a52e173557f338810ae4667c751c9ee739445d466fa22d36c840ae40a03795ef",
+  "request": {
+    "actIndexForTest": 2,
+    "ascension": 10,
+    "cards": [],
+    "characterId": "SILENT",
+    "clearRunDeck": true,
+    "deploymentFastModeForTest": "Instant",
+    "deploymentInterActionDelaySecondsForTest": 0,
+    "enableDetailedDiagnosticLogsForTest": false,
+    "enableNoGcRegionForTest": false,
+    "encounterId": "FABRICATOR_NORMAL",
+    "exitOnComplete": false,
+    "forceShortSearchOnly": true,
+    "headlessFastModeForTest": "Instant",
+    "performancePresetForTest": "Medium",
+    "potionPolicyForTest": "Disabled",
+    "potions": [],
+    "relics": [
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "POMANDER"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "INTIMIDATING_HELMET"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "AMETHYST_AUBERGINE"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "MEAL_TICKET"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "DRIFTWOOD"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "TOUGH_BANDAGES"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "DAUGHTER_OF_THE_WIND"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "BAG_OF_PREPARATION"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "SIGNET_RING"
+      },
+      {
+        "addWithoutObtainedEffects": true,
+        "booleanMembers": {},
+        "integerMembers": {},
+        "relicId": "SNECKO_SKULL"
+      }
+    ],
+    "runCards": [
+      {
+        "cardId": "ABRASIVE",
+        "count": 1,
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "ABRASIVE",
+        "count": 1,
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "ACCELERANT",
+        "count": 1,
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "ASCENDERS_BANE",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "BOUNCING_FLASK",
+        "count": 1,
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "CALCULATED_GAMBLE",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "DAGGER_THROW",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "DEFEND_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "DEFEND_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "DEFEND_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "DEFEND_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "DEFEND_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "ESCAPE_PLAN",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "ESCAPE_PLAN",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "FLICK_FLACK",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "FOOTWORK",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "FOOTWORK",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "FOOTWORK",
+        "count": 1,
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "HAND_TRICK",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "NEUTRALIZE",
+        "count": 1,
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "PREPARED",
+        "count": 1,
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "STRIKE_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "STRIKE_SILENT",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "SURVIVOR",
+        "count": 1,
+        "upgradeLevels": 1
+      },
+      {
+        "cardId": "UNTOUCHABLE",
+        "count": 1,
+        "upgradeLevels": 0
+      },
+      {
+        "cardId": "STRIKE_SILENT",
+        "count": 1,
+        "upgradeLevels": 1
+      }
+    ],
+    "runId": "07a49ee8360b43f3a709a0c8998e2a96",
+    "scenarioId": "HP-a52e173557f33881",
+    "schemaVersion": 1,
+    "searchMaxDegreeOfParallelismForTest": 1,
+    "seed": "cb8cba48ec9dfff4",
+    "shortSearchBudgetOverrideMilliseconds": 8000,
+    "timeoutSeconds": 120,
+    "trainingActId": "GLORY",
+    "trainingCollection": true
+  },
+  "sourceFailure": "System.InvalidOperationException: Invalid native victory.\n   at TeacherBattleProbe.Run(Func`2 get, Assembly solver, Object combat, Object player, Boolean reuseContinuations, Boolean nativeTurnLoop, Task nativeTerminal, Boolean injectExhaustedPlanOnce, Boolean injectDeploymentDriftOnce, Boolean injectMissingCardOnce, Boolean injectUnconsumedChoiceOnce, Object openingResult)\n   at RequestBattleProbe.Run(Func`2 get, Assembly solver, Object run, Object player, JsonElement fixture, Boolean compareHistorical, Boolean nativeReplay, Boolean injectExhaustedPlanOnce, Boolean injectDeploymentDriftOnce, Boolean injectMissingCardOnce, Boolean injectUnconsumedChoiceOnce)\n   at Program.<Main>$(String[] args)",
+  "target": "FABRICATOR_NORMAL"
+}

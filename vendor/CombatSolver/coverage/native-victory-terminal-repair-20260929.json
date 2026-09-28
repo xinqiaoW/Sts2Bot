@@ -1,0 +1,117 @@
+{
+  "schema": "native-victory-terminal-repair/v1",
+  "teacher": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/fabricator-repair/candidate-source/.godot/mono/temp/bin/Release/CombatSolver.dll",
+    "sha256": "71bd6295ad6d79ffbae5448deb28c3f5430e9cf56e0743c3773af4906d26de43"
+  },
+  "baseline": {
+    "complete": true,
+    "passed": false,
+    "results": [
+      {
+        "error": "System.InvalidOperationException: 战斗结束，但仍存在未死亡敌人。 inProgress=False overOrEnding=True STABBOT:hp=22:alive=True:primary=False:secondary=True\r\n   at CombatSolver.UnattendedTestRunner.Executor.ExecuteAsync(ScenarioContext scenario)\r\n   at CombatSolver.UnattendedTestRunner.RunAsync()",
+        "name": "original-case-93",
+        "native": {
+          "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/fabricator-repair/native-check/original-case-93/native.json",
+          "sha256": "503f0c329a61211c03c3963b966a7ca39570539c16a20857d83cd6608a738644"
+        },
+        "nativeComplete": false,
+        "passed": false
+      }
+    ]
+  },
+  "candidate": {
+    "complete": true,
+    "passed": true,
+    "results": [
+      {
+        "checkpoints": 60,
+        "command": [
+          "/data1/pl/ImageTask/wxq/Projects/standalone-checkpoints-20260924/runtime-tools/dotnet/dotnet",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/fabricator-repair/candidate-host/bin/Release/net9.0/SimulatorPrototype.dll",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/fabricator-repair/native-check-v2/game",
+          "--replay-native-request",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/fabricator-repair/native-check-v2/original-case-93/replay.json",
+          "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-20260927-release/progress-snapshot.json"
+        ],
+        "exitCode": 0,
+        "finalHp": 67,
+        "finishedTurn": 8,
+        "name": "original-case-93",
+        "native": {
+          "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/fabricator-repair/native-check-v2/original-case-93/native.json",
+          "sha256": "c36454390d0632a5fcd582f993bca2d7c1baae3d581a2e22637a3c625d042de5"
+        },
+        "nativeComplete": true,
+        "passed": true,
+        "plays": 26,
+        "replay": {
+          "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/fabricator-repair/native-check-v2/original-case-93/replay.log",
+          "sha256": "0f765d9f52687d9661a7abaa23cd2654c01c3d6f4f6b6434ee0f47ad3f462e23"
+        },
+        "terminalBoundaryChoiceCancellations": 0,
+        "terminalCleanupBoundaryComparisons": 0,
+        "terminalRewardBoundaryComparisons": 0
+      }
+    ]
+  },
+  "nativeCompletedChecks": [
+    "PerformancePreset:Medium:8000/120000ms:Beam=24/60:Nodes=2400/12000:Branches=20/32:NoGC=False/16000000000",
+    "NativeVictory:LivingSecondaryEnemies=1"
+  ],
+  "reports": {
+    "native-check/report.json": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/fabricator-repair/native-check/report.json",
+      "sha256": "bc509c475e39a3626ec51a51488ab86e12b7429cdb62026953ae660b97abc045"
+    },
+    "native-check-v2/report.json": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/fabricator-repair/native-check-v2/report.json",
+      "sha256": "e2f9751b94c4339dc59f11471970e8d882edacbd7697f3335843b305c624b3e8"
+    },
+    "diagnostic-build.log": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/fabricator-repair/diagnostic-build.log",
+      "sha256": "b012fda62ac8f8df30eb9684d33b44e06027639f3274c6177978dc9247149f0f"
+    },
+    "candidate-build.log": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/fabricator-repair/candidate-build.log",
+      "sha256": "49d7af7f9a8514ffab28281eca09223868d19faf47690a40002d9dc8968ead50"
+    },
+    "boundaries.log": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/fabricator-repair/boundaries.log",
+      "sha256": "deca91a103cbb776e0d96749d3a9a9df66ee078c8c763e793a82e7e81cc80377"
+    },
+    "terminal-state-coverage-gap.json": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/fabricator-repair/terminal-state-coverage-gap.json",
+      "sha256": "72297a69e42e459691fd8ffec30af3fc222325b8b8e6236a5f28b812cae74a73"
+    }
+  },
+  "scripts": {
+    "build_diagnostic.py": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/fabricator-repair/build_diagnostic.py",
+      "sha256": "97393ef5ba69389c2e7a2539ec78653c126e5ab69af5deb69ad928950020a7cd"
+    },
+    "prepare_diagnostic.py": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/fabricator-repair/prepare_diagnostic.py",
+      "sha256": "785344ce2e71ef834eb67f488b5154365199a25e63d8dd6785821eaffb848ef3"
+    },
+    "check_native.py": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/fabricator-repair/check_native.py",
+      "sha256": "2d2ddb7c2b771d9ff37964d1b16b2fc58f108bb2a5ab44e93168ecc4b1cf60f2"
+    },
+    "build_candidate.py": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/fabricator-repair/build_candidate.py",
+      "sha256": "9fa21f553b13793967395f73e528b1212584e356886d9aab556dbe03ba2a1f46"
+    },
+    "prepare_candidate.py": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/fabricator-repair/prepare_candidate.py",
+      "sha256": "f6df29712ff66a35031313776671428a561695487d55890505bca96faa6200ff"
+    },
+    "check_native-v2.py": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rule-repair-20260928/fabricator-repair/check_native-v2.py",
+      "sha256": "9e6a90376a5d3a8b31bcb29ff68b27f9e5f034e5bae0de728535e22a637faa3d"
+    }
+  },
+  "productionReady": false,
+  "productionDeployed": false,
+  "verificationLimit": "60 per-action checkpoints and terminal HP/maxHP/turn; full terminal state after final end_turn must still become a mandatory checkpoint."
+}

@@ -1,5 +1,13 @@
 # CombatSolver 开发笔记与未来构想
 
+## 原生胜利与随从终局验收修复（开发中，2026-09-29）
+
+- FABRICATOR 原失败构筑已有原版胜利和奖励事件，但无人测试要求所有敌人死亡而失败。定向诊断保留失败：`inProgress=False`、`overOrEnding=True`，唯一存活敌人为 STABBOT，22 HP，`primary=False/secondary=True`。原版以无存活主敌人且没有阻止结束的钩子作为胜利条件；受反击死亡的 FABRICATOR 仍可在行动尾部生成随从。
+- Executor 在执行前订阅原生 CombatWon，只接受当前 CombatState 对应房间的事件，并在所有返回/异常路径解除订阅。完整胜利验收先等待原版完成胜利管线，再拒绝任何存活主敌人；不能只凭敌人列表为空或血量判断成功。明确的训练死亡路径保持原判断。
+- 教师 `71bd6295…` 对同一原始案例 93 重新原生录制，记录 `NativeVictory:LivingSecondaryEnemies=1`。独立宿主按该录像的动作与选择通过 60 个完整逐动作检查点，终局 HP 67/70、第 8 回合一致。Release 零警告/错误，结构门禁通过；8 秒、DOP1、120 秒请求超时未放大。
+- 证据 `coverage/native-victory-terminal-repair-20260929.json`，请求 `coverage/unattended/fabricator-terminal-original-93.json`。旧失败录制保持失败，未修改成成功结果。
+- 验收边界：目前最后结束回合后的标签比较仍只保证 HP、最大 HP、回合数；需要在原生 CaptureTrainingEnd 和独立宿主同一稳定终局边界增加必检完整状态，才能证明最终敌方阵容等字段一致。此项缺口、开局直接终局、回合开始混合效果顺序、最终全量与投产门禁均未完成。
+
 ## NIGHTMARE 选牌快照修复（开发中，2026-09-29）
 
 - 原版 `SetSelectedCard` 立即生成卡牌快照并清除其附着效果。旧模拟保留原卡包装，等到下一回合才克隆；选牌后升级原卡会错误改变将要生成的牌。原生方法的最小对照已复现该差异，旧版明确失败。

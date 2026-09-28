@@ -85,3 +85,11 @@ NativeImplicitChoiceObserver 现在保持相同判断。游戏选牌器、随机
 - 候选教师 `b714041a…` 定向测试通过：原生选牌后升级对照、附着效果隔离、父/子延迟生成、已生效 Power 的根捕获、捕获后 live 模板变更隔离、消耗时点及实际状态字段。原失败案例 109 新录制通过 90 个逐动作完整状态检查点及第 8 回合终局；仅将一个隐藏快照的升级等级改为 999 的反例被状态差分拒绝。
 - Release 零警告/错误，结构门禁及 CoverageCatalog `--verify-state-fields` 通过。首次候选构建因旧测试引用尚未同步改名失败，记录保留；第二版完成同步并通过。证据 `coverage/nightmare-selection-snapshot-repair-20260929.json`，隔离测试建局 `coverage/unattended/nightmare-snapshot-minimal.json`，整场复用 `return-to-hand-original-109.json`。固定 8 秒、DOP1、120 秒请求超时。
 - 本项不宣称全部规则或正式采集通过。另发现回合开始效果按 Power 类别分批、遗物穿插的顺序可能不同于原版，需要单独原生最小对照；开局直接终局、FABRICATOR 验收及最终全量仍待完成。
+
+## 原生胜利与随从终局验收修复（开发中，2026-09-29）
+
+- FABRICATOR 原失败构筑已有原版胜利和奖励事件，但无人测试要求所有敌人死亡而失败。定向诊断保留失败：`inProgress=False`、`overOrEnding=True`，唯一存活敌人为 STABBOT，22 HP，`primary=False/secondary=True`。原版以无存活主敌人且没有阻止结束的钩子作为胜利条件；受反击死亡的 FABRICATOR 仍可在行动尾部生成随从。
+- Executor 在执行前订阅原生 CombatWon，只接受当前 CombatState 对应房间的事件，并在所有返回/异常路径解除订阅。完整胜利验收先等待原版完成胜利管线，再拒绝任何存活主敌人；不能只凭敌人列表为空或血量判断成功。明确的训练死亡路径保持原判断。
+- 教师 `71bd6295…` 对同一原始案例 93 重新原生录制，记录 `NativeVictory:LivingSecondaryEnemies=1`。独立宿主按该录像的动作与选择通过 60 个完整逐动作检查点，终局 HP 67/70、第 8 回合一致。Release 零警告/错误，结构门禁通过；8 秒、DOP1、120 秒请求超时未放大。
+- 证据 `coverage/native-victory-terminal-repair-20260929.json`，请求 `coverage/unattended/fabricator-terminal-original-93.json`。旧失败录制保持失败，未修改成成功结果。
+- 验收边界：目前最后结束回合后的标签比较仍只保证 HP、最大 HP、回合数；需要在原生 CaptureTrainingEnd 和独立宿主同一稳定终局边界增加必检完整状态，才能证明最终敌方阵容等字段一致。此项缺口、开局直接终局、回合开始混合效果顺序、最终全量与投产门禁均未完成。
