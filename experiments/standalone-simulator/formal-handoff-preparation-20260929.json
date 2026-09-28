@@ -34,5 +34,29 @@
     "sha256": "c13ebb3a1654fa38d24beaf4281b9b208326335065b8a6e0087b53a9279efc15"
   },
   "backupFinalReport": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/formal-native-backup/final-report.json",
-  "backupAcceptanceMustBeCheckedAfterDrain": true
+  "backupAcceptanceMustBeCheckedAfterDrain": true,
+  "readinessVerifier": {
+    "source": {
+      "path": "/data2/pl/ImageTask/wxq/Projects/Sts2Bot-simulator-prototype/tools/verify_standalone_acceptance.py",
+      "sha256": "ed982204d7c31064c53dce8418a4204f9033ed4d2f4c7238c4736793bf3008c9"
+    },
+    "tests": [
+      {
+        "passed": 19,
+        "evidence": {
+          "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/formal-readiness-verifier-final-tests.log",
+          "sha256": "a6bf0d4821e77d0c33c644cc741b995714553b772764e382394136e4755ecf91"
+        }
+      },
+      {
+        "passed": 1,
+        "evidence": {
+          "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/formal-readiness-integration-test.log",
+          "sha256": "1b0a6e83dbd3855e492cbe1c6dcb640f53cbc1f640a701d8a46adedd4f31d9ca"
+        },
+        "scope": "Synthetic file/SQLite integration with native replay fixtures; not a real 10000-job soak or correctness acceptance."
+      }
+    ],
+    "formalReadinessVerified": false
+  }
 }
