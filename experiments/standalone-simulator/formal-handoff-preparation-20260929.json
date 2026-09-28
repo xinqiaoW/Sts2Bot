@@ -58,5 +58,22 @@
       }
     ],
     "formalReadinessVerified": false
+  },
+  "pendingQueuePreparation": {
+    "source": {
+      "path": "/data2/pl/ImageTask/wxq/Projects/Sts2Bot-simulator-prototype/tools/prepare_standalone_handoff.py",
+      "sha256": "befb92af0999c1f406e018290f9bd73eb3274f825d8e85dfc60fdc638d4dcdfc"
+    },
+    "tests": {
+      "passed": 13,
+      "evidence": {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/handoff-queue-tests-v2.log",
+        "sha256": "0f1d2b885e58686f6084c885e65e1a59dfab432d03d5e21977463979800f7e84"
+      },
+      "scope": "Synthetic queue migration and lineage tests; not battle or soak acceptance."
+    },
+    "actualTeacherPolicyCompatibilityChecked": true,
+    "productionQueuesPrepared": false,
+    "productionDeployed": false
   }
 }
