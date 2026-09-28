@@ -98,5 +98,21 @@
     "auditStarted": false,
     "productionDeployed": false,
     "remaining": "Supervisor must require auditor readiness, stop and drain on auditor failure, and own backups/resource monitoring before actual deployment."
+  },
+  "productionGuardComponents": {
+    "source": {
+      "path": "/data2/pl/ImageTask/wxq/Projects/Sts2Bot-simulator-prototype/tools/standalone_production_guard.py",
+      "sha256": "1fd4e2efac7536642b31b0973e77ab0e5d7371a7d75dfd8ae2189131f8ef737c"
+    },
+    "tests": {
+      "passed": 17,
+      "evidence": {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/production-guard-tests-v2.log",
+        "sha256": "296ed4e07f6bba59c9eb174a212338df017c0334e73633d6db2f51052569bb5e"
+      },
+      "scope": "Seven guard tests (including real subprocess parent death, independent worker drain, SQLite leases) plus ten instance regression tests. No actual game collection."
+    },
+    "supervisorIntegrated": false,
+    "productionDeployed": false
   }
 }
