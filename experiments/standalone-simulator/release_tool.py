@@ -50,6 +50,7 @@ def create(args):
     from damage_model.catalog import Catalog
     from damage_model.provenance import teacher_for, verify_runtime
     catalog = Catalog.load(root/'catalogs/game-0.111.0.raw.json', root/'configs/real-runs-8s.json')
+    teacher_config = (args.teacher_config or root/'configs/teacher.json').resolve(strict=True)
     output = args.output.absolute()
     if output.exists():
         raise ValueError('Release output already exists')
@@ -74,14 +75,15 @@ def create(args):
                 if not path.resolve().is_relative_to(root):
                     raise ValueError('Source module escapes worktree')
                 copy(path, str(path.relative_to(root)))
-        for name in ('teacher.json', 'real-runs-8s.json', 'mutations-8s.json', 'mutations-targeted-8s.json'):
+        copy(teacher_config, 'configs/teacher.json')
+        for name in ('real-runs-8s.json', 'mutations-8s.json', 'mutations-targeted-8s.json'):
             copy(root/'configs'/name, 'configs/'+name)
         copy(root/'catalogs/game-0.111.0.raw.json', 'catalogs/game-0.111.0.raw.json')
         copy(Path(__file__).resolve(), 'release_tool.py')
         for suffix in ('.dll', '.runtimeconfig.json', '.deps.json'):
             copy(args.host_dll.with_suffix(suffix), 'host/SimulatorPrototype'+suffix)
         copy(args.progress_snapshot, 'progress-snapshot.json')
-        teacher = dict(teacher_for(catalog, root/'configs/teacher.json'),
+        teacher = dict(teacher_for(catalog, staging/'configs/teacher.json'),
                        execution_backend='standalone-managed-native', validation_scope='isolated-experiment',
                        standalone_host_sha256=files['host/SimulatorPrototype.dll'],
                        standalone_unlock_state='progress-snapshot', progress_snapshot_sha256=files['progress-snapshot.json'])
@@ -113,6 +115,8 @@ def main():
     build = commands.add_parser('create')
     for name in ('host-dll', 'game-directory', 'progress-snapshot', 'dotnet', 'output'):
         build.add_argument('--'+name, type=Path, required=True)
+    build.add_argument('--teacher-config', type=Path,
+                       help='Freeze a candidate teacher identity without changing the repository collection config')
     check = commands.add_parser('verify')
     check.add_argument('--bundle', type=Path, required=True)
     run = commands.add_parser('run')
