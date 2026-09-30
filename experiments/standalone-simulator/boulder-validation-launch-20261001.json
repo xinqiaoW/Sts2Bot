@@ -1,0 +1,99 @@
+{
+  "schema": "standalone-boulder-validation-launch/v1",
+  "state": "prepared_waiting_for_preserved_regression",
+  "sourceCommit": "981b116",
+  "candidateRelease": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/candidate-release-v5/release.json",
+    "sha256": "43a5d56485e082a4fb5f3035d6f6ec82999798b36557049f08b13821ca87bcd9"
+  },
+  "teacher": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/native-terminal-diagnostic-0001/final-source/.godot/mono/temp/bin/Release/CombatSolver.dll",
+    "sha256": "f55809c52e58ba3bcbc01bbc9ad89eb59de6d468143fa9260a58c0f68d8a8d0b"
+  },
+  "host": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/native-terminal-diagnostic-0001/final-host/bin/Release/net9.0/SimulatorPrototype.dll",
+    "sha256": "7d2ed38ae6b8a6978bff3387b8a03945cc41a35b2ecb693746f92139c61aee9f"
+  },
+  "trace": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/native-terminal-diagnostic-0001/final-trace/bin/Release/net9.0/NativeTraceProbe.dll",
+    "sha256": "c92c749bf2dafa2a7815f67b0181e8a5301ffa9f3ab2ca2c0b40b32663205678"
+  },
+  "nativePreparation": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-boulder-validation-20261001/preparation.json",
+    "sha256": "4c73e3af7bd84513a7df405dc0f927cb651a2fb6b53b96bd69444ed5ac41626e"
+  },
+  "sourcePreparation": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-boulder-validation-20261001/source-preparation.json",
+    "sha256": "7c1a1184ac072b820e6e144699631c18a5b79e8d3dabc3772c64919bc113b719"
+  },
+  "panel": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-boulder-validation-20261001/campaign/plan.json",
+    "sha256": "6115a2c71991a6621e50e35943ccb2645b088c4f356f982d4f7e6568f137576b"
+  },
+  "panelValidation": {
+    "passed": true,
+    "uniqueActualBuilds": 10500,
+    "uniqueRequests": 10500,
+    "targets": 80,
+    "buildsByAct": {
+      "GLORY": 2625,
+      "HIVE": 2625,
+      "OVERGROWTH": 2625,
+      "UNDERDOCKS": 2625
+    },
+    "previousPanelCompositionOverlap": 0,
+    "previousPanels": [
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-full-state-validation-20260929/campaign/plan.json",
+        "sha256": "f2029d68e846dd5828daabaa332aaf4ed28b3471cb18b6c8604b84b8ffadfb1c"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-gambling-chip-validation-20261001/campaign/plan.json",
+        "sha256": "8de8dd4f37a307d4e8e458aeb24e82d3a88024be1a9d60bc25203981971b0b42"
+      }
+    ]
+  },
+  "regressionLaunch": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/native-terminal-diagnostic-0001/preserved-regression-launch.json",
+    "sha256": "fbad26d13e7e4918e6cc64f6c0e1c425a12412c1c629ab7f8c646913a9e86586"
+  },
+  "regressionStatus": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/native-terminal-diagnostic-0001/preserved-regression-status.json",
+  "automaticPreparation": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/candidate-preparation-v5.json",
+    "sha256": "032f430ac9ada5ffeab67fb2a72f643387e3ac32c0ac52330ca05dbbb49c6d33"
+  },
+  "automaticLaunch": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/automatic-acceptance-v5-launch.json",
+    "sha256": "3e24229f09c942d4732d4fa7f0782d713e478638e3e977ceb3a60b72269c2758"
+  },
+  "automaticOwner": {
+    "pid": 431247,
+    "created": 1790806862.94
+  },
+  "automaticStatus": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/automatic-acceptance-v5/status.json",
+  "acceptance": {
+    "requiredUniqueBuilds": 10000,
+    "preselectedBuilds": 10500,
+    "requiredFormalTargets": 80,
+    "requiredActionCheckpoints": 500000,
+    "requireEveryTerminal": true,
+    "requireOrderedPlayPile": true,
+    "requireExactNativeTeacher": true,
+    "workers": 24,
+    "nativeStartupSlots": 8
+  },
+  "sequence": [
+    "Drain and independently verify all 10008 + 4540 preserved recordings under the final host.",
+    "Capture fresh native actions on the disjoint 10500-build panel; require at least 10000 matched builds, 500000 action checkpoints, all 80 targets, no unresolved difference.",
+    "Independent locked audit bound to the exact candidate teacher, host and progress snapshot.",
+    "Paired performance with both orders; 8/16/24/32 concurrency calibration; rollback; fresh 24h soak with required distinct-build native audits.",
+    "Independent formal handoff and source/backup revalidation before activation."
+  ],
+  "resourceSnapshot": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/native-terminal-diagnostic-0001/resource-snapshot.json",
+    "sha256": "8336a274c7ed30e195c38b73b00156559094fc0f0ba028140476983f78f20c29"
+  },
+  "productionReady": false,
+  "productionDeployed": false,
+  "notes": "Prepared manifests and commands are not passed gates. Frozen older releases, captures and failed preparation attempts remain untouched."
+}
