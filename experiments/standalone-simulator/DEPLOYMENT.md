@@ -1,6 +1,8 @@
 # 独立采集发布目录与回退
 
-最新版正在进行 [万构筑完整状态验收](BUILD_VALIDATION_10000.md)，正式生产会话尚未切换。完整正确性、当前版本性能与并发校准、回退演练、24 小时试采通过后才能切换。
+最新宿主 `554f9cc1…` 已通过 [万构筑完整状态验收](native-victory-guard-repair-20261001.json)：10,008 个构筑、80 个目标、534,775 个动作点，以及每场完整终局和有序出牌区一致，独立审计确认全部采集锁已释放。正式生产会话尚未切换；当前版本性能与并发校准、回退演练、24 小时试采仍须通过。
+
+2026-10-01 候选发布冻结在 `/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/candidate-release-v3`，准备清单为同目录 `candidate-preparation-v3.json`。后台 `automatic-acceptance-v3` 顺序执行性能、准备队列、并发校准、回退和全新 24 小时试采。此前 `rollout-v2` 因自主执行胜利断言错误停止，其失败和 16,185 条成功记录均保留，但不能计作新版长跑通过。下文旧的 `formal-handoff-tools-v1` 清单绑定旧候选；新验收通过后须为新发布重新绑定交接凭据。
 
 历史发布 `/data1/pl/ImageTask/wxq/Projects/standalone-10000-builds-20260924/terminal-sly-release` 的宿主为 `df11b26d…`。当时的 10,036 构筑、532,666 个动作检查点缺少后来增加的完整终局/出牌区验证，不是当前候选的通过证据。旧发布与原生回退资料继续保留；新候选必须重新冻结产物、教师与来源身份。
 

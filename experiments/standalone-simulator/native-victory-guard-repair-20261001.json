@@ -89,7 +89,26 @@
     "matchedBattles": 10008,
     "matchedActionCheckpoints": 534775,
     "targets": 80,
-    "independentDrainedAuditPending": true
+    "independentDrainedAuditPending": false,
+    "independentAuditPassed": true,
+    "campaignDrained": true,
+    "verifiedTerminalStates": 10008,
+    "verifiedPlayPileStates": 10008,
+    "unresolvedReplayDifferences": 0,
+    "staleHostResults": 0,
+    "nativeCaptureFailures": 0
   },
-  "combinedRegressionTests": "47 passed in 18.89s, including actual C# observer harness"
+  "combinedRegressionTests": "47 passed in 18.89s, including actual C# observer harness",
+  "finalIndependentAudit": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/soak-quarantine-diagnostic-0001/final-independent-audit.json",
+    "sha256": "26e882b6ca80e9bd684cc6e2e943802175579a0fa616accd3425a77813a06da2"
+  },
+  "candidateRelease": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/candidate-release-v3/release.json",
+    "sha256": "2b005965da25307ef98c4559bde60f0866316fb2ee2d98fbfaf3f6da563ba3ce"
+  },
+  "preparation": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/candidate-preparation-v3.json",
+    "sha256": "0f8aaf40b431f1e8d38923d63cf1271f61d7c16a4f985c2826928a4e06d73134"
+  }
 }
