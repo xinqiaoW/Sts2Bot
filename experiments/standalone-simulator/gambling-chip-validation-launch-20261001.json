@@ -113,6 +113,10 @@
     {
       "path": "/data1/pl/ImageTask/wxq/Projects/standalone-gambling-chip-validation-20261001/native-infrastructure-review-0003.json",
       "sha256": "919071b01ab8d20de1bafb3d7bda8ee22014167a8603c4378a284533f740586b"
+    },
+    {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-gambling-chip-validation-20261001/native-infrastructure-review-0004.json",
+      "sha256": "ad7e7c84ed54782b93b0129f179ed3884cd65eec39da343bc4044be270680735"
     }
   ]
 }
