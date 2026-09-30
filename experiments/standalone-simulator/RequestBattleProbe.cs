@@ -135,11 +135,14 @@ internal static class RequestBattleProbe
             stamp = Read(solver.GetType("CombatSolver.ContinuationStamp", true)!.GetMethod("CaptureLive")!.Invoke(null, [combat])!, "StateText") }));
         object battle = nativeReplay ? NativeTraceReplay.Run(get, solver, combat, player, ended.Task, fixture.GetProperty("nativeTrace"), rewards, openingTerminal)
             : openingTerminal ? new { status = "native_opening_terminal", openingTerminal = true }
-            : TeacherBattleProbe.Run(get, solver, combat, player, reuseContinuations: true, nativeTurnLoop: true, nativeTerminal: ended.Task, injectExhaustedPlanOnce: injectExhaustedPlanOnce, injectDeploymentDriftOnce: injectDeploymentDriftOnce, injectMissingCardOnce: injectMissingCardOnce, injectUnconsumedChoiceOnce: injectUnconsumedChoiceOnce, openingResult: openingResult);
+            : TeacherBattleProbe.Run(get, solver, combat, player, reuseContinuations: true, nativeTurnLoop: true, nativeTerminal: ended.Task, injectExhaustedPlanOnce: injectExhaustedPlanOnce, injectDeploymentDriftOnce: injectDeploymentDriftOnce, injectMissingCardOnce: injectMissingCardOnce, injectUnconsumedChoiceOnce: injectUnconsumedChoiceOnce, openingResult: openingResult, nativeRewards: rewards);
         rewards.Wait();
         endedEvent.RemoveEventHandler(cm, handler);
         object hero = Read(player, "Creature");
         int hp = Convert.ToInt32(Read(hero, "CurrentHp")), maxHp = Convert.ToInt32(Read(hero, "MaxHp"));
+        if (!ReferenceEquals(endedCombat, combat))
+            throw new InvalidOperationException("Missing native completion event for this combat.");
+        if (hp > 0) rewards.AssertVictory(combat);
         int finishedTurn = Convert.ToInt32(Read(playerCombatState, "TurnNumber"));
         string finalCombatState = (string)Read(solver.GetType("CombatSolver.ContinuationStamp", true)!
             .GetMethod("CaptureLive")!.Invoke(null, [combat])!, "StateText");

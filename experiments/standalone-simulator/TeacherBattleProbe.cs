@@ -5,7 +5,7 @@ internal static class TeacherBattleProbe
 {
     private static object Read(object o, string n) => o.GetType().GetProperty(n)!.GetValue(o)!;
     private static object[] Items(object o) => ((System.Collections.IEnumerable)o).Cast<object>().ToArray();
-    public static object Run(Func<string, Type> get, Assembly solver, object combat, object player, bool reuseContinuations = false, bool nativeTurnLoop = false, Task? nativeTerminal = null, bool injectExhaustedPlanOnce = false, bool injectDeploymentDriftOnce = false, bool injectMissingCardOnce = false, bool injectUnconsumedChoiceOnce = false, object? openingResult = null)
+    public static object Run(Func<string, Type> get, Assembly solver, object combat, object player, bool reuseContinuations = false, bool nativeTurnLoop = false, Task? nativeTerminal = null, bool injectExhaustedPlanOnce = false, bool injectDeploymentDriftOnce = false, bool injectMissingCardOnce = false, bool injectUnconsumedChoiceOnce = false, object? openingResult = null, NativeCombatRewards? nativeRewards = null)
     {
         object cm = get("Combat.CombatManager").GetProperty("Instance")!.GetValue(null)!;
         object pcs = Read(player, "PlayerCombatState"), hero = Read(player, "Creature");
@@ -178,7 +178,13 @@ internal static class TeacherBattleProbe
         int hp = Convert.ToInt32(Read(hero, "CurrentHp"));
         bool enemiesDead = Items(Read(combat, "Enemies")).All(e => Convert.ToInt32(Read(e, "CurrentHp")) <= 0);
         bool roomCompleted = (bool)Read(Read(Read(combat, "RunState"), "CurrentRoom"), "IsPreFinished");
-        if (hp > 0 && (!enemiesDead || !roomCompleted)) throw new InvalidOperationException("Invalid native victory.");
+        if (hp > 0)
+        {
+            if (nativeTurnLoop)
+                (nativeRewards ?? throw new InvalidOperationException("Missing native victory observer.")).AssertVictory(combat);
+            else if (!enemiesDead || !roomCompleted)
+                throw new InvalidOperationException("Invalid native victory.");
+        }
         return new { status = "teacher_battle_completed", productionReady = false, productionLabels = false,
             policy = reuseContinuations ? "original TryCreateContinuation with exact native stamp; short-only search on miss" : "fresh short-only search each native player turn",
             searches, reusedTurns, rejectedContinuations, negativeChecks, exhaustedPlanReplans, injectedExhaustedPlan, deploymentDriftReplans, injectedDeploymentDrift, injectedMissingCard, injectedUnconsumedChoice,

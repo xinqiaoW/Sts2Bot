@@ -6,6 +6,7 @@ preserved; there is no capture retry or selection of convenient recordings.
 """
 import argparse
 import concurrent.futures
+import fcntl
 import json
 import os
 from pathlib import Path
@@ -71,18 +72,12 @@ def replay_case(source_result, destination, host, runtime, progress):
     return entry
 
 
-def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    for name in ('source-root', 'campaign', 'host-dll', 'runtime-template', 'progress-snapshot', 'output'):
-        parser.add_argument('--' + name, required=True, type=Path)
-    parser.add_argument('--workers', type=int, default=24, choices=range(1, 33))
-    args = parser.parse_args()
+def replay_panel(args):
     source = args.source_root.resolve(strict=True)
     campaign = args.campaign.resolve(strict=True)
     host = args.host_dll.resolve(strict=True)
     progress = args.progress_snapshot.resolve(strict=True)
     output = args.output.resolve()
-    output.mkdir(parents=True, exist_ok=False)
     paths = sorted((campaign / 'cases').glob('*/result.json'))
     require(bool(paths), 'No source campaign results')
     runtime = json.loads(args.runtime_template.read_text())
@@ -120,6 +115,24 @@ def main():
           'newActuallyPlayedCards', 'nativeCaptureFailures', 'unresolvedReplayDifferences', 'staleHostResults')}), flush=True)
     if not report['passed']:
         raise SystemExit(1)
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    for name in ('source-root', 'campaign', 'host-dll', 'runtime-template', 'progress-snapshot', 'output'):
+        parser.add_argument('--' + name, required=True, type=Path)
+    parser.add_argument('--workers', type=int, default=24, choices=range(1, 33))
+    args = parser.parse_args()
+    output = args.output.resolve()
+    output.mkdir(parents=True, exist_ok=False)
+    # Keep the controller lock until every replay subprocess has drained. A
+    # separate final audit can then prove drain using the existing audit CLI.
+    with (output / 'batch.lock').open('x') as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        setup = args.campaign.resolve(strict=True) / 'setup.json'
+        write(output / 'setup.json', json.loads(setup.read_text()))
+        write(output / 'capture-source-setup.json', identity(setup))
+        replay_panel(args)
 
 
 if __name__ == '__main__':

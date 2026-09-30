@@ -1,0 +1,95 @@
+{
+  "schema": "standalone-native-victory-guard-repair/v1",
+  "host": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/soak-quarantine-diagnostic-0001/candidate-host/bin/Release/net9.0/SimulatorPrototype.dll",
+    "sha256": "554f9cc12dd376fae381cb836cf4af6d4899c6f6003c8cf006429039c8bd6acb"
+  },
+  "nativeTeacherChanged": false,
+  "originalFailure": "Invalid native victory",
+  "diagnosticEnemies": [
+    {
+      "hp": 24,
+      "alive": true,
+      "primary": false,
+      "secondary": true,
+      "name": "Creature Stabbot"
+    }
+  ],
+  "sameExecutedActions": 27,
+  "allActionAndStatePairsExact": true,
+  "terminalStateExact": true,
+  "candidateFinalHp": 70,
+  "candidateFinishedTurn": 4,
+  "originalRecordingReplay": {
+    "checkpoints": 48,
+    "terminalCheckpoints": 1,
+    "terminalStateVerified": true,
+    "playPileStateVerified": true
+  },
+  "observerTest": "1 passed, actual host observer tested with matching/missing/wrong victory event, living primary/secondary enemy, unfinished room and disposal",
+  "regressionTests": 46,
+  "evidence": {
+    "original-job.json": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/soak-quarantine-diagnostic-0001/original-job.json",
+      "sha256": "a97768c58eab691c72233f7c8f659c4222d0d47b67483004ddb437296ec6f54d"
+    },
+    "original-attempts.json": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/soak-quarantine-diagnostic-0001/original-attempts.json",
+      "sha256": "0a249410d4b4ae7fc11ff781cd1195b23346d1560f594f6412ec73964aa27727"
+    },
+    "diagnostic-execution.log": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/soak-quarantine-diagnostic-0001/diagnostic-execution.log",
+      "sha256": "c6257b5cc666b2c76cdb70c2b014b158f36dd73eb8a8ab84d262f5b385d9e2e8"
+    },
+    "diagnostic-execution-v2.log": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/soak-quarantine-diagnostic-0001/diagnostic-execution-v2.log",
+      "sha256": "6db73e98ecd5e8a96acb3dd8b49303800261823ad3f2715e630cf193e769779b"
+    },
+    "candidate-execution.log": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/soak-quarantine-diagnostic-0001/candidate-execution.log",
+      "sha256": "ff58cefa8cd9380c48f3e8da35bc6ec3756cdc1384ff176e38e38e3c36e71ac2"
+    },
+    "candidate-replay.log": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/soak-quarantine-diagnostic-0001/candidate-replay.log",
+      "sha256": "63b764a9dc0a379281ac75d9fe6115d6f1dd103320e47da60bdef48c65b8bda0"
+    },
+    "candidate-build.log": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/soak-quarantine-diagnostic-0001/candidate-build.log",
+      "sha256": "da53d137fe8cd2f8f57f1cfd2a9d217813702280b4991511004312669078f914"
+    },
+    "repair-regression-tests.log": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/soak-quarantine-diagnostic-0001/repair-regression-tests.log",
+      "sha256": "76174a5dd85537bb4eb50b76ff234fa4aba10541f75606f1b61dd32a8ff8e11f"
+    },
+    "old-rollout-drain.json": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/soak-quarantine-diagnostic-0001/old-rollout-drain.json",
+      "sha256": "5f4dd60b88b8b8c006abe48b8600cd67d7600e10127e6013048d4ed345eaeb79"
+    },
+    "panel/case-000001/native-1.json": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/soak-quarantine-diagnostic-0001/panel/case-000001/native-1.json",
+      "sha256": "3e14f2a53ab5f58be49713c888e368c8442e0e68b77d088947e1e4a423ab4fc3"
+    }
+  },
+  "productionReady": false,
+  "productionDeployed": false,
+  "repairEvidence": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/soak-quarantine-diagnostic-0001/repair-evidence.json",
+    "sha256": "9025a7d0b98135b2b4ca16dbbe2c0ca5d38d024e55cbdd8fdf57f6a320ddb987"
+  },
+  "candidateSource": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/soak-quarantine-diagnostic-0001/candidate-host-source.json",
+    "sha256": "683dd8effa54ad614343975fea34584cf0f69764ac890f88ea5ccb887b9ff52c"
+  },
+  "fullReplayInternalAudit": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/soak-quarantine-diagnostic-0001/full-replay/final-audit.json",
+    "sha256": "a79f59b373f053c5b3cb64518f06cdc06e85a3530c19418d1b0631974e47d3c3"
+  },
+  "fullReplay": {
+    "matchedBuilds": 10008,
+    "matchedBattles": 10008,
+    "matchedActionCheckpoints": 534775,
+    "targets": 80,
+    "independentDrainedAuditPending": true
+  },
+  "combinedRegressionTests": "47 passed in 18.89s, including actual C# observer harness"
+}
