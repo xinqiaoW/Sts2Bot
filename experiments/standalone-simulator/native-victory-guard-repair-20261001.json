@@ -168,5 +168,173 @@
     "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/formal-handoff-tools-v2/manifest.json",
     "sha256": "2edfde6814c7bd63e79a2571289638e6f8db729f53642f8aaa50b84acdf5a883"
   },
-  "formalHandoffStagesStarted": false
+  "formalHandoffStagesStarted": false,
+  "concurrencyAcceptance": {
+    "report": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v3/concurrency-selection.json",
+      "sha256": "26ec1119cafa518fe42322ca0619bfccf267b076e48deb40bf951cbab188672b"
+    },
+    "recomputedSelectionMatches": true,
+    "phases": [
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v3/ladder-00-8/report.json",
+        "sha256": "d083e1775c32fa5319321827af7b66830a160c11420639457d1be51848ce67f6"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v3/ladder-01-16/report.json",
+        "sha256": "7e49e6d032d0c08b17a731321bb22db96b5761eee4ae4e03a30609ec4e672839"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v3/ladder-02-24/report.json",
+        "sha256": "199a9fb662789190f70b47f30dfc2ba150b6a601a5a29319c77a9bcd9c46ffb2"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v3/ladder-03-32/report.json",
+        "sha256": "1522efedd3eab4bbd597bd7b3c771cb857f3f094a8cc9880efeb60024216366d"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v3/ladder-04-32/report.json",
+        "sha256": "1116408a1a40cdaa371839eadbb65b94541d0d1dd33679c0fb2fd38adf1358c1"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v3/ladder-05-24/report.json",
+        "sha256": "f69795cf65bb87f5dc638ff148cffab8c6d7de51a434c3c9fce6188415317503"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v3/ladder-06-16/report.json",
+        "sha256": "07227a08b515f966a1134d120b7d043091d1256aaf78bc13c078b2701f1afc50"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v3/ladder-07-8/report.json",
+        "sha256": "e0e97ac24d9a265162d57ea8da9badf4cc3ac0dc1ad70f119fb449595f584b53"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v3/supplement-01-00-8/report.json",
+        "sha256": "f8c438ee56bbd81f005f0769b8653bc1657c5b522ae3b46f33555680312904c7"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v3/supplement-01-01-16/report.json",
+        "sha256": "3171084ada17a21b6a55b75c2b94309fdc3985d936f7ce77a44fd76868c372e6"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v3/supplement-01-02-24/report.json",
+        "sha256": "18a8f64c239c0e90d50f7bdc343109a794335d487a96dd6f121fcab1ceb43f5d"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v3/supplement-01-03-32/report.json",
+        "sha256": "af9a1c6bdcf0c645aac5947de1f74c4761a549a9f658e54be0c8dba889d77e8a"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v3/supplement-01-04-32/report.json",
+        "sha256": "b0cd4bb6f79046c7e1b9d8839be14e6db4ca11820871861b26a7d6da67699517"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v3/supplement-01-05-24/report.json",
+        "sha256": "fe706cf33fd051a7544aeb4e62f9d0699b94102ce0b845898e83d9bf6618d825"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v3/supplement-01-06-16/report.json",
+        "sha256": "632f9192935c2ac27ae53ce3b424beaab59ea8d7ef74f864e36fea7ec575baba"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v3/supplement-01-07-8/report.json",
+        "sha256": "6c933b8aa1bb9f17012f58114b7b2981c6bcab8dbbf7c27e22488cc94ec507d6"
+      }
+    ],
+    "completedTasks": 2560,
+    "failedAttempts": 0,
+    "quarantines": 0,
+    "passed": true,
+    "selectedWorkers": 24,
+    "candidates": [
+      {
+        "workers": 8,
+        "validLabelsPerHour": 2970.0350342053307,
+        "matchedTimedSearches": 45,
+        "medianExpandedRatio": 1.0,
+        "meanExtraHpLoss": 0.0,
+        "extraDeathRate": 0,
+        "failedAttempts": 0,
+        "eligible": true
+      },
+      {
+        "workers": 16,
+        "validLabelsPerHour": 4990.779472011107,
+        "matchedTimedSearches": 45,
+        "medianExpandedRatio": 0.9888123924268503,
+        "meanExtraHpLoss": -0.0546875,
+        "extraDeathRate": 0,
+        "failedAttempts": 0,
+        "eligible": true
+      },
+      {
+        "workers": 24,
+        "validLabelsPerHour": 5954.320908120143,
+        "matchedTimedSearches": 45,
+        "medianExpandedRatio": 0.9859154929577465,
+        "meanExtraHpLoss": -0.0640625,
+        "extraDeathRate": 0,
+        "failedAttempts": 0,
+        "eligible": true
+      },
+      {
+        "workers": 32,
+        "validLabelsPerHour": 6188.113045683217,
+        "matchedTimedSearches": 45,
+        "medianExpandedRatio": 0.9815602836879432,
+        "meanExtraHpLoss": 0.0953125,
+        "extraDeathRate": 0,
+        "failedAttempts": 0,
+        "eligible": true
+      }
+    ],
+    "policy": "Two opposite-order batches; median matched timed-search expansion >=85% of baseline, mean extra HP loss <=2, extra death rate <=5 percentage points, no failed attempts; smallest pool within 5% of best eligible throughput."
+  },
+  "rollbackAcceptance": {
+    "report": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v3/rollback-report.json",
+      "sha256": "3d7bd9b69b989f723f7b83b15e3d24562434b80474f277868dffacf72eb365d4"
+    },
+    "complete": true,
+    "passed": true,
+    "nativeHistoryPreserved": true,
+    "standaloneHistoryPreserved": true,
+    "handoffBackupsVerified": true,
+    "phases": [
+      {
+        "phase": "native-before",
+        "exitCode": 0,
+        "locksReleased": true,
+        "stopRequestedDuringLease": false
+      },
+      {
+        "phase": "standalone-stop-drain",
+        "exitCode": 0,
+        "locksReleased": true,
+        "stopRequestedDuringLease": true
+      },
+      {
+        "phase": "native-after-rollback",
+        "exitCode": 0,
+        "locksReleased": true,
+        "stopRequestedDuringLease": false
+      }
+    ]
+  },
+  "soakStarted": {
+    "launch": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v3/soak/launch.json",
+      "sha256": "de540031b8ad22855a4317e74f13585990ddf241596040540e11fe6ea334914d"
+    },
+    "session": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v3/soak/session.json",
+      "sha256": "ecb62680a4ac13256d91cae73e8ad160c890010b8fb5ceda88437023785500d1"
+    },
+    "startedAt": 1790789582.68203,
+    "workers": 24,
+    "requiredSeconds": 86400,
+    "minimumCompleted": 10000,
+    "completed": false,
+    "productionDeployed": false
+  }
 }
