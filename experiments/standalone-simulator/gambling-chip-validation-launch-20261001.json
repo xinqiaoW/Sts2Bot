@@ -1,0 +1,54 @@
+{
+  "schema": "gambling-chip-validation-launch/v1",
+  "productionDeployed": false,
+  "productionReady": false,
+  "sourceCommit": "0003d8c",
+  "candidateRelease": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/candidate-release-v4/release.json",
+    "sha256": "1cd942da3f476ac381987f540fcdd9c330dfc19774fae1044487457377ae26d4"
+  },
+  "preservedRegression": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/soak-quarantine-diagnostic-0002/full-replay-launch.json",
+    "sha256": "1ab4a5068cb16aa2fc81785f8fc43e6aa77a63705307ce1975ea73f4ac907536"
+  },
+  "newTeacherPanel": {
+    "preparation": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-gambling-chip-validation-20261001/preparation.json",
+      "sha256": "95f6bf804d4c6768908b920d730a2816df0ffeea6716d0f2ce8ed548ddbc0783"
+    },
+    "validation": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-gambling-chip-validation-20261001/panel-validation.json",
+      "sha256": "8334fcf673f03eee6621bd690ca3a3d2f8cfa7fbfed7774ae1149595991bde65"
+    },
+    "controller": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-gambling-chip-validation-20261001/advance-launch.json",
+      "sha256": "84c51aea1fcc2d4023256ba9d2192314881f357267b6ef5f5b573990502dccaf"
+    },
+    "plan": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-gambling-chip-validation-20261001/campaign/plan.json",
+      "sha256": "8de8dd4f37a307d4e8e458aeb24e82d3a88024be1a9d60bc25203981971b0b42"
+    },
+    "independentCompositions": 10500,
+    "priorPanelOverlap": 0,
+    "requiredValidatedBuilds": 10000,
+    "requiredActionCheckpoints": 500000,
+    "targets": 80,
+    "state": "prepared_waiting_for_regression_drain"
+  },
+  "performance": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/performance-v4/launch.json",
+    "sha256": "47aa2a502f53cd8d2f4d94352adcb6269517c2bc0fd090141a34e7f9f868c412"
+  },
+  "ordering": "Finish preserved fixed-action regression and independent drain audit, then start 24 native panel workers. No automatic production deployment.",
+  "provenance": "Existing rollout gate requires native teacher to match release. Preserve this strict rule: old teacher recordings are regression only; final gate uses fresh recordings on disjoint compositions under teacher 116098fd.",
+  "setupFailuresRetained": [
+    {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-gambling-chip-validation-20261001/prepare-panel.log",
+      "sha256": "a1d68f711ede02fbac43b45a8bdded6562b2761d254a0e6e51f355c8631edc43"
+    },
+    {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-gambling-chip-validation-20261001/prepare-panel-v2.log",
+      "sha256": "18b9b4a440e5f9dff183558cdeaab2b5babb196527277025e07f6617b609c717"
+    }
+  ]
+}
