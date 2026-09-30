@@ -50,5 +50,35 @@
       "path": "/data1/pl/ImageTask/wxq/Projects/standalone-gambling-chip-validation-20261001/prepare-panel-v2.log",
       "sha256": "18b9b4a440e5f9dff183558cdeaab2b5babb196527277025e07f6617b609c717"
     }
-  ]
+  ],
+  "performanceCompleted": {
+    "report": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/performance-v4/backend-comparison.json",
+      "sha256": "5edfe16bf00def3c7b0f555d8f3c7a2537dc210bc1550042a09cbde2f40691ec"
+    },
+    "independentCheck": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/performance-v4/independent-check.json",
+      "sha256": "2d552b3c42075325539dcc05464f057c7de84e5d52b797f66c7b019ba5bf89c6"
+    },
+    "attempts": 24,
+    "complete": 24,
+    "throughputRatio": 1.7843422763433787,
+    "medianTrialPeakRssMiB": {
+      "native": 1587.826171875,
+      "standalone": 188.146484375
+    },
+    "scope": "Six frozen fixtures, two opposite-order batches, single pinned CPU; sampled process-tree RSS excludes daemonized Wine services. Not a concurrency or correctness substitute."
+  },
+  "rolloutContinuation": {
+    "preparation": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/candidate-preparation-v4.json",
+      "sha256": "e362a5e807a89b68e17ba6838a9ec511c8ba754fdac04f7414ffa9697e83b228"
+    },
+    "launch": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/automatic-acceptance-v4-launch.json",
+      "sha256": "466f949db749be66dcf15a5f1579c9c6bbc5d99aa36a45bf4d5edae72ad5dc54"
+    },
+    "scope": "Wait for exact owned new-teacher validation and benchmark processes to drain; verify complete independent evidence; prepare fresh rollout-v4, calibrate concurrency, drill rollback, run a genuine new 24-hour soak. Never deploy production automatically.",
+    "state": "waiting_for_native_validation"
+  }
 }
