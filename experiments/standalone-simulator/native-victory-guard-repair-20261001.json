@@ -159,5 +159,14 @@
     },
     "scope": "Six frozen inputs, two reversed backend batch orders, one pinned CPU, DOP 1, fixed 8-second searches. Timed searches may choose different actions; this benchmark does not prove same-action correctness. CPU/RSS sampled at 20ms; daemonized Wine services excluded and short-lived processes may be missed.",
     "independentSearchPairsWithDifferentObservations": 10
-  }
+  },
+  "rolloutPlan": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v3/plan.json",
+    "sha256": "24b1c82e319964e39a67d49af95fb6e4680d911454447ec93ce0dc31dac20e6a"
+  },
+  "formalHandoffToolchain": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/formal-handoff-tools-v2/manifest.json",
+    "sha256": "2edfde6814c7bd63e79a2571289638e6f8db729f53642f8aaa50b84acdf5a883"
+  },
+  "formalHandoffStagesStarted": false
 }
