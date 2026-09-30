@@ -100,5 +100,11 @@
     "nonemptyChoicePlans": 30621,
     "unexecutedCases": 492,
     "scope": "Preserved recordings made by teacher e4785c9d replayed under the repaired 116098fd teacher and ff2a6006 host. Every terminal and ordered PlayPile verified. Regression only; does not replace fresh new-teacher acceptance."
-  }
+  },
+  "nativeInfrastructureReviews": [
+    {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-gambling-chip-validation-20261001/native-infrastructure-review-0001.json",
+      "sha256": "cf89f3e2bb55eeab3fdef781f1c8d40e4cea0b071c5d9ea61e595c833b666c1d"
+    }
+  ]
 }
