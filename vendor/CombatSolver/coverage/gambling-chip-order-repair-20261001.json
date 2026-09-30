@@ -109,7 +109,7 @@
     }
   },
   "fullReplay": {
-    "state": "started_not_accepted",
+    "state": "passed_historical_regression",
     "launch": {
       "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/soak-quarantine-diagnostic-0002/full-replay-launch.json",
       "sha256": "1ab4a5068cb16aa2fc81785f8fc43e6aa77a63705307ce1975ea73f4ac907536"
@@ -117,7 +117,18 @@
     "requiredBuilds": 10000,
     "requiredActionCheckpoints": 500000,
     "requiredTargets": 80,
-    "sourceRecordings": "Preserved successful native recordings from standalone-full-state-validation-20260929/campaign; no recapture."
+    "sourceRecordings": "Preserved successful native recordings from standalone-full-state-validation-20260929/campaign; no recapture.",
+    "independentAudit": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/soak-quarantine-diagnostic-0002/final-independent-audit.json",
+      "sha256": "842a087566ada89ada040bc4cdc08e8403d5bb3cd61055ea468bab8ab4f6d867"
+    },
+    "uniqueBuilds": 10008,
+    "uniqueTargets": 80,
+    "matchedBattles": 10008,
+    "matchedCheckpoints": 534775,
+    "matchedPlays": 240981,
+    "nonemptyChoicePlans": 30621,
+    "unexecutedCases": 492
   },
   "remaining": [
     "Independent full replay audit for this host",
@@ -125,5 +136,17 @@
     "Rollback drill",
     "Fresh genuine 24-hour soak with native audits and backup/restore checks",
     "Verified formal activation and new production data"
-  ]
+  ],
+  "newTeacherAcceptance": {
+    "state": "running_not_accepted",
+    "preparation": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-gambling-chip-validation-20261001/preparation.json",
+      "sha256": "95f6bf804d4c6768908b920d730a2816df0ffeea6716d0f2ce8ed548ddbc0783"
+    },
+    "launch": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-gambling-chip-validation-20261001/native-panel-launch.json",
+      "sha256": "d5cc242e066d3fa7e8d918f2195e414cf505deb0df9fd1b536be45391f0fcff9"
+    },
+    "scope": "Disjoint compositions and fresh original-game recordings under teacher 116098fd; all original successful recordings remain unchanged."
+  }
 }

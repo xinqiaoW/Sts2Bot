@@ -33,7 +33,11 @@
     "requiredValidatedBuilds": 10000,
     "requiredActionCheckpoints": 500000,
     "targets": 80,
-    "state": "prepared_waiting_for_regression_drain"
+    "state": "running",
+    "launch": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-gambling-chip-validation-20261001/native-panel-launch.json",
+      "sha256": "d5cc242e066d3fa7e8d918f2195e414cf505deb0df9fd1b536be45391f0fcff9"
+    }
   },
   "performance": {
     "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/performance-v4/launch.json",
@@ -80,5 +84,21 @@
     },
     "scope": "Wait for exact owned new-teacher validation and benchmark processes to drain; verify complete independent evidence; prepare fresh rollout-v4, calibrate concurrency, drill rollback, run a genuine new 24-hour soak. Never deploy production automatically.",
     "state": "waiting_for_native_validation"
+  },
+  "preservedRegressionCompleted": {
+    "report": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/soak-quarantine-diagnostic-0002/final-independent-audit.json",
+      "sha256": "842a087566ada89ada040bc4cdc08e8403d5bb3cd61055ea468bab8ab4f6d867"
+    },
+    "passed": true,
+    "campaignDrained": true,
+    "uniqueBuilds": 10008,
+    "uniqueTargets": 80,
+    "matchedBattles": 10008,
+    "matchedCheckpoints": 534775,
+    "matchedPlays": 240981,
+    "nonemptyChoicePlans": 30621,
+    "unexecutedCases": 492,
+    "scope": "Preserved recordings made by teacher e4785c9d replayed under the repaired 116098fd teacher and ff2a6006 host. Every terminal and ordered PlayPile verified. Regression only; does not replace fresh new-teacher acceptance."
   }
 }
