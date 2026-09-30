@@ -110,5 +110,54 @@
   "preparation": {
     "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/candidate-preparation-v3.json",
     "sha256": "0f8aaf40b431f1e8d38923d63cf1271f61d7c16a4f985c2826928a4e06d73134"
+  },
+  "currentHostPerformance": {
+    "report": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/performance-v3/backend-comparison.json",
+      "sha256": "48c235dfc474076dc7f2118d43c17741e50bc770ed28ebabe7f085a5e7b075ac"
+    },
+    "hostSha256": "554f9cc12dd376fae381cb836cf4af6d4899c6f6003c8cf006429039c8bd6acb",
+    "completedTrials": 24,
+    "failedTrials": 0,
+    "cpuAffinity": [
+      8
+    ],
+    "cpuIsolationVerified": true,
+    "summary": {
+      "batchMedianSpeedRatio": 2.22864217217656,
+      "batchMedianTimeReductionPercent": 55.12962948989835,
+      "native-wine": {
+        "attempted": 12,
+        "complete": 12,
+        "failed": 0,
+        "medianWallSeconds": 36.20002442994155,
+        "p95WallSeconds": 58.952539242920466,
+        "totalWallSeconds": 425.25342506880406,
+        "validLabelsPerHour": 101.58648338460868
+      },
+      "standalone-managed-native": {
+        "attempted": 12,
+        "complete": 12,
+        "failed": 0,
+        "medianWallSeconds": 16.243085086462088,
+        "p95WallSeconds": 35.23161130200606,
+        "totalWallSeconds": 217.53630055091344,
+        "validLabelsPerHour": 198.58754557559107
+      },
+      "totalMeasuredTimeRatio": 1.9548618965747067,
+      "validLabelThroughputRatio": 1.9548618965747067
+    },
+    "memory": {
+      "native-wine": {
+        "medianTrialPeakRssMiB": 1601.658203125,
+        "maxTrialPeakRssMiB": 1832.546875
+      },
+      "standalone-managed-native": {
+        "medianTrialPeakRssMiB": 187.501953125,
+        "maxTrialPeakRssMiB": 224.6484375
+      }
+    },
+    "scope": "Six frozen inputs, two reversed backend batch orders, one pinned CPU, DOP 1, fixed 8-second searches. Timed searches may choose different actions; this benchmark does not prove same-action correctness. CPU/RSS sampled at 20ms; daemonized Wine services excluded and short-lived processes may be missed.",
+    "independentSearchPairsWithDifferentObservations": 10
   }
 }
