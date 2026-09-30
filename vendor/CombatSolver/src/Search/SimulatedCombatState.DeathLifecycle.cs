@@ -43,10 +43,9 @@ internal sealed partial class SimulatedCombatState
             return 0;
         if (creature.Monster is DecimillipedeSegment)
         {
-            bool hasSurvivingSegment = GetTeammatesOf(creature)
-                .Any(candidate => candidate != creature
-                    && GetAmount<ReattachPower>(candidate) > 0
-                    && _deathPhases?.GetValueOrDefault(candidate) != PredictedDeathPhase.PermanentlyDead);
+            CombatPredictionState state = _predictionState
+                ?? throw new InvalidOperationException("Combat prediction state is not attached.");
+            bool hasSurvivingSegment = HasLivingReattachSibling(state, creature);
             return hasSurvivingSegment ? Math.Max(0, GetAmount<ReattachPower>(creature)) : 0;
         }
         if (creature.Monster is TestSubject)
@@ -110,19 +109,21 @@ internal sealed partial class SimulatedCombatState
 
     public void BeginReattach(CombatPredictionSimulator simulator, Creature creature)
     {
-        Creature[] otherSegments = GetTeammatesOf(creature)
-            .Where(candidate => candidate != creature && GetAmount<ReattachPower>(candidate) > 0)
-            .ToArray();
-        bool allDead = otherSegments.All(candidate => simulator.State.GetCreature(candidate).IsDead);
-        if (allDead)
+        if (!HasLivingReattachSibling(simulator.State, creature))
         {
-            foreach (Creature segment in otherSegments.Append(creature))
-                SetDeathPhase(segment, PredictedDeathPhase.PermanentlyDead);
+            // Native fade-out does not reset the earlier segments' DEAD_MOVE
+            // or reviving state. Actual sibling HP decides whether they can heal.
+            SetDeathPhase(creature, PredictedDeathPhase.PermanentlyDead);
             return;
         }
         SetDeathPhase(creature, PredictedDeathPhase.Reviving);
         ForceMonsterMove(creature, "DEAD_MOVE");
     }
+
+    private bool HasLivingReattachSibling(CombatPredictionState state, Creature creature)
+        => GetTeammatesOf(creature).Any(candidate => candidate != creature
+            && GetAmount<ReattachPower>(candidate) > 0
+            && state.GetCreature(candidate).IsAlive);
 
     public void CompleteDeathPhase(Creature creature)
     {
@@ -149,10 +150,7 @@ internal sealed partial class SimulatedCombatState
                 break;
             case DecimillipedeSegment when moveId == "REATTACH_MOVE":
             {
-                bool allOthersDead = GetTeammatesOf(creature)
-                    .Where(candidate => candidate != creature && GetAmount<ReattachPower>(candidate) > 0)
-                    .All(candidate => !CanPerformMonsterMove(simulator, candidate));
-                if (!allOthersDead)
+                if (HasLivingReattachSibling(simulator.State, creature))
                 {
                     simulator.Heal(creature, GetAmount<ReattachPower>(creature));
                     SetDeathPhase(creature, PredictedDeathPhase.None);

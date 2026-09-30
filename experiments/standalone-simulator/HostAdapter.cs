@@ -9,7 +9,7 @@ using System.Security.Cryptography;
 internal static class HostAdapter
 {
     public const string GameHash = "0861bfa1df347538d932f22d580e75420f08082792eb914e53b4882764acdbe9";
-    public const string SolverHash = "116098fd3856c83e8d9d79fff9e0ade89dd8c53b08182c70f09dcfad050b61b2";
+    public const string SolverHash = "f55809c52e58ba3bcbc01bbc9ad89eb59de6d468143fa9260a58c0f68d8a8d0b";
     public static void Verify(string path, string expected)
     {
         using var stream = File.OpenRead(path);

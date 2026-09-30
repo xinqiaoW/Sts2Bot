@@ -33,7 +33,7 @@
     "requiredValidatedBuilds": 10000,
     "requiredActionCheckpoints": 500000,
     "targets": 80,
-    "state": "running",
+    "state": "stopped_after_terminal_mismatch",
     "launch": {
       "path": "/data1/pl/ImageTask/wxq/Projects/standalone-gambling-chip-validation-20261001/native-panel-launch.json",
       "sha256": "d5cc242e066d3fa7e8d918f2195e414cf505deb0df9fd1b536be45391f0fcff9"
@@ -83,7 +83,7 @@
       "sha256": "466f949db749be66dcf15a5f1579c9c6bbc5d99aa36a45bf4d5edae72ad5dc54"
     },
     "scope": "Wait for exact owned new-teacher validation and benchmark processes to drain; verify complete independent evidence; prepare fresh rollout-v4, calibrate concurrency, drill rollback, run a genuine new 24-hour soak. Never deploy production automatically.",
-    "state": "waiting_for_native_validation"
+    "state": "stopped_before_rollout"
   },
   "preservedRegressionCompleted": {
     "report": {
@@ -125,6 +125,29 @@
     {
       "path": "/data1/pl/ImageTask/wxq/Projects/standalone-gambling-chip-validation-20261001/native-infrastructure-review-0006.json",
       "sha256": "2598b2108a0c72c8109a316d24cac23343ec71265d4523d339496205474bb091"
+    },
+    {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-gambling-chip-validation-20261001/native-infrastructure-review-0007.json",
+      "sha256": "edd32b46e8eabdb035dc4660e6c1a84ec658e49cfe96dff59d0cee3249edce45"
     }
-  ]
+  ],
+  "terminalMismatch": {
+    "caseId": "929149bb231fb1b9ca9d5c65e32cb34d117d88772390cb3542370b68482d4291",
+    "baseline": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/native-terminal-diagnostic-0001/baseline.json",
+      "sha256": "77964065a523b677fcce57d966f84603fd204f754f91e4678669680174e915dd"
+    },
+    "drain": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/native-terminal-diagnostic-0001/drain.json",
+      "sha256": "9f55aa1189f984c12c63a67e699f712a62051656a3c01ce38c3ab3e3f2c2aba7"
+    },
+    "diagnosticReplay": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/native-terminal-diagnostic-0001/sequential-damage-independent-check.json",
+      "sha256": "6456d9408f01f8f55397adde4f111158355f108b462074df8a9037088a32141f"
+    },
+    "state": "diagnosing_rolling_boulder_hit_order",
+    "productionReady": false
+  },
+  "state": "stopped_terminal_mismatch_repair_targeted_checks_passed",
+  "terminalRepairEvidence": "../../vendor/CombatSolver/coverage/rolling-boulder-hit-order-repair-20261001.json"
 }

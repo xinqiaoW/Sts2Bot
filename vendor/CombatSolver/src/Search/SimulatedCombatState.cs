@@ -1066,11 +1066,13 @@ internal sealed partial class SimulatedCombatState
     public bool TriggerAfterPlayerTurnStart(
         CombatPredictionSimulator simulator,
         Creature owner,
-        TurnStartChoiceCursor choices)
+        TurnStartChoiceCursor choices,
+        ISet<uint> processedEnemyDeaths)
     {
         Player player = owner.Player
             ?? throw new InvalidOperationException("玩家回合开始钩子的持有者没有 Player。");
-        if (TurnStartPowerSupport.TriggerAfterPlayerTurnStart(simulator, this, player, choices))
+        if (TurnStartPowerSupport.TriggerAfterPlayerTurnStart(
+                simulator, this, player, choices, processedEnemyDeaths))
             return true;
         if (TurnStartRelicSupport.TriggerAfterPlayerTurnStart(simulator, this, player, choices))
             return true;

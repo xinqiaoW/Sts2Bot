@@ -1729,7 +1729,8 @@ internal sealed partial class CombatBeamSolver
                 if (simulatedCombat.TriggerAfterPlayerTurnStart(
                         simulator,
                         _player.Creature,
-                        choices))
+                        choices,
+                        processedEnemyDeaths))
                     return SearchBoundaryReason.PendingChoice;
                 if (!sideTurnStartTriggeredEarly)
                 {
@@ -2534,7 +2535,8 @@ internal sealed partial class CombatBeamSolver
                 if (simulatedCombat.TriggerAfterPlayerTurnStart(
                         simulator,
                         _player.Creature,
-                        roundChoices))
+                        roundChoices,
+                        processedEnemyDeaths))
                     return SearchBoundaryReason.PendingChoice;
                 if (!sideTurnStartTriggeredEarly)
                 {

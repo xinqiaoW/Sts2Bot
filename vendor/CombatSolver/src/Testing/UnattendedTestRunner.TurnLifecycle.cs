@@ -155,7 +155,8 @@ internal sealed partial class UnattendedTestRunner
             if (combat.TriggerAfterPlayerTurnStart(
                     simulator,
                     player.Creature,
-                    choices))
+                    choices,
+                    new HashSet<uint>()))
                 throw new InvalidOperationException("模拟玩家回合准备遇到动态抽牌后结算。");
             if (!sideTurnStartTriggeredEarly)
             {

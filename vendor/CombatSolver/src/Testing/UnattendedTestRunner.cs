@@ -1028,7 +1028,8 @@ internal sealed partial class UnattendedTestRunner
             CorePowerSupport.TriggerAfterBlockCleared(simulator, simulatedCombat, player.Creature);
             CorePowerSupport.TriggerPoison(simulator, simulatedCombat, [player.Creature]);
             TurnStartChoiceCursor choices = new(null);
-            if (simulatedCombat.TriggerAfterPlayerTurnStart(simulator, player.Creature, choices))
+            if (simulatedCombat.TriggerAfterPlayerTurnStart(
+                    simulator, player.Creature, choices, new HashSet<uint>()))
                 throw new InvalidOperationException("模拟玩家回合开始遇到未计划选择。");
             simulatedCombat.TriggerSideTurnStart(
                 simulator,

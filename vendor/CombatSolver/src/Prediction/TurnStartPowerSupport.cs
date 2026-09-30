@@ -242,7 +242,8 @@ internal static class TurnStartPowerSupport
         CombatPredictionSimulator simulator,
         SimulatedCombatState combat,
         Player player,
-        TurnStartChoiceCursor choices)
+        TurnStartChoiceCursor choices,
+        ISet<uint> processedEnemyDeaths)
     {
         Creature owner = player.Creature;
         foreach (var power in combat.EffectivePowers().ToArray())
@@ -302,7 +303,15 @@ internal static class TurnStartPowerSupport
                     using (simulator.PushDamageSource(
                         CombatDamageSource.For(CombatDamageSourceKind.Power, nameof(RollingBoulderPower))))
                     {
-                        simulator.Damage(combat.HittableEnemies, rolling.Amount, ValueProp.Unpowered, owner);
+                        // The native boulder emits one damage command per hit.
+                        // Finish each target's death hooks before the next hit;
+                        // batching all HP changes alters Reattach's sibling test.
+                        foreach (Creature target in combat.HittableEnemies.ToArray())
+                        {
+                            simulator.Damage(target, rolling.Amount, ValueProp.Unpowered, owner);
+                            CorePowerSupport.ApplyEnemyDeathPowers(
+                                simulator, combat, combat.KnownEnemies, processedEnemyDeaths);
+                        }
                     }
                     combat.SetPowerAmount(rolling, rolling.Amount + rolling.DynamicVars.Damage.IntValue);
                     break;

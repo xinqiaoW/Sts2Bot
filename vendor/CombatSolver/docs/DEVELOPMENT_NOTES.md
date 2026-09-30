@@ -1,5 +1,14 @@
 # CombatSolver 开发笔记与未来构想
 
+## 千足虫逐次死亡与重接边界（开发中，2026-10-01）
+
+ROLLING_BOULDER_POWER 按原生可见命中顺序逐个执行伤害，并在每次命中后运行已有死亡能力结算。回合开始入口显式传入外层已处理死亡集合，防止再次结算。Reattach 保留先前肢节的 DEAD_MOVE/阶段；有效生命值与重接条件共用其他肢节的分支 HP，不以死亡动作推断仍可复活。不增加分支字段或放宽状态比较。
+
+`UnattendedTestRunner.RollingBoulder.cs::AssertRollingBoulderHitsAsync` 经隔离 Executor 调用，正常协议无新增开关。原版调用 `AfterPlayerTurnStart` 与预测根/Fork 比较完整 ContinuationStamp；场景为 `all-segments`、`one-segment`、`survive`、`all-segments-no-reattach`、`one-segment-reattach`，后两项在死亡后再次 Fork 并与原版 `DoReattach` 对照。已通过；外层死亡结算不得再次改变状态。旧源码补齐外层死亡结算后的基线仍在 E0.move 明确失败，证明差异并非夹具漏跑死亡处理。早期未补齐外层步骤的探索性失败保留，不作为正确基线。
+
+Release 构建零警告/错误，结构门禁通过；单请求 120 秒未增加。独立宿主诊断调度适配另通过 15 场保留录像、1,024 个动作点和 15 个完整终局。最小夹具与诊断回归不计入新版万构筑/50 万动作点验收。证据：`coverage/rolling-boulder-hit-order-repair-20261001.json`；最终全量回归、新教师面板及长期运行仍待完成。
+
+
 ## 开局换牌的抽牌与自动出牌顺序（开发中，2026-10-01）
 
 - 24 worker 试采完成 17,941 场后，同一输入三次在选牌时找不到 UNTOUCHABLE。已排空、保留隔离记录，旧试采不能计作 24 小时通过。

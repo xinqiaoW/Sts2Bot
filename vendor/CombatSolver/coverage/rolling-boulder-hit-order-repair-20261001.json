@@ -1,0 +1,139 @@
+{
+  "schema": "rolling-boulder-hit-order-repair/v1",
+  "status": "targeted_checks_passed_full_acceptance_pending",
+  "productionReady": false,
+  "productionDeployed": false,
+  "originalCase": "929149bb231fb1b9ca9d5c65e32cb34d117d88772390cb3542370b68482d4291",
+  "originalFailure": "Terminal E0.move CONSTRICT_MOVE vs DEAD_MOVE and MS0 phase 2 vs 1; original successful recording preserved.",
+  "repair": [
+    "Host adapts TestMode batch damage to original per-hit DoDamage calls.",
+    "Prediction flushes death powers between hits, sharing the outer processed-deaths set.",
+    "Retain earlier DEAD_MOVE/death phases; determine reattach eligibility and effective HP from branch sibling HP."
+  ],
+  "nativeFixtures": [
+    "all-segments",
+    "one-segment",
+    "survive",
+    "all-segments-no-reattach",
+    "one-segment-reattach"
+  ],
+  "fixtureScope": "Full ContinuationStamp, root isolation, Fork, outer-boundary idempotence, post-death Fork and native reattach. Survive passed v2 and is unaffected by the later Reattach-only change.",
+  "baselineCaveat": "The first exploratory fixtures omitted the outer death flush. semantic-baseline-flushed uses unchanged original production semantics with that boundary included and still fails E0.move; use this corrected baseline.",
+  "diagnosticPreservedReplay": {
+    "cases": 15,
+    "actionCheckpoints": 1024,
+    "terminalCheckpoints": 15,
+    "countsTowardAcceptance": false
+  },
+  "finalCandidate": {
+    "teacher": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/native-terminal-diagnostic-0001/final-source/.godot/mono/temp/bin/Release/CombatSolver.dll",
+      "sha256": "f55809c52e58ba3bcbc01bbc9ad89eb59de6d468143fa9260a58c0f68d8a8d0b"
+    },
+    "host": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/native-terminal-diagnostic-0001/final-host/bin/Release/net9.0/SimulatorPrototype.dll",
+      "sha256": "7d2ed38ae6b8a6978bff3387b8a03945cc41a35b2ecb693746f92139c61aee9f"
+    },
+    "trace": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/native-terminal-diagnostic-0001/final-trace/bin/Release/net9.0/NativeTraceProbe.dll",
+      "sha256": "c92c749bf2dafa2a7815f67b0181e8a5301ffa9f3ab2ca2c0b40b32663205678"
+    },
+    "productionReady": false
+  },
+  "reports": [
+    {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/native-terminal-diagnostic-0001/drain.json",
+      "sha256": "9f55aa1189f984c12c63a67e699f712a62051656a3c01ce38c3ab3e3f2c2aba7"
+    },
+    {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/native-terminal-diagnostic-0001/baseline.json",
+      "sha256": "77964065a523b677fcce57d966f84603fd204f754f91e4678669680174e915dd"
+    },
+    {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/native-terminal-diagnostic-0001/sequential-damage-independent-check.json",
+      "sha256": "6456d9408f01f8f55397adde4f111158355f108b462074df8a9037088a32141f"
+    },
+    {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/native-terminal-diagnostic-0001/semantic-baseline-flushed/report.json",
+      "sha256": "f3681de0a64fd1d0b802d49d7340bb513610f63084a4e14a66370de094cf1b37"
+    },
+    {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/native-terminal-diagnostic-0001/semantic-candidate-v2/report.json",
+      "sha256": "9d8b1ec609c20fb6d4fe1ad3b00e82b5922c1b4d6c53a47886f784d5ba56c18e"
+    },
+    {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/native-terminal-diagnostic-0001/semantic-candidate-v3/report.json",
+      "sha256": "9aae545b9f5e8e9a8f9918b3270e8ac66ed5ab15af80469c734119cb6eced631"
+    },
+    {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/native-terminal-diagnostic-0001/semantic-adjacent/report.json",
+      "sha256": "1a7d5c9f4b2498c37c90f139dc2fc9a9204745f6e50e3baa93a526ad9e18ca26"
+    },
+    {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/native-terminal-diagnostic-0001/preserved-boulder-cohort/report.json",
+      "sha256": "87309581d1a4a7839e99dd24c904cb6c656780042a57bf8b166351932e30e79b"
+    },
+    {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/native-terminal-diagnostic-0001/final-build.json",
+      "sha256": "779eca78448087106d43b5f86fa23c863320a0486e5770b76cddd19bc24d60ef"
+    },
+    {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/native-terminal-diagnostic-0001/final-case-v2/report.json",
+      "sha256": "a44c5d4cbe506f8631a800ed108001b8102ec8483851103400efa21f83a8bdce"
+    },
+    {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/native-terminal-diagnostic-0001/unknown-teacher/report.json",
+      "sha256": "eb936b411dd8d7d99aa86ab6456973aca04b6e9c939065c6d93aa0521fc06d0c"
+    },
+    {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/native-terminal-diagnostic-0001/resource-snapshot.json",
+      "sha256": "8336a274c7ed30e195c38b73b00156559094fc0f0ba028140476983f78f20c29"
+    }
+  ],
+  "scripts": [
+    {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/native-terminal-diagnostic-0001/build_semantics.py",
+      "sha256": "9f8f2ccf086429450c0706f982d6cf45b62100957df93d88e3dd896367b27258"
+    },
+    {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/native-terminal-diagnostic-0001/build_corrected_baseline.py",
+      "sha256": "e13252e837ea998d3be731e2637bdd579ae5b883a6808e8471ef9e2c8fffe88e"
+    },
+    {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/native-terminal-diagnostic-0001/check_semantics.py",
+      "sha256": "d4917efe496fe180b0614a75e9f741027314df8b5acbd57f062854f6aeb3c8ff"
+    },
+    {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/native-terminal-diagnostic-0001/check_preserved_cohort.py",
+      "sha256": "af32999614fb5bf5f18b58d598ffc8319fb29dbb7dc5fc5390499df03a667300"
+    },
+    {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/native-terminal-diagnostic-0001/build_final.py",
+      "sha256": "3aad9665a2742884cc5bc42bff3a061a3b9ca10d23d4f81574175fa91ac75b24"
+    },
+    {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/native-terminal-diagnostic-0001/check_final_case.py",
+      "sha256": "4503e0e9467d9f54983ed7c0995d4bf4bb4a0f66fb2c80a4910a9b9b6629da9f"
+    },
+    {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/native-terminal-diagnostic-0001/check_final_case_v2.py",
+      "sha256": "badf86d396be9e5c10393158001b9452bb6b12a9550732e04794b790d8c57477"
+    }
+  ],
+  "retainedSetupFailures": [
+    "semantic-baseline: unsupported CULTIST fixture; corrected input uses DEVOTED_SCULPTOR.",
+    "final-case: provenance correctly rejected the previous capture-source teacher manifest; final-case-v2 uses its own manifest pinned to f55809c5."
+  ],
+  "validation": {
+    "requestTimeoutSeconds": 120,
+    "releaseBuildWarnings": 0,
+    "releaseBuildErrors": 0,
+    "refactorBoundaries": "REFACTOR_BOUNDARIES_OK search_files=61"
+  },
+  "next": [
+    "Replay all preserved F and G recordings under final candidate.",
+    "Fresh strict-teacher 10000-build / 500000-action acceptance.",
+    "New performance/concurrency/rollback and genuine 24h soak.",
+    "Activate formal collection only after all gates."
+  ]
+}
