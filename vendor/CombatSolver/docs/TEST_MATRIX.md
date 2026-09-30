@@ -1,5 +1,10 @@
 # CombatSolver 测试清单
 
+## 开局换牌时序最小差分（2026-10-01）
+
+`UnattendedTestRunner.GamblingChip.cs::AssertGamblingChipDiscardDrawAsync` 使用原生遗物钩子与预测根/Fork 比较完整 ContinuationStamp，先完成预测再推进 live；场景为 `shuffle`、`no-shuffle`、`two-sly-shuffle`、`empty`。旧版 shuffle 明确失败，新版四项通过。夹具仅经隔离 Executor 注入调用，脚本、输入、构建和报告见 `coverage/gambling-chip-order-repair-20261001.json`；单请求上限 120 秒，不增加搜索预算或计入大面板数量。原失败构筑另有固定十张开局选择的无搜索完整状态对照，以及新/旧教师原生录像的 78/56 个动作点与完整终局重放证据。
+
+
 ## 回合末卡牌批量进入出牌区与终局状态（开发中，2026-09-29）
 
 - 冻结教师 b5cade2f 的新万构筑批次排空于 711 场，706 场旧字段一致、5 场终局手牌不同。保留全部原生录制；该批次尚未达到验收数量，且旧状态文本缺少 PlayPile，不能作为最终完整状态验收。

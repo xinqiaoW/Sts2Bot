@@ -1,0 +1,129 @@
+{
+  "schema": "gambling-chip-discard-draw-order/v1",
+  "createdAt": 1790798744.7309277,
+  "productionDeployed": false,
+  "productionReady": false,
+  "failure": {
+    "job": "10f3f099c90c7068ca9cbe155658fc4023984f5ea43cd0eed0b2cf3856ad122a",
+    "build": "a921f8e821726f787d6c6aca4e7747fed1038f9100910ad229960dc54974807e",
+    "target": "MECHA_KNIGHT_ELITE",
+    "attempts": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/soak-quarantine-diagnostic-0002/attempts.json",
+      "sha256": "7fc9f230913cf782a3dc006b420a35705307b2f803e57236015d2ebbe0c55d81"
+    },
+    "drain": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/soak-quarantine-diagnostic-0002/old-rollout-drain.json",
+      "sha256": "9630aa830a7804f447078e94ec7ddf018a4cead17b6e677bc8a8982163d845ed"
+    }
+  },
+  "rootCause": "TurnStartChoiceSupport split the native GamblingChip DiscardAndDraw command. Sly auto-play happened before drawing, allowing the played card back into the shuffle. Native draws first, then auto-plays Sly.",
+  "nativeImplementation": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/soak-quarantine-diagnostic-0002/native-discard-il.txt",
+    "sha256": "55ba2be4f7e6ea1915a1aedb3ad47b15121f0bf8f8aa8a9ff4c627bfd7913e25"
+  },
+  "fixedOpening": {
+    "choices": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/soak-quarantine-diagnostic-0002/fixed-opening-choices.json",
+      "sha256": "086cd9a654bd054805cbeed3635cf1270fb698617605ef704e9d3e7e2f7cf82a"
+    },
+    "request": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/soak-quarantine-diagnostic-0002/request.json",
+      "sha256": "6193f594f520f6e020a63d0d1556993519e81ae7e60752d60c4b5903a9a7d717"
+    },
+    "baseline": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/soak-quarantine-diagnostic-0002/fixed-opening-baseline.log",
+      "sha256": "4b7c04a3e55f7b2c1e70f502b2b78796ffacf392ed1164faa8c5ed7882cf8df7"
+    },
+    "difference": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/soak-quarantine-diagnostic-0002/fixed-opening-diff.txt",
+      "sha256": "e9220e79963976dcc121c2bc7a01bc51ba03d612f3afdaf69bfa74af8edef60c"
+    },
+    "candidate": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/soak-quarantine-diagnostic-0002/fixed-opening-candidate.log",
+      "sha256": "d62f9b250cb7e5401f118b68f6f0da1711dc54b5369fca58ea0b1dfa3cb22ac2"
+    },
+    "matched": true,
+    "searchPerformed": false
+  },
+  "semanticBaseline": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/soak-quarantine-diagnostic-0002/semantic-baseline/report.json",
+    "sha256": "a568f55286a7c969736e541c8652e0eae6d953e7f7c1c357c7193f3bc3ec0b27"
+  },
+  "semanticCandidate": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/soak-quarantine-diagnostic-0002/semantic-candidate/report.json",
+    "sha256": "56a7cbd9bd8b81a5af41157249972c6cad7c3b27d0ef9e7f776966a78c393fd9"
+  },
+  "fixtureScope": "Native GamblingChip hook versus predicted root and Fork, full ContinuationStamp including ordered piles, powers, private state and RNG. Four cases: shuffle, no-shuffle, two-sly-shuffle, empty. No counts added to the 500000-checkpoint gate.",
+  "finalCase": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/soak-quarantine-diagnostic-0002/final-case-v2/report.json",
+    "sha256": "be3a6307327ef07c8b6dbd704440af8b081f5f8b081352f03526c8041e1ce17b"
+  },
+  "autonomousExecution": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/soak-quarantine-diagnostic-0002/final-execution.log",
+    "sha256": "28436e370f1f7874e669d9e3944b8319ce4fdbeb937a8b0750871949f01cc4bf"
+  },
+  "identityNegative": {
+    "log": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/soak-quarantine-diagnostic-0002/identity-negative/replay.log",
+      "sha256": "c816b4594770107969b75c9d85f889d85c209061166a33e5af72a2d4940f4b8b"
+    },
+    "reason": "Native trace identity mismatch."
+  },
+  "preservedSetupFailure": {
+    "log": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/soak-quarantine-diagnostic-0002/final-case-driver.log",
+      "sha256": "189cd9eefa05732bc5ee4b859ece2082ca2d77d2197d1791c84fbe81c032703b"
+    },
+    "reason": "Diagnostic setup supplied standalone-only dotnet key to GameProcess; failed before capture. Separate native runtime descriptor fixed this in a fresh directory."
+  },
+  "buildLogs": [
+    {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/soak-quarantine-diagnostic-0002/final-build.log",
+      "sha256": "4236848f8e23a9fe4e2d7db1b8551f35e8dc6c22d5abd7ad999246340cee3228"
+    },
+    {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/soak-quarantine-diagnostic-0002/final-host-build.log",
+      "sha256": "e0c3689b3b3b87ced14604cdd3b3fbc1a4b5174077be193beed01d46013036e7"
+    },
+    {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/soak-quarantine-diagnostic-0002/final-trace-build.log",
+      "sha256": "b571c010ceb746c8ec9ef62138168de7c23a83db23870d4153d8593dd0be345a"
+    },
+    {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/soak-quarantine-diagnostic-0002/boundaries.log",
+      "sha256": "deca91a103cbb776e0d96749d3a9a9df66ee078c8c763e793a82e7e81cc80377"
+    }
+  ],
+  "finalArtifacts": {
+    "teacher": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/soak-quarantine-diagnostic-0002/native-template/game/mods/CombatSolver/CombatSolver.dll",
+      "sha256": "116098fd3856c83e8d9d79fff9e0ade89dd8c53b08182c70f09dcfad050b61b2"
+    },
+    "host": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/soak-quarantine-diagnostic-0002/final-host/bin/Release/net9.0/SimulatorPrototype.dll",
+      "sha256": "ff2a60064a271550e8d49ff2929cc9abb67ffbc0e1a9010a9f92a7b7e97f4172"
+    },
+    "trace": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/soak-quarantine-diagnostic-0002/final-trace/bin/Release/net9.0/NativeTraceProbe.dll",
+      "sha256": "1df05a12e55f6d1340063a0b64383e099acf3c41b6cdd114e3ae35623eb352bb"
+    }
+  },
+  "fullReplay": {
+    "state": "started_not_accepted",
+    "launch": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/soak-quarantine-diagnostic-0002/full-replay-launch.json",
+      "sha256": "1ab4a5068cb16aa2fc81785f8fc43e6aa77a63705307ce1975ea73f4ac907536"
+    },
+    "requiredBuilds": 10000,
+    "requiredActionCheckpoints": 500000,
+    "requiredTargets": 80,
+    "sourceRecordings": "Preserved successful native recordings from standalone-full-state-validation-20260929/campaign; no recapture."
+  },
+  "remaining": [
+    "Independent full replay audit for this host",
+    "Fresh candidate performance and concurrency calibration",
+    "Rollback drill",
+    "Fresh genuine 24-hour soak with native audits and backup/restore checks",
+    "Verified formal activation and new production data"
+  ]
+}

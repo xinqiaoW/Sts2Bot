@@ -213,8 +213,10 @@ internal static class TurnStartChoiceSupport
             maxCount: options.Count);
         if (selected.Count > 0)
         {
-            simulator.Discard(selected);
-            simulator.Draw(player, selected.Count);
+            // Gambling Chip uses the native combined command: draw before Sly
+            // auto-plays. Splitting these commands can shuffle an already-played
+            // Sly card back into the draw pile and change every later draw.
+            simulator.DiscardAndDraw(selected, selected.Count);
         }
         if (combat.HasPendingChoice)
             return false;

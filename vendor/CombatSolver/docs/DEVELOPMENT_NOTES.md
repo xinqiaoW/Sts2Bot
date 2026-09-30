@@ -1,5 +1,15 @@
 # CombatSolver 开发笔记与未来构想
 
+## 开局换牌的抽牌与自动出牌顺序（开发中，2026-10-01）
+
+- 24 worker 试采完成 17,941 场后，同一输入三次在选牌时找不到 UNTOUCHABLE。已排空、保留隔离记录，旧试采不能计作 24 小时通过。
+- 固定原失败构筑与十张开局换牌选择后，无搜索差分在开局即失败：预测将 UNTOUCHABLE 留在抽牌堆，原版则留在弃牌堆。游戏 IL 证实 GAMBLING_CHIP 调用组合 DiscardAndDraw，抽牌发生在 Sly 自动打出之前；旧 TurnStartChoiceSupport 分开调用 Discard 和 Draw，颠倒该顺序。
+- 唯一修复点改用已有 CombatPredictionSimulator.DiscardAndDraw，不更改原版游戏、搜索预算、部署选择或异常处理，不新增分支状态。
+- 原生最小夹具先记录旧实现完整状态失败；修复后 shuffle、no-shuffle、two-sly-shuffle、empty 四项均通过完整状态及 Fork 对照，预测不改变 live 根。原失败构筑的固定开局完整状态也已一致。
+- 无诊断分派的最终教师/宿主/观察器 Release 构建零警告、零错误，结构门禁通过。新教师的同输入原生录制通过 78 个动作点和完整终局；保留的旧教师录像通过 56 个动作点和完整终局。未知教师录像仍被拒绝；自主执行同输入已完成。上述局部证据不替代最终万构筑验收。
+- 夹具入口 AssertGamblingChipDiscardDrawAsync 由隔离源码的 Executor 调用，正式协议不新增开关。新宿主已启动全部 10,008 场冻结原生录像的重新验证；性能、24 小时试采和正式切换仍待验收。证据：coverage/gambling-chip-order-repair-20261001.json。
+
+
 ## 回合末卡牌批量进入出牌区与终局状态（开发中，2026-09-29）
 
 - 冻结教师 b5cade2f 的新万构筑批次排空于 711 场，706 场旧字段一致、5 场终局手牌不同。保留全部原生录制；该批次尚未达到验收数量，且旧状态文本缺少 PlayPile，不能作为最终完整状态验收。
