@@ -1,7 +1,7 @@
 {
   "schema": "standalone-boulder-correctness-acceptance/v1",
   "verifiedAt": 1790818115.9045537,
-  "state": "repaired_rollout_v5b_concurrency_passed_rollback_running",
+  "state": "repaired_rollout_v5b_soak_running_native_audit_started",
   "candidateRelease": {
     "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/candidate-release-v5/release.json",
     "sha256": "43a5d56485e082a4fb5f3035d6f6ec82999798b36557049f08b13821ca87bcd9"
@@ -149,7 +149,7 @@
   },
   "automaticStatus": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/automatic-acceptance-v5b/status.json",
   "remainingGates": [
-    "Current repaired-rollout rollback and fresh 24h soak; required native audits, coverage, resources, backups and recovery checks",
+    "Complete fresh 24h soak with required native audits, coverage, resources, backups and recovery checks",
     "Independent formal readiness and original production backup/source revalidation",
     "New formal handoff bindings, activation and healthy valid new production data"
   ],
@@ -195,16 +195,6 @@
     "scope": "Native process reused within each batch; standalone process per request; alternate whole-batch order. First native startup and final stop included in batch cost. Warmed Wine server; shared pinned CPU; OS cache not controlled.",
     "resourceCaveat": "CPU and RSS sampled every 20ms for the owned process tree; daemonized Wine services excluded, short-lived children may be missed.",
     "correctnessScope": "Independent 8-second searches may select different actions and labels. Paired performance is not fixed-action rule correctness; that requirement is evidenced by the separate 10018-build native trace audit."
-  },
-  "rollback": {
-    "report": {
-      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5/rollback-report.json",
-      "sha256": "06c05b707a4ac37e46e58604a113e526f5f3f7cb82049d8a33c318212d444159"
-    },
-    "verifiedAt": 1790821550.2305152,
-    "allFourOwnershipLocksAcquired": true,
-    "currentDatabasesAndBackupSnapshotsMatch": true,
-    "scope": "Isolated native -> standalone stop/drain -> native. Does not activate production."
   },
   "failedSoak": {
     "report": {
@@ -536,5 +526,94 @@
       "sha256": "bb405343c419671066f1242bde92127a5ae97c0469868b8e5e55a8a03b2d5e6d"
     },
     "scope": "All original and supplemental opposite-order inputs retained. 50 matched budget-limited searches; no reduced thresholds. Search-quality calibration is separate from fixed-action native state fidelity."
+  },
+  "historicalRolloutV5Rollback": {
+    "report": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5/rollback-report.json",
+      "sha256": "06c05b707a4ac37e46e58604a113e526f5f3f7cb82049d8a33c318212d444159"
+    },
+    "verifiedAt": 1790821550.2305152,
+    "allFourOwnershipLocksAcquired": true,
+    "currentDatabasesAndBackupSnapshotsMatch": true,
+    "scope": "Isolated native -> standalone stop/drain -> native. Does not activate production."
+  },
+  "rollback": {
+    "report": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5b/rollback-report.json",
+      "sha256": "f124125d7477353e298c2507272ddbd163fdcf04f1887ea734294299bcdfcd4f"
+    },
+    "verifiedAt": 1790824073.2923741,
+    "allFourOwnershipLocksAcquired": true,
+    "currentDatabasesAndBackupSnapshotsMatch": true,
+    "scope": "Isolated native -> standalone stop/drain -> native. Does not activate production."
+  },
+  "soakStartup": {
+    "verifiedAt": 1790824218.6684613,
+    "launch": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5b/soak/launch.json",
+      "sha256": "a1b534d38ea5fec04e79674b30c6c6a106add923b67f1e50c401445bb287acdf"
+    },
+    "session": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5b/soak/session.json",
+      "sha256": "ebf6f8e0eea89fb22615cfd0c39f919e3a69b04bb307c2af14e94f1909e93ac2"
+    },
+    "poolOwner": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5b/soak/owner.json",
+      "sha256": "3e9c13e18a6abfbf038106d9ac761d3c15e485a3dd0b254b2c23fbe5c71dd50b"
+    },
+    "auditOwner": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5b/audit-owner.json",
+      "sha256": "5a6d5db46f9f2fba6ac530cd9914ca11bdc59836153a193b05f77bf990847728"
+    },
+    "auditReady": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5b/audit-ready.json",
+      "sha256": "c02b3efa0cd245cdd36fa3006e0be86736da2d2fc7eb4cedf3216c242fd422a3"
+    },
+    "firstTwoNativeAuditChecks": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/native-audit-import-repair-20261001/soak-v5b-startup-audit-check.json",
+      "sha256": "af8c00c1c31ce9b7497f0196e6ebca5e7a0b3c42495da51f21216dddf29f37bd"
+    },
+    "workers": 24,
+    "startedAt": 1790824048.4433973,
+    "earliest24hAt": 1790910448.4433973,
+    "startedBeijing": "2026-10-01T11:07:28.443397+08:00",
+    "earliest24hBeijing": "2026-10-02T11:07:28.443397+08:00",
+    "cpus": [
+      64,
+      65,
+      66,
+      67,
+      68,
+      69,
+      70,
+      71,
+      72,
+      73,
+      74,
+      75,
+      76,
+      77,
+      78,
+      79,
+      80,
+      81,
+      82,
+      83,
+      84,
+      85,
+      86,
+      87,
+      88,
+      89,
+      90,
+      91,
+      92,
+      93,
+      94,
+      95
+    ],
+    "previousFailedElapsedReused": false,
+    "passed": false,
+    "scope": "Live startup evidence; elapsed time, sample coverage, resource health and backups still require final drained independent acceptance."
   }
 }
