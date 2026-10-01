@@ -1,7 +1,7 @@
 {
   "schema": "standalone-boulder-correctness-acceptance/v1",
   "verifiedAt": 1790818115.9045537,
-  "state": "repaired_rollout_v5b_concurrency_running",
+  "state": "repaired_rollout_v5b_concurrency_passed_rollback_running",
   "candidateRelease": {
     "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/candidate-release-v5/release.json",
     "sha256": "43a5d56485e082a4fb5f3035d6f6ec82999798b36557049f08b13821ca87bcd9"
@@ -149,7 +149,7 @@
   },
   "automaticStatus": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/automatic-acceptance-v5b/status.json",
   "remainingGates": [
-    "New isolated rollout with fresh concurrency calibration, rollback and 24h soak; required native audits, coverage, resources, backups and recovery checks",
+    "Current repaired-rollout rollback and fresh 24h soak; required native audits, coverage, resources, backups and recovery checks",
     "Independent formal readiness and original production backup/source revalidation",
     "New formal handoff bindings, activation and healthy valid new production data"
   ],
@@ -196,7 +196,74 @@
     "resourceCaveat": "CPU and RSS sampled every 20ms for the owned process tree; daemonized Wine services excluded, short-lived children may be missed.",
     "correctnessScope": "Independent 8-second searches may select different actions and labels. Paired performance is not fixed-action rule correctness; that requirement is evidenced by the separate 10018-build native trace audit."
   },
-  "concurrency": {
+  "rollback": {
+    "report": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5/rollback-report.json",
+      "sha256": "06c05b707a4ac37e46e58604a113e526f5f3f7cb82049d8a33c318212d444159"
+    },
+    "verifiedAt": 1790821550.2305152,
+    "allFourOwnershipLocksAcquired": true,
+    "currentDatabasesAndBackupSnapshotsMatch": true,
+    "scope": "Isolated native -> standalone stop/drain -> native. Does not activate production."
+  },
+  "failedSoak": {
+    "report": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5/soak/report.json",
+      "sha256": "a46680664a36552f0715fb5543a0d4b05dda5b6bc356f551a08968e01c454a48"
+    },
+    "failureAndDrain": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/native-audit-import-repair-20261001/failure-and-drain.json",
+      "sha256": "6b0d52a44a3b7988fcb2ca09d72da30ec0c1942cf9ab94ab1f7357b96ce9bef5"
+    },
+    "reason": "Missing persistent_capture_v2 import; current frozen recorder is persistent_capture.py",
+    "wallSeconds": 32.81102156639099,
+    "completed": 2,
+    "drained": true,
+    "elapsedCountsTowardFutureSoak": false
+  },
+  "recorderImportRepair": {
+    "sourceCommit": "b8d6af083b3c34f89880453628f8c4458210b6ec",
+    "sourceManifest": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/native-audit-import-repair-20261001/source-manifest.json",
+      "sha256": "26c9f66c2df225b87dc219cf0f440c7b19052168602efa0f068f6e08dbabc89f"
+    },
+    "smokeReport": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/native-audit-import-repair-20261001/smoke-report.json",
+      "sha256": "d49164914c9c5b18fec54aa37b81d070aa2f7009d9a705b7559ff97ae969daed"
+    },
+    "preparation": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/native-audit-import-repair-20261001/preparation.json",
+      "sha256": "8c7b6b09676dae81d0d58671d701bba65348adde33d89bb33155f4fdb099f47d"
+    },
+    "automaticLaunch": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/automatic-acceptance-v5b-launch.json",
+      "sha256": "5b999a04dd94df5e8992aa780e3bf844af9765e80243587c5574ba6243b6160e"
+    },
+    "tests": {
+      "passed": 93,
+      "command": "python -B -m pytest -q tests/test_standalone_rollout_provenance.py tests/test_standalone_production_audit.py tests/test_verify_standalone_acceptance.py tests/test_standalone_rollout.py"
+    },
+    "nativeRulesChanged": false,
+    "candidateReleaseChanged": false,
+    "rolloutPlan": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5b/plan.json",
+      "sha256": "47ee968f708690dda86be0a20b27bc93ff92326d16896bd56b090e6cd8543ac1"
+    },
+    "prepareExit": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/automatic-acceptance-v5b/prepare-rollout-exit.json",
+      "sha256": "2d69d70524d29c1d17958c0c962395d6b9f97ac8aa77a9a04de3740c6b7702f3"
+    },
+    "planBindingsVerifiedAt": 1790822044.175018
+  },
+  "historicalFormalHandoffTools": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/formal-handoff-tools-v5/manifest.json",
+    "sha256": "0f04751e61b2119e865c487a5eeb77af2d9be5ee59cf97a335d262db20ef2543"
+  },
+  "formalHandoffTools": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/formal-handoff-tools-v5b/manifest.json",
+    "sha256": "4df0db6257d5cca9be7787199850dc212f4b904ac83ed3a799fdd1b5ba61fdb3"
+  },
+  "historicalRolloutV5Concurrency": {
     "verifiedAt": 1790821044.3980684,
     "selectionReport": {
       "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5/concurrency-selection.json",
@@ -333,71 +400,141 @@
     },
     "scope": "Original and supplemental opposite-order batches retained; all 320 inputs used across eight combined batches. Timed-search quality uses 51 budget-limited matched cases. This is concurrency calibration, not a replacement for fixed-action native full-state audit."
   },
-  "rollback": {
-    "report": {
-      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5/rollback-report.json",
-      "sha256": "06c05b707a4ac37e46e58604a113e526f5f3f7cb82049d8a33c318212d444159"
+  "concurrency": {
+    "verifiedAt": 1790824035.4491875,
+    "selectionReport": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5b/concurrency-selection.json",
+      "sha256": "17d3a9875a1124842bab94bd83340ad4baf590b7c926300de5d8240d33630e2b"
     },
-    "verifiedAt": 1790821550.2305152,
-    "allFourOwnershipLocksAcquired": true,
-    "currentDatabasesAndBackupSnapshotsMatch": true,
-    "scope": "Isolated native -> standalone stop/drain -> native. Does not activate production."
-  },
-  "failedSoak": {
-    "report": {
-      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5/soak/report.json",
-      "sha256": "a46680664a36552f0715fb5543a0d4b05dda5b6bc356f551a08968e01c454a48"
-    },
-    "failureAndDrain": {
-      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/native-audit-import-repair-20261001/failure-and-drain.json",
-      "sha256": "6b0d52a44a3b7988fcb2ca09d72da30ec0c1942cf9ab94ab1f7357b96ce9bef5"
-    },
-    "reason": "Missing persistent_capture_v2 import; current frozen recorder is persistent_capture.py",
-    "wallSeconds": 32.81102156639099,
-    "completed": 2,
-    "drained": true,
-    "elapsedCountsTowardFutureSoak": false
-  },
-  "recorderImportRepair": {
-    "sourceCommit": "b8d6af083b3c34f89880453628f8c4458210b6ec",
-    "sourceManifest": {
-      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/native-audit-import-repair-20261001/source-manifest.json",
-      "sha256": "26c9f66c2df225b87dc219cf0f440c7b19052168602efa0f068f6e08dbabc89f"
-    },
-    "smokeReport": {
-      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/native-audit-import-repair-20261001/smoke-report.json",
-      "sha256": "d49164914c9c5b18fec54aa37b81d070aa2f7009d9a705b7559ff97ae969daed"
-    },
-    "preparation": {
-      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/native-audit-import-repair-20261001/preparation.json",
-      "sha256": "8c7b6b09676dae81d0d58671d701bba65348adde33d89bb33155f4fdb099f47d"
-    },
-    "automaticLaunch": {
-      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/automatic-acceptance-v5b-launch.json",
-      "sha256": "5b999a04dd94df5e8992aa780e3bf844af9765e80243587c5574ba6243b6160e"
-    },
-    "tests": {
-      "passed": 93,
-      "command": "python -B -m pytest -q tests/test_standalone_rollout_provenance.py tests/test_standalone_production_audit.py tests/test_verify_standalone_acceptance.py tests/test_standalone_rollout.py"
-    },
-    "nativeRulesChanged": false,
-    "candidateReleaseChanged": false,
     "rolloutPlan": {
       "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5b/plan.json",
       "sha256": "47ee968f708690dda86be0a20b27bc93ff92326d16896bd56b090e6cd8543ac1"
     },
-    "prepareExit": {
-      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/automatic-acceptance-v5b/prepare-rollout-exit.json",
-      "sha256": "2d69d70524d29c1d17958c0c962395d6b9f97ac8aa77a9a04de3740c6b7702f3"
+    "recomputedFromAllBatches": true,
+    "batches": [
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5b/ladder-00-8/report.json",
+        "sha256": "70df0fa643f6d0c3bb9a9f8ef6007c50476f864a0419630bf6d180e0973aaba1"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5b/ladder-01-16/report.json",
+        "sha256": "ef0ea8d9385fadb6199cc852a031cc6189b859f9f158d072a6cc4c3e10729dd0"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5b/ladder-02-24/report.json",
+        "sha256": "3a2f65baf8e341baf89b6388cb5619a731d972717731e7e77c8970e3703f7458"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5b/ladder-03-32/report.json",
+        "sha256": "122547e7b2015846aeb0146263851378a422fcd86520198fc0a043e68fce0a97"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5b/ladder-04-32/report.json",
+        "sha256": "3ac0db82dcb943bde2fda4334eb91d26c7b9a30bb82493c464dca22b23e27685"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5b/ladder-05-24/report.json",
+        "sha256": "d7f0abf33e550016e5c7ad9de4dfdb228442cf22d90a0b52128bfd28767f2657"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5b/ladder-06-16/report.json",
+        "sha256": "d3f5bc0b5410679a19ea5e2e623ce58b7dbd24a643d374886be5f4dae61e39b7"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5b/ladder-07-8/report.json",
+        "sha256": "c7794a690918197e7c005da24a522ec210ce244c7fa3d2f52e3772aacc8d65dd"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5b/supplement-01-00-8/report.json",
+        "sha256": "1111f87f43fedaafe10efee3ddd64c64bfad9e7edc84e3666a1bf36da4d5f110"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5b/supplement-01-01-16/report.json",
+        "sha256": "82e3159570f885f2da0eb0203a877cfa9ca62ef57f3157e7445742b758a44742"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5b/supplement-01-02-24/report.json",
+        "sha256": "02b9634ecd83298c261ebcbb004061a74ace0df114c122455f9552afb80e8552"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5b/supplement-01-03-32/report.json",
+        "sha256": "e950dddb65e43b971c429c627a4a89e516edd5ff9cc43a42e280623009992717"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5b/supplement-01-04-32/report.json",
+        "sha256": "dc02252625ee1fcd056c03d302e8e67ba3b671ca7fa6faece3b7ada435d43285"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5b/supplement-01-05-24/report.json",
+        "sha256": "dc0e033619bfb9a7b849348f58b5af913a5385bd192e27d962f5c068e8d2ba21"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5b/supplement-01-06-16/report.json",
+        "sha256": "9da068455ce775afdaf9772413cb34ae8cd6e0908d56ccc96af4f02007067f00"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5b/supplement-01-07-8/report.json",
+        "sha256": "e7eb719fdb6a74514fa92a3e0a589c28e512b79e5ff05517dc206c2c9d604cef"
+      }
+    ],
+    "completed": 2560,
+    "failedAttempts": 0,
+    "quarantined": 0,
+    "selection": {
+      "passed": true,
+      "selectedWorkers": 24,
+      "candidates": [
+        {
+          "workers": 8,
+          "validLabelsPerHour": 2969.2944136468313,
+          "matchedTimedSearches": 50,
+          "medianExpandedRatio": 1.0,
+          "meanExtraHpLoss": 0.0,
+          "extraDeathRate": 0.0,
+          "failedAttempts": 0,
+          "eligible": true
+        },
+        {
+          "workers": 16,
+          "validLabelsPerHour": 4996.716201618169,
+          "matchedTimedSearches": 50,
+          "medianExpandedRatio": 0.9920451386256224,
+          "meanExtraHpLoss": -0.0484375,
+          "extraDeathRate": -0.003125,
+          "failedAttempts": 0,
+          "eligible": true
+        },
+        {
+          "workers": 24,
+          "validLabelsPerHour": 5909.302362621006,
+          "matchedTimedSearches": 50,
+          "medianExpandedRatio": 0.9817094168617584,
+          "meanExtraHpLoss": -0.1328125,
+          "extraDeathRate": -0.003125,
+          "failedAttempts": 0,
+          "eligible": true
+        },
+        {
+          "workers": 32,
+          "validLabelsPerHour": 6110.608882069815,
+          "matchedTimedSearches": 50,
+          "medianExpandedRatio": 0.970985060690943,
+          "meanExtraHpLoss": -0.075,
+          "extraDeathRate": -0.0046875,
+          "failedAttempts": 0,
+          "eligible": true
+        }
+      ],
+      "policy": "Two opposite-order batches; median matched timed-search expansion >=85% of baseline, mean extra HP loss <=2, extra death rate <=5 percentage points, no failed attempts; smallest pool within 5% of best eligible throughput."
     },
-    "planBindingsVerifiedAt": 1790822044.175018
-  },
-  "historicalFormalHandoffTools": {
-    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/formal-handoff-tools-v5/manifest.json",
-    "sha256": "0f04751e61b2119e865c487a5eeb77af2d9be5ee59cf97a335d262db20ef2543"
-  },
-  "formalHandoffTools": {
-    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/formal-handoff-tools-v5b/manifest.json",
-    "sha256": "4df0db6257d5cca9be7787199850dc212f4b904ac83ed3a799fdd1b5ba61fdb3"
+    "supplementInputs": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5b/supplement-01-inputs.json",
+      "sha256": "1f67c12790fd1b4e4206338dce0277eb2c04ae8fda6e2fec9493017aadf94842"
+    },
+    "supplementSelection": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5b/supplement-01-inputs.selection.json",
+      "sha256": "bb405343c419671066f1242bde92127a5ae97c0469868b8e5e55a8a03b2d5e6d"
+    },
+    "scope": "All original and supplemental opposite-order inputs retained. 50 matched budget-limited searches; no reduced thresholds. Search-quality calibration is separate from fixed-action native state fidelity."
   }
 }
