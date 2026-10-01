@@ -1,7 +1,7 @@
 {
   "schema": "standalone-boulder-correctness-acceptance/v1",
   "verifiedAt": 1790818115.9045537,
-  "state": "correctness_and_paired_performance_passed_rollout_preparing",
+  "state": "correctness_performance_and_concurrency_passed_rollback_pending",
   "candidateRelease": {
     "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/candidate-release-v5/release.json",
     "sha256": "43a5d56485e082a4fb5f3035d6f6ec82999798b36557049f08b13821ca87bcd9"
@@ -149,7 +149,6 @@
   },
   "automaticStatus": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/automatic-acceptance-v5/status.json",
   "remainingGates": [
-    "8/16/24/32 concurrency calibration",
     "Current-version rollback rehearsal",
     "Fresh 24h soak with required native audits, coverage, resources, backups and recovery checks",
     "Independent formal readiness and original production backup/source revalidation",
@@ -197,5 +196,146 @@
     "scope": "Native process reused within each batch; standalone process per request; alternate whole-batch order. First native startup and final stop included in batch cost. Warmed Wine server; shared pinned CPU; OS cache not controlled.",
     "resourceCaveat": "CPU and RSS sampled every 20ms for the owned process tree; daemonized Wine services excluded, short-lived children may be missed.",
     "correctnessScope": "Independent 8-second searches may select different actions and labels. Paired performance is not fixed-action rule correctness; that requirement is evidenced by the separate 10018-build native trace audit."
+  },
+  "concurrency": {
+    "verifiedAt": 1790821044.3980684,
+    "selectionReport": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5/concurrency-selection.json",
+      "sha256": "6f53f75e58cb38003ad5aafd70cb99d02cdb0c37100acf47287f31dc740a2cdc"
+    },
+    "rolloutPlan": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5/plan.json",
+      "sha256": "ec73ae7d3f815ea72756a29423605d2a0e6f7251667b7084820fd77d6044f95c"
+    },
+    "recomputedFromAllBatches": true,
+    "batches": [
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5/ladder-00-8/report.json",
+        "sha256": "22246a0407f8ef106a09e38829f6c86a6a2c29d3584a0cddd8fee51ec303bca2"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5/ladder-01-16/report.json",
+        "sha256": "49eb20c24a06caa29866d36226e0dcd999374294e258c227f31f3a5eaf2e6576"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5/ladder-02-24/report.json",
+        "sha256": "34c8ccceeb47226a25fb24a2aa7846837376de07b36b0d09f47be049dc29b7ee"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5/ladder-03-32/report.json",
+        "sha256": "937e3a595e7f976b3833b11616128903a5ac7aec28fd27b4e6518c77dbb45a00"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5/ladder-04-32/report.json",
+        "sha256": "2eb0b7075c48d12fd9263646aca62c546b0bf24ce4ba3b9e45762acdb04627ed"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5/ladder-05-24/report.json",
+        "sha256": "946fba40781472fd2a9cb3e9a15eedfacd77387021b635d4b7d3a01f8a7c8fac"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5/ladder-06-16/report.json",
+        "sha256": "7d244dd04b19b9b24d7fb4f17bed53d5e24171a1a1081d89a24b26d36f029056"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5/ladder-07-8/report.json",
+        "sha256": "48779db6a994aa18f87c8a415aa2dfb3877fa6af315c549509c53003ebeff5f4"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5/supplement-01-00-8/report.json",
+        "sha256": "f4357c776bbbaa09a5054a436fcc4bb5bc6ccf7f7866f466a54d920ef9d06748"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5/supplement-01-01-16/report.json",
+        "sha256": "2bc9cec1801011b0cea0859b13ecaa9cd116faacb468157fc19fb47977f9674a"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5/supplement-01-02-24/report.json",
+        "sha256": "579f0bc2de3f588d964f95b4bb2ffc6b25d79b4a17bcc850a52fff58ff30a24c"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5/supplement-01-03-32/report.json",
+        "sha256": "46ab8203af4a4d165d1c597b20c817edbf597a53f077664dc4edb6888d3900b5"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5/supplement-01-04-32/report.json",
+        "sha256": "8d927e7410027b25496ff261bcd15b104c71e56a5103e4a19872395910991b6e"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5/supplement-01-05-24/report.json",
+        "sha256": "47b5466ef3826eb9b783902c454f9bb8d7b3576220edde65a7cc0e41386c32b0"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5/supplement-01-06-16/report.json",
+        "sha256": "3710240367f9b4133138a4d9b8a6b645a047a20c780e44a398905aa6defd9be5"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5/supplement-01-07-8/report.json",
+        "sha256": "87023931a1a01d5a15ee3db9e6f54babe3b5accead7bbe234252c6ac15620fdd"
+      }
+    ],
+    "completed": 2560,
+    "failedAttempts": 0,
+    "quarantined": 0,
+    "selection": {
+      "passed": true,
+      "selectedWorkers": 24,
+      "candidates": [
+        {
+          "workers": 8,
+          "validLabelsPerHour": 2958.3709980083054,
+          "matchedTimedSearches": 51,
+          "medianExpandedRatio": 1.0,
+          "meanExtraHpLoss": 0.0,
+          "extraDeathRate": 0.0,
+          "failedAttempts": 0,
+          "eligible": true
+        },
+        {
+          "workers": 16,
+          "validLabelsPerHour": 4924.419282437423,
+          "matchedTimedSearches": 51,
+          "medianExpandedRatio": 0.9828456104944501,
+          "meanExtraHpLoss": -0.03125,
+          "extraDeathRate": -0.003125,
+          "failedAttempts": 0,
+          "eligible": true
+        },
+        {
+          "workers": 24,
+          "validLabelsPerHour": 5966.1769044786415,
+          "matchedTimedSearches": 51,
+          "medianExpandedRatio": 0.9693211488250653,
+          "meanExtraHpLoss": -0.1359375,
+          "extraDeathRate": -0.0046875,
+          "failedAttempts": 0,
+          "eligible": true
+        },
+        {
+          "workers": 32,
+          "validLabelsPerHour": 6096.506045608915,
+          "matchedTimedSearches": 51,
+          "medianExpandedRatio": 0.9656912209889001,
+          "meanExtraHpLoss": 0.103125,
+          "extraDeathRate": 0.0015625,
+          "failedAttempts": 0,
+          "eligible": true
+        }
+      ],
+      "policy": "Two opposite-order batches; median matched timed-search expansion >=85% of baseline, mean extra HP loss <=2, extra death rate <=5 percentage points, no failed attempts; smallest pool within 5% of best eligible throughput."
+    },
+    "supplementInputs": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5/supplement-01-inputs.json",
+      "sha256": "1f67c12790fd1b4e4206338dce0277eb2c04ae8fda6e2fec9493017aadf94842"
+    },
+    "supplementSelection": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5/supplement-01-inputs.selection.json",
+      "sha256": "4d7b9136f29400769cae75935d038b7647a48d81e3b3f868a1898afd96c80514"
+    },
+    "scope": "Original and supplemental opposite-order batches retained; all 320 inputs used across eight combined batches. Timed-search quality uses 51 budget-limited matched cases. This is concurrency calibration, not a replacement for fixed-action native full-state audit."
+  },
+  "formalHandoffTools": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/formal-handoff-tools-v5/manifest.json",
+    "sha256": "0f04751e61b2119e865c487a5eeb77af2d9be5ee59cf97a335d262db20ef2543"
   }
 }
