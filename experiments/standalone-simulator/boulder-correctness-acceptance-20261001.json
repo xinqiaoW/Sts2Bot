@@ -1,7 +1,7 @@
 {
   "schema": "standalone-boulder-correctness-acceptance/v1",
   "verifiedAt": 1790818115.9045537,
-  "state": "recorder_import_repaired_fresh_rollout_v5b_preparing",
+  "state": "repaired_rollout_v5b_concurrency_running",
   "candidateRelease": {
     "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/candidate-release-v5/release.json",
     "sha256": "43a5d56485e082a4fb5f3035d6f6ec82999798b36557049f08b13821ca87bcd9"
@@ -333,10 +333,6 @@
     },
     "scope": "Original and supplemental opposite-order batches retained; all 320 inputs used across eight combined batches. Timed-search quality uses 51 budget-limited matched cases. This is concurrency calibration, not a replacement for fixed-action native full-state audit."
   },
-  "formalHandoffTools": {
-    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/formal-handoff-tools-v5/manifest.json",
-    "sha256": "0f04751e61b2119e865c487a5eeb77af2d9be5ee59cf97a335d262db20ef2543"
-  },
   "rollback": {
     "report": {
       "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5/rollback-report.json",
@@ -385,6 +381,23 @@
       "command": "python -B -m pytest -q tests/test_standalone_rollout_provenance.py tests/test_standalone_production_audit.py tests/test_verify_standalone_acceptance.py tests/test_standalone_rollout.py"
     },
     "nativeRulesChanged": false,
-    "candidateReleaseChanged": false
+    "candidateReleaseChanged": false,
+    "rolloutPlan": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5b/plan.json",
+      "sha256": "47ee968f708690dda86be0a20b27bc93ff92326d16896bd56b090e6cd8543ac1"
+    },
+    "prepareExit": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/automatic-acceptance-v5b/prepare-rollout-exit.json",
+      "sha256": "2d69d70524d29c1d17958c0c962395d6b9f97ac8aa77a9a04de3740c6b7702f3"
+    },
+    "planBindingsVerifiedAt": 1790822044.175018
+  },
+  "historicalFormalHandoffTools": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/formal-handoff-tools-v5/manifest.json",
+    "sha256": "0f04751e61b2119e865c487a5eeb77af2d9be5ee59cf97a335d262db20ef2543"
+  },
+  "formalHandoffTools": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/formal-handoff-tools-v5b/manifest.json",
+    "sha256": "4df0db6257d5cca9be7787199850dc212f4b904ac83ed3a799fdd1b5ba61fdb3"
   }
 }
