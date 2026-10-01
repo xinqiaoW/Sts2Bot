@@ -615,5 +615,19 @@
     "previousFailedElapsedReused": false,
     "passed": false,
     "scope": "Live startup evidence; elapsed time, sample coverage, resource health and backups still require final drained independent acceptance."
+  },
+  "interimNativeAuditCoverage": {
+    "report": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5b-interim-audit-coverage-0001.json",
+      "sha256": "b91c5e9d99bb27e7b89be8a504b1d8be2a9aa3d96a550d2f2490105ab56dc7e3"
+    },
+    "verifiedAt": 1790825530.9676697,
+    "matchedCases": 85,
+    "distinctBuilds": 64,
+    "formalTargets": 80,
+    "actionCheckpoints": 4528,
+    "terminalCheckpoints": 85,
+    "unresolvedDifferences": 0,
+    "scope": "Interim live audit coverage snapshot. Rechecks completed queue requests, raw native events, replay fixture and host identities, full action states, terminal and ordered PlayPile. Does not establish final elapsed time, sampling ratio, drained state, resource stability or backup/restoration gates."
   }
 }
