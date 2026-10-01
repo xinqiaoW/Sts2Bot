@@ -1,5 +1,9 @@
 """Bind a rollout to completed full-state acceptance and its native observer."""
+import importlib.util
+import json
 from pathlib import Path
+import subprocess
+import sys
 
 from standalone_rollout_metrics import identity, read, sha
 
@@ -87,6 +91,38 @@ def native_files(source):
     return {str(p.relative_to(source)): sha(p) for p in sorted(paths)}
 
 
+def load_native_capture(plan):
+    """Load the recorder from the hashed source, never an ambient module name."""
+    source = Path(plan['nativeSource']).resolve(strict=True)
+    names = ('experiments/native-trace-probe/persistent_capture.py',
+             'experiments/native-trace-probe/persistent_capture_v2.py')
+    name = next((name for name in names if name in plan['nativeFiles']), None)
+    require(name is not None, 'Frozen native source has no supported recorder entry point')
+    path = source / name
+    require(sha(path) == plan['nativeFiles'][name], 'Native recorder entry point changed')
+    sys.path.insert(0, str(source))
+    sys.path.insert(0, str(path.parent))
+    spec = importlib.util.spec_from_file_location('frozen_rollout_native_capture', path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    capture = getattr(module, 'PersistentCapture', None)
+    require(callable(capture), 'Native recorder lacks PersistentCapture')
+    return capture
+
+
+def verify_native_capture_import(plan):
+    # A fresh interpreter catches missing transitive dependencies and avoids
+    # sys.modules or source-path contamination from the collector process.
+    context = {key: plan[key] for key in ('nativeSource', 'nativeFiles')}
+    code = ('import json,sys; sys.path.insert(0,sys.argv[1]); '
+            'from standalone_rollout_provenance import load_native_capture; '
+            'load_native_capture(json.loads(sys.argv[2]))')
+    result = subprocess.run([sys.executable, '-I', '-B', '-c', code,
+                             str(Path(__file__).resolve().parent), json.dumps(context)],
+                            capture_output=True, text=True, timeout=30)
+    require(result.returncode == 0, 'Native recorder import preflight failed: ' + result.stderr)
+
+
 def verify_candidate(plan):
     checked_identity(plan['correctnessAudit'])
     report = verify_correctness(plan['correctnessAudit']['path'], plan['bundle'], plan['priorPlan']['path'])
@@ -100,6 +136,7 @@ def verify_candidate(plan):
     require(native_files(source) == plan['nativeFiles'], 'Native recorder source or configuration changed')
     require(read(source / 'configs/teacher.json') == report['teacher'],
             'Native audit teacher differs from accepted teacher')
+    verify_native_capture_import(plan)
     runtime = read(plan['nativeRuntime'])
     require(runtime.get('backend', 'native-wine') == 'native-wine', 'Native audit requires native runtime')
     game = Path(runtime['game_dir'])

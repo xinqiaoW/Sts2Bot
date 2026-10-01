@@ -14,6 +14,7 @@ import sys
 import time
 
 from standalone_rollout_metrics import identity, read, sampled_build, sha, write
+from standalone_rollout_provenance import load_native_capture
 
 
 def isolated_native(plan, directory):
@@ -105,7 +106,7 @@ def main():
             raise ValueError('Native recorder source changed: ' + name)
     sys.path.insert(0, str(source)); sys.path.insert(0, str(source / 'experiments/native-trace-probe'))
     # Use the already validated native observation implementation, unchanged.
-    from persistent_capture_v2 import PersistentCapture
+    PersistentCapture = load_native_capture(plan)
     from replay_evidence import validate_replay, terminal, normalized
     os.environ.update(STS2_NATIVE_STARTUP_LOCK_DIR=str(folder / 'audit-startup-slots'),
                       STS2_NATIVE_STARTUP_SLOTS='1', TMPDIR=str(folder), DISPLAY='', WAYLAND_DISPLAY='')

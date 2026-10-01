@@ -120,7 +120,7 @@ def test_exhausted_native_sample_stops_formal_audit_and_preserves_attempts(conte
             write(raw, dict(complete=False, nativeStatus='SyntheticNativeFailure'))
             log.write_text('original failed recording')
         def close(self): closed.append(True)
-    monkeypatch.setitem(sys.modules, 'persistent_capture_v2', SimpleNamespace(PersistentCapture=Capture))
+    monkeypatch.setattr(audit, 'load_native_capture', lambda plan: Capture)
     monkeypatch.setitem(sys.modules, 'replay_evidence', SimpleNamespace(validate_replay=None, terminal=None, normalized=None))
     monkeypatch.setattr(sys, 'argv', ['audit', '--directory', str(directory), '--production'])
     # Avoid changing pytest's signal handlers or parent environment.

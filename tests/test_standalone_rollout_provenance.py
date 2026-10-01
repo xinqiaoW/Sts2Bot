@@ -164,7 +164,7 @@ def candidate(accepted, tmp_path):
     write(bundle / 'teacher.json', {**read(bundle / 'teacher.json'), **teacher})
     write(native / 'configs/teacher.json', teacher)
     write(native / 'experiments/native-trace-probe/NativeTraceProbe.json', {'id': 'probe'})
-    (native / 'experiments/native-trace-probe/persistent_capture_v2.py').write_text('# recorder')
+    (native / 'experiments/native-trace-probe/persistent_capture_v2.py').write_text('class PersistentCapture: pass\n')
     runtime = tmp_path / 'runtime.json'; write(runtime, {'game_dir': str(game)})
     trace = tmp_path / 'probe.dll'; trace.write_bytes(b'probe')
     return dict(bundle=str(bundle), correctnessAudit=identity(save_audit(tmp_path, report)),
@@ -175,6 +175,34 @@ def candidate(accepted, tmp_path):
 
 def test_candidate_checks_native_dependencies_before_collection(candidate):
     assert verify_candidate(candidate)['passed']
+
+
+def test_canonical_recorder_imports_without_legacy_filename(candidate):
+    source = Path(candidate['nativeSource'])
+    legacy = source / 'experiments/native-trace-probe/persistent_capture_v2.py'
+    legacy.rename(legacy.with_name('persistent_capture.py'))
+    candidate['nativeFiles'] = native_files(source)
+    assert verify_candidate(candidate)['passed']
+
+
+@pytest.mark.parametrize('contents', [None, 'import missing_native_recorder_dependency\n', '# no capture class\n'])
+def test_recorder_import_failure_rejects_candidate_before_collection(candidate, contents):
+    source = Path(candidate['nativeSource'])
+    path = source / 'experiments/native-trace-probe/persistent_capture_v2.py'
+    path.unlink()
+    if contents is not None:
+        path.with_name('persistent_capture.py').write_text(contents)
+    candidate['nativeFiles'] = native_files(source)
+    with pytest.raises(ValueError, match='Native recorder import preflight failed'):
+        verify_candidate(candidate)
+
+
+def test_recorder_load_ignores_ambient_same_named_module(candidate, monkeypatch):
+    import types
+    from standalone_rollout_provenance import load_native_capture
+    monkeypatch.setitem(sys.modules, 'persistent_capture_v2', types.SimpleNamespace(PersistentCapture='wrong'))
+    capture = load_native_capture(candidate)
+    assert callable(capture) and capture.__module__ == 'frozen_rollout_native_capture'
 
 
 @pytest.mark.parametrize('change', ['runtime', 'runtime_path', 'trace', 'teacher_config', 'probe_config', 'recorder', 'native_solver', 'audit'])
