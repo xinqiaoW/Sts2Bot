@@ -1,7 +1,7 @@
 {
   "schema": "standalone-boulder-correctness-acceptance/v1",
   "verifiedAt": 1790818115.9045537,
-  "state": "correctness_performance_and_concurrency_passed_rollback_pending",
+  "state": "recorder_import_repaired_fresh_rollout_v5b_preparing",
   "candidateRelease": {
     "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/candidate-release-v5/release.json",
     "sha256": "43a5d56485e082a4fb5f3035d6f6ec82999798b36557049f08b13821ca87bcd9"
@@ -147,12 +147,11 @@
     ],
     "counting": "Failed attempts contribute no accepted checkpoints. Each accepted complete recording is replayed once. Independent timed-search retries may take different trajectories; failed trajectories are preserved, not certified by a later successful recording."
   },
-  "automaticStatus": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/automatic-acceptance-v5/status.json",
+  "automaticStatus": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/automatic-acceptance-v5b/status.json",
   "remainingGates": [
-    "Current-version rollback rehearsal",
-    "Fresh 24h soak with required native audits, coverage, resources, backups and recovery checks",
+    "New isolated rollout with fresh concurrency calibration, rollback and 24h soak; required native audits, coverage, resources, backups and recovery checks",
     "Independent formal readiness and original production backup/source revalidation",
-    "Formal handoff, activation and healthy valid new production data"
+    "New formal handoff bindings, activation and healthy valid new production data"
   ],
   "productionReady": false,
   "productionDeployed": false,
@@ -337,5 +336,55 @@
   "formalHandoffTools": {
     "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/formal-handoff-tools-v5/manifest.json",
     "sha256": "0f04751e61b2119e865c487a5eeb77af2d9be5ee59cf97a335d262db20ef2543"
+  },
+  "rollback": {
+    "report": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5/rollback-report.json",
+      "sha256": "06c05b707a4ac37e46e58604a113e526f5f3f7cb82049d8a33c318212d444159"
+    },
+    "verifiedAt": 1790821550.2305152,
+    "allFourOwnershipLocksAcquired": true,
+    "currentDatabasesAndBackupSnapshotsMatch": true,
+    "scope": "Isolated native -> standalone stop/drain -> native. Does not activate production."
+  },
+  "failedSoak": {
+    "report": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/rollout-v5/soak/report.json",
+      "sha256": "a46680664a36552f0715fb5543a0d4b05dda5b6bc356f551a08968e01c454a48"
+    },
+    "failureAndDrain": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/native-audit-import-repair-20261001/failure-and-drain.json",
+      "sha256": "6b0d52a44a3b7988fcb2ca09d72da30ec0c1942cf9ab94ab1f7357b96ce9bef5"
+    },
+    "reason": "Missing persistent_capture_v2 import; current frozen recorder is persistent_capture.py",
+    "wallSeconds": 32.81102156639099,
+    "completed": 2,
+    "drained": true,
+    "elapsedCountsTowardFutureSoak": false
+  },
+  "recorderImportRepair": {
+    "sourceCommit": "b8d6af083b3c34f89880453628f8c4458210b6ec",
+    "sourceManifest": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/native-audit-import-repair-20261001/source-manifest.json",
+      "sha256": "26c9f66c2df225b87dc219cf0f440c7b19052168602efa0f068f6e08dbabc89f"
+    },
+    "smokeReport": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/native-audit-import-repair-20261001/smoke-report.json",
+      "sha256": "d49164914c9c5b18fec54aa37b81d070aa2f7009d9a705b7559ff97ae969daed"
+    },
+    "preparation": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/native-audit-import-repair-20261001/preparation.json",
+      "sha256": "8c7b6b09676dae81d0d58671d701bba65348adde33d89bb33155f4fdb099f47d"
+    },
+    "automaticLaunch": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/automatic-acceptance-v5b-launch.json",
+      "sha256": "5b999a04dd94df5e8992aa780e3bf844af9765e80243587c5574ba6243b6160e"
+    },
+    "tests": {
+      "passed": 93,
+      "command": "python -B -m pytest -q tests/test_standalone_rollout_provenance.py tests/test_standalone_production_audit.py tests/test_verify_standalone_acceptance.py tests/test_standalone_rollout.py"
+    },
+    "nativeRulesChanged": false,
+    "candidateReleaseChanged": false
   }
 }
