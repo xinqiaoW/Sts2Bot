@@ -1,7 +1,7 @@
 {
   "schema": "standalone-boulder-correctness-acceptance/v1",
   "verifiedAt": 1790818115.9045537,
-  "state": "correctness_passed_performance_running",
+  "state": "correctness_and_paired_performance_passed_rollout_preparing",
   "candidateRelease": {
     "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/candidate-release-v5/release.json",
     "sha256": "43a5d56485e082a4fb5f3035d6f6ec82999798b36557049f08b13821ca87bcd9"
@@ -149,7 +149,6 @@
   },
   "automaticStatus": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/automatic-acceptance-v5/status.json",
   "remainingGates": [
-    "Current-version paired performance",
     "8/16/24/32 concurrency calibration",
     "Current-version rollback rehearsal",
     "Fresh 24h soak with required native audits, coverage, resources, backups and recovery checks",
@@ -157,5 +156,46 @@
     "Formal handoff, activation and healthy valid new production data"
   ],
   "productionReady": false,
-  "productionDeployed": false
+  "productionDeployed": false,
+  "performance": {
+    "verifiedAt": 1790818789.2520158,
+    "report": {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/performance-v5/backend-comparison.json",
+      "sha256": "240b703c049563c830b8fb78b11a926de7546b86d69e939a26b13dc49f2a6f57"
+    },
+    "completeTrials": 24,
+    "allCpuIsolationVerified": true,
+    "allResultsAndProgressHashesVerified": true,
+    "summary": {
+      "batchMedianSpeedRatio": 1.7312935625892758,
+      "batchMedianTimeReductionPercent": 42.23972054141834,
+      "native-wine": {
+        "attempted": 12,
+        "complete": 12,
+        "failed": 0,
+        "medianWallSeconds": 28.311002960486803,
+        "p95WallSeconds": 65.57621019193903,
+        "totalWallSeconds": 404.0523061949061,
+        "validLabelsPerHour": 106.91685046133917
+      },
+      "standalone-managed-native": {
+        "attempted": 12,
+        "complete": 12,
+        "failed": 0,
+        "medianWallSeconds": 16.352514427504502,
+        "p95WallSeconds": 35.11252447008155,
+        "totalWallSeconds": 200.14182223391254,
+        "validLabelsPerHour": 215.8469405235588
+      },
+      "totalMeasuredTimeRatio": 2.01882995610321,
+      "validLabelThroughputRatio": 2.0188299561032097
+    },
+    "medianPeakRssMiB": {
+      "native-wine": 1574.951171875,
+      "standalone-managed-native": 190.849609375
+    },
+    "scope": "Native process reused within each batch; standalone process per request; alternate whole-batch order. First native startup and final stop included in batch cost. Warmed Wine server; shared pinned CPU; OS cache not controlled.",
+    "resourceCaveat": "CPU and RSS sampled every 20ms for the owned process tree; daemonized Wine services excluded, short-lived children may be missed.",
+    "correctnessScope": "Independent 8-second searches may select different actions and labels. Paired performance is not fixed-action rule correctness; that requirement is evidenced by the separate 10018-build native trace audit."
+  }
 }
