@@ -1,0 +1,161 @@
+{
+  "schema": "standalone-boulder-correctness-acceptance/v1",
+  "verifiedAt": 1790818115.9045537,
+  "state": "correctness_passed_performance_running",
+  "candidateRelease": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/candidate-release-v5/release.json",
+    "sha256": "43a5d56485e082a4fb5f3035d6f6ec82999798b36557049f08b13821ca87bcd9"
+  },
+  "host": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/candidate-release-v5/host/SimulatorPrototype.dll",
+    "sha256": "7d2ed38ae6b8a6978bff3387b8a03945cc41a35b2ecb693746f92139c61aee9f"
+  },
+  "teacher": {
+    "collector_protocol": 3,
+    "collector_sha256": "f55809c52e58ba3bcbc01bbc9ad89eb59de6d468143fa9260a58c0f68d8a8d0b",
+    "collector_source": "rolling-boulder-hit-order-20261001:981b116cd5968961aeb1490c66ac575da70cac3e",
+    "game_sha256": "0861bfa1df347538d932f22d580e75420f08082792eb914e53b4882764acdbe9",
+    "game_version": "0.111.0",
+    "ritsu_sha256": "5be797e3ee68bbd261228ad617cc67fd6eba5ed23e5e94674888938399465dcc",
+    "runtime": "Windows game via Wine 11.0 on Ubuntu 22.04",
+    "solver_base": "31899af"
+  },
+  "trace": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/native-terminal-diagnostic-0001/final-trace/bin/Release/net9.0/NativeTraceProbe.dll",
+    "sha256": "c92c749bf2dafa2a7815f67b0181e8a5301ffa9f3ab2ca2c0b40b32663205678"
+  },
+  "plan": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-boulder-validation-20261001/campaign/plan.json",
+    "sha256": "6115a2c71991a6621e50e35943ccb2645b088c4f356f982d4f7e6568f137576b"
+  },
+  "independentAudit": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-boulder-validation-20261001/final-independent-audit.json",
+    "sha256": "9da4c16fe417eed9f68350cd6ed707b1da864a7b78267f1bb8f0f7dc0b2ae277"
+  },
+  "campaignReport": {
+    "path": "/data1/pl/ImageTask/wxq/Projects/standalone-boulder-validation-20261001/campaign/report.json",
+    "sha256": "0a95cb3de6bd2b02c57d9ea6a48c60cd526281d0f8d1beccedb25595e40c5d39"
+  },
+  "preservedRegressionAudits": [
+    {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/native-terminal-diagnostic-0001/independent-audit-previous-full.json",
+      "sha256": "a2979bceb271ea58e958d288df2d3b82eec84a33515a5b9d1738377e2839e1b1"
+    },
+    {
+      "path": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/native-terminal-diagnostic-0001/independent-audit-stopped-new.json",
+      "sha256": "6447147a9450c73f3b9bcd5266343d1ac27de085fdd5a9774994f3426f9ae815"
+    }
+  ],
+  "freshAcceptance": {
+    "uniqueBuilds": 10018,
+    "formalTargets": 80,
+    "actionCheckpoints": 532580,
+    "terminalCheckpoints": 10018,
+    "allTerminalAndOrderedPlayPileStatesVerified": true,
+    "unresolvedDifferences": 0,
+    "campaignDrained": true,
+    "all24WorkerExitCodesZero": true
+  },
+  "failedCaptureReview": {
+    "attempts": 24,
+    "cases": 24,
+    "reviewFiles": [
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-boulder-validation-20261001/native-infrastructure-review-0001.json",
+        "sha256": "8bba1c7173d9cee1e3fa9490555674ac120732395d8ef88d4654a01ab15d300a"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-boulder-validation-20261001/native-infrastructure-review-0002.json",
+        "sha256": "79d4f91842c2a30ea058d89a948a6e70ecb83bbde02a3959043e62a145cb45e0"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-boulder-validation-20261001/native-infrastructure-review-0003.json",
+        "sha256": "9cd48979035d108c5c6ce0fedadf932eaf912630a24134a58ab9d09dec9f5479"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-boulder-validation-20261001/native-infrastructure-review-0004.json",
+        "sha256": "294abe5ac65f0a824eae5485ddaff6cfc3223bef34795183b0df4e48fdabe235"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-boulder-validation-20261001/native-infrastructure-review-0005.json",
+        "sha256": "2e2d5dff7da368a340564dff7d19f31c52c803ca89a280b44572d7eae8e6be77"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-boulder-validation-20261001/native-infrastructure-review-0006.json",
+        "sha256": "8f788937ae0ed6c95912e0d96642947e50e847ade1ef86375b3561692e734f58"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-boulder-validation-20261001/native-infrastructure-review-0007.json",
+        "sha256": "9775d5b9cde2fc360aa35975f65f5c9326920a4d14a66dbeddc9c8b6957f18fb"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-boulder-validation-20261001/native-infrastructure-review-0008.json",
+        "sha256": "bd9599cc89cdb23c8cfbaa05700cf4a943589834ef35ce7cda9219b6222cd38f"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-boulder-validation-20261001/native-infrastructure-review-0009.json",
+        "sha256": "87b09eaed607b0085ac97c53da55280588c94eab819c5d6330f9b8a12af142aa"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-boulder-validation-20261001/native-infrastructure-review-0010.json",
+        "sha256": "0128aadc6478b6581e920d67b27940a06512e38bf98252ef0c9e6f68597ab149"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-boulder-validation-20261001/native-infrastructure-review-0011.json",
+        "sha256": "9d4902c25e3a245abfb4788eb5d45c4eacc502d5fedcb979329ef1ea4ff41095"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-boulder-validation-20261001/native-infrastructure-review-0012.json",
+        "sha256": "cc5e500af02fc976134a316e7f2260ed76f634135eac467c125d478e787cec13"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-boulder-validation-20261001/native-infrastructure-review-0013.json",
+        "sha256": "257b010cb7f8ad0c6ff261548014d381a65c2e97083762f997e6132c2542716c"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-boulder-validation-20261001/native-infrastructure-review-0014.json",
+        "sha256": "b3bce4c85d89c6d53c53001c0db7e42f6d066d73f6d3d3f991c66f805f0eb5a8"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-boulder-validation-20261001/native-infrastructure-review-0015.json",
+        "sha256": "a5383b869a32502e9a645ba0dfff02adf16a1efbfa85d7a42634379aa02e7f54"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-boulder-validation-20261001/native-infrastructure-review-0016.json",
+        "sha256": "0002c3ee42e9dbc1e30af92676967478454973406fcc58933a09147300f3e51c"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-boulder-validation-20261001/native-infrastructure-review-0017.json",
+        "sha256": "e831595972d59f159a6e190493895091f59fa67d8c402f40e480961e626771be"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-boulder-validation-20261001/native-infrastructure-review-0018.json",
+        "sha256": "461c19672bd2e73913e49af00492960e83de051b8706980822c6d48902d4c2e5"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-boulder-validation-20261001/native-infrastructure-review-0019.json",
+        "sha256": "917eec68663554dc86f7c90cc7a3de00d7cd77a22f1351b01503fc52f81f0ed5"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-boulder-validation-20261001/native-infrastructure-review-0020.json",
+        "sha256": "b59c8321dc71626cfcf58e697d973cf5b9f174d16187e7081cce87d9fec9afdd"
+      },
+      {
+        "path": "/data1/pl/ImageTask/wxq/Projects/standalone-boulder-validation-20261001/native-infrastructure-review-0021.json",
+        "sha256": "a790c656a552af7499e6d8bb0d86b5f995283981f439db5ed2aa40241bd3e21a"
+      }
+    ],
+    "counting": "Failed attempts contribute no accepted checkpoints. Each accepted complete recording is replayed once. Independent timed-search retries may take different trajectories; failed trajectories are preserved, not certified by a later successful recording."
+  },
+  "automaticStatus": "/data1/pl/ImageTask/wxq/Projects/standalone-rollout-readiness-20260929/automatic-acceptance-v5/status.json",
+  "remainingGates": [
+    "Current-version paired performance",
+    "8/16/24/32 concurrency calibration",
+    "Current-version rollback rehearsal",
+    "Fresh 24h soak with required native audits, coverage, resources, backups and recovery checks",
+    "Independent formal readiness and original production backup/source revalidation",
+    "Formal handoff, activation and healthy valid new production data"
+  ],
+  "productionReady": false,
+  "productionDeployed": false
+}
