@@ -48,8 +48,11 @@ internal static class RequestBattleProbe
         if (!(bool)Read(cm, "IsInProgress"))
             nativeTerminal?.WaitAsync(TimeSpan.FromSeconds(10)).GetAwaiter().GetResult();
         implicitChoices.AssertValid();
-        selectorType.GetMethod("ReconcileImplicitChoices")!.Invoke(selector, [player]);
-        bool terminalPlanCancelled = !requireAllRecordedChoices && !(bool)Read(cm, "IsInProgress");
+        bool terminal = !(bool)Read(cm, "IsInProgress");
+        // Frozen collectors may still use the old selector implementation.
+        // A cleared terminal pile is not evidence that its plan was executed.
+        if (!terminal) selectorType.GetMethod("ReconcileImplicitChoices")!.Invoke(selector, [player]);
+        bool terminalPlanCancelled = !requireAllRecordedChoices && terminal;
         if (!terminalPlanCancelled) selectorType.GetMethod("AssertConsumed")!.Invoke(selector, null);
         int count = Items(choices).Length;
         int consumed = (int)selectorType.GetField("_index", BindingFlags.NonPublic | BindingFlags.Instance)!.GetValue(selector)!;

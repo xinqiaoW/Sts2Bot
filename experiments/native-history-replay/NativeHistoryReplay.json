@@ -1,0 +1,1 @@
+{"id":"NativeHistoryReplay","name":"Historical route native replay","author":"Sts2Bot experiment","version":"0.1.0","description":"Execute retained standalone routes in an isolated original game; no teacher search.","has_pck":false,"has_dll":true,"affects_gameplay":true,"min_game_version":"0.111.0","dependencies":[{"id":"CombatSolver","min_version":"0.30.0"}]}

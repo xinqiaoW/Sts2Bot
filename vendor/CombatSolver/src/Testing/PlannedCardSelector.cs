@@ -1,4 +1,5 @@
 using MegaCrit.Sts2.Core.Entities.CardRewardAlternatives;
+using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Models;
@@ -76,6 +77,11 @@ internal sealed class PlannedCardSelector : ICardSelector
 
     public void ReconcileImplicitChoices(Player player)
     {
+        // Terminal cleanup removes combat cards without applying a choice.
+        // Keep choices actually observed by GetSelectedCards, but never infer
+        // an unobserved transform (or other effect) from cleared terminal piles.
+        if (!CombatManager.Instance.IsInProgress)
+            return;
         while (_index < _choices.Count && WasImplicitChoiceApplied(_choices[_index], player))
         {
             PlanCardChoice choice = _choices[_index++];

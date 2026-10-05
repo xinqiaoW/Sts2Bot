@@ -1,0 +1,97 @@
+{
+  "schema": "native-history-replay-boundaries/v1",
+  "date": "2026-10-06",
+  "branch": "codex/standalone-combat-prototype",
+  "baseHead": "ee7461fdab68148523e0ad6669148894e2f77387",
+  "experimentRoot": "/data1/pl/ImageTask/wxq/Projects/native-history-replay-fixes-20261006",
+  "nativeVerification": "/data1/pl/ImageTask/wxq/Projects/native-history-replay-fixes-20261006/native/verification-all.json",
+  "comparison": "Exact retained opening, every post-play continuation stamp, stable terminal including RNG and terminal turn; native end-turn choices",
+  "nativeCases": [
+    {
+      "category": "opening_imbued_session",
+      "sourceJobId": "d3257c83e4f9aba7a2656df271cbb5aa6a3b6c8d635c9cd0b0c58a4e6ba02e12",
+      "sourcePlanSha256": "d8227ed6de1400ddb801af4d7b711fbea2675a53d2ac04efa008183762f9c623",
+      "nativeStatus": "Passed",
+      "passed": true,
+      "checkpoints": 42,
+      "comparisonCompleted": true
+    },
+    {
+      "category": "terminal_toasty_surface",
+      "sourceJobId": "3b9966fac0ce5d57349b69a47ad1b403b8ecc36790634f23d75436b6954071f3",
+      "sourcePlanSha256": "79b3b9b5121ae7a47229f28a982650fc2a49ab242f9a27b07516f97845ebc0ad",
+      "nativeStatus": "Passed",
+      "passed": true,
+      "checkpoints": 19,
+      "comparisonCompleted": true
+    },
+    {
+      "category": "terminal_entropy_accounting",
+      "sourceJobId": "3684e63169e057d8fed5f5fdf6813a456057ccc7a923e74e438786939e8cddc0",
+      "sourcePlanSha256": "edae027ea2e2507aaa5932b94123f33ad3e2bf3ede1a499e7a58439c1128755d",
+      "nativeStatus": "Passed",
+      "passed": true,
+      "checkpoints": 21,
+      "comparisonCompleted": true
+    },
+    {
+      "category": "negative_terminal",
+      "sourceJobId": "3684e63169e057d8fed5f5fdf6813a456057ccc7a923e74e438786939e8cddc0",
+      "sourcePlanSha256": "edae027ea2e2507aaa5932b94123f33ad3e2bf3ede1a499e7a58439c1128755d",
+      "nativeStatus": "Failed",
+      "passed": true,
+      "checkpoints": 21,
+      "comparisonCompleted": false
+    }
+  ],
+  "matchedPositiveCheckpoints": 82,
+  "selectorAccounting": {
+    "exitCode": 0,
+    "events": [
+      {
+        "kind": "active_transform",
+        "turn": 1,
+        "inferredTransform": true,
+        "consumed": true
+      },
+      {
+        "kind": "terminal_cleanup",
+        "turn": 7,
+        "remainingCards": 0,
+        "inferredTransform": true,
+        "consumed": false
+      },
+      {
+        "kind": "probe_completed",
+        "passed": true
+      }
+    ],
+    "passed": true
+  },
+  "selectorEvidence": "/data1/pl/ImageTask/wxq/Projects/native-history-replay-fixes-20261006/selector-accounting-v5/probe.jsonl",
+  "standaloneAccounting": {
+    "passed": true,
+    "exitCode": 0,
+    "summary": "/data1/pl/ImageTask/wxq/Projects/native-history-replay-fixes-20261006/host-accounting/summary.json",
+    "terminalCancelled": 1
+  },
+  "binaries": {
+    "nativeReplay": "3657ee280e9749f15309f766316c70184d43549047379889ae038f7d6318a872",
+    "standaloneHost": "4170d6671a55d0404b498b926931959b7c47d23eb358c0e3bf63c7eb1c5b8539",
+    "teacher": "e67f7ba6079c50707ac130039514c39d269bfb5bdc7193293437f81a6b3c26bd",
+    "accountingProbe": "90eb41aeb87bd7686733731cff461d249848efe375eeec92538e8378185b3f6b"
+  },
+  "validation": {
+    "controllerTests": 7,
+    "releaseBuilds": "0 warnings, 0 errors",
+    "refactorBoundaries": "REFACTOR_BOUNDARIES_OK",
+    "requestTimeoutSeconds": 120
+  },
+  "scope": {
+    "runningCampaignChanged": false,
+    "wholeAffectedFailureSetReplayed": false,
+    "nativeEngineCrashesFixed": false,
+    "productionReady": false
+  },
+  "earlyProbeErrors": "Preserved separately in selector-accounting, selector-accounting-v2/v3/v4. Initialization/emitter or unpatch errors; final v5 exits 0 with both actual boundary assertions."
+}
