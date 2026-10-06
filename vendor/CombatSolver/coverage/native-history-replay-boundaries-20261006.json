@@ -89,9 +89,11 @@
   },
   "scope": {
     "runningCampaignChanged": false,
-    "wholeAffectedFailureSetReplayed": false,
+    "wholeAffectedFailureSetReplayed": true,
     "nativeEngineCrashesFixed": false,
     "productionReady": false
   },
-  "earlyProbeErrors": "Preserved separately in selector-accounting, selector-accounting-v2/v3/v4. Initialization/emitter or unpatch errors; final v5 exits 0 with both actual boundary assertions."
+  "earlyProbeErrors": "Preserved separately in selector-accounting, selector-accounting-v2/v3/v4. Initialization/emitter or unpatch errors; final v5 exits 0 with both actual boundary assertions.",
+  "remainingVerification": "coverage/native-history-replay-remaining45-20261006.json",
+  "allRelatedMatchedCheckpoints": 1197
 }

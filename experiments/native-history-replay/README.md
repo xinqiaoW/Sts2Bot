@@ -105,3 +105,22 @@ turn, the exact unused plan count and the complete terminal stamp. A separately
 marked compatibility policy repairs the retained ENTROPY cleanup ledger without
 rewriting it. See [FIXES.md](FIXES.md) for representative native evidence and the
 corrupt-terminal negative control; the running full campaign retains its frozen mod.
+
+To verify every remaining case in those three categories, use the previous
+representative summary and an explicit expected scope. Only native `Passed`
+comparisons are excluded; an expected-failure negative control is never excluded
+as a passing battle. Results and progress are flushed after each case, and a
+runtime lease prevents two verification processes from sharing the same prefix:
+
+```bash
+python verify_fixes.py --analysis /absolute/failure-analysis/analysis.json \
+  --root /absolute/prepared-runtime --remaining-after /absolute/verification-all.json \
+  --batch-label remaining45 --expected-count 45
+python audit_fix_batch.py --batch /absolute/prepared-runtime/fix-batches/remaining45 \
+  --report /absolute/new-audit.json
+```
+
+The audit recomputes exact checkpoint text equality and both hashes against each
+original plan, verifies the copied action/choice route and native request identity,
+and preserves the distinction between a complete comparison and a later native
+execution failure. Existing batch results and audit reports are never overwritten.

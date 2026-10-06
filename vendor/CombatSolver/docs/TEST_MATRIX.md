@@ -6,6 +6,8 @@
 
 新版独立宿主搭配冻结教师也验证取消账本为 `consumed=0,cancelledAfterTerminal=1`，其他回合实际变牌正常。历史回放三类代表分别通过 42、19、21 个完整状态点，故意改坏终局的反例 Failed。证据 `coverage/native-history-replay-boundaries-20261006.json`；这不是新版全量对照或原生运行稳定性通过的结论。
 
+用户明确追加的剩余 45 个样本已全部原生 Passed（33/7/5），无重试，1,025 次出牌和 1,115 个完整状态点一致。`verify_fixes.py --remaining-after ... --expected-count 45` 固定排除已验证代表，逐场落盘；`audit_fix_batch.py` 独立重算原始历史状态与保存的实际文本相等、哈希、动作/选择未改、请求身份和完整终局。证据 `coverage/native-history-replay-remaining45-20261006.json`。加上前三例，48 个同类样本累计 1,197 个状态点一致；其余 38 个不同原因的失败及正在运行的旧冻结全量服务均未转记成功。
+
 ## 千足虫逐次死亡与重接边界（开发中，2026-10-01）
 
 ROLLING_BOULDER_POWER 按原生可见命中顺序逐个执行伤害，并在每次命中后运行已有死亡能力结算。回合开始入口显式传入外层已处理死亡集合，防止再次结算。Reattach 保留先前肢节的 DEAD_MOVE/阶段；有效生命值与重接条件共用其他肢节的分支 HP，不以死亡动作推断仍可复活。不增加分支字段或放宽状态比较。

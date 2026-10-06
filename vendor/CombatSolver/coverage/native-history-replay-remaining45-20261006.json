@@ -1,0 +1,450 @@
+{
+  "schema": "native-fix-batch-audit/v1",
+  "total": 45,
+  "passed": 45,
+  "failed": 0,
+  "comparisonCompleted": 45,
+  "plays": 1025,
+  "matchedCheckpoints": 1115,
+  "stateMismatches": 0,
+  "categories": {
+    "opening_imbued_session": 33,
+    "terminal_entropy_accounting": 5,
+    "terminal_toasty_surface": 7
+  },
+  "nativeStatuses": {
+    "Passed": 45
+  },
+  "date": "2026-10-06",
+  "branch": "codex/standalone-combat-prototype",
+  "fixCommit": "c1578e0",
+  "batch": "/data1/pl/ImageTask/wxq/Projects/native-history-replay-fixes-20261006/native/fix-batches/remaining45",
+  "auditPath": "/data1/pl/ImageTask/wxq/Projects/native-history-replay-fixes-20261006/native/fix-batches/remaining45/audit.json",
+  "auditSha256": "e0c5e1fa6cb41c88696137796b15bad856febff66094fc33c3a2228dd1aa02cf",
+  "manifestSha256": "027f286f7ca81fa1dc978a140f9db6fa1f26f0b1637fafbbe2bd419ad00c7868",
+  "resultsSha256": "45f0367c096af9059564ebde1a2df3c244009b24a3ccc47e82c22f43dd9e0998",
+  "controllerSources": {
+    "verify_fixes.py": "e2b116afc4333767b15057148f060f16439c780d9226fcf2ff2911a43be79bd9",
+    "replay.py": "7a0dab9dbd507bf1e7adda264d2f6bd5a88802f9770476d0737d8cae629e6172"
+  },
+  "nativeReplaySha256": "3657ee280e9749f15309f766316c70184d43549047379889ae038f7d6318a872",
+  "requestTimeoutSeconds": 120,
+  "retries": 0,
+  "scope": {
+    "requestedCases": 45,
+    "excludedPreviouslyPassed": 3,
+    "combinedRelatedCases": 48,
+    "combinedMatchedCheckpoints": 1197,
+    "wholeAffectedFailureSetReplayed": true,
+    "other38FailuresCovered": false,
+    "runningCampaignChanged": false,
+    "productionReady": false
+  },
+  "cases": [
+    {
+      "sourceJobId": "69d6e2c85a693d49bb74c892e1c960ab5d3ab78812027450bcc39a772fa1ace6",
+      "category": "opening_imbued_session",
+      "nativeStatus": "Passed",
+      "passed": true,
+      "plays": 27,
+      "checkpoints": 29,
+      "stateMismatches": 0
+    },
+    {
+      "sourceJobId": "f33926d3a5d7988c797e512d50e6516ffc305c532f4e878fb3b9e78372e19e53",
+      "category": "opening_imbued_session",
+      "nativeStatus": "Passed",
+      "passed": true,
+      "plays": 11,
+      "checkpoints": 13,
+      "stateMismatches": 0
+    },
+    {
+      "sourceJobId": "2c94f2f4535605912be586ed6274a7d826a7cdbfce0a619346b2f5c31f6b4245",
+      "category": "opening_imbued_session",
+      "nativeStatus": "Passed",
+      "passed": true,
+      "plays": 33,
+      "checkpoints": 35,
+      "stateMismatches": 0
+    },
+    {
+      "sourceJobId": "6459f83a962abdc848e6c28294d29c31124a6b4c9ba9f4732c092ed18e8400b0",
+      "category": "opening_imbued_session",
+      "nativeStatus": "Passed",
+      "passed": true,
+      "plays": 5,
+      "checkpoints": 7,
+      "stateMismatches": 0
+    },
+    {
+      "sourceJobId": "94992c04cc69e0ec011ee487bcd19f30d001163d1b0e1ddff8cbeb14254d46ff",
+      "category": "opening_imbued_session",
+      "nativeStatus": "Passed",
+      "passed": true,
+      "plays": 44,
+      "checkpoints": 46,
+      "stateMismatches": 0
+    },
+    {
+      "sourceJobId": "35a52e2fc8200f1a630f31fde4c22f33a951977366db3c7646a76930e811212e",
+      "category": "opening_imbued_session",
+      "nativeStatus": "Passed",
+      "passed": true,
+      "plays": 32,
+      "checkpoints": 34,
+      "stateMismatches": 0
+    },
+    {
+      "sourceJobId": "dd2d7f97909b45a98c0f2781e82f205d67daf6646b3d5620e028efeb6bfe04e7",
+      "category": "terminal_entropy_accounting",
+      "nativeStatus": "Passed",
+      "passed": true,
+      "plays": 16,
+      "checkpoints": 18,
+      "stateMismatches": 0
+    },
+    {
+      "sourceJobId": "89481ddb8e165aa69dbbe4ce40689a3df79308561fb6c9840f10cf4f95e34058",
+      "category": "terminal_toasty_surface",
+      "nativeStatus": "Passed",
+      "passed": true,
+      "plays": 7,
+      "checkpoints": 9,
+      "stateMismatches": 0
+    },
+    {
+      "sourceJobId": "9cf0616e2a1046ffab37bd36352101d66f4c73eb1d0fba8a67ac894d32bb7435",
+      "category": "terminal_entropy_accounting",
+      "nativeStatus": "Passed",
+      "passed": true,
+      "plays": 16,
+      "checkpoints": 18,
+      "stateMismatches": 0
+    },
+    {
+      "sourceJobId": "4da9d319c21451f92205b9107fa9736c5a4d483f4a91454585ec019143b4553b",
+      "category": "opening_imbued_session",
+      "nativeStatus": "Passed",
+      "passed": true,
+      "plays": 36,
+      "checkpoints": 38,
+      "stateMismatches": 0
+    },
+    {
+      "sourceJobId": "273b852b7964371a83d4ce0358045739b424f27223e51f48d5d0c55d2b1eaf62",
+      "category": "opening_imbued_session",
+      "nativeStatus": "Passed",
+      "passed": true,
+      "plays": 33,
+      "checkpoints": 35,
+      "stateMismatches": 0
+    },
+    {
+      "sourceJobId": "5780747714c18110060ba1d3b28192bebec3e94f6a7b2e1ad0351ef119e3d38a",
+      "category": "opening_imbued_session",
+      "nativeStatus": "Passed",
+      "passed": true,
+      "plays": 34,
+      "checkpoints": 36,
+      "stateMismatches": 0
+    },
+    {
+      "sourceJobId": "99f1b2a27112b34acb16a6b5d729401661a9927100ecd4a6d306382e27c1c9ae",
+      "category": "opening_imbued_session",
+      "nativeStatus": "Passed",
+      "passed": true,
+      "plays": 6,
+      "checkpoints": 8,
+      "stateMismatches": 0
+    },
+    {
+      "sourceJobId": "eb9a11ca4e50071c109b5417f947afcdcbb0e4da7604878b172e65bdeee03cb3",
+      "category": "terminal_toasty_surface",
+      "nativeStatus": "Passed",
+      "passed": true,
+      "plays": 19,
+      "checkpoints": 21,
+      "stateMismatches": 0
+    },
+    {
+      "sourceJobId": "7dd7891403706c60f33cb2644524df1c9e8554819b22e9101ca3724a42dc3b3a",
+      "category": "opening_imbued_session",
+      "nativeStatus": "Passed",
+      "passed": true,
+      "plays": 18,
+      "checkpoints": 20,
+      "stateMismatches": 0
+    },
+    {
+      "sourceJobId": "cdd1eab647a6b819533d1078002a527f33dd5b7dd15007c2dc66116eaaedfb2b",
+      "category": "terminal_toasty_surface",
+      "nativeStatus": "Passed",
+      "passed": true,
+      "plays": 12,
+      "checkpoints": 14,
+      "stateMismatches": 0
+    },
+    {
+      "sourceJobId": "f00ee15d3f7ed1ecc3f78c564547d4e7eb77ff1a1f9bd949f80d8807763a7f65",
+      "category": "opening_imbued_session",
+      "nativeStatus": "Passed",
+      "passed": true,
+      "plays": 20,
+      "checkpoints": 22,
+      "stateMismatches": 0
+    },
+    {
+      "sourceJobId": "9baf2a3c3d0df2f98f804d1f09fdbaad934344c1aaf64f0cc185256fd8eb659c",
+      "category": "opening_imbued_session",
+      "nativeStatus": "Passed",
+      "passed": true,
+      "plays": 18,
+      "checkpoints": 20,
+      "stateMismatches": 0
+    },
+    {
+      "sourceJobId": "16f2b9595721d46b712fe471123ea251209fac48ad1e930dfd3b712b51f92f4e",
+      "category": "opening_imbued_session",
+      "nativeStatus": "Passed",
+      "passed": true,
+      "plays": 33,
+      "checkpoints": 35,
+      "stateMismatches": 0
+    },
+    {
+      "sourceJobId": "10880afabf0844074ef9f002a528dacfcd44cea8e92f043139d8e4c862be6992",
+      "category": "opening_imbued_session",
+      "nativeStatus": "Passed",
+      "passed": true,
+      "plays": 21,
+      "checkpoints": 23,
+      "stateMismatches": 0
+    },
+    {
+      "sourceJobId": "3f4fc0a1af66f573b1834c338b5d54c278e86febf658f966c22dac892c4cbc67",
+      "category": "opening_imbued_session",
+      "nativeStatus": "Passed",
+      "passed": true,
+      "plays": 31,
+      "checkpoints": 33,
+      "stateMismatches": 0
+    },
+    {
+      "sourceJobId": "f55eda34f0fa477102dd235e8b00ffa8723ad6aea5b03fd750e0a40dafc26816",
+      "category": "terminal_entropy_accounting",
+      "nativeStatus": "Passed",
+      "passed": true,
+      "plays": 25,
+      "checkpoints": 27,
+      "stateMismatches": 0
+    },
+    {
+      "sourceJobId": "4528e7e4636535f0a3e231e14db6de70d24019b2716965c2daf049b6b7d0e7e7",
+      "category": "opening_imbued_session",
+      "nativeStatus": "Passed",
+      "passed": true,
+      "plays": 28,
+      "checkpoints": 30,
+      "stateMismatches": 0
+    },
+    {
+      "sourceJobId": "bdd8094af6ca40ba8a7d2fe365490a604993826cfa80f30092f156177d328295",
+      "category": "terminal_toasty_surface",
+      "nativeStatus": "Passed",
+      "passed": true,
+      "plays": 25,
+      "checkpoints": 27,
+      "stateMismatches": 0
+    },
+    {
+      "sourceJobId": "3acb42f4c9223c13e041106793c866b8089f34e448467e290f26f8e23c6198a9",
+      "category": "opening_imbued_session",
+      "nativeStatus": "Passed",
+      "passed": true,
+      "plays": 14,
+      "checkpoints": 16,
+      "stateMismatches": 0
+    },
+    {
+      "sourceJobId": "d8c3ed251bec4f4641041dbe28a5cf6027de2676715944f71c713e060f99712e",
+      "category": "terminal_entropy_accounting",
+      "nativeStatus": "Passed",
+      "passed": true,
+      "plays": 39,
+      "checkpoints": 41,
+      "stateMismatches": 0
+    },
+    {
+      "sourceJobId": "739a84e8e01ad1c3bc8ac42f435bd2743dec5235e9526665c0ca278295544933",
+      "category": "opening_imbued_session",
+      "nativeStatus": "Passed",
+      "passed": true,
+      "plays": 29,
+      "checkpoints": 31,
+      "stateMismatches": 0
+    },
+    {
+      "sourceJobId": "5060894677806ed7acc9ca2f5c4c06660c06a009cf0ff0fcdeb7c7a79082bf71",
+      "category": "terminal_toasty_surface",
+      "nativeStatus": "Passed",
+      "passed": true,
+      "plays": 22,
+      "checkpoints": 24,
+      "stateMismatches": 0
+    },
+    {
+      "sourceJobId": "0044a2ab09fdc4c74d31683b3f2195c46e7e8774bfc2c1234a0ef98afa765a77",
+      "category": "opening_imbued_session",
+      "nativeStatus": "Passed",
+      "passed": true,
+      "plays": 15,
+      "checkpoints": 17,
+      "stateMismatches": 0
+    },
+    {
+      "sourceJobId": "8978f8181c9c8ee50b6f7992f8a759aa9ab60204c379b7a2f5855f6ae2c41b58",
+      "category": "terminal_toasty_surface",
+      "nativeStatus": "Passed",
+      "passed": true,
+      "plays": 12,
+      "checkpoints": 14,
+      "stateMismatches": 0
+    },
+    {
+      "sourceJobId": "9cbae85ba8261cf3a83da4285be593e19de945ade68178d11f87842852742240",
+      "category": "opening_imbued_session",
+      "nativeStatus": "Passed",
+      "passed": true,
+      "plays": 8,
+      "checkpoints": 10,
+      "stateMismatches": 0
+    },
+    {
+      "sourceJobId": "8576003e03f2cc2398cde98564f378c07e0e6fe9c1ee72dd7d6548f8c945f7de",
+      "category": "opening_imbued_session",
+      "nativeStatus": "Passed",
+      "passed": true,
+      "plays": 14,
+      "checkpoints": 16,
+      "stateMismatches": 0
+    },
+    {
+      "sourceJobId": "c99b53e2ed170628f0c21de4f8b9c4095ba0621c5c424f05b44ccc1e9dad5a6d",
+      "category": "opening_imbued_session",
+      "nativeStatus": "Passed",
+      "passed": true,
+      "plays": 12,
+      "checkpoints": 14,
+      "stateMismatches": 0
+    },
+    {
+      "sourceJobId": "aa7c45d01441ef7e85677b1da138cd50a745bd32d1ed3582e5826c06e459d32a",
+      "category": "opening_imbued_session",
+      "nativeStatus": "Passed",
+      "passed": true,
+      "plays": 15,
+      "checkpoints": 17,
+      "stateMismatches": 0
+    },
+    {
+      "sourceJobId": "789312a1713519125910760104866d8ec5b9a02585eec1c21adfddf14345f441",
+      "category": "opening_imbued_session",
+      "nativeStatus": "Passed",
+      "passed": true,
+      "plays": 16,
+      "checkpoints": 18,
+      "stateMismatches": 0
+    },
+    {
+      "sourceJobId": "ea42b01cec3840388128f2247678ce6029f312c34664864ca0109c32c98cb123",
+      "category": "opening_imbued_session",
+      "nativeStatus": "Passed",
+      "passed": true,
+      "plays": 23,
+      "checkpoints": 25,
+      "stateMismatches": 0
+    },
+    {
+      "sourceJobId": "a422bfb6fce67edbd1cff00422ee8b5e1fda90daf531c568c244664865fbbc9c",
+      "category": "opening_imbued_session",
+      "nativeStatus": "Passed",
+      "passed": true,
+      "plays": 44,
+      "checkpoints": 46,
+      "stateMismatches": 0
+    },
+    {
+      "sourceJobId": "329d237bb77e00e59d6edaf7f5201d72b7ce59e09426c7f629ca23f2ce395269",
+      "category": "opening_imbued_session",
+      "nativeStatus": "Passed",
+      "passed": true,
+      "plays": 13,
+      "checkpoints": 15,
+      "stateMismatches": 0
+    },
+    {
+      "sourceJobId": "3aaaf850fb5ad4ca93c246acb5f78fea84867e6b41674aa208b61d941aa73649",
+      "category": "terminal_entropy_accounting",
+      "nativeStatus": "Passed",
+      "passed": true,
+      "plays": 19,
+      "checkpoints": 21,
+      "stateMismatches": 0
+    },
+    {
+      "sourceJobId": "364101fe942377f3e98bc2f0538165a3f505c95c9e69aa2b6bb1c7cd5a160c61",
+      "category": "opening_imbued_session",
+      "nativeStatus": "Passed",
+      "passed": true,
+      "plays": 55,
+      "checkpoints": 57,
+      "stateMismatches": 0
+    },
+    {
+      "sourceJobId": "90ed79ffa989a81451154b3370614690f0571f8acabc1c4ab6d0a237cfcd25d1",
+      "category": "terminal_toasty_surface",
+      "nativeStatus": "Passed",
+      "passed": true,
+      "plays": 28,
+      "checkpoints": 30,
+      "stateMismatches": 0
+    },
+    {
+      "sourceJobId": "f0d735105348a696a0665be6a9efcd274e69696bfb6e7de0e92808818dfb4cb6",
+      "category": "opening_imbued_session",
+      "nativeStatus": "Passed",
+      "passed": true,
+      "plays": 22,
+      "checkpoints": 24,
+      "stateMismatches": 0
+    },
+    {
+      "sourceJobId": "0f12dd2e4491e4818db30350b488c2f8cd5d3b98c6efa6db21ea0a0bf8abebe1",
+      "category": "opening_imbued_session",
+      "nativeStatus": "Passed",
+      "passed": true,
+      "plays": 38,
+      "checkpoints": 40,
+      "stateMismatches": 0
+    },
+    {
+      "sourceJobId": "44819c5c861e8d1bc86b37efd264a9d699784c148d580ad1581a733fa784c7f2",
+      "category": "opening_imbued_session",
+      "nativeStatus": "Passed",
+      "passed": true,
+      "plays": 13,
+      "checkpoints": 15,
+      "stateMismatches": 0
+    },
+    {
+      "sourceJobId": "c5514b77deac0ddae45a04259a0460123ca10cecc875bab80eae1f75ba8fb4ba",
+      "category": "opening_imbued_session",
+      "nativeStatus": "Passed",
+      "passed": true,
+      "plays": 24,
+      "checkpoints": 26,
+      "stateMismatches": 0
+    }
+  ]
+}

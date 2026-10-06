@@ -56,6 +56,25 @@ python verify_fixes.py --analysis /absolute/failure-analysis/analysis.json \
 控制器 7 项测试通过；教师、独立宿主、回放 Mod 和核销探针的 Release
 构建均零警告/错误，结构门禁通过。单请求上限 120 秒未增加。
 
-本轮只验证三个共享根因的代表及反例，未重跑全部 48 个同类失败，
-也未把 Wine/Godot 崩溃、菜单清理失败或原生缓存并发错误标记已修复。
+初次验证只覆盖三个共享根因的代表及反例。用户随后明确要求验证剩余
+45 个同类样本，结果见下节。Wine/Godot 崩溃、菜单清理失败或原生缓存
+并发错误仍未标记已修复。
 原始隔离 11 个任务的教师预测/计划错误属于另一组问题。
+
+## 剩余 45 个样本完整验证（2026-10-06）
+
+`fix-batches/remaining45` 固定排除了之前原生 Passed 的三个代表。
+33 个 IMBUED、7 个 TOASTY_MITTENS、5 个 ENTROPY 样本全部原生 Passed，
+无重试。合计 1,025 次出牌、1,115 个完整状态检查点，零状态差异。
+验证服务 `sts2-native-history-fixes-45-20261006.service` 正常退出，状态为 success。
+
+逐场原始计划、请求、原生结果、原生日志和检查点全部保留，结果在每场
+完成后立即落盘。`audit_fix_batch.py` 另与原始历史计划逐项核对实际状态
+文本和哈希，检查动作/选择未改变、请求绑定、终局回合和禁止教师重搜的
+完成记录；45 个完整对照全部通过。审计文件位于实验目录
+`native/fix-batches/remaining45/audit.json`，结构化记录为
+`vendor/CombatSolver/coverage/native-history-replay-remaining45-20261006.json`。
+
+加上前三例，这 48 个同类失败样本均完成原生请求，累计 1,101 次出牌、
+1,197 个完整状态检查点一致。此前 86 个失败中的其余 38 个不在此批次。
+持续运行的 202,527 场全量服务仍使用自己的旧冻结代码和 DLL。
