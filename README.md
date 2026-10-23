@@ -2,7 +2,9 @@
 
 目标：`F(卡组及逐张升级、附魔、持久状态，遗物及计数，原版怪物编组) → 预期净掉血`，并预测死亡概率。
 
-数据流程：**Spire Codex `.run` → 还原并标准化战前构筑 → CombatSolver 独立对战 → 有效终局标签 → 冻结快照训练**。真实来源与真实构筑的一代变异分别采集，不按真人胜负或人工评分筛选强构筑。
+数据流程：**Spire Codex `.run` → 还原并标准化战前构筑 → 独立模拟器执行 CombatSolver 对战 → 有效终局标签 → 冻结快照训练**。模拟器在 Linux .NET 进程内执行原游戏规则，无需 Wine/Godot。真实来源与真实构筑的一代变异分别采集，不按真人胜负或人工评分筛选强构筑。
+
+当前采集入口为 `python -m tools.collect_simulator`，默认采集一场；添加 `--continuous --workers 4` 持续采集。VS Code 的“模拟器采集（单任务沙箱）”也使用此入口。发布包位置由 [configs/simulator.json](configs/simulator.json) 配置，可用 `--bundle` 或 `STS2_SIMULATOR_BUNDLE` 覆盖。实例、队列、游标和日志保存在 `.local/simulator-collect/`，重复运行接续已有任务；调试实例位于 `.local/debug-simulator/`。详见[模拟器采集](docs/simulator-collection.md)。
 
 ## 采集规则
 
@@ -11,10 +13,10 @@
 | 代码维护 | SSH `01`，`/data2/pl/ImageTask/wxq/Projects/Sts2Bot` |
 | 执行与数据 | `/data1/pl/ImageTask/wxq/Projects/Sts2Bot` |
 | 来源版本 | v0.109.0 / v0.109.1、v0.110.0 / v0.110.1、v0.111.0 |
-| 实际战斗 | 游戏 0.111.0，静默猎手，单人标准 A10，70/70 满血，无药水 |
+| 实际战斗 | 独立模拟器加载游戏 0.111.0 和冻结 CombatSolver，静默猎手，单人标准 A10，70/70 满血，无药水 |
 | 搜索 | Medium、short_only、8,000 ms、DOP 1，整场期限 120 秒 |
 | 战斗种子 | 专项目标名单内每个构筑–编组 24 个，其余 4 个 |
-| 正常采集库 | `data/collection-real-runs-v4.sqlite`、`data/collection-mutations-v2.sqlite`、`data/collection-targeted-mutations-v1.sqlite` |
+| 模拟器采集库 | 实例目录下 `db/real.sqlite`、`db/mutations.sqlite`、`db/targeted.sqlite` |
 | 三队列调度 | 真实/普通变异/专项变异按领取次数 2:1:1；空队列允许借用 |
 
 并发数、运行状态、资源参数和备份路径以执行副本的配置、进程及状态文件为准，见[持续采集](docs/continuous-collection.md)。历史种子补采使用独立队列，只消费已有构筑的补采任务，见[补采工具](tools/one_off/README.md)。
@@ -27,7 +29,14 @@
 
 ## 操作入口
 
-以下命令在 01 的执行目录查看正常真实库状态：
+使用模拟器采集一场，或持续采集：
+
+```bash
+.venv/bin/python -m tools.collect_simulator
+.venv/bin/python -m tools.collect_simulator --directory .local/simulator-continuous --continuous --workers 4
+```
+
+以下命令在 01 的旧执行目录查看历史原生真实库状态：
 
 ```bash
 cd /data1/pl/ImageTask/wxq/Projects/Sts2Bot
@@ -41,7 +50,7 @@ cd /data1/pl/ImageTask/wxq/Projects/Sts2Bot
 
 ## 标签与数据边界
 
-标签为原版完整终局的 `initialHp - finalHp`，回血会抵消损失，死亡另记布尔值；超时、异常和不完整终局不产生标签。有效种子的均值是该搜索预算下的预期掉血估计，仍有采样误差，不保证最优打法。真人掉血与用药记录保存在原始来源中，不充当标签。
+标签为完整战斗终局的 `initialHp - finalHp`，回血会抵消损失，死亡另记布尔值；超时、异常和不完整终局不产生标签。模拟器结果保留 `StandaloneCompleted` 状态、宿主/游戏/求解器/解锁快照摘要及发布包原有的验证范围，任务、入库和导出均核对这些身份。有效种子的均值是该搜索预算下的预期掉血估计，仍有采样误差，不保证最优打法。真人掉血与用药记录保存在原始来源中，不充当标签。
 
 构筑、来源、遗物计数种子、教师和全部尝试分别留档；跨库训练按源局与共享构筑/变异血缘的连通组划分，避免泄漏。旧协议标签不改写成新协议；训练只能按显式兼容规则合并。已知数据限制见[验证与审计](docs/validation.md)。
 

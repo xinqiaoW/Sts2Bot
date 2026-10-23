@@ -7,7 +7,7 @@ import time
 from .catalog import Catalog
 from .mutations import policy_history, require_mutation_database, validate_lineage
 from .observation import validate_hp, validate_cards
-from .provenance import sha256
+from .provenance import sha256, completed_by_expected_backend
 from .schema import Build, canonical, digest
 
 
@@ -27,13 +27,14 @@ def check_mutations(session, active, root):
         missing = db.execute("""SELECT count(*) FROM jobs j WHERE status IN ('pending','running') AND
             (NOT EXISTS(SELECT 1 FROM mutation_lineage l WHERE l.build_id=j.build_id) OR
              NOT EXISTS(SELECT 1 FROM mutation_target_origins t WHERE t.build_id=j.build_id AND t.target_id=json_extract(j.target,'$.id')))""").fetchone()[0]
-        rows = db.execute("SELECT a.result,j.build_id,j.target FROM attempts a JOIN jobs j ON j.id=a.job_id WHERE a.finished>? AND a.status='complete'", (now-90,)).fetchall()
+        rows = db.execute("SELECT a.result,j.build_id,j.target,j.seed,j.teacher FROM attempts a JOIN jobs j ON j.id=a.job_id WHERE a.finished>? AND a.status='complete'", (now-90,)).fetchall()
         workers, checked = set(), set()
         for row in rows:
             if row['build_id'] not in checked: validate_lineage(db, row['build_id'], catalog); checked.add(row['build_id'])
             result = json.loads(row['result']); obs = result['trainingObservation']
             planned = json.loads(db.execute('SELECT body FROM builds WHERE id=?', (row['build_id'],)).fetchone()[0]); actual = obs['initialBuild']
-            assert result['status'] == 'Passed' and result['combatEnded'] is True and obs['complete'] is True
+            assert completed_by_expected_backend({'teacher':json.loads(row['teacher']), 'seed':row['seed'],
+                'target':json.loads(row['target'])}, result) and result['combatEnded'] is True and obs['complete'] is True
             validate_hp(obs, json.loads(row['target']))
             assert obs['initialHp'] == obs['initialMaxHp'] == 70
             assert actual['character'] == 'SILENT' and actual['ascension'] == 10 and actual['actId'] == planned['act_id']
@@ -50,7 +51,10 @@ def check_mutations(session, active, root):
                 result = json.loads(attempt['result'])
                 folder = root/policy['evidence_directory']/q['job_id']/result['runId']
                 evidence = json.loads((folder/'failure.json').read_text())
-                assert evidence['result'] == result and sha256(folder/'native.log') == evidence['diagnosis']['log_sha256']
+                backend = json.loads(job['teacher']).get('execution_backend', 'native-wine')
+                log_name = 'standalone.log' if backend == 'standalone-managed-native' else 'native.log'
+                assert evidence['diagnosis'].get('backend', 'native-wine') == backend
+                assert evidence['result'] == result and sha256(folder/log_name) == evidence['diagnosis']['log_sha256']
             quarantines.append(q['job_id'])
         recent = dict(db.execute('SELECT status,count(*) FROM attempts WHERE finished>? GROUP BY status', (now-600,)))
     state = json.loads((root/session['mutation_backup_state']).read_text())

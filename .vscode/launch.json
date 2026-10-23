@@ -1,0 +1,21 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Sts2Bot: 模拟器采集（单任务沙箱）",
+      "type": "python",
+      "request": "launch",
+      "python": "${workspaceFolder}/.venv/bin/python",
+      "program": "${workspaceFolder}/.vscode/debug_collection_sandbox.py",
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}",
+        "PYTHONNOUSERSITE": "1",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "console": "integratedTerminal",
+      "justMyCode": false,
+      "subProcess": true
+    }
+  ]
+}

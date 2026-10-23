@@ -5,17 +5,18 @@ import json
 import math
 from pathlib import Path
 import signal
+from contextlib import ExitStack
 import subprocess
 import sys
 import time
 
 from damage_model.store import Store
+from damage_model.resource_limits import available_memory_bytes
 from damage_model.worker import interrupt_collector
 
 
 def available_gib():
-    values=dict(line.split(':',1) for line in Path('/proc/meminfo').read_text().splitlines())
-    return int(values['MemAvailable'].split()[0])/1024**2
+    return available_memory_bytes() / 1024**3
 
 
 def validate_memory_bounds(reserve_gib, worker_start_gib):
@@ -30,9 +31,14 @@ def deadline_reached(stop_at):
 
 def validate_runtimes(paths):
     runtimes=[json.loads(Path(p).read_text()) for p in paths]
-    for key in ('data_dir','prefix'):
-        values=[str(Path(r['data_dir'] if key=='data_dir' else r['env']['WINEPREFIX']).resolve()) for r in runtimes]
-        if len(set(values))!=len(values): raise ValueError(f'Workers share {key}')
+    for runtime in runtimes:
+        if runtime.get('backend', 'native-wine') not in ('native-wine', 'standalone-managed-native'):
+            raise ValueError('Unsupported runtime backend')
+    data = [str(Path(r['data_dir']).resolve()) for r in runtimes]
+    if len(set(data)) != len(data): raise ValueError('Workers share data_dir')
+    prefixes = [str(Path(r['env']['WINEPREFIX']).resolve()) for r in runtimes
+                if r.get('backend', 'native-wine') == 'native-wine']
+    if len(set(prefixes)) != len(prefixes): raise ValueError('Workers share prefix')
     return runtimes
 
 
@@ -42,10 +48,31 @@ def worker_preferences(total, mutation_workers):
     return ['real'] * (total - mutation_workers) + ['mutation'] * mutation_workers
 
 
+def recover_receipts(store, configs):
+    """Only reconcile after all configured runtime owners have released their locks."""
+    from damage_model.result_outbox import recover_waiting as recover
+    outcomes = []
+    with ExitStack() as locks:
+        for runtime in configs:
+            path = Path(runtime['data_dir']) / 'collector.lock'
+            path.parent.mkdir(parents=True, exist_ok=True)
+            lock = locks.enter_context(path.open('a+'))
+            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        for runtime in configs:
+            result = recover(store, runtime['data_dir'])
+            if result is not None:
+                outcomes.append(dict(directory=runtime['data_dir'], status=result))
+    if outcomes:
+        print(json.dumps(dict(event='result_receipts_recovered', outcomes=outcomes)), flush=True)
+    return outcomes
+
+
 def main():
     p=argparse.ArgumentParser()
     p.add_argument('--db',default='data/collection-real-runs-v2.sqlite')
     p.add_argument('--config',default='configs/real-runs.json')
+    p.add_argument('--teacher',default='configs/teacher.json')
+    p.add_argument('--catalog',default='catalogs/game-0.111.0.raw.json')
     p.add_argument('--fallback-db', help='Optional mutation queue sharing these workers')
     p.add_argument('--targeted-db', help='Third queue; replaces worker preferences with a 2:1:1 task cycle')
     p.add_argument('--mutation-workers', type=int, default=0, help='Workers preferring mutation; both groups borrow idle capacity')
@@ -114,6 +141,7 @@ def main():
         for child in children:
             try: child.wait(timeout=10)
             except subprocess.TimeoutExpired: child.kill();child.wait(timeout=5)
+        recover_receipts(store, configs)
     def stop_at_deadline():
         if not deadline_reached(args.stop_at): return False
         status('draining',reason='Requested collection deadline')
@@ -126,13 +154,14 @@ def main():
             log=Path('logs')/(Path(path).stem+'-worker.log');log.parent.mkdir(exist_ok=True)
             log_files.append(log.open('ab'))
         return subprocess.Popen([sys.executable,'-u','-m','damage_model.cli','--db',args.db,
-            '--config',args.config,
+            '--config',args.config,'--teacher',args.teacher,'--catalog',args.catalog,
             'work','--runtime',path,'--limit',str(args.limit_per_worker),
             *(['--targeted-db',args.targeted_db,'--schedule-offset',str(index % 4)] if targeted is not None
               else ['--prefer-dataset',preferences[index]]),
             *(['--fallback-db',args.fallback_db] if args.fallback_db else [])],
             stdout=log_files[index],stderr=subprocess.STDOUT)
     try:
+        recover_receipts(store, configs)
         if store.counts().get('failed',0): raise ValueError('Diagnose failed jobs before starting pool')
         for index,marker in enumerate(markers):
             if stop_at_deadline(): return
@@ -167,7 +196,7 @@ def main():
             status('batch_complete');return
         if args.train_after:
             status('training')
-            subprocess.run([sys.executable,'-u','-m','damage_model.cli','--db',args.db,'--config',args.config,'train','--device','cpu'],check=True)
+            subprocess.run([sys.executable,'-u','-m','damage_model.cli','--db',args.db,'--config',args.config,'--teacher',args.teacher,'--catalog',args.catalog,'train','--device','cpu'],check=True)
         status('complete')
     except BaseException as error:
         status('draining',error=str(error));drain();status('failed',error=str(error))

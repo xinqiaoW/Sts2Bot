@@ -1,5 +1,7 @@
 # 持续采集与备份
 
+当前新增采集使用 `python -m tools.collect_simulator`，持续模式添加 `--continuous`，完整参数与发布包配置见[模拟器采集](simulator-collection.md)。以下记录历史原生采集的部署和通用队列操作；Wine runtime 仅适用于原生后端。
+
 执行目录为 01 的 `/data1/pl/ImageTask/wxq/Projects/Sts2Bot`。正常采集使用真实库 `data/collection-real-runs-v4.sqlite`、普通变异库 `data/collection-mutations-v2.sqlite`、专项库 `data/collection-targeted-mutations-v1.sqlite`，采集配置为 `configs/real-runs-8s.json`。
 
 本页说明正常持续采集。历史种子补采使用[独立工具与队列](../tools/one_off/README.md)，不会在补采结束后自动生成新构筑。
@@ -53,6 +55,10 @@ PY
 
 原生失败保留请求、日志和全部 attempts，按 `retry_then_quarantine_v1` 每任务最多 3 次尝试；仍失败则写入 `job_quarantines` 并隔离该任务，其他任务继续。失败或超时即使带完整 observation 也不能充当标签。无效 observation、配置或来源错误须诊断，不能批量隔离掩盖。一个 worker 连续隔离 3 个不同任务且其间没有成功时，触发系统性问题处理。
 
+领取任务时，若 `BEGIN IMMEDIATE` 的锁等待耗尽且事务尚未开始，worker 会等待后重试，并响应自身的停止标记；这不消耗战斗尝试次数。仅明确标记为 `ClaimBusyBeforeBegin` 的错误走此路径，事务内或提交阶段的异常仍按原有诊断和持久凭据规则处理。
+
+已持久保存的结果在入库前遇到 `WriteBusyBeforeBegin` 时，worker 和池收尾恢复流程同样会等待写锁；每次重试都重新核对凭据、租约和已有 attempt。新租约、结果不一致及未明确发生在 BEGIN 前的提交错误继续上报，不能用锁等待覆盖或重放这些情况。
+
 已完成、已隔离任务不自动重打，不清零 attempts，不伪造 lease。有效租约不能强行抢占；确认过期无主的任务按现有 claim 路径恢复。
 
 停止正常采集：
@@ -67,6 +73,8 @@ PY
 
 `tools.local_backup` 对单库维护两个轮换槽，目录和状态文件由 `--directory`、`--state` 指定；默认每轮完成后等待 300 秒。实际部署也可由 `tools.one_off.backfill_backup` 串行备份多个库，它默认每轮后等待 3,600 秒，通过重复的 `--additional-db` 纳入正常采集库。备份位置和周期以进程参数及备份状态为准。
 
+同一实例的多个 `tools.local_backup` 可传入相同的 `--snapshot-lock` 文件，串行执行复制、完整性校验和哈希，避免多个大副本同时争用磁盘和缓存。源库的 WAL 读事务只在复制期间保持；复制结束立即关闭源连接，再校验独立副本，让采集库可以回收 WAL。
+
 先保存 session、配置、来源游标和历史 plan，再固定 WAL 读取快照并用 SQLite backup API 导出；不能直接复制活跃数据库或 WAL。`source-backfill/` 包括历史来源游标。恢复较早游标可以幂等重放来源，不能手工跳过未导入页。
 
 核对成功状态、备份摘要、SQLite quick_check 和任务计数。有 I/O 等待但仍在推进时不要中断快照。恢复点间隔包含等待时间和整轮备份耗时；同盘双槽备份不能替代异机容灾。
@@ -74,5 +82,11 @@ PY
 ## 日常检查
 
 读取主库旁的 `.parallel.json`、`.continuous.json`、各库备份状态，以及实际进程和锁；判断产出看近期 complete 增量和有效原生结果。控制器导入来源或启动时校验数据库可能暂不刷新状态，应结合 CPU、I/O、日志和进程身份判断，不能仅凭状态文件年龄重启。
+
+教师配置索引应保留 `jobs_teacher`。成熟库可执行 `ANALYZE jobs_teacher`，让重复教师值的查询跳过重复键；更新统计后须确认运行中的连接已重新加载查询计划。每个新构筑的教师兼容性校验使用索引范围查询，并显式拒绝 NULL，避免在来源导入期间反复扫描整个任务队列。备份若使用 idle I/O 并长期没有推进，可采样实际读写吞吐后改为 best-effort 的最低档 7，再检查完整性校验、快照样本数和保存时间；不能仅凭进程存在或保存时间刷新判断备份覆盖了最新数据。
+
+仅采集模式在已有待采任务时先启动或接管采集池，再进行来源导入和变异父构筑刷新。这样慢导入不会阻止已有队列开始执行；仍需检查后续补充速度，避免队列耗尽。
+
+心跳仍为 `collecting` 时也要核对最新 complete 的时间和完成量是否增长。worker 换批启动会核对三个库的全部 teacher 配置；`jobs_teacher` 覆盖索引用于避免反复扫描包含大体积战斗结果的任务表，不能以只抽查一条配置代替完整核对。旧库首次建立该索引可能耗时较长，应在核实没有在途任务后控制并发读取，并保留失败记录和最后一份成功备份。
 
 数据验收和已知限制见[验证与审计](validation.md)。

@@ -281,6 +281,10 @@ def validate_lineage(db, build_id, catalog=None):
     return row
 
 
+class ParentsUnavailable(ValueError):
+    """Collection must first complete source builds for the requested windows."""
+
+
 class Generator:
     def __init__(self, source, destination, catalog, teacher, policy):
         self.source, self.destination = source, destination
@@ -326,11 +330,11 @@ class Generator:
                                    for parent, origins in items if any(o['target_id'] == tid for o in origins)]
                         if matches: by_cards.append(matches)
                     if by_cards: focused[(act, tid)] = by_cards
-            if not focused: raise ValueError('No verified real parents match the requested target windows')
+            if not focused: raise ParentsUnavailable('No verified real parents match the requested target windows')
             self.focus_groups = focused
             self.focus_counts = {(r[0], r[1]): r[2] for r in self.destination.db.execute(
                 'SELECT act_id,target_id,count(*) FROM mutation_focus GROUP BY act_id,target_id')}
-        elif not all(groups.values()): raise ValueError('Both requested maps need verified real parents')
+        elif not all(groups.values()): raise ParentsUnavailable('Both requested maps need verified real parents')
         self.groups = {act: [items for _, items in sorted(values.items())] for act, values in groups.items()}
         self.refreshed = time.time()
 

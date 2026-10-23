@@ -1,5 +1,6 @@
 """Keep two consistent local backup slots without touching the active collection."""
 import argparse
+from contextlib import contextmanager
 import fcntl
 import json
 from pathlib import Path
@@ -7,6 +8,19 @@ import shutil
 import time
 
 from tools.rental_backup import atomic_json, snapshot
+
+
+@contextmanager
+def snapshot_access(path):
+    """Optionally serialize large snapshots that share disk and page cache."""
+    if path is None:
+        yield
+        return
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open('a+') as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX)
+        yield
 
 
 def source_metadata(db):
@@ -72,6 +86,8 @@ def main():
     parser.add_argument('--state', default='data/local-backup.json')
     parser.add_argument('--interval', type=int, default=300)
     parser.add_argument('--once', action='store_true')
+    parser.add_argument('--snapshot-lock', type=Path,
+                        help='Shared lock to serialize copy, verification and hashing across databases')
     args = parser.parse_args()
     if args.interval < 60:
         raise ValueError('Backup interval must be at least 60 seconds')
@@ -82,9 +98,10 @@ def main():
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         while True:
             try:
-                if shutil.disk_usage(Path(args.db).parent).free < 20 * 1024**3:
-                    raise RuntimeError('Less than 20 GiB free; keep the previous backup intact')
-                state = backup_once(args.db, args.directory, args.state)
+                with snapshot_access(args.snapshot_lock):
+                    if shutil.disk_usage(Path(args.db).parent).free < 20 * 1024**3:
+                        raise RuntimeError('Less than 20 GiB free; keep the previous backup intact')
+                    state = backup_once(args.db, args.directory, args.state)
                 print(json.dumps(state), flush=True)
                 if args.once:
                     return

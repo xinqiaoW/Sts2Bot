@@ -207,8 +207,24 @@ class GameProcess:
         return {'runId':request['runId'],'status':'Timeout','error':'No terminal game result before worker deadline'}
 
 
+def claim_when_available(store, seconds, stop_path):
+    """Wait only for a rejected BEGIN; never replay a result or commit."""
+    from .store import ClaimBusyBeforeBegin
+    stop_path = Path(stop_path)
+    while not stop_path.exists():
+        try:
+            return store.claim(seconds)
+        except ClaimBusyBeforeBegin as error:
+            print(json.dumps({'event': 'waiting_for_claim_lock',
+                              'sqlite_errorcode': error.sqlite_errorcode}), flush=True)
+            if stop_path.exists():
+                break
+            time.sleep(1)
+    return None
+
+
 def work(store,catalog,runtime_config,limit,teacher=None):
-    from .resilience import NATIVE_FAILURES, native_failure_policy, preserve_failure
+    from .resilience import COLLECTOR_FAILURES, native_failure_policy, preserve_failure
     failure_policy = native_failure_policy(catalog.config)
     consecutive_isolations = 0
     runtime=json.loads(Path(runtime_config).read_text(encoding='utf-8'))
@@ -219,7 +235,16 @@ def work(store,catalog,runtime_config,limit,teacher=None):
         from .schema import canonical
         if any(row[0]!=canonical(teacher) for row in existing):
             raise ValueError('Worker settings do not match queued teacher')
-    game=GameProcess(**runtime)
+    backend = runtime.pop('backend', 'native-wine')
+    if backend == 'standalone-managed-native':
+        if teacher is None:
+            raise ValueError('Standalone worker requires a pinned teacher')
+        from .standalone import StandaloneProcess
+        game = StandaloneProcess(**runtime)
+    else:
+        if backend != 'native-wine':
+            raise ValueError('Unsupported runtime backend')
+        game = GameProcess(**runtime)
     if os.name!='posix': raise ValueError('This collector runtime requires Linux process isolation')
     import fcntl
     lease_file=(game.data_dir/'collector.lock').open('a+')
@@ -230,11 +255,16 @@ def work(store,catalog,runtime_config,limit,teacher=None):
         raise RuntimeError('Another collector owns this game data directory') from None
     handlers={sig:signal.signal(sig,interrupt_collector) for sig in (signal.SIGINT,signal.SIGTERM)}
     try:
+        from .result_outbox import record_claim, recover_waiting as recover, submit
+        recover(store, game.data_dir)
         for _ in range(limit):
             if (game.data_dir/'collector.stop').exists(): break
             if store.counts().get('failed',0): return False
-            job=store.claim(catalog.config['battle_timeout_seconds']+90)
+            # Leave room for database contention after the battle has finished.
+            job=claim_when_available(store, catalog.config['battle_timeout_seconds']+210,
+                                     game.data_dir/'collector.stop')
             if job is None: break
+            record_claim(game.data_dir, job)
             build=Build.from_dict(job['build']); catalog.validate(build)
             if build.mutation == 'real_run_mutation_v1':
                 from .mutations import validate_lineage
@@ -247,7 +277,7 @@ def work(store,catalog,runtime_config,limit,teacher=None):
             result['collectionRequest']=request
             result['collector']={'worker':Path(runtime_config).stem,'pid':os.getpid(),
                                  'host':os.uname().nodename}
-            if failure_policy and result.get('status') in NATIVE_FAILURES:
+            if failure_policy and result.get('status') in COLLECTOR_FAILURES:
                 # Every retry starts a fresh owned game process. Preserve evidence before
                 # making the job eligible again, so another worker cannot race the copy.
                 game.stop()
@@ -256,8 +286,8 @@ def work(store,catalog,runtime_config,limit,teacher=None):
                     mutation_policy = json.loads(owner.db.execute("SELECT value FROM collection_settings WHERE key='mutation_policy'").fetchone()[0])
                     evidence_dir = mutation_policy['evidence_directory']
                 evidence, reason = preserve_failure(game, job, result, log_offset, evidence_dir)
-                status = store.retry_or_quarantine_native(job, result,
-                    max_attempts=failure_policy['max_attempts'], reason=reason, evidence=evidence)
+                status = submit(store, game.data_dir, job, result, 'retry_or_quarantine_native',
+                    wait_for_lock=True, max_attempts=failure_policy['max_attempts'], reason=reason, evidence=evidence)
                 print(json.dumps({'job':job['id'],'target':job['target']['id'],'status':status,
                                   'native_status':result['status'],'evidence':evidence}),flush=True)
                 if status == 'quarantined':
@@ -266,14 +296,11 @@ def work(store,catalog,runtime_config,limit,teacher=None):
                         raise RuntimeError('Three consecutive native job isolations; diagnose systemic runtime failure')
                 continue
             if result.get('status') in ('NativeStartupCacheFailure','NativeEnumCacheFailure','NativeWinePageFault','NativeMenuCleanupFailure','NativeFinalizerCleanupFailure','NativeFinalizerReuseFailure','NativeAssetLoadingFailure'):
-                status=store.retry_startup(job,result)
+                status=submit(store, game.data_dir, job, result, 'retry_startup', wait_for_lock=True)
                 print(json.dumps({'job':job['id'],'status':status,'reason':result['error']}),flush=True)
                 if status=='failed': return False
                 continue
-            try:
-                status=store.finish(job,result)
-            except ValueError as error:
-                status=store.finish(job,{'status':'InvalidObservation','error':str(error),'native_result':result})
+            status=submit(store, game.data_dir, job, result, wait_for_lock=True)
             print(json.dumps({'job':job['id'],'target':job['target']['id'],'status':status,
                              'observation':result.get('trainingObservation')},ensure_ascii=False),flush=True)
             # A failed native scenario is a diagnostic boundary, not a reason to create

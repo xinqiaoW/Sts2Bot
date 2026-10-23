@@ -108,6 +108,45 @@ def test_existing_pool_finishes_then_waits_for_real_source(tmp_path, monkeypatch
     assert events[-1] == 'paused'
 
 
+@pytest.mark.parametrize('slow_stage', ['source', 'mutations'])
+def test_collect_only_launches_queued_work_before_a_slow_refill(tmp_path, monkeypatch, slow_stage):
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setattr(continuous, 'available_gib', lambda: 96)
+    controller = object.__new__(continuous.Controller)
+    controller.args = Namespace(runtimes=['runtime.json'], reserve_gib=0, worker_start_gib=2,
+                                poll_seconds=1, stop_at=None, collect_only=True)
+    controller.db_path = tmp_path / 'data.sqlite'
+    controller.stop_path = tmp_path / 'stop'
+    controller.stop_requested = False
+    controller.child = None
+    controller.configs = [{'data_dir': str(tmp_path)}]
+    controller.store = Namespace(counts=lambda: {'pending': 1})
+    controller.guard = lambda: None
+    controller.status = lambda *a, **k: None
+    events = []
+
+    class SlowRefill(Exception):
+        pass
+
+    def popen(command, **kwargs):
+        assert '--continuous-workers' in command
+        events.append('collectors-started')
+        return Namespace(pid=123, poll=lambda: None)
+
+    def refill(stage):
+        assert events[0] == 'collectors-started'
+        events.append(stage)
+        if stage == slow_stage:
+            raise SlowRefill()
+
+    controller.refill = lambda: refill('source')
+    controller.refill_mutations = lambda: refill('mutations')
+    monkeypatch.setattr(continuous.subprocess, 'Popen', popen)
+    with pytest.raises(SlowRefill):
+        controller.run()
+    assert events.count('collectors-started') == 1
+
+
 def test_restart_reuses_complete_checkpoint_without_training(tmp_path, monkeypatch):
     pytest.importorskip('torch')
     from damage_model import checkpoint_validation
@@ -147,7 +186,7 @@ def test_memory_pause_cannot_hide_failed_jobs_or_orphaned_leases():
 def test_memory_pause_waits_and_resumes_once_without_changing_jobs(tmp_path, monkeypatch, owned, workers,reserve,budget,low,ready):
     monkeypatch.chdir(tmp_path)
     controller = object.__new__(continuous.Controller)
-    controller.args = Namespace(runtimes=['runtime.json'] * workers, reserve_gib=reserve, worker_start_gib=budget, poll_seconds=1, stop_at=None, collect_only=False)
+    controller.args = Namespace(runtimes=['runtime.json'] * workers, reserve_gib=reserve, worker_start_gib=budget, poll_seconds=1, stop_at=None, collect_only=False, teacher='isolated-teacher.json', catalog='frozen-catalog.json')
     controller.db_path = tmp_path / 'data.sqlite'
     controller.stop_path = tmp_path / 'stop'
     controller.stop_requested = False
@@ -175,6 +214,8 @@ def test_memory_pause_waits_and_resumes_once_without_changing_jobs(tmp_path, mon
         assert memory[0] == ready and counts == {'complete': 7, 'pending': 4}
         assert command[command.index('--reserve-gib')+1] == str(reserve)
         assert command[command.index('--worker-start-gib')+1] == str(budget)
+        assert command[command.index('--teacher')+1] == 'isolated-teacher.json'
+        assert command[command.index('--catalog')+1] == 'frozen-catalog.json'
         events.append(('launched', {}))
         return Namespace(pid=11, poll=lambda: None)
     monkeypatch.setattr(continuous.subprocess, 'Popen', popen)
@@ -309,3 +350,47 @@ def test_expired_pool_preserves_pending_job_without_starting_game(tmp_path):
     state = json.loads(database.with_suffix('.parallel.json').read_text())
     assert state['state'] == 'paused' and state['workers'] == 0
     assert state['counts'] == {'pending': 1}
+
+
+def test_runtime_validation_supports_standalone_without_wine(tmp_path):
+    from tools.collect_parallel import validate_runtimes
+    def runtime(name, value):
+        path = tmp_path / name
+        path.write_text(json.dumps(value))
+        return path
+    a = runtime('a.json', {'backend': 'standalone-managed-native', 'data_dir': str(tmp_path / 'a'), 'host_dll': '/shared/host.dll'})
+    b = runtime('b.json', {'backend': 'standalone-managed-native', 'data_dir': str(tmp_path / 'b'), 'host_dll': '/shared/host.dll'})
+    assert len(validate_runtimes([a, b])) == 2
+    native = runtime('native.json', {'data_dir': str(tmp_path / 'native'), 'env': {'WINEPREFIX': str(tmp_path / 'prefix')}})
+    assert len(validate_runtimes([a, native])) == 2
+    with pytest.raises(ValueError, match='data_dir'):
+        validate_runtimes([a, a])
+    alias = runtime('alias.json', {'data_dir': str(tmp_path / 'other'), 'env': {'WINEPREFIX': str(tmp_path / 'prefix')}})
+    with pytest.raises(ValueError, match='prefix'):
+        validate_runtimes([native, alias])
+    invalid = runtime('invalid.json', {'backend': 'unknown', 'data_dir': str(tmp_path / 'invalid')})
+    with pytest.raises(ValueError, match='Unsupported runtime backend'):
+        validate_runtimes([invalid])
+
+
+def test_fresh_collection_waits_for_real_mutation_parents(capsys):
+    from damage_model.mutations import ParentsUnavailable
+    controller = object.__new__(continuous.Controller)
+    controller.args = Namespace(mutation_workers=0, targeted_db='targeted.sqlite')
+    controller.store = Namespace(counts=lambda: {'pending': 100})
+    controller.mutation_store = Namespace(counts=lambda: {})
+    controller.targeted_store = Namespace(counts=lambda: {})
+    controller.queues = Namespace(counts=lambda: {'pending': 100})
+    def unavailable():
+        raise ParentsUnavailable('Need completed real builds')
+    controller.generator = Namespace(policy={'queue_low_water': 600}, refill=unavailable)
+    controller.targeted_generator = Namespace(policy={'queue_low_water': 600}, refill=unavailable)
+    controller.refill_mutations()
+    reports = [json.loads(line) for line in capsys.readouterr().out.splitlines()]
+    assert [report['state'] for report in reports] == ['waiting_real_parents'] * 2
+    assert [report['event'] for report in reports] == ['mutation_refill', 'targeted_mutation_refill']
+    def broken():
+        raise ValueError('Corrupt lineage')
+    controller.generator.refill = broken
+    with pytest.raises(ValueError, match='Corrupt lineage'):
+        controller.refill_mutations()

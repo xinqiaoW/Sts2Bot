@@ -1,6 +1,6 @@
 import json
 import sqlite3
-from contextlib import nullcontext
+from contextlib import contextmanager, nullcontext
 from pathlib import Path
 from unittest.mock import patch
 
@@ -8,6 +8,28 @@ import pytest
 pytest.importorskip('fcntl')
 
 from tools.local_backup import backup_once, record_failure
+
+
+def test_snapshot_ignores_a_corrupt_temporary_database_left_by_an_old_attempt(tmp_path):
+    from tools.rental_backup import snapshot
+
+    source = tmp_path / 'live.sqlite'
+    with sqlite3.connect(source) as db:
+        db.execute('CREATE TABLE jobs(status TEXT)')
+        db.execute("INSERT INTO jobs VALUES('complete')")
+    output = tmp_path / 'output'
+    output.mkdir()
+    stale = output / 'live.sqlite.tmp'
+    stale.write_bytes(b'corrupt previous attempt')
+
+    manifest = snapshot(source, output)
+    assert manifest['counts'] == {'complete': 1}
+    assert stale.read_bytes() == b'corrupt previous attempt'
+    with sqlite3.connect(output / 'live.sqlite') as saved:
+        assert saved.execute('PRAGMA quick_check').fetchone()[0] == 'ok'
+    assert sorted(p.name for p in output.iterdir()) == [
+        'live.sqlite', 'live.sqlite.tmp', 'manifest.json',
+    ]
 
 
 def test_cached_verification_preserves_snapshot_bytes_with_wal_and_overflow_pages(tmp_path):
@@ -160,3 +182,86 @@ def test_snapshot_keeps_one_wal_snapshot_while_another_connection_commits(tmp_pa
             assert backup.execute('SELECT count(*) FROM jobs').fetchone()[0] == 1
     finally:
         writer.close()
+
+
+def test_snapshot_releases_live_wal_before_verifying_its_copy(tmp_path, monkeypatch):
+    from tools import rental_backup
+
+    database = tmp_path / 'live.sqlite'
+    writer = sqlite3.connect(database, timeout=0)
+    try:
+        writer.execute('PRAGMA journal_mode=WAL')
+        writer.execute('CREATE TABLE jobs(status TEXT)')
+        writer.execute("INSERT INTO jobs VALUES('complete')")
+        writer.commit()
+
+        @contextmanager
+        def verify_after_copy(path):
+            writer.execute("INSERT INTO jobs VALUES('pending')")
+            writer.commit()
+            # A long verification must allow the live database to reclaim WAL.
+            assert writer.execute('PRAGMA wal_checkpoint(TRUNCATE)').fetchone()[0] == 0
+            yield
+
+        monkeypatch.setattr(rental_backup, 'cached_snapshot_pages', verify_after_copy)
+        manifest = rental_backup.snapshot(database, tmp_path / 'backup')
+        assert manifest['counts'] == {'complete': 1}
+        assert dict(writer.execute('SELECT status,count(*) FROM jobs GROUP BY status')) == {
+            'complete': 1, 'pending': 1,
+        }
+    finally:
+        writer.close()
+
+
+def test_shared_snapshot_lock_blocks_another_backup_process(tmp_path):
+    import fcntl
+    import subprocess
+    import sys
+    import time
+
+    database, ready = tmp_path / 'live.sqlite', tmp_path / 'ready'
+    with sqlite3.connect(database) as db:
+        db.execute('CREATE TABLE jobs(status TEXT)')
+        db.execute("INSERT INTO jobs VALUES('complete')")
+    shared, output, state = tmp_path / 'shared.lock', tmp_path / 'output', tmp_path / 'state.json'
+    code = '''
+from contextlib import contextmanager
+from pathlib import Path
+import sys
+from tools import local_backup
+original = local_backup.snapshot_access
+ready = Path(sys.argv[1])
+@contextmanager
+def observed(path):
+    ready.write_text('ready')
+    with original(path):
+        yield
+local_backup.snapshot_access = observed
+sys.argv = ['local_backup', '--db', sys.argv[2], '--directory', sys.argv[3],
+            '--state', sys.argv[4], '--snapshot-lock', sys.argv[5], '--once']
+local_backup.main()
+'''
+    child = None
+    try:
+        with shared.open('a+') as lock:
+            fcntl.flock(lock, fcntl.LOCK_EX)
+            child = subprocess.Popen([sys.executable, '-c', code, str(ready), str(database),
+                                      str(output), str(state), str(shared)],
+                                     cwd=Path(__file__).resolve().parents[1],
+                                     stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
+            deadline = time.monotonic() + 10
+            while not ready.exists() and time.monotonic() < deadline:
+                assert child.poll() is None
+                time.sleep(.02)
+            assert ready.exists()
+            time.sleep(.2)
+            assert child.poll() is None
+            assert not output.exists()
+            fcntl.flock(lock, fcntl.LOCK_UN)
+        _, error = child.communicate(timeout=10)
+        assert child.returncode == 0, error.decode()
+        assert json.loads(state.read_text())['manifest']['counts'] == {'complete': 1}
+    finally:
+        if child is not None and child.poll() is None:
+            child.kill()
+            child.communicate(timeout=5)
