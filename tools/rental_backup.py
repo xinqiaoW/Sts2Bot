@@ -9,6 +9,7 @@ from pathlib import Path
 import shutil
 import sqlite3
 import subprocess
+import tempfile
 import time
 
 
@@ -35,21 +36,26 @@ def snapshot(db_path, directory):
     directory = Path(directory)
     directory.mkdir(parents=True, exist_ok=True)
     target = directory / Path(db_path).name
-    temporary = target.with_suffix(target.suffix + '.tmp')
-    with closing(sqlite3.connect(f'file:{Path(db_path).resolve()}?mode=ro', uri=True, timeout=30)) as source:
-        if source.execute('PRAGMA journal_mode').fetchone()[0].lower() == 'wal':
-            # Pin one WAL read snapshot: concurrent collectors can keep writing,
-            # without restarting every incremental backup step from page one.
-            source.execute('BEGIN')
-            source.execute('SELECT count(*) FROM sqlite_schema').fetchone()
+    # Never reopen a failed or interrupted destination as a SQLite database.
+    # Keep each attempt private, on the same filesystem for atomic promotion.
+    with tempfile.TemporaryDirectory(prefix='.' + target.name + '-', dir=directory) as work:
+        temporary = Path(work) / target.name
         with closing(sqlite3.connect(temporary)) as destination:
-            source.backup(destination, pages=1024, sleep=.05)
+            with closing(sqlite3.connect(f'file:{Path(db_path).resolve()}?mode=ro', uri=True, timeout=30)) as source:
+                if source.execute('PRAGMA journal_mode').fetchone()[0].lower() == 'wal':
+                    # Pin one WAL read snapshot only while copying its pages.
+                    source.execute('BEGIN')
+                    source.execute('SELECT count(*) FROM sqlite_schema').fetchone()
+                source.backup(destination, pages=1024, sleep=.05)
+            # Verification uses the independent copy. Release the source reader
+            # first so a long check cannot keep the live WAL pinned for hours.
             destination.execute('PRAGMA journal_mode=DELETE')
             with cached_snapshot_pages(temporary):
-                if destination.execute('PRAGMA quick_check').fetchone()[0] != 'ok':
-                    raise ValueError('Backup did not pass SQLite integrity check')
+                check = destination.execute('PRAGMA quick_check').fetchone()[0]
+                if check != 'ok':
+                    raise ValueError('Backup did not pass SQLite integrity check: ' + check)
                 counts = dict(destination.execute('SELECT status,count(*) FROM jobs GROUP BY status'))
-    temporary.replace(target)
+        temporary.replace(target)
     checksum = hashlib.sha256()
     with target.open('rb') as stream:
         for block in iter(lambda: stream.read(1024 * 1024), b''): checksum.update(block)

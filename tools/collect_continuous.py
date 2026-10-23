@@ -87,11 +87,13 @@ class Controller:
             raise ValueError('Initial panel size changed across controller restart')
         self.stop_requested = False
         self.child = None
-        self.command = [sys.executable, '-u', '-m', 'damage_model.cli', '--db', args.db, '--config', args.config]
-        self.catalog = Catalog.load('catalogs/game-0.111.0.raw.json', args.config)
+        self.command = [sys.executable, '-u', '-m', 'damage_model.cli', '--db', args.db, '--config', args.config,
+                        '--teacher', getattr(args, 'teacher', 'configs/teacher.json'),
+                        '--catalog', getattr(args, 'catalog', 'catalogs/game-0.111.0.raw.json')]
+        self.catalog = Catalog.load(getattr(args, 'catalog', 'catalogs/game-0.111.0.raw.json'), args.config)
         from damage_model.target_scope import require_policy
         require_policy(self.store, self.catalog.config)
-        teacher = canonical(teacher_for(self.catalog, 'configs/teacher.json'))
+        teacher = canonical(teacher_for(self.catalog, getattr(self.args, 'teacher', 'configs/teacher.json')))
         if {r[0] for r in self.store.db.execute('SELECT DISTINCT teacher FROM jobs')} - {teacher}:
             raise ValueError('Active dataset must use the current frozen teacher')
         self.mutation_store = None
@@ -189,7 +191,7 @@ class Controller:
         counts = self.store.counts()
         if counts.get('failed', 0) or counts.get('pending', 0) >= self.args.queue_high_water:
             return
-        teacher = teacher_for(self.catalog, 'configs/teacher.json')
+        teacher = teacher_for(self.catalog, getattr(self.args, 'teacher', 'configs/teacher.json'))
         if getattr(self.args, 'backfill_dir', None):
             from damage_model.source_backfill import sync_sources
             report = sync_sources(self.store,self.catalog,teacher,self.args.source_dir,
@@ -201,18 +203,25 @@ class Controller:
             print(json.dumps({'event':'source_sync', **report}), flush=True)
 
     def refill_mutations(self):
+        from damage_model.mutations import ParentsUnavailable
         if getattr(self, 'generator', None) is None: return
         if self.work_counts().get('failed', 0): return
         if not getattr(self.args, 'mutation_workers', 0) and not getattr(self.args, 'targeted_db', None) and self.store.counts().get('pending', 0): return
         policy = self.generator.policy
         counts = self.mutation_store.counts()
         if counts.get('pending', 0) < policy['queue_low_water']:
-            report = self.generator.refill()
+            try:
+                report = self.generator.refill()
+            except ParentsUnavailable as error:
+                report = {'state': 'waiting_real_parents', 'reason': str(error)}
             print(json.dumps({'event': 'mutation_refill', **report}), flush=True)
         if getattr(self, 'targeted_generator', None) is not None:
             counts = self.targeted_store.counts()
             if counts.get('pending', 0) < self.targeted_generator.policy['queue_low_water']:
-                report = self.targeted_generator.refill()
+                try:
+                    report = self.targeted_generator.refill()
+                except ParentsUnavailable as error:
+                    report = {'state': 'waiting_real_parents', 'reason': str(error)}
                 print(json.dumps({'event': 'targeted_mutation_refill', **report}), flush=True)
 
     def memory_ready(self, for_pool):
@@ -236,8 +245,9 @@ class Controller:
                 self.status('paused', note='An existing pool can finish; no new pool will be launched')
                 return
             self.guard()
-            self.refill()
-            self.refill_mutations()
+            if not self.args.collect_only:
+                self.refill()
+                self.refill_mutations()
             if self.child is not None and self.child.poll() is not None:
                 child_pid = self.child.pid
                 code = self.child.wait()
@@ -281,6 +291,8 @@ class Controller:
                     with Path('logs/continuous-pool.log').open('ab') as stream:
                         self.child = subprocess.Popen([sys.executable, '-u', '-m', 'tools.collect_parallel',
                             '--db', str(self.db_path), '--config', getattr(self.args, 'config', 'configs/real-runs.json'),
+                            '--teacher', getattr(self.args, 'teacher', 'configs/teacher.json'),
+                            '--catalog', getattr(self.args, 'catalog', 'catalogs/game-0.111.0.raw.json'),
                             '--runtimes', *self.args.runtimes,
                             '--reserve-gib', str(self.args.reserve_gib),
                             '--worker-start-gib', str(self.args.worker_start_gib), '--limit-per-worker', '6080',
@@ -291,6 +303,13 @@ class Controller:
                             *(['--stop-at', str(self.args.stop_at)] if self.args.stop_at is not None else [])],
                             stdout=stream, stderr=subprocess.STDOUT, start_new_session=True)
                     self.status('starting_pool', child_pid=self.child.pid)
+            # Start or adopt collectors before potentially slow imports and
+            # parent refreshes, so an existing queue keeps making progress.
+            if (self.args.collect_only and not self.stop_requested
+                    and not self.stop_path.exists() and not deadline_reached(self.args.stop_at)):
+                self.refill()
+                if not self.stop_requested:
+                    self.refill_mutations()
             for _ in range(self.args.poll_seconds):
                 if self.stop_requested or self.stop_path.exists():
                     break
@@ -301,6 +320,8 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument('--db', default='data/collection-real-runs-v2.sqlite')
     p.add_argument('--config', default='configs/real-runs.json')
+    p.add_argument('--teacher', default='configs/teacher.json')
+    p.add_argument('--catalog', default='catalogs/game-0.111.0.raw.json')
     p.add_argument('--mutation-db', help='Separate one-generation mutation queue')
     p.add_argument('--mutation-workers', type=int, default=0, help='Minority of workers preferring mutation work')
     p.add_argument('--mutation-policy', default='configs/mutations-8s.json')

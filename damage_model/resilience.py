@@ -13,6 +13,11 @@ NATIVE_FAILURES = frozenset({
 })
 
 
+STANDALONE_FAILURES = frozenset({
+    'StandaloneFailed', 'StandaloneTimeout', 'StandaloneInvalidResult',
+})
+COLLECTOR_FAILURES = NATIVE_FAILURES | STANDALONE_FAILURES
+
 def cleanup_deadline_failure(result):
     """A native failure after combat is still a failed attempt, never a label."""
     error = result.get('error') or ''
@@ -43,7 +48,8 @@ def preserve_failure(game, job, result, log_offset, directory):
         raise ValueError('Native failure is missing its request identity')
     destination = Path(directory) / job['id'] / run_id
     destination.mkdir(parents=True, exist_ok=False)
-    log_path = destination / 'native.log'
+    backend = result.get('provenance', {}).get('backend', 'native-wine')
+    log_path = destination / ('standalone.log' if backend == 'standalone-managed-native' else 'native.log')
     with log_path.open('wb') as output:
         if game.log_path.exists():
             with game.log_path.open('rb') as source:
@@ -59,12 +65,12 @@ def preserve_failure(game, job, result, log_offset, directory):
             text = line.decode('utf-8', errors='replace')
             signatures.update(pattern for pattern in patterns if pattern in text)
     record = {'job': job, 'result': result, 'diagnosis': {
-        'native_status': result['status'], 'stage': result.get('stage'),
+        'backend': backend, 'native_status': result['status'], 'stage': result.get('stage'),
         'finished_turn': result.get('finishedTurn'), 'error': result.get('error'),
         'observed_log_signatures': sorted(signatures), 'root_cause_verified': False,
         'log_offset': log_offset, 'log_bytes': log_path.stat().st_size,
         'log_sha256': log_digest.hexdigest(), 'label_created': False}}
     manifest = destination / 'failure.json'
     manifest.write_text(json.dumps(record, ensure_ascii=False, indent=2), encoding='utf-8')
-    reason = f"Native status {result['status']}; stage={result.get('stage')}; signatures={sorted(signatures)}"
+    reason = f"{backend} status {result['status']}; stage={result.get('stage')}; signatures={sorted(signatures)}"
     return str(manifest), reason

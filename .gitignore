@@ -28,3 +28,6 @@ catalogs/counter-inspection.txt
 
 # Game decompilation; local reference only
 decompiled/
+
+# Machine-local simulator release path
+configs/simulator.json

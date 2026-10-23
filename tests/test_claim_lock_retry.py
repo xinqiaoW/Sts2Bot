@@ -122,3 +122,60 @@ def test_interruption_during_backoff_does_not_claim_a_job(queue, monkeypatch):
     finally:
         holder.rollback()
         holder.close()
+
+
+def test_worker_waits_for_a_long_claim_lock_without_consuming_attempts(queue, tmp_path, monkeypatch):
+    from damage_model import worker
+    holder = holder_for(queue)
+    delays = []
+
+    def wait(delay):
+        delays.append(delay)
+        assert not queue.db.in_transaction
+        assert queue.db.execute('SELECT sum(attempts) FROM jobs').fetchone()[0] == 0
+        if delay == 1:
+            holder.rollback()
+
+    monkeypatch.setattr(worker.time, 'sleep', wait)
+    try:
+        job = worker.claim_when_available(queue, 330, tmp_path / 'collector.stop')
+        assert delays == [0.25, 0.5, 1]
+        assert job is not None
+        assert queue.db.execute('SELECT sum(attempts) FROM jobs').fetchone()[0] == 1
+        assert queue.db.execute('SELECT count(*) FROM attempts').fetchone()[0] == 0
+    finally:
+        holder.rollback()
+        holder.close()
+
+
+def test_worker_claim_wait_honors_stop_without_changing_the_queue(queue, tmp_path, monkeypatch):
+    from damage_model import worker
+    holder = holder_for(queue)
+    stop = tmp_path / 'collector.stop'
+    before = list(queue.db.iterdump())
+
+    def wait(delay):
+        if delay == 1:
+            stop.touch()
+
+    monkeypatch.setattr(worker.time, 'sleep', wait)
+    try:
+        assert worker.claim_when_available(queue, 330, stop) is None
+        assert not queue.db.in_transaction
+        assert list(queue.db.iterdump()) == before
+    finally:
+        holder.rollback()
+        holder.close()
+
+
+def test_worker_does_not_retry_an_unclassified_busy_error(queue, tmp_path, monkeypatch):
+    from damage_model import worker
+    error = sqlite3.OperationalError('busy after an unknown operation')
+    error.sqlite_errorcode = sqlite3.SQLITE_BUSY
+    store = Mock()
+    store.claim.side_effect = error
+    monkeypatch.setattr(worker.time, 'sleep', lambda _: pytest.fail('Unsafe replay'))
+    with pytest.raises(sqlite3.OperationalError) as raised:
+        worker.claim_when_available(store, 330, tmp_path / 'collector.stop')
+    assert raised.value is error
+    assert store.claim.call_count == 1

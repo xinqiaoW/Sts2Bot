@@ -8,6 +8,20 @@ import uuid
 from collections import Counter
 from .schema import Build, canonical, digest
 from .observation import validate_hp, validate_cards
+from .provenance import completed_by_expected_backend
+
+
+class WriteBusyBeforeBegin(sqlite3.OperationalError):
+    """A write could not start its transaction; no statements were executed."""
+
+    def __init__(self, error):
+        super().__init__(*error.args)
+        self.sqlite_errorcode = error.sqlite_errorcode
+        self.sqlite_errorname = getattr(error, 'sqlite_errorname', 'SQLITE_BUSY')
+
+
+class ClaimBusyBeforeBegin(WriteBusyBeforeBegin):
+    """A claim could not start its transaction; no task or attempt changed."""
 
 
 class Store:
@@ -25,6 +39,7 @@ class Store:
             CREATE TABLE IF NOT EXISTS attempts(id INTEGER PRIMARY KEY,job_id TEXT,lease TEXT,status TEXT,result TEXT,finished REAL);
             CREATE INDEX IF NOT EXISTS jobs_status ON jobs(status,created);
             CREATE INDEX IF NOT EXISTS jobs_build ON jobs(build_id);
+            CREATE INDEX IF NOT EXISTS jobs_teacher ON jobs(teacher);
             CREATE INDEX IF NOT EXISTS attempts_recent ON attempts(finished,status,job_id);
             CREATE INDEX IF NOT EXISTS attempts_job ON attempts(job_id);
             CREATE TABLE IF NOT EXISTS collection_settings(key TEXT PRIMARY KEY,value TEXT NOT NULL);
@@ -53,8 +68,15 @@ class Store:
     def schedule(self, build, targets, seeds, teacher, *, reactivate_excluded=False):
         build = self.add_build(build)
         teacher_json = canonical(teacher)
-        existing = self.db.execute('SELECT DISTINCT teacher FROM jobs').fetchall()
-        if any(row[0] != teacher_json for row in existing):
+        # Probe both index ranges and NULL explicitly. A DISTINCT scan can read
+        # every repeated teacher on each new build before ANALYZE has run.
+        mismatch = self.db.execute('''
+            SELECT 1 FROM jobs WHERE teacher < ?
+            UNION ALL SELECT 1 FROM jobs WHERE teacher > ?
+            UNION ALL SELECT 1 FROM jobs WHERE teacher IS NULL
+            LIMIT 1
+        ''', (teacher_json, teacher_json)).fetchone()
+        if mismatch is not None:
             raise ValueError('Use a separate database for a different teacher configuration')
         added = 0
         self._begin_write('schedule')
@@ -87,11 +109,28 @@ class Store:
             except sqlite3.OperationalError as error:
                 code = getattr(error, 'sqlite_errorcode', None)
                 if (not isinstance(code, int) or code & 0xff != sqlite3.SQLITE_BUSY
-                        or self.db.in_transaction or attempt == 2):
+                        or self.db.in_transaction):
                     raise
+                if attempt == 2:
+                    if operation == 'claim':
+                        raise ClaimBusyBeforeBegin(error) from error
+                    raise WriteBusyBeforeBegin(error) from error
                 print(json.dumps({'event': operation + '_busy', 'retry': attempt + 1,
                                   'sqlite_errorcode': code}), flush=True)
                 time.sleep(0.25 * 2 ** attempt)
+
+    def abandon_claim(self, job, *, evidence):
+        """Return this exact stopped owner's claim, recording the interruption."""
+        self._begin_write('abandon_claim')
+        with self.db:
+            changed = self.db.execute("UPDATE jobs SET status='pending',lease=NULL,lease_until=NULL WHERE id=? AND lease=? AND status='running'",
+                                      (job['id'], job['lease'])).rowcount
+            if changed != 1:
+                raise ValueError('Stale interrupted lease')
+            result = canonical(dict(status='CollectorInterrupted', receiptPath=evidence, claim=job,
+                                    reason='Owning collector stopped before preserving a result'))
+            self.db.execute('INSERT INTO attempts(job_id,lease,status,result,finished) VALUES(?,?,?,?,?)',
+                            (job['id'], job['lease'], 'interrupted', result, time.time()))
 
     def claim(self, seconds=180):
         self._begin_write('claim')
@@ -119,7 +158,7 @@ class Store:
 
     def finish(self, job, result):
         observation = result.get('trainingObservation')
-        complete = result.get('status') == 'Passed' and result.get('combatEnded') is True and observation and observation.get('complete') is True
+        complete = completed_by_expected_backend(job, result) and result.get('combatEnded') is True and observation and observation.get('complete') is True
         if complete:
             required = ('initialHp','initialMaxHp','finalHp','finalMaxHp','netHpLoss','playerDied','initialBuild')
             if any(k not in observation for k in required): raise ValueError('Incomplete observation')
@@ -169,8 +208,11 @@ class Store:
 
     def retry_or_quarantine_native(self, job, result, *, max_attempts, reason, evidence):
         """Commit an attempt and retry/isolate atomically; peers never see a transient failed job."""
-        from .resilience import NATIVE_FAILURES, cleanup_deadline_failure
-        if (result.get('status') not in NATIVE_FAILURES
+        from .resilience import NATIVE_FAILURES, STANDALONE_FAILURES, cleanup_deadline_failure
+        allowed = NATIVE_FAILURES
+        if job['teacher'].get('execution_backend') == 'standalone-managed-native' and job['teacher'].get('validation_scope') == 'isolated-experiment':
+            allowed = STANDALONE_FAILURES
+        if (result.get('status') not in allowed
                 or ((result.get('trainingObservation') or {}).get('complete') is True
                     and not cleanup_deadline_failure(result))):
             raise ValueError('Only incomplete native failures or diagnosed cleanup timeouts can use autonomous isolation')

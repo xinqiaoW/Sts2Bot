@@ -7,7 +7,7 @@ edges). The merge step then unions the sources, removes duplicate
 mutation parents, and assigns train/validation/test by connected component so
 that no run or lineage leaks across splits.
 
-Only ``status='complete'`` jobs with a complete native observation become rows;
+Only ``status='complete'`` jobs with a complete backend-validated observation become rows;
 every row is re-checked with the collection validators before export.
 """
 from __future__ import annotations
@@ -29,6 +29,7 @@ import pyarrow as pa
 import pyarrow.parquet as pq
 
 from damage_model.observation import validate_cards, validate_hp
+from damage_model.provenance import completed_by_expected_backend
 from damage_model.schema import Build, canonical, digest
 
 from . import ROOT
@@ -89,6 +90,10 @@ def export_source(source: dict, output: Path, *, verify_cards=True, progress_eve
                     "SELECT DISTINCT build_id,run_hash FROM mutation_target_origins WHERE build_id IN (SELECT DISTINCT build_id FROM jobs WHERE status='complete')")]
         planned_cards = {bid: Build.from_dict(body).cards for bid, body in builds.items()}
         query = """SELECT id,build_id,target,seed,teacher,attempts,
+            CASE WHEN json_extract(teacher,'$.execution_backend')='standalone-managed-native'
+                THEN result ELSE NULL END AS standalone_result,
+            json_extract(result,'$.provenance') AS result_provenance,
+            (SELECT MAX(a.finished) FROM attempts a WHERE a.job_id=jobs.id) AS completed_at,
             json_extract(result,'$.status') AS status,
             json_extract(result,'$.combatEnded') AS combat_ended,
             json_extract(result,'$.runId') AS run_id,
@@ -116,8 +121,16 @@ def export_source(source: dict, output: Path, *, verify_cards=True, progress_eve
             observation = {'initialHp': row['initial_hp'], 'initialMaxHp': row['initial_max_hp'],
                            'finalHp': row['final_hp'], 'finalMaxHp': row['final_max_hp'],
                            'netHpLoss': row['net_hp_loss'], 'playerDied': bool(row['player_died']) if row['player_died'] in (0, 1) else row['player_died']}
-            if not (row['status'] == 'Passed' and row['combat_ended'] == 1 and row['complete'] == 1):
-                raise ValueError(f"Incomplete native outcome exported as complete: {name} {row['id']}")
+            result = json.loads(row['standalone_result']) if row['standalone_result'] else {
+                'status': row['status'], 'provenance': json.loads(row['result_provenance'] or '{}')}
+            job = {'teacher': teacher, 'target': target, 'seed': row['seed']}
+            if not (completed_by_expected_backend(job, result) and row['combat_ended'] == 1 and row['complete'] == 1):
+                raise ValueError(f"Incomplete backend outcome exported as complete: {name} {row['id']}")
+            finished_at = row['finished_at']
+            if not finished_at and teacher.get('execution_backend') == 'standalone-managed-native':
+                if row['completed_at'] is None:
+                    raise ValueError(f"Missing completion timestamp: {name} {row['id']}")
+                finished_at = datetime.fromtimestamp(row['completed_at'], timezone.utc).isoformat()
             actual_cards = json.loads(row['actual_cards']) if row['actual_cards'] else None
             if observation['finalMaxHp'] != observation['initialMaxHp']:
                 observation['initialBuild'] = {'cards': actual_cards or []}
@@ -133,7 +146,7 @@ def export_source(source: dict, output: Path, *, verify_cards=True, progress_eve
                           final_hp=observation['finalHp'], final_max_hp=observation['finalMaxHp'],
                           hp_loss=observation['netHpLoss'], died=observation['playerDied'],
                           finished_turn=row['finished_turn'], elapsed_seconds=(row['elapsed_ms'] or 0) / 1000,
-                          attempts=row['attempts'], finished_at=row['finished_at'])
+                          attempts=row['attempts'], finished_at=finished_at)
             for key in BATTLE_FIELDS:
                 columns[key].append(values[key])
             counts['rows'] += 1
@@ -148,6 +161,7 @@ def export_source(source: dict, output: Path, *, verify_cards=True, progress_eve
             'exported_at_utc': datetime.now(timezone.utc).isoformat(), 'host': socket.gethostname(),
             'job_counts': job_counts, 'rows': counts['rows'], 'builds': len(builds), 'edges': len(set(edges)),
             'teachers': teachers, 'targets': targets, 'settings_keys': sorted(settings),
+            'contains_experimental_results': any(t.get('validation_scope') == 'isolated-experiment' for t in teachers.values()),
             'target_policy': settings.get('target_policy'), 'mutation_policy': settings.get('mutation_policy'),
             'verify_cards': verify_cards, 'elapsed_s': round(time.time() - started, 1)}
     (output / f'{name}.meta.json').write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding='utf-8')
@@ -190,8 +204,12 @@ def merge_sources(config: dict, cache: Path, output: Path, *, allow_teacher_mism
     teachers = {}
     for meta in metas.values():
         teachers.update(meta['teachers'])
-    keys = config['teacher_compatibility_keys']
-    signatures = {canonical({k: t.get(k) for k in keys}) for t in teachers.values()}
+    # Backend identities must remain distinct even when an older config omits these keys.
+    keys = sorted(set(config['teacher_compatibility_keys']) | {
+        'execution_backend', 'validation_scope', 'standalone_host_sha256',
+        'standalone_unlock_state', 'progress_snapshot_sha256'})
+    signatures = {canonical({k: t.get(k, 'native-wine' if k == 'execution_backend' else None)
+                             for k in keys}) for t in teachers.values()}
     if len(signatures) != 1 and not allow_teacher_mismatch:
         raise ValueError(f'Incompatible teacher configurations across sources: {sorted(signatures)}')
     builds, lineage, build_sources, edges = {}, {}, defaultdict(list), set()
@@ -267,6 +285,8 @@ def merge_sources(config: dict, cache: Path, output: Path, *, allow_teacher_mism
     manifest = {'schema_version': SCHEMA_VERSION, 'snapshot_at_utc': datetime.now(timezone.utc).isoformat(),
                 'host': socket.gethostname(), 'sources': [{**s, **{k: metas[s['name']][k] for k in ('exported_at_utc', 'job_counts', 'rows', 'builds')}} for s in sources],
                 'teachers': teachers, 'teacher_signature_keys': keys, 'teacher_signatures': sorted(signatures),
+                'contains_experimental_results': any(t.get('validation_scope') == 'isolated-experiment' for t in teachers.values()),
+                'allow_teacher_mismatch': allow_teacher_mismatch,
                 'rows_before_dedupe': len(rows), 'rows': len(kept), 'duplicates_dropped': dict(duplicates),
                 'builds': len(builds), 'components': len(group_split), 'targets': len(targets),
                 'split_buckets': buckets, 'splits': split_stats,
