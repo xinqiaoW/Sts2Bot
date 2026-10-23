@@ -2,11 +2,11 @@
 
 目标：`F(标准化卡组及逐张升级、附魔、持久状态, 遗物及采样计数, 原版怪物编组) → 标准化预期净掉血`，标签为 `净掉血 / 初始最大生命`（当前全部 70/70，即 `netHpLoss / 70`），另带死亡概率辅助头。
 
-数据只读取 8 秒教师的有效标签。默认 [configs/sources.json](configs/sources.json) 包含真实 v4/v3、普通变异 v2/v1 四个来源，**尚未包含专项变异 v1 和历史种子补采库**；它不是全部采集数据的来源清单。快照导出器只读访问源库，模型训练只读取导出的冻结快照，不写回采集输入或标签。
+数据只读取 8 秒教师的有效标签。默认 [configs/sources.json](configs/sources.json) 包含历史原生真实 v4/v3、普通变异 v2/v1 四个来源，**未包含模拟器、专项变异和历史种子补采库**；它不是全部采集数据的来源清单。快照导出器只读访问源库，模型训练只读取导出的冻结快照，不写回采集输入或标签。
 
 ## 运行位置与准备条件
 
-当前采集目录为 01 的 `/data1/pl/ImageTask/wxq/Projects/Sts2Bot`。训练需要独立环境、可用 GPU 和完整冻结来源，不与持续采集控制器绑定。
+训练在准备好依赖、目录和数据的工作副本运行。01 的历史原生数据位于 `/data1/pl/ImageTask/wxq/Projects/Sts2Bot`，模拟器数据位于各实例的 `db/`。训练使用独立环境及完整冻结来源，不与持续采集控制器绑定。
 
 运行前检查训练解释器、依赖、GPU 和各来源文件，尤其是虚拟环境的实际解释器路径，以及封存 real-v3 / mut-v1 的完整标签或已验证导出缓存。`prior_collected_inputs` 用于旧输入去重，不会被训练快照导出器当作完整标签导出；新版库不能单独替代旧库的训练数据。
 
@@ -16,7 +16,13 @@
 
 若明确只训练活动来源，另建显式 `--config`，保留教师兼容键与划分设置，并在报告中注明覆盖变化。`--only` 仅导出指定来源缓存，跳过合并，不能把其输出当成完整训练快照。不要通过跳过卡牌验证或忽略教师不匹配来凑齐数据。
 
-## 纳入专项与补采数据
+## 模拟器训练来源
+
+复制默认配置并替换 `sources`，保留 `teacher_compatibility_keys` 与 `split_buckets`。以唯一 `name` 列出同一实例的 `db/real.sqlite`（`kind: real`）、`db/mutations.sqlite` 与 `db/targeted.sqlite`（均为 `kind: mutation`），把 `db` 填为实际路径，再通过 `--config` 指定。仍在写入的库设 `frozen: false`。
+
+快照导出支持 `StandaloneCompleted`，并保留实验后端与来源身份；这不改变发布包的生产验证标记。合并除配置中的教师兼容键外，还固定核对 `execution_backend`、`validation_scope`、`standalone_host_sha256`、`standalone_unlock_state`、`progress_snapshot_sha256`，默认拒绝把模拟器与旧 Wine 标签或不同宿主/解锁快照混在一起。
+
+## 纳入历史原生专项与补采数据
 
 复制来源配置后，通过 `--config` 指定扩展配置，保留 `teacher_compatibility_keys` 与 `split_buckets`。除了原四个来源，应显式加入需要训练的专项库及补采库：
 
@@ -33,7 +39,7 @@
 
 ## 流程
 
-以下示例中的 `<stamp>`、`<上次>` 和 `<本次来源配置.json>` 需替换为实际路径。没有可复用缓存时省略 `--reuse`，并确保所有来源库可读取。
+以下以历史原生执行副本为例；模拟器训练改为已准备好依赖与目录的工作副本。`<stamp>`、`<上次>` 和 `<本次来源配置.json>` 须替换为实际路径。没有可复用缓存时省略 `--reuse`，并确保所有来源库可读取。
 
 ```bash
 cd /data1/pl/ImageTask/wxq/Projects/Sts2Bot
@@ -70,9 +76,9 @@ cd /data1/pl/ImageTask/wxq/Projects/Sts2Bot
 
 快照逐库取得一致的只读视图；多个来源库并非同一原子时间点，分别记录导出时间。模型训练仅读取冻结结果。`train.evaluate` 默认排除 checkpoint 已见构筑及连通组；`--all-rows` 不再是独立留出评估，须另行标记。
 
-- 每条记录必须是 `status='complete'`、`Passed`、`combatEnded`、观察 `complete`，并重新通过 `validate_hp` 与逐张 `validate_cards`；导出即失败于任何不一致。
+- 每条记录必须是数据库 `status='complete'`，且 `combatEnded`、观察 `complete` 均为真；Wine 结果为 `Passed`，模拟器结果为 `StandaloneCompleted` 并通过后端身份校验。导出重新运行 `validate_hp` 与逐张 `validate_cards`，任何不一致都报错。
 - 同一 `(build, target, seed)` 出现在多个库时只保留 `sources.json` 顺序靠前者（v4 优先于 v3），去重数量写入 `manifest.json`。
-- 老师兼容性：各库老师在 `teacher_compatibility_keys`（求解器、游戏 SHA、8000 ms、Medium、DOP 1 等）上必须一致；协议 2/3 的采集器摘要不同但搜索预算相同，允许并入并在 artifact 中保留全部老师。
+- 教师兼容性：各库在 `teacher_compatibility_keys`（求解器、游戏 SHA、8000 ms、Medium、DOP 1 等）和上述后端身份键上须一致。历史 Wine 协议 2/3 只按这份显式兼容配置组合；采集器摘要不同仍保留各自教师，不能仅凭搜索预算相同推定兼容。
 - 划分按连通组：`build_origins`（构筑—源局）、`mutation_target_origins`（变异子—父源局）、`mutation_lineage`（子—父）做并查集，一个组只进一个集合（80/10/10，按组内源局哈希分桶，不保证场次数正好按该比例）。任何集合为空即拒绝训练。
 
 ## 特征
@@ -109,8 +115,10 @@ cd /data1/pl/ImageTask/wxq/Projects/Sts2Bot
 | --- | --- | --- |
 | 20260911-065245 | 552,043 / 54,748 / 1,413 | [模型比较](reports/20260911-065245/comparison.md)、[测试样例](reports/20260911-065245/examples-test.md) |
 | 20260913-121204 | 770,682 / 77,039 / 2,071 | [模型比较](reports/20260913-121204/comparison.md)、[测试样例](reports/20260913-121204/examples-test.md) |
+| 20260915-113849 | 1,048,142 / 105,125 / 3,352 | [模型比较](reports/20260915-113849/comparison.md)、[测试样例](reports/20260915-113849/examples-test.md) |
+| 20260916-054432 | 1,147,592 / 117,814 / 3,697 | [模型比较](reports/20260916-054432/comparison.md)、[测试样例](reports/20260916-054432/examples-test.md) |
 
-两份报告的测试连通组与数据分布不同，不能直接用跨报告 MAE 升降判断模型退步或进步。原指标、训练设置、耗时与快照路径保留作复现依据，不表示当前采集总量。比较优化效果应在同一固定留出集上评估。
+最后一批显式纳入了专项库，不代表默认配置已更新。同一快照的[损失函数与 pair 监督实验](reports/20260916-exp/experiments.md)另行保留；其中的实验训练实现尚未接入当前标准入口。不同快照的测试连通组与数据分布不同，不能直接用跨报告 MAE 升降判断模型退步或进步。原指标、训练设置、耗时与快照路径保留作复现依据，不表示当前采集总量。比较优化效果应在同一固定留出集上评估。
 
 ## 产物
 

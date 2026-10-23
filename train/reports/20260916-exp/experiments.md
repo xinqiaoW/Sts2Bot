@@ -2,7 +2,7 @@
 
 快照与基线同一份：`data/train-snapshots/20260916-054432`。测试集仍是 82536 场 / 20638 对 / 368 个连通组。没有改 split、连通组或标签。
 
-基线：已发布的 `set_transformer`（测试 pair MAE **4.002**）。
+基线：同快照的 `set_transformer`（测试 pair MAE **4.002**），见[模型比较](../20260916-054432/comparison.md)。本页保留实验数值；Huber / MAE、pair 监督和 token Transformer 的实验训练实现尚未接入当前 `train.train` 标准入口。
 
 ## 全部运行（按测试 pair MAE）
 
@@ -16,7 +16,7 @@
 | set_transformer_huber_row | 原架构 + Huber，仍逐场 | 4.054 | 6.714 | 0.8445 | 0.9817 | 4.330 | 29 |
 | token_transformer_mse_row | Pre-LN Transformer，逐场 MSE | 5.046 | 7.909 | 0.7842 | 0.9763 | 5.187 | 5 |
 
-## 最佳方案
+## 本批最低测试 MAE
 
 **同一套 Set Transformer（35 万参数），把掉血头改成 Huber（δ=0.05），并按 (构筑, 目标) 对多种子标签取均值再训练**；`dropout=0.1`，`lr=0.00025`，`ReduceLROnPlateau`。
 
@@ -37,11 +37,7 @@ checkpoint：`checkpoints/train/20260916-exp/set_transformer_huber_pair/`
 
 ## 消融
 
-- **Pair 监督是主因**：Huber 但仍逐场训练是 4.054，比基线更差；Huber+pair 才到 3.927。评估是 pair MAE，优化目标对齐后泛化更好。
+- 本批 Huber 逐场训练为 4.054，Huber+pair 为 3.927，与 pair 评估目标对齐的方案表现较好。单次实验未给出多随机种子重复或置信区间，不能单独确定因果贡献。
 - **Huber ≈ MAE**：MAE+pair 为 3.935，与 Huber+pair 几乎打平。两者都比 MSE 更贴近评估指标。
 - **加宽/换骨架没有赢**：4 层 d=256 Set Transformer 测试 4.018（训练 2.49 vs 验证 4.20，过拟合）。Pre-LN token Transformer（376 万参数）4.054，训练集 2.01，同样过拟合。逐场 MSE 的 token Transformer 发散到 5.046。
-- 结论：这个数据量级上，**损失与 pair 对齐的收益大于换更大/更现代的编码器**。
-
-## GPU
-
-最多占用两块空闲卡（实际用过 1 和 6）。没有动 4/5 上的 AIS 作业。测试连通组未改。
+- 在本批固定快照中，Huber / MAE + pair 的测试 MAE 低于所列更大编码器；这仍需独立数据与重复实验确认。

@@ -17,7 +17,7 @@
 
 只有环境变量 `COMBATSOLVER_RUN_CONTROL=1` 的独立进程才能接受整局请求。Python 配置还必须明确 `kind: run_control`。一个环境独占一个用户目录和进程；失败后退出该进程，保留原始尝试，下一次调用使用新的 run ID。自然死亡是完成的对局，超时和异常是失败。
 
-生产采集继续使用 `/data1/pl/ImageTask/wxq/Projects/Sts2Bot`；整局试验使用相邻的 `Sts2Bot-runctl-pilot` 独立游戏副本和 Wine prefix。开发仓库的 DLL 只部署到试验副本，不能直接覆盖生产采集器。
+RunController 仍使用真实游戏和 Wine，与[独立模拟器单场采集](simulator-collection.md)分别准备运行资源。原生验收副本为 `/data1/pl/ImageTask/wxq/Projects/Sts2Bot-runctl-pilot`；整局试验独占游戏副本和 Wine prefix，不能覆盖其他采集器。
 
 ## 原生接入约束
 

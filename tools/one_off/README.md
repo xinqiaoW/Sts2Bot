@@ -10,7 +10,7 @@
 
 索引 4–23 中已有任意状态任务或历史记录的种子均跳过，不重置失败、隔离、运行中任务或 attempts。原四个种子有失败时，不补打原索引；`partial_original_pairs` 和 `missing_original_seeds` 报告缺口。24 个计划种子不等于 24 个有效结果。
 
-种子仍为 `digest(['battle', battle_seed, index])[:16]`，原索引 0–3 及任务 ID 不变。新战斗使用当前协议 3，教师按已有协议 2 → 3 兼容规则检查，其他游戏和搜索参数必须一致；旧标签不改写。
+种子仍为 `digest(['battle', battle_seed, index])[:16]`，原索引 0–3 及任务 ID 不变。本工具用于历史原生后端，新增战斗使用协议 3，教师按已有协议 2 → 3 兼容规则检查，其他游戏和搜索参数必须一致；旧标签不改写。
 
 每个输入库生成独立的 `*.backfill.sqlite`，保留构筑、来源窗口、family/split、变异策略历史、血缘和 focus，不写原库或复制旧结果。来源顺序决定重复组合的归属；修改来源顺序、种子配置或教师后，应使用新的输出目录。
 
@@ -70,24 +70,23 @@ cd /data1/pl/ImageTask/wxq/Projects/Sts2Bot
 
 ## 已提交队列与自动接续
 
-`finish_backfill_startup.py` 用于先消费已提交的真实补采任务，同时让同一个准备进程继续写完剩余队列。它是固定 25 worker 的接续工具，不是通用启动器。已部署运行目录为 `data/targeted-seed-backfill-20260919/`；具体阶段、任务量和进程以该目录的状态文件为准。
+`finish_backfill_startup.py` 用于先消费已提交的真实补采任务，同时让同一个准备进程继续写完剩余队列。它只适配固定 25 worker 的历史 Wine 部署，不适用于模拟器实例。`--run-dir` 须指向已准备好的运行目录；以下列出工具依赖的文件，而非当前运行状态。
 
 | 运行文件 | 用途 |
 | --- | --- |
-| `deployment.json`、`deployment-before/` | 部署版本、文件摘要与原副本 |
+| `deployment.json` | 部署版本与文件摘要，供备份工具保存 |
 | `prepare-process.json`、`logs/prepare.log`、`prepare-report.json` | 准备进程与最终报告；报告在生成结束后写出 |
 | `queues/backfill-manifest.json`、`queues/*.backfill.sqlite` | 固定输入清单与补采队列 |
 | `runtimes.json`、`runtimes/` | runtime 路径列表及独立配置 |
 | `bootstrap-pool-process.json`、`pool-process.json` | 初始真实池与切换后三来源池的进程信息 |
 | `pipeline-process.json`、`pipeline-state.json` | 接续程序及当前阶段 |
 | `queues/*.parallel.json` | 池状态、任务数量与子进程 PID |
-| `backup-process.json`、`*.backup.json` | 备份启动参数与各库快照状态 |
 
 接续工具还依赖运行目录内准备好的 `resource_guard.py`。所有队列写完后，它校验各库 `expected_output_jobs`，排空初始池，确认没有运行中租约且 runtime 锁已释放，再启动同一组 25 个 runtime 消费三个队列。结果保留在原补采库中。接续命令为：
 
 ```bash
 .venv/bin/python -u -m tools.one_off.finish_backfill_startup \
-  --run-dir data/targeted-seed-backfill-20260919
+  --run-dir /absolute/path/to/prepared-backfill
 ```
 
 此工具内部的切换启动参数目前为 `--reserve-gib 32 --worker-start-gib 3`，不自动继承初始池的资源参数。运行前应核对这些固定参数和运行目录的准备情况。准备或采集异常时记录 `needs_diagnosis`，不会替代故障诊断自动重启。
@@ -100,8 +99,8 @@ cd /data1/pl/ImageTask/wxq/Projects/Sts2Bot
 
 ```bash
 .venv/bin/python -u -m tools.one_off.backfill_backup \
-  --run-dir data/targeted-seed-backfill-20260919 \
-  --directory backups/targeted-seed-backfill-20260919 \
+  --run-dir /absolute/path/to/prepared-backfill \
+  --directory /absolute/path/to/backups \
   --interval 3600 --initial-delay 300
 ```
 

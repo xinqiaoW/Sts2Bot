@@ -18,7 +18,7 @@
 
 ## 历史回补
 
-实时目录为 `data/external/spire-codex`；历史目录为 session 的 `backfill_dir`，当前是 `data/external/spire-codex-history`。
+模拟器实例的实时与历史目录分别为 `source/live/`、`source/backfill/`。直接使用通用控制器时由 `--source-dir`、`--backfill-dir` 指定；旧原生副本通常使用 `data/external/spire-codex` 与 `data/external/spire-codex-history`。
 
 历史 plan 的 recent-history、full-archive 分别记录扫描进度。`compatible-archive-v1/cursor.json` 单独重扫公开历史，下载后只选择兼容的四个旧版本。它从完整存档开头扫描，没有实现近期优先，也没有在请求中按游戏版本筛选；某页没有匹配来源是正常情况。
 
@@ -32,4 +32,4 @@
 
 同一个 worker 池按真实、真实、原变异、专项变异循环领取任务，起始相位按 worker 序号错开。三队列都有任务时，完整循环的领取次数为 50:25:25；空队列借用其他队列，避免空转。这不是 CPU 时间配额，也不是有效完成标签的精确比例：耗时、重试和队列短缺会产生偏差。进程重启从所属槽位相位重新开始。
 
-池与控制器使用 `--mutation-workers 0` 和 `--targeted-db`，不按来源预留固定数量的 worker。worker 的 `--schedule-offset`、状态中的 `dataset_cycle` 和 `schedule_offsets` 用于核对实际调度。结果、尝试、隔离记录仍写回各自数据库。两个变异队列独立补充，详见[变异说明](mutations-8s.md)和[专项采集](targeted-mutations.md)。
+池与控制器使用 `--mutation-workers 0` 和 `--targeted-db`，不按来源预留固定数量的 worker。worker 的 `--schedule-offset`、状态中的 `dataset_cycle` 和 `schedule_offsets` 用于核对实际调度。结果、尝试、隔离记录仍写回各自数据库。模拟器入口自动设置上述参数。两个变异队列独立补充，详见[变异说明](mutations-8s.md)和[专项采集](targeted-mutations.md)。
