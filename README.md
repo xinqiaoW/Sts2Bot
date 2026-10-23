@@ -4,14 +4,15 @@
 
 数据流程：**Spire Codex `.run` → 还原并标准化战前构筑 → 独立模拟器执行 CombatSolver 对战 → 有效终局标签 → 冻结快照训练**。模拟器在 Linux .NET 进程内执行原游戏规则，无需 Wine/Godot。真实来源与真实构筑的一代变异分别采集，不按真人胜负或人工评分筛选强构筑。
 
-当前采集入口为 `python -m tools.collect_simulator`，默认采集一场；添加 `--continuous --workers 4` 持续采集。VS Code 的“模拟器采集（单任务沙箱）”也使用此入口。发布包位置由 [configs/simulator.json](configs/simulator.json) 配置，可用 `--bundle` 或 `STS2_SIMULATOR_BUNDLE` 覆盖。实例、队列、游标和日志保存在 `.local/simulator-collect/`，重复运行接续已有任务；调试实例位于 `.local/debug-simulator/`。详见[模拟器采集](docs/simulator-collection.md)。
+当前采集入口为 `python -m tools.collect_simulator`，默认采集一场；添加 `--continuous --workers 4` 持续采集。VS Code 的“模拟器采集（单任务沙箱）”也使用此入口。运行前须提供冻结发布包：使用 `--bundle`、`STS2_SIMULATOR_BUNDLE`，或本机自建的 `configs/simulator.json`。该配置被 Git 忽略，新 checkout 不包含它；准备方式见[模拟器采集](docs/simulator-collection.md)。实例、队列、游标和日志保存在 `.local/simulator-collect/`，重复运行接续已有任务；调试实例位于 `.local/debug-simulator/`。
 
 ## 采集规则
 
 | 项目 | 设置 |
 | --- | --- |
 | 代码维护 | SSH `01`，`/data2/pl/ImageTask/wxq/Projects/Sts2Bot` |
-| 执行与数据 | `/data1/pl/ImageTask/wxq/Projects/Sts2Bot` |
+| 模拟器实例 | 默认在源码目录的 `.local/simulator-collect/`，可用 `--directory` 指定绝对路径 |
+| 历史原生执行与数据 | `/data1/pl/ImageTask/wxq/Projects/Sts2Bot` |
 | 来源版本 | v0.109.0 / v0.109.1、v0.110.0 / v0.110.1、v0.111.0 |
 | 实际战斗 | 独立模拟器加载游戏 0.111.0 和冻结 CombatSolver，静默猎手，单人标准 A10，70/70 满血，无药水 |
 | 搜索 | Medium、short_only、8,000 ms、DOP 1，整场期限 120 秒 |
@@ -19,7 +20,7 @@
 | 模拟器采集库 | 实例目录下 `db/real.sqlite`、`db/mutations.sqlite`、`db/targeted.sqlite` |
 | 三队列调度 | 真实/普通变异/专项变异按领取次数 2:1:1；空队列允许借用 |
 
-并发数、运行状态、资源参数和备份路径以执行副本的配置、进程及状态文件为准，见[持续采集](docs/continuous-collection.md)。历史种子补采使用独立队列，只消费已有构筑的补采任务，见[补采工具](tools/one_off/README.md)。
+模拟器使用发布包内冻结的配置、目录和教师；仓库中的同名配置用于核对规则，修改它们不会改变既有发布包。并发数、运行状态、资源参数和备份路径以对应实例的配置、进程及状态文件为准，见[持续采集](docs/continuous-collection.md)。历史种子补采使用独立队列，只消费已有构筑的补采任务，见[补采工具](tools/one_off/README.md)。
 
 0.109 来源中的恫吓转换为侧步，保留升级、附魔及可还原状态；旧版本只提供输入，标签统一重新用 0.111.0 生成。完整规则见[来源版本与调度](docs/source-versions-and-scheduling.md)。
 
@@ -29,28 +30,25 @@
 
 ## 操作入口
 
-使用模拟器采集一场，或持续采集：
+在仓库根目录执行，先指定已准备好的发布包：
 
 ```bash
+export STS2_SIMULATOR_BUNDLE=/absolute/path/to/release
 .venv/bin/python -m tools.collect_simulator
 .venv/bin/python -m tools.collect_simulator --directory .local/simulator-continuous --continuous --workers 4
 ```
 
-以下命令在 01 的旧执行目录查看历史原生真实库状态：
+查看同一个持续采集实例：
 
 ```bash
-cd /data1/pl/ImageTask/wxq/Projects/Sts2Bot
-.venv/bin/python -m damage_model.cli \
-  --db data/collection-real-runs-v4.sqlite --config configs/real-runs-8s.json status
+.venv/bin/python -m tools.collection_view --directory .local/simulator-continuous
 ```
 
-查看其他正常库或补采库时，显式替换 `--db`。不要省略 `--db`、`--config`：CLI 默认值仍指向 v2 库和 2 秒配置。源码与运行副本分开维护，切换 Git 分支不会部署代码或重启进程，见[运行环境](docs/runtime.md)。
-
-正常采集控制器使用 `--collect-only`，不自动训练、不覆盖 `checkpoints/v1`。独立的多模型训练、比较、推理与评估工具见 [train/README.md](train/README.md)。默认训练配置尚未纳入专项库和补采库；训练前须显式选择完整来源并导出冻结快照。
+模拟器入口始终只采集；直接使用旧控制器时须传 `--collect-only`。独立的多模型训练、比较、推理与评估工具见 [train/README.md](train/README.md)。默认训练来源配置仍是历史原生四库；模拟器、专项库和补采库须显式配置，并导出冻结快照。
 
 ## 标签与数据边界
 
-标签为完整战斗终局的 `initialHp - finalHp`，回血会抵消损失，死亡另记布尔值；超时、异常和不完整终局不产生标签。模拟器结果保留 `StandaloneCompleted` 状态、宿主/游戏/求解器/解锁快照摘要及发布包原有的验证范围，任务、入库和导出均核对这些身份。有效种子的均值是该搜索预算下的预期掉血估计，仍有采样误差，不保证最优打法。真人掉血与用药记录保存在原始来源中，不充当标签。
+标签为完整战斗终局的 `initialHp - finalHp`，回血会抵消损失，死亡另记布尔值；超时、异常和不完整终局不产生标签。模拟器结果保留 `StandaloneCompleted` 状态、宿主/游戏/求解器/解锁快照摘要及发布包原有的验证范围，任务、入库和导出均核对这些身份。现有独立后端限定为 `isolated-experiment`，保留 `productionReady=false`、`productionLabels=false`，不能据此宣称已通过生产等价验证。有效种子的均值是该搜索预算下的预期掉血估计，仍有采样误差，不保证最优打法。真人掉血与用药记录保存在原始来源中，不充当标签。
 
 构筑、来源、遗物计数种子、教师和全部尝试分别留档；跨库训练按源局与共享构筑/变异血缘的连通组划分，避免泄漏。旧协议标签不改写成新协议；训练只能按显式兼容规则合并。已知数据限制见[验证与审计](docs/validation.md)。
 
@@ -60,6 +58,7 @@ cd /data1/pl/ImageTask/wxq/Projects/Sts2Bot
 | --- | --- |
 | 导入与目标范围 | [真实局导入](docs/spire-codex-run-assessment.md) |
 | 版本转换、历史来源回补、三队列调度 | [来源版本与调度](docs/source-versions-and-scheduling.md) |
+| 模拟器准备与采集 | [模拟器采集](docs/simulator-collection.md) |
 | 运行、停止、备份、故障恢复 | [持续采集](docs/continuous-collection.md)、[运行环境](docs/runtime.md) |
 | 历史构筑增加战斗种子 | [一次性补采](tools/one_off/README.md) |
 | 搜索预算与教师边界 | [8 秒搜索](docs/search-8s.md) |

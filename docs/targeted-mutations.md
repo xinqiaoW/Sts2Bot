@@ -14,8 +14,8 @@
 
 ## 保存与验收
 
-专项数据库为 `data/collection-targeted-mutations-v1.sqlite`；备份路径和周期由运行参数决定，见[持续采集](continuous-collection.md)。`mutation_focus` 保存选定编组，`mutation_lineage` 保存父子和改动，`mutation_target_origins` 保存来源窗口。保持父代 family/split，训练时须按血缘划分，不能把专项样本当成独立真实对局。
+模拟器专项库为实例的 `db/targeted.sqlite`，策略使用发布包内冻结副本；历史原生专项库为 `data/collection-targeted-mutations-v1.sqlite`。备份见[持续采集](continuous-collection.md)。`mutation_focus` 保存选定编组，`mutation_lineage` 保存父子和改动，`mutation_target_origins` 保存来源窗口。保持父代 family/split，训练时须按血缘划分，不能把专项样本当成独立真实对局。
 
-原生失败证据在 `evidence/native-failures-targeted-v1`；保留所有尝试，沿用现有重试/隔离和有效终局验收。教师仍为 8 秒短搜、DOP 1、A10、70 满血、无药水。旧数据不改写，模型不自动重训。
+失败证据位置由采集配置的 `native_failure_policy.evidence_directory` 决定；模拟器在实例内解析相对路径。保留所有尝试，沿用现有重试/隔离和有效终局验收。教师仍为 8 秒短搜、DOP 1、A10、70 满血、无药水。旧数据不改写，模型不自动重训。
 
-补充数量不等于模型误差一定下降；下一次训练应分别报告各编组、真实留出集和变异样本表现。默认训练配置未纳入专项库，需按[训练说明](../train/README.md)显式添加。组合看板目前只接入真实与普通变异两库，尚不自动汇总专项库及补采库，见[查看数据](data-viewer.md)。
+补充数量不等于模型误差一定下降；下一次训练应分别报告各编组、真实留出集和变异样本表现。默认训练配置未纳入专项库，需按[训练说明](../train/README.md)显式添加。模拟器实时查看页支持三个实例库；旧组合快照看板只接入真实与普通变异两库，不自动汇总专项库或补采库，见[查看数据](data-viewer.md)。
