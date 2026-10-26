@@ -111,6 +111,68 @@ def test_import_is_idempotent_preserves_origin_and_never_uses_human_loss(run,cat
         import_run(store,catalog,{'fixture':True},run,'aa','fixture')
 
 
+@pytest.mark.parametrize('operation', ['source_origins', 'source_import', 'source_equivalence'])
+def test_controller_import_waits_before_source_writes_without_replaying_work(run, catalog, tmp_path, monkeypatch, operation):
+    import sqlite3
+    from damage_model.run_import import init_sources
+    from damage_model.target_scope import require_policy
+
+    store = Store(tmp_path/'jobs.sqlite')
+    control = Store(tmp_path/'control.sqlite')
+    holder = sqlite3.connect(tmp_path/'jobs.sqlite')
+    incoming = deepcopy(run)
+    if operation == 'source_equivalence':
+        for destination in (store, control):
+            import_run(destination, catalog, {'fixture': True}, run, 'aa', 'fixture')
+        incoming['username'] = 'presentation-only'
+    init_sources(store)
+    require_policy(store, catalog.config)
+    store.db.execute('PRAGMA busy_timeout=0')
+    store.write_wait_cancelled = lambda: False
+    original = store._begin_write_bounded
+    entered = False
+    released = 0
+    before = None
+    traces = []
+    store.db.set_trace_callback(traces.append)
+
+    def begin(name):
+        nonlocal entered, before
+        if name == operation and not entered:
+            entered = True
+            holder.execute('BEGIN IMMEDIATE')
+            before = list(map(tuple, store.db.execute('SELECT id,status,attempts FROM jobs ORDER BY id')))
+        return original(name)
+
+    def release(delay):
+        nonlocal released
+        assert not store.db.in_transaction
+        assert list(map(tuple, store.db.execute('SELECT id,status,attempts FROM jobs ORDER BY id'))) == before
+        if delay == 1:
+            holder.rollback()
+            released += 1
+
+    monkeypatch.setattr(store, '_begin_write_bounded', begin)
+    monkeypatch.setattr('damage_model.store.time.sleep', release)
+    try:
+        result = import_run(store, catalog, {'fixture': True}, incoming, 'aa', 'fixture')
+        expected = import_run(control, catalog, {'fixture': True}, incoming, 'aa', 'fixture')
+        assert entered and released == 1 and result == expected
+        for table in ('jobs', 'build_origins', 'source_runs', 'source_equivalences'):
+            columns = ('id,build_id,target,seed,teacher,status,attempts' if table == 'jobs'
+                       else 'hash,payload_sha256,gameplay_sha256,policy,source,body' if table == 'source_equivalences'
+                       else '*')
+            query = f'SELECT {columns} FROM {table} ORDER BY 1,2'
+            assert list(map(tuple, store.db.execute(query))) == list(map(tuple, control.db.execute(query)))
+        assert store.db.execute('SELECT count(*) FROM attempts').fetchone()[0] == 0
+        # All three rejected BEGINs happen before any retry of this exact write.
+        assert sum('BEGIN IMMEDIATE' == statement for statement in traces) >= 4
+    finally:
+        holder.close()
+        store.db.close()
+        control.db.close()
+
+
 def test_unsupported_effects_keep_the_entire_build_out(run,catalog):
     state = reconstruct(run,catalog)[1]
     for rid in ('PRISMATIC_GEM',):

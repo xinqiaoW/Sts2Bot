@@ -1,6 +1,6 @@
 # 一次性历史种子补采
 
-本目录把历史构筑在指定编组上的战斗种子从原索引 0–3 扩展到 0–23，只生成缺少的索引 4–23。源码在 01 的 `/data2/pl/ImageTask/wxq/Projects/Sts2Bot`，执行和数据放在 `/data1/pl/ImageTask/wxq/Projects/Sts2Bot`。
+本目录把历史构筑在指定编组上的战斗种子从原索引 0–3 扩展到 0–23，只生成缺少的索引 4–23。工具针对历史 Wine 后端，以下命令在备齐源码、配置、数据与隔离 runtime 的工作副本执行。
 
 正常采集由 `configs/real-runs-8s.json` 的 `encounter_seed_policy` 使用同一份 43 编组名单，名单内 24 个种子、其余 4 个；重复构筑不新增任务。正常采集不调用本目录，规则见[持续采集](../../docs/continuous-collection.md)。
 
@@ -14,7 +14,7 @@
 
 每个输入库生成独立的 `*.backfill.sqlite`，保留构筑、来源窗口、family/split、变异策略历史、血缘和 focus，不写原库或复制旧结果。来源顺序决定重复组合的归属；修改来源顺序、种子配置或教师后，应使用新的输出目录。
 
-real-v4 与 mut-v2 保留了旧 real-v3 / mut-v1 的完成输入索引及构筑血缘，已核验的这批数据可以使用 real-v4、mut-v2、targeted-v1 三库覆盖五个历史来源。换用其他库时必须重新确认覆盖；去重索引不能代替训练需要的旧结果。初始范围和数量依据保存在[预览报告](preview-20260919.json)与[独立核对报告](count-audit-20260919.json)，它们是固定批次记录，不是实时进度。
+新版输入库若完整保留旧库的完成输入索引及构筑血缘，可在核验覆盖后省略旧库；不能仅凭库名推定覆盖。`prior_collected_inputs` 可供补采去重，不能代替训练所需的完整旧标签。
 
 ## 数量口径
 
@@ -37,7 +37,6 @@ real-v4 与 mut-v2 保留了旧 real-v3 / mut-v1 的完成输入索引及构筑�
 先部署相互依赖的采集源码、配置和本目录工具，保留执行副本的 runtime 配置与数据。默认命令只读预览，不创建补采库或启动游戏：
 
 ```bash
-cd /data1/pl/ImageTask/wxq/Projects/Sts2Bot
 .venv/bin/python -u -m tools.one_off.backfill_targeted_seeds \
   --sources data/collection-real-runs-v4.sqlite \
             data/collection-mutations-v2.sqlite \
@@ -68,9 +67,9 @@ cd /data1/pl/ImageTask/wxq/Projects/Sts2Bot
 
 并发数由 runtime 列表决定；资源参数应按实际限额设置。三个来源沿用 2:1:1 领取周期。与正常采集并行时必须使用不同的 Wine prefix、`data_dir` 和独立数据库。补采队列耗尽后结束，不会自动开始采集新构筑。
 
-## 已提交队列与自动接续
+## 专用接续工具
 
-`finish_backfill_startup.py` 用于先消费已提交的真实补采任务，同时让同一个准备进程继续写完剩余队列。它只适配固定 25 worker 的历史 Wine 部署，不适用于模拟器实例。`--run-dir` 须指向已准备好的运行目录；以下列出工具依赖的文件，而非当前运行状态。
+`finish_backfill_startup.py` 用于先消费已提交的真实补采任务，同时让同一个准备进程继续写完剩余队列。代码要求恰好 25 个 runtime，只适配该 Wine 流程，不适用于模拟器实例。`--run-dir` 须指向已准备好的运行目录，包含以下文件：
 
 | 运行文件 | 用途 |
 | --- | --- |
@@ -108,8 +107,6 @@ cd /data1/pl/ImageTask/wxq/Projects/Sts2Bot
 
 每轮完成后等待 `--interval` 秒，实际恢复点间隔还包含整轮备份耗时。SIGTERM/SIGINT 会让当前快照完成后退出。核对快照摘要、SQLite quick_check 和计数；同盘备份不能替代异机容灾。
 
-## 训练与工具清理
+## 训练与查看
 
-训练时显式纳入需要的历史五个来源和三个补采库，真实补采的 `kind` 为 `real`，其余为 `mutation`，按共享构筑、源局和血缘统一去重划分，见[训练说明](../../train/README.md)。旧看板未适配 24 种子进度，不能以页面的四种子文案判断补采是否完成。
-
-补采、验收和备份交接完成后，可删除本目录的 Python 工具及其测试：`tests/test_targeted_seed_backfill.py`、`tests/test_backfill_backup.py`、`tests/test_finish_backfill_startup.py`。清理代码前先停止依赖这些工具的进程，保留结果数据库、来源清单和备份。正常 24/4 种子逻辑不依赖本目录。
+训练时显式纳入需要的来源和补采库，真实补采的 `kind` 为 `real`，其余为 `mutation`，按共享构筑、源局和血缘统一去重划分，见[训练说明](../../train/README.md)。旧看板未适配 24 种子进度，不能以页面的四种子文案判断补采是否完成。

@@ -265,3 +265,73 @@ local_backup.main()
         if child is not None and child.poll() is None:
             child.kill()
             child.communicate(timeout=5)
+
+
+def test_vacuum_snapshot_preserves_ids_payloads_and_does_not_write_live_source(tmp_path):
+    import hashlib
+    from tools.rental_backup import snapshot
+
+    path = tmp_path/'source.sqlite'
+    writer = sqlite3.connect(path)
+    try:
+        writer.execute('PRAGMA journal_mode=WAL')
+        writer.execute('CREATE TABLE jobs(id TEXT PRIMARY KEY,status TEXT,payload TEXT)')
+        writer.execute('CREATE TABLE attempts(id INTEGER PRIMARY KEY,job_id TEXT,result TEXT)')
+        writer.executemany('INSERT INTO jobs VALUES(?,?,?)', [
+            (str(i), 'complete', ('\u539f\u59cb\u8bb0\u5f55-'+str(i))*10000) for i in range(8)])
+        writer.execute("INSERT INTO attempts VALUES(77,'3','{\"search_ms\":8000}')")
+        writer.commit()
+        before = {str(p):hashlib.sha256(p.read_bytes()).hexdigest()
+                  for p in (path, Path(str(path)+'-wal'))}
+        rows = list(writer.execute('SELECT * FROM jobs ORDER BY id'))
+        attempts = list(writer.execute('SELECT * FROM attempts'))
+        manifest = snapshot(path,tmp_path/'saved',method='vacuum-into')
+        assert manifest['method']=='vacuum-into' and manifest['counts']=={'complete':8}
+        for name, checksum in before.items():
+            assert hashlib.sha256(Path(name).read_bytes()).hexdigest()==checksum
+        with sqlite3.connect(tmp_path/'saved'/path.name) as saved:
+            assert list(saved.execute('SELECT * FROM jobs ORDER BY id'))==rows
+            assert list(saved.execute('SELECT * FROM attempts'))==attempts
+            assert saved.execute('PRAGMA quick_check').fetchone()[0]=='ok'
+    finally:writer.close()
+
+
+def test_vacuum_snapshot_is_consistent_while_wal_writer_commits_and_releases_reader(tmp_path,monkeypatch):
+    from tools import rental_backup
+
+    path = tmp_path/'source.sqlite'
+    writer = sqlite3.connect(path, timeout=1)
+    writer.execute('PRAGMA journal_mode=WAL')
+    writer.execute('CREATE TABLE jobs(id INTEGER PRIMARY KEY,status TEXT,payload BLOB)')
+    writer.executemany('INSERT INTO jobs VALUES(?,?,?)',[(i,'complete',bytes([i])*65536) for i in range(80)])
+    writer.commit()
+    connect = sqlite3.connect
+    writes = []
+    class Source(sqlite3.Connection):
+        def execute(self,sql,*args,**kwargs):
+            if sql.startswith('VACUUM '):
+                def progress():
+                    if not writes:
+                        writer.execute("UPDATE jobs SET status='pending'")
+                        writer.commit()
+                        writes.append(True)
+                    return 0
+                self.set_progress_handler(progress,100)
+            return super().execute(sql,*args,**kwargs)
+    def connection(path,**kwargs):
+        if kwargs.get('uri') and 'mode=ro' in str(path):kwargs['factory']=Source
+        return connect(path,**kwargs)
+    @contextmanager
+    def verified_without_source_reader(path):
+        assert writer.execute('PRAGMA wal_checkpoint(TRUNCATE)').fetchone()[0]==0
+        yield
+    monkeypatch.setattr(sqlite3,'connect',connection)
+    monkeypatch.setattr(rental_backup,'cached_snapshot_pages',verified_without_source_reader)
+    try:
+        manifest=rental_backup.snapshot(path,tmp_path/'saved',method='vacuum-into')
+        assert writes and dict(writer.execute('SELECT status,count(*) FROM jobs GROUP BY status'))=={'pending':80}
+        assert manifest['counts'] in ({'complete':80},{'pending':80})
+        with connect(tmp_path/'saved'/path.name) as saved:
+            assert saved.execute('PRAGMA quick_check').fetchone()[0]=='ok'
+            assert saved.execute('SELECT count(*) FROM jobs WHERE length(payload)=65536').fetchone()[0]==80
+    finally:writer.close()

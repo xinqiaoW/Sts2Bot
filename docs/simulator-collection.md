@@ -1,10 +1,10 @@
 # 模拟器采集
 
-`tools.collect_simulator` 使用独立 .NET 模拟器执行整场战斗。游戏规则和教师由冻结发布包提供；本仓库负责真实构筑导入、三队列调度、重试、结果校验和导出。仍采用 Silent A10、70/70、无药水、Medium short-only 8 秒、DOP 1、120 秒整场期限和原有 24/4 种子规则。
+`tools.collect_simulator` 使用独立 .NET 模拟器执行整场战斗。游戏规则和教师由冻结发布包提供；本仓库负责真实构筑导入、三队列调度、重试、结果校验和导出。采集采用 Silent A10、70/70、无药水、Medium short-only 8 秒、DOP 1、120 秒整场期限和 24/4 种子规则。
 
 ## 准备发布包
 
-需要 Linux、Python 3.11+、可用的项目 Python 环境，以及单独准备的冻结模拟器发布包。发布包、游戏资源和 .NET 不随 Git checkout 提供。发布目录须包含 `release.json`、`teacher.json`、`runtime-template.json`、`host/`、`progress-snapshot.json`、`catalogs/` 下的目录数据及 `configs/` 下的三份采集策略；游戏资源和 .NET 路径由运行模板指定。
+需要 Linux、Python 3.11+、可用的项目 Python 环境，以及单独准备的冻结模拟器发布包。Python 使用的 SQLite 须包含 [WAL-reset 修复](continuous-collection.md#故障停止与恢复)。发布包、游戏资源和 .NET 不随 Git checkout 提供。发布目录须包含 `release.json`、`teacher.json`、`runtime-template.json`、`host/`、`progress-snapshot.json`、`catalogs/` 下的目录数据及 `configs/` 下的三份采集策略；游戏资源和 .NET 路径由运行模板指定。
 
 按以下优先级选择发布包：命令行 `--bundle`、环境变量 `STS2_SIMULATOR_BUNDLE`、仓库根目录的 `configs/simulator.json`。最后一项是被 Git 忽略的本机配置，需自行创建，内容为：
 
@@ -45,7 +45,7 @@ VS Code 的“Sts2Bot: 模拟器采集（单任务沙箱）”使用 `.local/deb
 
 实例中的 `active-collection.json` 记录三个数据库，`simulator-session.json` 固定发布清单摘要与并发数，`runtime-*.json` 记录各 worker 的运行参数。异常或超时按原策略最多尝试三次后隔离，保留日志和全部尝试；待提交结果先写入持久凭据，可在重启时恢复，避免因数据库写锁丢失已完成战斗。
 
-整场请求超时后，采集器先终止所属进程组；必要时发送 SIGKILL，并最多等待 60 秒回收进程。Linux 内核 I/O 可能延迟信号生效，因此回收阶段独立于 120 秒战斗期限。回收成功后仍记录为 `StandaloneTimeout`；超过回收期限则保留进程所有权并报错，不能带着未退出的旧 host 启动下一场。
+整场请求超时后，采集器先向所属进程组发送 SIGTERM，等待 2 秒后必要时发送 SIGKILL。若内核尚未完成回收，保持进程所有权，每等待 60 秒记录一次事件，直到确认退出后才允许下一场。60 秒是等待日志的间隔，不是回收上限；战斗的 120 秒期限不变，结果仍记为 `StandaloneTimeout`。
 
 ## 结果与训练
 
@@ -53,19 +53,26 @@ VS Code 的“Sts2Bot: 模拟器采集（单任务沙箱）”使用 `.local/deb
 
 `tools.export_snapshot` 和 `train.snapshot` 均支持模拟器结果，导出时重新核对后端及摘要。训练默认拒绝混合不同后端、宿主或进度快照的教师。采集入口始终使用 `collect_only=True`。
 
-通用控制器也支持显式指定模拟器教师与目录：
+通用控制器也支持显式指定模拟器教师与目录，要求主库已存在且已初始化。日志和证据中的相对路径基于工作目录，因此须在实例目录运行，并显式提供部署代码与解释器。以下路径须替换为实际位置；首次创建实例优先使用上面的模拟器入口：
 
 ```bash
-.venv/bin/python -m tools.collect_continuous \
-  --db <instance>/db/real.sqlite \
-  --mutation-db <instance>/db/mutations.sqlite \
-  --targeted-db <instance>/db/targeted.sqlite \
-  --config <bundle>/configs/real-runs-8s.json \
-  --catalog <bundle>/catalogs/game-0.111.0.raw.json \
-  --teacher <bundle>/teacher.json \
-  --mutation-policy <bundle>/configs/mutations-8s.json \
-  --targeted-policy <bundle>/configs/mutations-targeted-8s.json \
-  --active-pointer <instance>/active-collection.json \
-  --source-dir <instance>/source/live --backfill-dir <instance>/source/backfill \
-  --runtimes <instance>/runtime-01.json --collect-only
+collection_dir=/absolute/path/to/instance
+simulator_bundle=/absolute/path/to/release
+collection_code=/absolute/path/to/deployed-code
+collection_python=/absolute/path/to/project/.venv/bin/python
+(
+  cd "$collection_dir" || exit
+  PYTHONPATH="$collection_code" "$collection_python" -P -m tools.collect_continuous \
+    --db "$collection_dir/db/real.sqlite" \
+    --mutation-db "$collection_dir/db/mutations.sqlite" \
+    --targeted-db "$collection_dir/db/targeted.sqlite" \
+    --config "$simulator_bundle/configs/real-runs-8s.json" \
+    --catalog "$simulator_bundle/catalogs/game-0.111.0.raw.json" \
+    --teacher "$simulator_bundle/teacher.json" \
+    --mutation-policy "$simulator_bundle/configs/mutations-8s.json" \
+    --targeted-policy "$simulator_bundle/configs/mutations-targeted-8s.json" \
+    --active-pointer "$collection_dir/active-collection.json" \
+    --source-dir "$collection_dir/source/live" --backfill-dir "$collection_dir/source/backfill" \
+    --runtimes "$collection_dir/runtime-01.json" --collect-only
+)
 ```

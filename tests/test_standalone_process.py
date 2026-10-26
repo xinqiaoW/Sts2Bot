@@ -96,21 +96,62 @@ def test_slow_sigkill_reaping_preserves_the_battle_timeout(tmp_path, monkeypatch
     assert process.log is None
 
 
-def test_unreaped_host_keeps_ownership_until_cleanup_finishes(tmp_path, monkeypatch):
+def test_reaping_beyond_sixty_seconds_retains_the_timeout_and_does_not_respawn(tmp_path, monkeypatch, capsys):
+    import signal
     import subprocess
 
     class BlockedHost:
         pid = 12345
+        waits = []
 
         def wait(self, timeout):
-            raise subprocess.TimeoutExpired('blocked host', timeout)
+            self.waits.append(timeout)
+            assert process.process is self
+            assert not process.log.closed
+            if len(self.waits) < 5:
+                raise subprocess.TimeoutExpired('blocked host', timeout)
+            return -signal.SIGKILL
+
+    process = host(tmp_path, '')
+    child = BlockedHost()
+    spawns, signals = [], []
+    def spawn(*args, **kwargs):
+        spawns.append(args)
+        assert len(spawns) == 1
+        return child
+    monkeypatch.setattr(subprocess, 'Popen', spawn)
+    monkeypatch.setattr('os.killpg', lambda pid, sig: signals.append((pid, sig)))
+
+    result = process.run(request())
+
+    assert result['status'] == 'StandaloneTimeout' and result['combatEnded'] is False
+    assert child.waits[1:] == [2, 60, 60, 60]
+    assert signals == [(child.pid, signal.SIGTERM), (child.pid, signal.SIGKILL)]
+    assert len(spawns) == 1
+    assert process.process is None and process.log is None
+    events = [json.loads(line) for line in capsys.readouterr().out.splitlines()]
+    assert events == [{'event': 'waiting_for_standalone_reap', 'pid': child.pid}] * 2
+
+
+def test_interrupted_reap_retains_ownership_and_log(tmp_path, monkeypatch):
+    import subprocess
+
+    class BlockedHost:
+        pid = 12345
+        waits = 0
+
+        def wait(self, timeout):
+            self.waits += 1
+            if self.waits == 1:
+                raise subprocess.TimeoutExpired('blocked host', timeout)
+            raise KeyboardInterrupt('external stop during reaping')
 
     process = host(tmp_path, '')
     child = process.process = BlockedHost()
     process.log = process.log_path.open('ab')
     monkeypatch.setattr('os.killpg', lambda pid, sig: None)
     try:
-        with pytest.raises(subprocess.TimeoutExpired):
+        with pytest.raises(KeyboardInterrupt):
             process.stop()
         assert process.process is child
         assert not process.log.closed

@@ -6,7 +6,7 @@
 
 ## 运行位置与准备条件
 
-训练在准备好依赖、目录和数据的工作副本运行。01 的历史原生数据位于 `/data1/pl/ImageTask/wxq/Projects/Sts2Bot`，模拟器数据位于各实例的 `db/`。训练使用独立环境及完整冻结来源，不与持续采集控制器绑定。
+训练在准备好依赖、目录和数据的工作副本运行，模拟器数据位于各实例的 `db/`。来源数据库路径由训练配置明确列出，不从采集 session 自动发现。训练使用独立环境及完整冻结来源，不与持续采集控制器绑定。
 
 运行前检查训练解释器、依赖、GPU 和各来源文件，尤其是虚拟环境的实际解释器路径，以及封存 real-v3 / mut-v1 的完整标签或已验证导出缓存。`prior_collected_inputs` 用于旧输入去重，不会被训练快照导出器当作完整标签导出；新版库不能单独替代旧库的训练数据。
 
@@ -33,38 +33,44 @@
 | 普通变异补采 | `mutation` | 补采输出目录中的 `collection-mutations-v2.backfill.sqlite` |
 | 专项变异补采 | `mutation` | 补采输出目录中的 `collection-targeted-mutations-v1.backfill.sqlite` |
 
-每项须有唯一的 `name`、正确的 `db` 和 `frozen`。仍在写入的库设为 `frozen: false`；只有不再变化的来源才允许复用冻结缓存。[sources-data1.json](configs/sources-data1.json) 同样只有原四个来源，只调整了部分路径。若只纳入部分来源，应在报告中明确范围。
+每项须有唯一的 `name`、正确的 `db` 和 `frozen`。仍在写入的库设为 `frozen: false`；只有不再变化的来源才允许复用冻结缓存。[sources-data1.json](configs/sources-data1.json) 是绑定特定本机路径的旧部署配置，同样只有原四个来源，不能直接当作当前数据库清单。若只纳入部分来源，应在报告中明确范围。
 
 旧结果与新增种子先按 `(build, target, seed)` 去重，再按共享构筑、源局和变异血缘统一划分。无需所有组合都凑满 24 个有效结果才导出，但应记录每个组合的实际有效样本数。
 
 ## 流程
 
-以下以历史原生执行副本为例；模拟器训练改为已准备好依赖与目录的工作副本。`<stamp>`、`<上次>` 和 `<本次来源配置.json>` 须替换为实际路径。没有可复用缓存时省略 `--reuse`，并确保所有来源库可读取。
+在已准备好依赖与目录的仓库根目录执行。将以下来源配置、快照和 checkpoint 路径替换为实际位置；没有可复用缓存时省略 `--reuse`，并确保所有来源库可读取。
 
 ```bash
-cd /data1/pl/ImageTask/wxq/Projects/Sts2Bot
-
 # 1. 导出一致快照（每库一次只读事务；封存库可复用上一次快照的导出）
-.venv-train/bin/python -m train.snapshot --config <本次来源配置.json> --reuse data/train-snapshots/<上次>
+.venv-train/bin/python -m train.snapshot --config /absolute/path/to/sources.json \
+    --reuse /absolute/path/to/previous-snapshot
 # → data/train-snapshots/<UTC 时间戳>/{battles.parquet, builds.json.gz, targets.json, manifest.json, sources/}
 
+# 填入导出所得快照和本次模型输出目录
+snapshot_dir=/absolute/path/to/exported-snapshot
+checkpoint_dir=/absolute/path/to/model-comparison
+
 # 2. 训练单个模型
-.venv-train/bin/python -m train.train --snapshot data/train-snapshots/<stamp> --model tabm --device cuda:0
+.venv-train/bin/python -m train.train --snapshot "$snapshot_dir" --model tabm --device cuda:0
 
 # 3. 多模型比较（torch 模型按 GPU 轮转，LightGBM 在 CPU 并行）
-.venv-train/bin/python -m train.compare --snapshot data/train-snapshots/<stamp> --gpus 0,1
-# → checkpoints/train/<stamp>/<model>/，train/reports/<stamp>/comparison.{md,json}
+.venv-train/bin/python -m train.compare --snapshot "$snapshot_dir" --gpus 0,1 --output "$checkpoint_dir"
+# → $checkpoint_dir/<model>/，train/reports/<快照名>/comparison.{md,json}
 
 # 4. 推理（单个或多个 checkpoint 均值集成）
-.venv-train/bin/python -m train.predict --checkpoint checkpoints/train/<stamp>/tabm \
+.venv-train/bin/python -m train.predict --checkpoint "$checkpoint_dir/tabm" \
     --build build.json --target BOWLBUGS_WEAK --max-hp 70
-.venv-train/bin/python -m train.predict --checkpoint ck/tabm --checkpoint ck/lightgbm --builds-jsonl inputs.jsonl
+.venv-train/bin/python -m train.predict --checkpoint "$checkpoint_dir/tabm" \
+    --checkpoint "$checkpoint_dir/lightgbm" --builds-jsonl inputs.jsonl
 
 # 5. 用更新的快照验证旧 checkpoint（自动排除训练/验证过的构筑及其连通组）
-.venv-train/bin/python -m train.evaluate --snapshot data/train-snapshots/<newer> --checkpoint checkpoints/train/<stamp>/tabm
+.venv-train/bin/python -m train.evaluate --snapshot /absolute/path/to/newer-snapshot \
+    --checkpoint "$checkpoint_dir/tabm"
 
 # 6. 具体样例与误差分析（读各模型的 predictions.parquet，不重新推理）
-.venv-train/bin/python -m train.inspect --snapshot data/train-snapshots/<stamp> --checkpoints checkpoints/train/<stamp> --primary set_transformer
+.venv-train/bin/python -m train.inspect --snapshot "$snapshot_dir" \
+    --checkpoints "$checkpoint_dir" --primary set_transformer
 # → train/reports/<stamp>/examples-test.md（校准表、编组内区分能力 vs “编组均值”基线、按编组/幕/牌数误差、最差高估/低估、模型分歧、随机样例）
 #   默认 --split test：样例全部来自留出的测试连通组，训练/验证集里没有这些构筑及其变异亲属
 
@@ -109,16 +115,11 @@ cd /data1/pl/ImageTask/wxq/Projects/Sts2Bot
 
 报告生成器目前仍使用历史名称“噪声下限”和 `test_noise_floor` 字段；其统计含义以上述解释为准。这些历史字段名不表示已经测得总体不可约误差。
 
-## 已有固定快照报告
+## 固定快照报告
 
-| 快照 | 有效场次 / 构筑 / 连通组 | 比较与样例 |
-| --- | --- | --- |
-| 20260911-065245 | 552,043 / 54,748 / 1,413 | [模型比较](reports/20260911-065245/comparison.md)、[测试样例](reports/20260911-065245/examples-test.md) |
-| 20260913-121204 | 770,682 / 77,039 / 2,071 | [模型比较](reports/20260913-121204/comparison.md)、[测试样例](reports/20260913-121204/examples-test.md) |
-| 20260915-113849 | 1,048,142 / 105,125 / 3,352 | [模型比较](reports/20260915-113849/comparison.md)、[测试样例](reports/20260915-113849/examples-test.md) |
-| 20260916-054432 | 1,147,592 / 117,814 / 3,697 | [模型比较](reports/20260916-054432/comparison.md)、[测试样例](reports/20260916-054432/examples-test.md) |
+[reports/](reports/) 按快照保存模型比较、样例与实验，指标和数量只描述对应冻结数据。报告实际纳入的来源以其清单为准，不代表默认来源配置已更新。[损失函数与 pair 监督实验](reports/20260916-exp/experiments.md)的训练实现尚未接入标准入口。
 
-最后一批显式纳入了专项库，不代表默认配置已更新。同一快照的[损失函数与 pair 监督实验](reports/20260916-exp/experiments.md)另行保留；其中的实验训练实现尚未接入当前标准入口。不同快照的测试连通组与数据分布不同，不能直接用跨报告 MAE 升降判断模型退步或进步。原指标、训练设置、耗时与快照路径保留作复现依据，不表示当前采集总量。比较优化效果应在同一固定留出集上评估。
+不同快照的测试连通组与分布不同，不能直接用跨报告 MAE 升降判断模型进退；优化效果应在同一固定留出集上比较。保留报告中的指标、设置、耗时和快照身份用于复现。
 
 ## 产物
 

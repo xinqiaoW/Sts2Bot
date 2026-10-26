@@ -2,7 +2,7 @@
 
 局外规则由原版游戏执行，Python 在地图决策点选择合法路线；每场战斗由 CombatSolver 实际执行。已退役的拟合式模拟器保存在[归档目录](历史垃圾箱/sim-v0-fitted/README.md)。
 
-## 第一版范围
+## 能力范围
 
 - 原版 0.111.0，静默猎手，单人标准 A10，完整原生内容解锁，捏奥开局。
 - 沿用整局实际生命值、牌组、遗物、计数及升级。A10 正常起手为 56/70，不套用独立战斗采集的 70/70 标准化。
@@ -13,11 +13,11 @@
 
 ## 所有权与隔离
 
-`src/Testing/UnattendedTestRunner.ProtocolHost.cs` 仍独占游戏请求邮箱及进程复用；`src/RunControl/RunControlSession*` 拥有单局状态、原生交互、决策序号及日志；`RunControlProtocol.cs` 拥有协议校验和文件写入。Search、Mirror、评分及出牌政策保持原有职责。
+内嵌求解器的 `vendor/CombatSolver/src/Testing/UnattendedTestRunner.ProtocolHost.cs` 独占游戏请求邮箱及进程复用；`vendor/CombatSolver/src/RunControl/RunControlSession*` 拥有单局状态、原生交互、决策序号及日志；同目录的 `RunControlProtocol.cs` 拥有协议校验和文件写入。Search、Mirror、评分及出牌政策保持各自职责。
 
 只有环境变量 `COMBATSOLVER_RUN_CONTROL=1` 的独立进程才能接受整局请求。Python 配置还必须明确 `kind: run_control`。一个环境独占一个用户目录和进程；失败后退出该进程，保留原始尝试，下一次调用使用新的 run ID。自然死亡是完成的对局，超时和异常是失败。
 
-RunController 仍使用真实游戏和 Wine，与[独立模拟器单场采集](simulator-collection.md)分别准备运行资源。原生验收副本为 `/data1/pl/ImageTask/wxq/Projects/Sts2Bot-runctl-pilot`；整局试验独占游戏副本和 Wine prefix，不能覆盖其他采集器。
+RunController 使用真实游戏和 Wine，与[独立模拟器单场采集](simulator-collection.md)分别准备运行资源。整局试验独占游戏副本和 Wine prefix，不能覆盖其他采集器。
 
 ## 原生接入约束
 
@@ -60,8 +60,6 @@ RunController 仍使用真实游戏和 Wine，与[独立模拟器单场采集](s
 
 整局日志单独存储。其输入生命值、遗物和内容池不同于标准化战斗采集，不能直接写入现有 F 训练库。
 
-## 后续阶段
+## 接口边界
 
-1. 将事件、商店、篝火、奖励及各类选牌的完整合法候选统一交给 Python；补齐截断、奖励与批量环境接口。
-2. 实现经过校验的 F 结算。强杀敌人可能触发爆炸、复活或遗物；单独预测平均掉血及死亡概率也不足以得到一致的结算分布。需要处理当前血量、最大生命、回合计数、战斗内永久变化与奖励边界，并用原生对战逐项验证。
-3. 在数据支持完整候选时进行行为克隆，再接入强化学习；吞吐、胜率和 F 分布外偏差都应实测。
+事件、商店、篝火、奖励及选牌尚未统一导出完整候选；当前接口不提供批量环境或完整强化学习所需的奖励、截断定义。F 跳战也未接入：平均掉血和死亡概率不能单独确定最大生命、回合计数、永久变化与奖励结算。强杀敌人还可能触发爆炸、复活或遗物，不能作为等价结算替代。

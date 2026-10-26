@@ -303,6 +303,8 @@ def work(store,catalog,runtime_config,limit,teacher=None):
             status=submit(store, game.data_dir, job, result, wait_for_lock=True)
             print(json.dumps({'job':job['id'],'target':job['target']['id'],'status':status,
                              'observation':result.get('trainingObservation')},ensure_ascii=False),flush=True)
+            if status == 'superseded_expired':
+                continue
             # A failed native scenario is a diagnostic boundary, not a reason to create
             # thousands of identical bad jobs. Leave the rest pending for diagnosis.
             if status!='complete': return False

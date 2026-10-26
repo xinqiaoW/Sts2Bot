@@ -39,9 +39,15 @@ class StandaloneProcess:
                 except ProcessLookupError:
                     pass
                 # SIGKILL can remain pending while the host finishes kernel I/O.
-                # Allow bounded reaping time without losing ownership or turning
-                # a recordable battle timeout into an unrelated worker crash.
-                self.process.wait(timeout=60)
+                # Keep ownership until wait confirms exit; a slow reap must not
+                # crash the worker or permit another host in this runtime.
+                while True:
+                    try:
+                        self.process.wait(timeout=60)
+                        break
+                    except subprocess.TimeoutExpired:
+                        print(json.dumps({'event': 'waiting_for_standalone_reap',
+                                          'pid': self.process.pid}), flush=True)
         if self.log is not None:
             self.log.close()
         self.process = self.log = None
