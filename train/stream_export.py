@@ -118,9 +118,15 @@ def validated_battle(row, source, bodies, completed_at):
                 attempts=row['attempts'], finished_at=finished_at), teacher, target
 
 
-def export_source(source, output, *, flush_rows=4096):
+def export_source(source, output, *, flush_rows=4096, read_replica=None):
+    """Export a source, optionally reading a byte-verified temporary replica.
+
+    The operator preparing the replica must verify its main/WAL/SHM bytes and
+    keep the source frozen. The source identity in the cache stays original.
+    Replicas use normal read-only WAL handling, never immutable=1.
+    """
     name = source['name']
-    path = (ROOT / source['db']).resolve()
+    path = (ROOT / (read_replica['db'] if read_replica else source['db'])).resolve()
     output = Path(output)
     output.mkdir(parents=True, exist_ok=True)
     recover = source.get('recover_invalid_rows', False)
@@ -254,6 +260,8 @@ def export_source(source, output, *, flush_rows=4096):
                 'target_policy': settings.get('target_policy'), 'mutation_policy': settings.get('mutation_policy'),
                 'contains_experimental_results': any(t.get('validation_scope') == 'isolated-experiment' for t in teachers.values()),
                 'elapsed_s': round(time.time()-started, 1)}
+        if read_replica:
+            meta['read_replica'] = read_replica
         meta_temporary = output / (name+'.meta.json.partial')
         meta_temporary.write_text(json.dumps(meta, ensure_ascii=False, indent=2)+'\n')
         meta_temporary.replace(output / (name+'.meta.json'))

@@ -2,12 +2,34 @@ import hashlib
 import gzip
 import json
 import sqlite3
+import shutil
 
 import pyarrow.parquet as pq
 import pytest
 
 from damage_model.schema import Build, Card
 from train.stream_export import export_or_reuse, export_source, table_rows, validated_battle
+
+
+def test_read_replica_preserves_original_identity_and_uncheckpointed_wal(tmp_path):
+    path, _, _ = collection(tmp_path)
+    source = {'name': 'real', 'kind': 'real', 'db': str(path)}
+    replica_dir = tmp_path/'replica'
+    replica_dir.mkdir()
+    with sqlite3.connect(path) as db:
+        db.execute('PRAGMA journal_mode=WAL')
+        db.execute('PRAGMA wal_autocheckpoint=0')
+        db.execute("UPDATE jobs SET attempts=7 WHERE id='good'")
+        db.commit()
+        for suffix in ['', '-wal', '-shm']:
+            shutil.copyfile(str(path)+suffix, str(replica_dir/path.name)+suffix)
+        original_bytes = path.read_bytes()
+        replica = {'db': str(replica_dir/path.name), 'verification': 'test-byte-copy'}
+        meta = export_source(source, tmp_path/'cache', read_replica=replica)
+        row = pq.read_table(tmp_path/'cache/real.battles.parquet').to_pylist()[0]
+        assert row['attempts'] == 7  # Value exists only in the uncheckpointed WAL.
+        assert meta['db'] == str(path) and meta['read_replica'] == replica
+        assert path.read_bytes() == original_bytes
 
 
 def collection(tmp_path):
