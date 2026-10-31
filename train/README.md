@@ -138,7 +138,7 @@ checkpoint_dir=/absolute/path/to/model-comparison
 | `set_transformer` | 官方 Set Transformer `modules.py`（Lee 等，ICML 2019） | 加 key padding mask 以批处理变长牌组 |
 | `lightgbm` | LightGBM | 回归 + 死亡二分类两棵 booster，直接吃 CSR |
 
-超参数见 [configs/models.json](configs/models.json)，可用 `--set key=value` 覆盖。损失 `MSE(标准化掉血) + 0.1·BCE(死亡)`，同一输入的重复种子按 `1/种子数` 加权（与仓库训练一致），早停看验证集 pair MAE。验证和最终预测对每个构筑、目标输入计算一次，再回填全部种子行；训练监督和评估统计覆盖所有有效战斗记录。
+超参数见 [configs/models.json](configs/models.json)，可用 `--set key=value` 覆盖。Torch 损失为 `MSE(标准化掉血) + 0.1·BCE(死亡)`，同一输入的重复种子按 `1/种子数` 加权（与仓库训练一致），早停看验证集 pair MAE。LightGBM 两个头分别按其原生验证指标早停，默认回归头为 L2、死亡头为 binary logloss，实际指标写入 `history.json`。验证和最终预测对每个构筑、目标输入计算一次，再回填全部种子行；训练监督和评估统计覆盖所有有效战斗记录。
 
 ## 指标
 

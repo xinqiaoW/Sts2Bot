@@ -169,7 +169,7 @@ def markdown(report, manifest):
             lines.append(f"| {row['model']} | " + ' | '.join(fmt(row['test_by_act'].get(a, {}).get('pair_mae_hp')) for a in acts) + ' |')
     lines += ['', '## 说明', '',
               '- 各模型均为现有实现的适配：`repo_mlp` 为仓库 `damage_model.model.DamageNet`；`rtdl_mlp`/`rtdl_resnet` 来自 `rtdl_revisiting_models`；`tabm` 来自 `tabm`；`set_transformer` 为官方 Set Transformer 模块加 key padding mask；`lightgbm` 为两棵 LightGBM（回归 + 死亡二分类）。',
-              '- 标签为 `净掉血 / 初始最大生命`，同一输入的重复种子按 1/种子数加权。早停依据验证集 pair MAE。',
+              '- 标签为 `净掉血 / 初始最大生命`，同一输入的重复种子按 1/种子数加权。Torch 模型按验证集 pair MAE 早停；LightGBM 默认分别按验证集 L2（回归）和 binary logloss（死亡）早停，实际指标见 history.json。',
               '- `within_pair_rmse_hp` 为有限种子的组内波动估计；`loo_seed_mean_mae_hp` 用同输入其他种子均值预测单场。两者均为参考统计，不是已知总体分布的不可约误差下限。',
               f"- 运行记录：{json.dumps(report['runs'], ensure_ascii=False)}"]
     return '\n'.join(lines) + '\n'
