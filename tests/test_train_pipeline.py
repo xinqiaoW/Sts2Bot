@@ -1,5 +1,6 @@
 """Training pipeline tests on synthetic caches; never touch collection databases."""
 import gzip
+import hashlib
 import json
 from pathlib import Path
 import random
@@ -18,7 +19,7 @@ TARGET = 'FLYCONID_NORMAL'  # an OVERGROWTH (act 1) encounter
 pytest.importorskip('scipy')
 torch = pytest.importorskip('torch')
 
-from train.features import Vocabulary, sparse_features, tokens  # noqa: E402
+from train.features import Vocabulary, encode_pairs, sparse_features, tokens  # noqa: E402
 from train.metrics import evaluate  # noqa: E402
 from train.snapshot import BATTLE_SCHEMA, merge_sources  # noqa: E402
 
@@ -155,6 +156,32 @@ def test_merge_rejects_incompatible_teachers(tmp_path, catalog):
         merge_sources(config, cache, tmp_path / 'out')
 
 
+def test_backend_mixture_is_explicit_and_still_rejects_different_search_budget(tmp_path, catalog):
+    cache = tmp_path / 'sources'
+    build = sample_build(catalog, 0)
+    native = {'search_ms': 8000, 'solver_base': 'x'}
+    simulator = {**native, 'execution_backend': 'standalone-managed-native',
+                 'validation_scope': 'isolated-experiment'}
+    write_cache(cache, 'native', 'real', {build.id: build.to_dict()},
+                [battle(build.id, 0, 5, 'native', 'real')], [], teacher=native)
+    write_cache(cache, 'simulator', 'real', {build.id: build.to_dict()},
+                [battle(build.id, 1, 7, 'simulator', 'real')], [], teacher=simulator)
+    config = {'sources': [{'name': n, 'kind': 'real', 'db': n} for n in ['native', 'simulator']],
+              'teacher_compatibility_keys': ['search_ms', 'solver_base'],
+              'split_buckets': {'train': 80, 'validation': 10, 'test': 10}}
+    with pytest.raises(ValueError, match='Incompatible teacher'):
+        merge_sources(config, cache, tmp_path / 'strict')
+    manifest = merge_sources(config, cache, tmp_path / 'mixed', allow_backend_mixture=True)
+    assert manifest['allow_backend_mixture'] and manifest['contains_experimental_results']
+    assert manifest['rows'] == 2
+    rows = pq.read_table(tmp_path / 'mixed/battles.parquet').to_pandas()
+    assert set(rows.execution_backend) == {'native-wine', 'standalone-managed-native'}
+    write_cache(cache, 'simulator', 'real', {build.id: build.to_dict()},
+                [battle(build.id, 1, 7, 'simulator', 'real')], [], teacher={**simulator, 'search_ms': 2000})
+    with pytest.raises(ValueError, match='8000 ms'):
+        merge_sources(config, cache, tmp_path / 'wrong-budget', allow_backend_mixture=True)
+
+
 def test_metrics_perfect_and_floor(tmp_path, catalog):
     import pandas as pd
     rows = pd.DataFrame([battle('b', s, 10 + s, 'a', 'real') for s in range(4)] + [battle('c', s, 30, 'a', 'real') for s in range(2)])
@@ -163,6 +190,62 @@ def test_metrics_perfect_and_floor(tmp_path, catalog):
     metrics = evaluate(rows, pair_mean, np.zeros(len(rows)), groupers=())['overall']
     assert metrics['pair_mae_hp'] == pytest.approx(0) and metrics['death_brier'] == 0
     assert metrics['floor_within_pair_rmse_hp'] == pytest.approx(np.sqrt(np.var([10, 11, 12, 13], ddof=1) / 2))
+
+
+@pytest.mark.parametrize('name', ['repo_mlp', 'tabm'])
+def test_requested_neural_models_support_the_installed_runtime(catalog, name):
+    from train.models import build_torch_model
+    from train.train import load_model_config, loss_fn
+    build = sample_build(catalog)
+    vocab = Vocabulary.build(catalog, [(build, TARGET, 70)])
+    hparams = load_model_config(ROOT / 'train/configs/models.json', name)
+    model = build_torch_model(name, vocab, hparams)
+    result = model(torch.zeros(4, vocab.n_features))
+    assert result.shape == ((4, hparams['k'], 2) if name == 'tabm' else (4, 2))
+    loss = loss_fn(result, torch.full((4,), 0.2), torch.zeros(4), torch.ones(4), 0.1)
+    loss.backward()
+    assert torch.isfinite(loss) and any(p.grad is not None for p in model.parameters())
+
+
+def test_streamed_pair_features_equal_the_existing_sized_input_encoding(catalog):
+    inputs = [(sample_build(catalog, i), TARGET, 70) for i in range(3)]
+    vocab = Vocabulary.build(catalog, inputs)
+    reference = encode_pairs(vocab, inputs)
+    streamed = encode_pairs(vocab, iter(inputs), n_pairs=len(inputs))
+    assert (reference['sparse'] != streamed['sparse']).nnz == 0
+    for key in ['symbols', 'numerics', 'lengths']:
+        assert np.array_equal(reference[key], streamed[key])
+    assert reference['untrained_features'] == streamed['untrained_features']
+    with pytest.raises(ValueError, match='Fewer encoding inputs'):
+        encode_pairs(vocab, iter(inputs), n_pairs=len(inputs)+1)
+
+
+@pytest.mark.parametrize('ensemble', [False, True])
+def test_predictions_compute_unique_inputs_and_restore_every_seed_row(ensemble):
+    from types import SimpleNamespace
+    from train.train import predict_rows
+
+    class CountingModel(torch.nn.Module):
+        def __init__(self):
+            super().__init__()
+            self.inputs_seen = 0
+
+        def forward(self, inputs):
+            self.inputs_seen += len(inputs)
+            base = torch.stack([inputs[:, 0]*0.1, inputs[:, 0]], dim=-1)
+            return torch.stack([base, base+0.2], dim=1) if ensemble else base
+
+    pairs = torch.tensor([3, 1, 3, 3, 1, 3])
+    data = SimpleNamespace(rows={'test': {'pair': pairs}}, batch=lambda p: (p.float()[:, None],))
+    model = CountingModel()
+    mean, death = predict_rows(model, data, 'test', batch_size=1)
+    assert model.inputs_seen == 2
+    assert len(mean) == len(death) == len(pairs)
+    assert np.allclose(mean, pairs.numpy()*0.1+(0.1 if ensemble else 0))
+    expected = torch.sigmoid(pairs.float())
+    if ensemble:
+        expected = (expected+torch.sigmoid(pairs.float()+0.2))/2
+    assert np.allclose(death, expected.numpy())
 
 
 def test_train_predict_roundtrip(tmp_path, catalog):
@@ -186,3 +269,5 @@ def test_train_predict_roundtrip(tmp_path, catalog):
         predictors[0].predict(build, 'NO_SUCH_TARGET', 70)
     artifact = json.loads((results['repo_mlp'] / 'artifact.json').read_text())
     assert artifact['snapshot']['files'] == manifest['files'] and artifact['label']['normalized'] == 'hp_loss / max_hp'
+    assert artifact['code']['files']['train/train.py'] == hashlib.sha256((ROOT/'train/train.py').read_bytes()).hexdigest()
+    assert 'branch' in artifact['code'] and 'commit' in artifact['code']

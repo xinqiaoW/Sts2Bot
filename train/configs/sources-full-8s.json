@@ -1,0 +1,122 @@
+{
+  "comment": "Full 8-second corpus. Prefer current simulator labels on duplicate inputs; preserve and report both backend identities. Native frozen caches are reused only after verification. 2-second experiments are excluded.",
+  "sources": [
+    {
+      "name": "sim-current-real",
+      "kind": "real",
+      "db": "/data1/pl/ImageTask/wxq/Projects/Sts2Bot-simulator-continue-20261028/collection/db/real.sqlite",
+      "frozen": false
+    },
+    {
+      "name": "sim-current-mutations",
+      "kind": "mutation",
+      "db": "/data1/pl/ImageTask/wxq/Projects/Sts2Bot-simulator-continue-20261028/collection/db/mutations.sqlite",
+      "frozen": false
+    },
+    {
+      "name": "sim-current-targeted",
+      "kind": "mutation",
+      "db": "/data1/pl/ImageTask/wxq/Projects/Sts2Bot-simulator-continue-20261028/collection/db/targeted.sqlite",
+      "frozen": false
+    },
+    {
+      "name": "sim-oct19-real",
+      "kind": "real",
+      "db": "/data2/pl/ImageTask/wxq/Projects/Sts2Bot/.local/simulator-live-trial-20261019/db/real.sqlite",
+      "frozen": true,
+      "recover_invalid_rows": true
+    },
+    {
+      "name": "sim-oct19-mutations",
+      "kind": "mutation",
+      "db": "/data2/pl/ImageTask/wxq/Projects/Sts2Bot/.local/simulator-live-trial-20261019/db/mutations.sqlite",
+      "frozen": true,
+      "recover_invalid_rows": true
+    },
+    {
+      "name": "sim-oct19-targeted",
+      "kind": "mutation",
+      "db": "/data2/pl/ImageTask/wxq/Projects/Sts2Bot/.local/simulator-live-trial-20261019/db/targeted.sqlite",
+      "frozen": true,
+      "recover_invalid_rows": true
+    },
+    {
+      "name": "real-v4",
+      "kind": "real",
+      "db": "/data1/pl/ImageTask/wxq/Projects/Sts2Bot/data/collection-real-runs-v4.sqlite",
+      "frozen": true
+    },
+    {
+      "name": "real-v3",
+      "kind": "real",
+      "db": "/data2/pl/ImageTask/wxq/Projects/Sts2Bot/data/collection-real-runs-v3.sqlite",
+      "frozen": true
+    },
+    {
+      "name": "mut-v2",
+      "kind": "mutation",
+      "db": "/data1/pl/ImageTask/wxq/Projects/Sts2Bot/data/collection-mutations-v2.sqlite",
+      "frozen": true
+    },
+    {
+      "name": "mut-v1",
+      "kind": "mutation",
+      "db": "/data2/pl/ImageTask/wxq/Projects/Sts2Bot/data/collection-mutations-v1.sqlite",
+      "frozen": true
+    },
+    {
+      "name": "targeted-v1",
+      "kind": "mutation",
+      "db": "/data1/pl/ImageTask/wxq/Projects/Sts2Bot/data/collection-targeted-mutations-v1.sqlite",
+      "frozen": true
+    },
+    {
+      "name": "backfill-real",
+      "kind": "real",
+      "db": "/data1/pl/ImageTask/wxq/Projects/Sts2Bot/data/targeted-seed-backfill-20260919/queues/collection-real-runs-v4.backfill.sqlite",
+      "frozen": true,
+      "verified_build_sources": [
+        "real-v4",
+        "real-v3"
+      ]
+    },
+    {
+      "name": "backfill-mutations",
+      "kind": "mutation",
+      "db": "/data1/pl/ImageTask/wxq/Projects/Sts2Bot/data/targeted-seed-backfill-20260919/queues/collection-mutations-v2.backfill.sqlite",
+      "frozen": true,
+      "verified_build_sources": [
+        "mut-v2",
+        "mut-v1"
+      ]
+    },
+    {
+      "name": "backfill-targeted",
+      "kind": "mutation",
+      "db": "/data1/pl/ImageTask/wxq/Projects/Sts2Bot/data/targeted-seed-backfill-20260919/queues/collection-targeted-mutations-v1.backfill.sqlite",
+      "frozen": true,
+      "verified_build_sources": [
+        "targeted-v1"
+      ]
+    }
+  ],
+  "teacher_compatibility_keys": [
+    "solver_base",
+    "game_version",
+    "game_sha256",
+    "character",
+    "ascension",
+    "potion_policy",
+    "performance_preset",
+    "search_mode",
+    "search_ms",
+    "dop",
+    "timeout_seconds",
+    "label"
+  ],
+  "split_buckets": {
+    "train": 80,
+    "validation": 10,
+    "test": 10
+  }
+}

@@ -196,7 +196,8 @@ def _bucket_split(key, buckets):
     return 'train'
 
 
-def merge_sources(config: dict, cache: Path, output: Path, *, allow_teacher_mismatch=False):
+def merge_sources(config: dict, cache: Path, output: Path, *, allow_teacher_mismatch=False,
+                  allow_backend_mixture=False):
     """Union per-source caches into one snapshot with component-based splits."""
     output.mkdir(parents=True, exist_ok=True)
     sources = config['sources']
@@ -210,7 +211,21 @@ def merge_sources(config: dict, cache: Path, output: Path, *, allow_teacher_mism
         'standalone_unlock_state', 'progress_snapshot_sha256'})
     signatures = {canonical({k: t.get(k, 'native-wine' if k == 'execution_backend' else None)
                              for k in keys}) for t in teachers.values()}
-    if len(signatures) != 1 and not allow_teacher_mismatch:
+    if allow_backend_mixture:
+        # Explicit multi-backend experiment, with the game/search target fixed.
+        # This does not claim the simulator is production-equivalent to Wine.
+        core = set(config['teacher_compatibility_keys']) | {
+            'solver_base', 'game_version', 'game_sha256', 'character', 'ascension',
+            'potion_policy', 'performance_preset', 'search_mode', 'search_ms', 'dop',
+            'timeout_seconds', 'label'}
+        core -= {'execution_backend', 'validation_scope', 'standalone_host_sha256',
+                 'standalone_unlock_state', 'progress_snapshot_sha256'}
+        core_signatures = {canonical({k: t.get(k) for k in sorted(core)}) for t in teachers.values()}
+        backends = {t.get('execution_backend', 'native-wine') for t in teachers.values()}
+        if (len(core_signatures) != 1 or any(t.get('search_ms') != 8000 for t in teachers.values())
+                or not backends <= {'native-wine', 'standalone-managed-native'}):
+            raise ValueError('Backend mixture requires identical game/search teachers at 8000 ms')
+    if len(signatures) != 1 and not (allow_teacher_mismatch or allow_backend_mixture):
         raise ValueError(f'Incompatible teacher configurations across sources: {sorted(signatures)}')
     builds, lineage, build_sources, edges = {}, {}, defaultdict(list), set()
     tables = []
@@ -261,6 +276,14 @@ def merge_sources(config: dict, cache: Path, output: Path, *, allow_teacher_mism
     for row in kept:
         row['group'] = build_group[row['build_id']]
         row['split'] = group_split[row['group']]
+        teacher = teachers.get(row['teacher_id'])
+        if teacher is None:
+            # Older synthetic/legacy caches used a local teacher alias.
+            source_teachers = list(metas[row['source']]['teachers'].values())
+            if len(source_teachers) != 1:
+                raise ValueError('Unknown teacher identity in source cache: '+row['source'])
+            teacher = source_teachers[0]
+        row['execution_backend'] = teacher.get('execution_backend', 'native-wine')
     battle_table = pa.Table.from_pylist(kept)
     pq.write_table(battle_table, output / 'battles.parquet', compression='zstd')
     build_records = []
@@ -283,10 +306,16 @@ def merge_sources(config: dict, cache: Path, output: Path, *, allow_teacher_mism
                               'by_kind': dict(Counter(r['kind'] for r in subset)),
                               'by_source': dict(Counter(r['source'] for r in subset))}
     manifest = {'schema_version': SCHEMA_VERSION, 'snapshot_at_utc': datetime.now(timezone.utc).isoformat(),
-                'host': socket.gethostname(), 'sources': [{**s, **{k: metas[s['name']][k] for k in ('exported_at_utc', 'job_counts', 'rows', 'builds')}} for s in sources],
+                'host': socket.gethostname(), 'sources': [
+                    {**s, **{k: metas[s['name']][k] for k in ('exported_at_utc', 'job_counts', 'rows', 'builds')},
+                     'rejected_counts': metas[s['name']].get('rejected_counts', {}),
+                     'scan_strategy': metas[s['name']].get('scan_strategy'),
+                     'missing_completion_timestamps': metas[s['name']].get('missing_completion_timestamps', 0)}
+                    for s in sources],
                 'teachers': teachers, 'teacher_signature_keys': keys, 'teacher_signatures': sorted(signatures),
                 'contains_experimental_results': any(t.get('validation_scope') == 'isolated-experiment' for t in teachers.values()),
                 'allow_teacher_mismatch': allow_teacher_mismatch,
+                'allow_backend_mixture': allow_backend_mixture,
                 'rows_before_dedupe': len(rows), 'rows': len(kept), 'duplicates_dropped': dict(duplicates),
                 'builds': len(builds), 'components': len(group_split), 'targets': len(targets),
                 'split_buckets': buckets, 'splits': split_stats,
@@ -307,6 +336,8 @@ def main():
     parser.add_argument('--only', nargs='*', help='Export only these source names (merge is skipped)')
     parser.add_argument('--skip-card-verification', action='store_true', help='Skip re-validating the actual starting deck against the planned build')
     parser.add_argument('--allow-teacher-mismatch', action='store_true')
+    parser.add_argument('--allow-backend-mixture', action='store_true',
+                        help='Explicitly combine native/simulator 8s sources with matching game/search settings')
     parser.add_argument('--merge-only', action='store_true', help='Merge already exported source caches in --output without touching databases')
     parser.add_argument('--cache', help='Directory holding per-source caches (default: <output>/sources)')
     args = parser.parse_args()
@@ -327,7 +358,8 @@ def main():
         export_source(source, cache, verify_cards=not args.skip_card_verification)
     if args.only:
         return
-    manifest = merge_sources(config, cache, output, allow_teacher_mismatch=args.allow_teacher_mismatch)
+    manifest = merge_sources(config, cache, output, allow_teacher_mismatch=args.allow_teacher_mismatch,
+                             allow_backend_mixture=args.allow_backend_mixture)
     print(json.dumps({k: manifest[k] for k in ('rows', 'builds', 'components', 'duplicates_dropped', 'splits')}, ensure_ascii=False, indent=2))
     print(str(output))
 

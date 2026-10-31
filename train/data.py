@@ -90,7 +90,7 @@ class Dataset:
             vocab = Vocabulary.build(catalog, inputs((pairs.split == 'train').to_numpy()), min_count=min_count)
             log(json.dumps({'event': 'vocabulary', 'features': vocab.n_features, 'symbols': vocab.n_symbols,
                             'max_tokens': vocab.spec['max_tokens'], 'elapsed_s': round(time.time() - started, 1)}))
-            encoded = encode_pairs(vocab, list(inputs(np.ones(len(pairs), dtype=bool))),
+            encoded = encode_pairs(vocab, inputs(np.ones(len(pairs), dtype=bool)), n_pairs=len(pairs),
                                    progress=lambda i, n: log(json.dumps({'event': 'encoding', 'pairs': i, 'of': n})))
             log(json.dumps({'event': 'encoded', 'pairs': len(pairs), 'nnz': int(encoded['sparse'].nnz),
                             'untrained_features_in_holdout': sum(encoded['untrained_features'].values()),

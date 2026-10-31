@@ -22,6 +22,7 @@ import hashlib
 import json
 from pathlib import Path
 import random
+import subprocess
 import time
 
 import numpy as np
@@ -51,6 +52,16 @@ def load_model_config(path, name, overrides=None):
     config = json.loads(Path(path).read_text(encoding='utf-8'))
     hparams = {**config['defaults'], **config['models'].get(name, {}), **(overrides or {})}
     return hparams
+
+
+def code_provenance():
+    files = list((ROOT/'train').glob('*.py')) + list((ROOT/'train/models').glob('*.py'))
+    files += [ROOT/'damage_model'/name for name in ['encoding.py', 'schema.py', 'card_state.py', 'catalog.py', 'model.py']]
+    record = {'files': {str(p.relative_to(ROOT)): hashlib.sha256(p.read_bytes()).hexdigest() for p in files}}
+    for key, command in [('branch', ['git', 'branch', '--show-current']), ('commit', ['git', 'rev-parse', 'HEAD'])]:
+        result = subprocess.run(command, cwd=ROOT, capture_output=True, text=True)
+        record[key] = result.stdout.strip() if result.returncode == 0 else None
+    return record
 
 
 class DeviceData:
@@ -112,15 +123,18 @@ def loss_fn(out, y, died, weight, death_weight):
 def predict_rows(model, data: DeviceData, split, batch_size=4096):
     model.eval()
     pairs = data.rows[split]['pair']
+    unique_pairs, inverse = torch.unique(pairs, sorted=True, return_inverse=True)
     means, deaths = [], []
-    for start in range(0, len(pairs), batch_size):
-        out = forward(model, data, pairs[start:start + batch_size])
+    # Different battle seeds share the same model input. Evaluate each input
+    # once, then restore every row for the original weighted metrics.
+    for start in range(0, len(unique_pairs), batch_size):
+        out = forward(model, data, unique_pairs[start:start + batch_size])
         if out.ndim == 3:
             out = torch.stack([out[..., 0].mean(dim=1), torch.sigmoid(out[..., 1]).mean(dim=1)], dim=-1)
         else:
             out = torch.stack([out[:, 0], torch.sigmoid(out[:, 1])], dim=-1)
         means.append(out[:, 0]); deaths.append(out[:, 1])
-    return torch.cat(means).cpu().numpy(), torch.cat(deaths).cpu().numpy()
+    return torch.cat(means)[inverse].cpu().numpy(), torch.cat(deaths)[inverse].cpu().numpy()
 
 
 def train_torch(name, dataset, hparams, device, output, log):
@@ -188,9 +202,11 @@ def train_lightgbm(dataset, hparams, output, log):
                         'validation_' + metric: record['validation'][metric][booster.best_iteration - 1]}))
     predictions = {}
     for split in SPLITS:
-        mean = boosters['regression'].predict(X[split], num_iteration=boosters['regression'].best_iteration)
-        death = boosters['death'].predict(X[split], num_iteration=boosters['death'].best_iteration)
-        predictions[split] = (np.asarray(mean, dtype=np.float32), np.asarray(death, dtype=np.float32))
+        pair_ids, inverse = np.unique(rows[split].pair.to_numpy(), return_inverse=True)
+        inputs = dataset.encoded['sparse'][pair_ids]
+        mean = boosters['regression'].predict(inputs, num_iteration=boosters['regression'].best_iteration)
+        death = boosters['death'].predict(inputs, num_iteration=boosters['death'].best_iteration)
+        predictions[split] = (np.asarray(mean, dtype=np.float32)[inverse], np.asarray(death, dtype=np.float32)[inverse])
     flat_history = [{'head': head, **{k: v for k, v in h.items() if k != 'curve'}} for head, h in history.items()]
     return predictions, {'heads': history, 'summary': flat_history}, {'best_iterations': {h: b.best_iteration for h, b in boosters.items()}}
 
@@ -208,6 +224,7 @@ def run(snapshot_dir, name, *, device='cuda:0', output=None, model_config=None, 
     snapshot_name = Path(snapshot_dir).name
     output = Path(output) if output else ROOT / 'checkpoints/train' / snapshot_name / name
     output.mkdir(parents=True, exist_ok=True)
+    implementation = code_provenance()
     started = time.time()
     if name in TORCH_MODELS:
         predictions, history, extra = train_torch(name, dataset, hparams, device, output, log)
@@ -220,6 +237,8 @@ def run(snapshot_dir, name, *, device='cuda:0', output=None, model_config=None, 
         mean, death = predictions[split]
         metrics[split] = evaluate(rows, mean, death)
         frame = rows[['job_id', 'source', 'kind', 'build_id', 'target_id', 'act_id', 'seed', 'max_hp', 'hp_loss', 'died', 'pair', 'weight']].copy()
+        if 'execution_backend' in rows:
+            frame['execution_backend'] = rows.execution_backend
         frame['split'] = split
         frame['pred_normalized'] = mean
         frame['pred_hp_loss'] = np.clip(mean, 0, 1) * frame.max_hp.to_numpy()
@@ -237,6 +256,9 @@ def run(snapshot_dir, name, *, device='cuda:0', output=None, model_config=None, 
                              'builds': manifest['builds'], 'components': manifest['components'], 'files': manifest['files'],
                              'sources': [{k: s[k] for k in ('name', 'kind', 'db', 'rows')} for s in manifest['sources']]},
                 'teachers': manifest['teachers'], 'teacher_signatures': manifest['teacher_signatures'],
+                'allow_backend_mixture': manifest.get('allow_backend_mixture', False),
+                'contains_experimental_results': manifest.get('contains_experimental_results', False),
+                'code': implementation,
                 'dataset': summary, 'label': {'normalized': 'hp_loss / max_hp', 'death': 'final_hp <= 0'},
                 'vocab_sha256': hashlib.sha256(vocab_json.encode()).hexdigest(),
                 'features': dataset.vocab.n_features, 'symbols': dataset.vocab.n_symbols,
