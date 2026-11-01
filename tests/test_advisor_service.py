@@ -10,6 +10,27 @@ from test_reward_policy import request_data, selector
 from train.advisor_service import evaluate, make_handler, normalize_relic
 
 
+@pytest.mark.parametrize('count,phase', [(0, 0), (4, 4), (5, 0), (6, 1),
+                                       (9, 4), (10, 0), (2147483647, 2)])
+def test_book_of_five_rings_cumulative_counter(count, phase):
+    native = dict(id='BOOK_OF_FIVE_RINGS',
+                  state=[['CardsAdded', count], ['IsWax', False], ['IsMelted', False]])
+    original = deepcopy(native)
+    assert normalize_relic(native) == dict(id='BOOK_OF_FIVE_RINGS', state=[['CardsAdded', phase]])
+    assert native == original
+
+
+@pytest.mark.parametrize('count', [-1, True, 5.0, '5', 2147483648])
+def test_book_of_five_rings_rejects_invalid_native_counter(count):
+    with pytest.raises(ValueError, match='BOOK_OF_FIVE_RINGS.*CardsAdded'):
+        normalize_relic(dict(id='BOOK_OF_FIVE_RINGS', state=[['CardsAdded', count]]))
+
+
+def test_invalid_counter_error_identifies_other_relic():
+    with pytest.raises(ValueError, match='PEN_NIB.*AttacksPlayed.*10'):
+        normalize_relic(dict(id='PEN_NIB', state=[['AttacksPlayed', 10]]))
+
+
 def test_archaic_tooth_tooltips_match_training_state():
     native = dict(id='ARCHAIC_TOOTH', state=[['IsWax', False], ['IsMelted', False]],
                   unsupported_fields=['StarterCard', 'AncientCard'])

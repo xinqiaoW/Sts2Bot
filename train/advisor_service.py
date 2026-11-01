@@ -51,6 +51,20 @@ def normalize_relic(original):
         raise ValueError(f'Incomplete relic state: {rid}; '
                          f'missing={sorted(expected - state.keys())}; '
                          f'unexpected={sorted(state.keys() - expected)}')
+    # Native BookOfFiveRings keeps a cumulative Int32 CardsAdded; both its
+    # display and healing trigger use CardsAdded % 5. Training stores only
+    # that equivalent phase, not the lifetime total. Do not mutate live state
+    # or replay the heal (this scorer starts each simulated fight at full HP).
+    if rid == 'BOOK_OF_FIVE_RINGS':
+        count = state['CardsAdded']
+        if type(count) is not int or not 0 <= count <= 2147483647:
+            raise ValueError(f'Invalid counter value: {rid}.CardsAdded={count!r}; '
+                             'expected a nonnegative Int32')
+        state['CardsAdded'] = count % 5
+    for key, value in state.items():
+        domain = COUNTER_DOMAINS[rid][key]
+        if not any(type(value) is type(allowed) and value == allowed for allowed in domain):
+            raise ValueError(f'Invalid counter value: {rid}.{key}={value!r}; expected {domain}')
     relic['state'] = [[key, value] for key, value in sorted(state.items())]
     return relic
 

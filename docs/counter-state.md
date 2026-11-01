@@ -30,7 +30,7 @@
 | 摆动球 | TurnsSeen | 0–2 |
 | 石之剑 | ElitesDefeated | 0–4；第五次精英胜利后替换为玉之剑 |
 | 华美发束 | IsUsed | false / true；跳过获取时清空金币 |
-| 五轮书 | CardsAdded | 0–4；每 5 张加入永久牌组时回血 |
+| 五轮书 | CardsAdded | 0–4；原版保存累计数，显示及回血触发使用累计数模 5；实机评分先验证为非负 Int32 再取模，每 5 张加入永久牌组时回血 |
 | 骨茶 | CombatsLeft | 0–1 |
 | 余烬茶 | CombatsLeft | 0–5 |
 | 开心小花？？？ | TurnsSeen | 0–4 |
