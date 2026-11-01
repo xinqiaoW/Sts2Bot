@@ -1,5 +1,16 @@
 # CombatSolver 测试清单
 
+## 0.30.7 奖励选择失效恢复
+
+- Debug 编译通过。原生 Wine/Godot 测试 `/tmp/sts2bot-ui-stale-0307/grid-result.json`：6 组 Passed，真实玩家牌组未改变。
+- Linux 结构门禁通过：REFACTOR_BOUNDARIES_OK。编译有 1 个既有 NU1900 告警（NuGet 漏洞索引联网失败），不影响构建。
+- 奖励按钮隐藏/禁用时不发输入；相同候选刷新后，原缓存按钮确实非法，新的执行按当前控件成功选择正确替代选项。
+- 奖励换成同 ID 的新卡牌实例时，原拿牌及跳过决策都拒绝；重新捕获后精确选中第 2 个实例。
+- 模拟模型等待期间已手动选牌，旧拿牌/跳过不会再次提交；关闭界面的旧选择拒绝。
+- 公共状态检查失败时执行次数为 0；输入启动后返回的失败 Task 传播错误，执行次数为 1，未吞异常或重试。
+- 原网格哨兵：60 张同 ID 卡牌，第 1/60 张旧 holder 失效后仍精确选择对应实例并确认。
+- 入口：外层 `.venv-train/bin/python tools/run_autobot_smoke.py --runtime <专用 runtime.json> --dll <当前 Debug DLL> --output <新目录> --ui-only`，进程总上限 120 秒。不是用户现场重放或原生 Windows 完整局验证。
+
 ## 0.30.6 Windows 文件共享发布
 
 - 用户粘贴日志的分诊记录：外层 `.local/issue-bundles/runcontrol-windows-publish-20261101/triage/notes.md`。未导入该用户的完整对局或验证其安装版本。

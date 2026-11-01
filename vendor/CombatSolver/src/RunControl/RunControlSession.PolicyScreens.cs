@@ -24,7 +24,7 @@ internal sealed partial class RunControlSession
     private static Task PressCardAsync(NCardHolder holder)
     {
         if (!GodotObject.IsInstanceValid(holder) || !holder.IsInsideTree() || !holder.IsVisibleInTree())
-            throw new InvalidOperationException("Card selection is no longer visible.");
+            throw new StaleUiChoiceException("card_holder_no_longer_visible");
         holder.EmitSignal(NCardHolder.SignalName.Pressed, holder);
         return Task.CompletedTask;
     }
@@ -80,6 +80,7 @@ internal sealed partial class RunControlSession
     {
         Node node = (Node)overlay;
         await Task.Delay(200, ct);
+        if (!IsCurrentSurface(overlay)) return;
         List<UiChoice> options = [];
         if (overlay is NRewardsScreen rewards)
         {
@@ -95,7 +96,12 @@ internal sealed partial class RunControlSession
                     CardReward => new { kind = "open_cards" },
                     _ => new { kind = "reward", id = reward.GetType().Name, description = reward.Description.GetFormattedText() },
                 };
-                options.Add(new(data, () => { _attemptedRewards.Add(reward); return ClickLegalAsync(button); }));
+                options.Add(new(data, () =>
+                {
+                    Task pending = ClickLegalAsync(button);
+                    _attemptedRewards.Add(reward); // Only after pre-input validation succeeded.
+                    return pending;
+                }));
             }
             var proceed = UiHelper.FindAll<NProceedButton>(node).FirstOrDefault(b => b.IsVisibleInTree() && b.IsEnabled);
             if (proceed != null) options.Add(new(new { kind = "leave" }, () => ClickLegalAsync(proceed)));
@@ -104,15 +110,19 @@ internal sealed partial class RunControlSession
         }
         if (overlay is NCardRewardSelectionScreen rewardCards)
         {
-            foreach (var holder in UiHelper.FindAll<NCardHolder>(node).Where(h => h.IsVisibleInTree() && h.CardModel != null))
-                options.Add(new(new { kind = "card", action = "take", card = CardAdvisorCapture.Card(holder.CardModel!) }, () => PressCardAsync(holder)));
-            var alternatives = UiHelper.FindAll<NCardRewardAlternativeButton>(rewardCards._rewardAlternativesContainer);
-            if (alternatives.Count != rewardCards._extraOptions.Count) throw new InvalidDataException("Reward alternatives are not ready.");
+            if (!RewardSelectionReady(rewardCards)) return;
+            for (int i = 0; i < rewardCards._options.Count; i++)
+                options.Add(new(new { kind = "card", action = "take", card = CardAdvisorCapture.Card(rewardCards._options[i].Card) },
+                    CaptureRewardChoice(rewardCards, i, false)));
+            var alternatives = rewardCards._rewardAlternativesContainer.GetChildren().OfType<NCardRewardAlternativeButton>()
+                .Where(b => !b.IsQueuedForDeletion()).ToList();
+            if (alternatives.Count != rewardCards._extraOptions.Count) return;
             for (int i = 0; i < alternatives.Count; i++)
             {
                 var button = alternatives[i]; var alternate = rewardCards._extraOptions[i];
                 if (button.IsEnabled && button.IsVisibleInTree())
-                    options.Add(new(new { kind = "alternative", id = alternate.OptionId, title = alternate.Title.GetFormattedText() }, () => ClickLegalAsync(button)));
+                    options.Add(new(new { kind = "alternative", id = alternate.OptionId, title = alternate.Title.GetFormattedText() },
+                        CaptureRewardChoice(rewardCards, i, true)));
             }
             await SelectUiAsync("CARD_REWARD", options, new { postCombat = Run.CurrentRoom is CombatRoom }, overlay, ct);
             return;

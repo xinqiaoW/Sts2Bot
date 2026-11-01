@@ -4,6 +4,9 @@ using MegaCrit.Sts2.Core.AutoSlay.Helpers;
 using MegaCrit.Sts2.Core.CardSelection;
 using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.Entities.Players;
+using MegaCrit.Sts2.Core.Entities.Cards;
+using MegaCrit.Sts2.Core.Entities.CardRewardAlternatives;
+using MegaCrit.Sts2.Core.Entities.Rewards;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Characters;
 using MegaCrit.Sts2.Core.Nodes;
@@ -58,6 +61,7 @@ internal static class RunControlUiSmoke
                 evidence.Add(new { index, stale_cached_holder = stale, exact_instance_confirmed = true });
                 await Task.Delay(150, deadline.Token);
             }
+            await VerifyRewardChoicesAsync(original, evidence, deadline.Token);
             if (!original.SequenceEqual(player.Deck.Cards))
                 throw new InvalidOperationException("UI fixture unexpectedly changed the real deck.");
             status = "passed";
@@ -72,6 +76,91 @@ internal static class RunControlUiSmoke
         {
             File.WriteAllText(path, JsonSerializer.Serialize(new { status, error, evidence }));
             host.GetTree().Quit(status == "passed" ? 0 : 1);
+        }
+    }
+
+    private static async Task VerifyRewardChoicesAsync(CardModel[] original, List<object> evidence, CancellationToken ct)
+    {
+        CardCreationResult[] cards = original.Take(3).Select(c => new CardCreationResult((CardModel)c.MutableClone())).ToArray();
+        CardRewardAlternative[] alternatives = [new("Skip", PostAlternateCardRewardAction.EndSelectionAndCompleteReward)];
+        for (int scenario = 0; scenario < 3; scenario++)
+        {
+            var screen = NCardRewardSelectionScreen.ShowScreen(cards, alternatives)
+                ?? throw new InvalidOperationException("Reward screen did not open.");
+            Task<int?> selected = screen.OptionSelected();
+            await Task.Delay(500, ct);
+            if (!RunControlSession.RewardSelectionReady(screen)) throw new InvalidOperationException("Reward screen not ready.");
+            Func<Task> skip = RunControlSession.CaptureRewardChoice(screen, 0, true);
+            Func<Task> take = RunControlSession.CaptureRewardChoice(screen, 1, false);
+            var oldButton = screen._rewardAlternativesContainer.GetChildren().OfType<NCardRewardAlternativeButton>().Single();
+            if (scenario == 0)
+            {
+                screen.Visible = false;
+                ExpectStale(skip, "reward_surface_changed", selected);
+                screen.Visible = true;
+                oldButton.Disable();
+                ExpectStale(skip, "button_disabled", selected);
+                oldButton.Enable();
+                // Same semantic options, new native controls: no stale button
+                // should be retained across a refresh while Python is working.
+                screen.RefreshOptions(cards, alternatives);
+                await Task.Delay(500, ct);
+                bool oldInvalid = !GodotObject.IsInstanceValid(oldButton) || !oldButton.IsInsideTree()
+                    || !oldButton.IsVisibleInTree() || !oldButton.IsEnabled;
+                if (!oldInvalid) throw new InvalidOperationException("Fixture did not invalidate the cached button.");
+                await Start(skip);
+                if (await selected.WaitAsync(ct) != cards.Length) throw new InvalidOperationException("Wrong alternative selected.");
+                evidence.Add(new { test = "reward-hidden-disabled-and-rebuilt-control", old_cached_button_illegal = oldInvalid, passed = true });
+            }
+            else if (scenario == 1)
+            {
+                CardCreationResult[] replacement = cards.Select(c => new CardCreationResult((CardModel)c.Card.MutableClone())).ToArray();
+                screen.RefreshOptions(replacement, alternatives);
+                await Task.Delay(500, ct);
+                ExpectStale(take, "reward_options_changed", selected);
+                ExpectStale(skip, "reward_options_changed", selected);
+                await Start(RunControlSession.CaptureRewardChoice(screen, 1, false));
+                if (await selected.WaitAsync(ct) != 1) throw new InvalidOperationException("Fresh choice used wrong same-ID instance.");
+                evidence.Add(new { test = "reward-rerolled-same-id-cards-rejected-and-fresh-choice-succeeds", passed = true });
+            }
+            else
+            {
+                // Mimic a manual click occurring during model inference.
+                await UiHelper.Click(oldButton);
+                if (await selected.WaitAsync(ct) != cards.Length) throw new InvalidOperationException("Manual skip failed.");
+                ExpectStale(skip, "reward_selection_already_completed_or_replaced", null);
+                ExpectStale(take, "reward_selection_already_completed_or_replaced", null);
+                evidence.Add(new { test = "reward-manual-choice-not-repeated", passed = true });
+            }
+            NOverlayStack.Instance!.Remove(screen);
+            await Task.Delay(150, ct);
+            ExpectStale(skip, "reward_surface_changed", null);
+        }
+
+        int started = 0;
+        Task? rejected = RunControlSession.TryStartUiChoice(() => { started++; return Task.CompletedTask; },
+            () => false, out string? reason);
+        if (rejected != null || started != 0 || reason != "decision_state_or_surface_changed")
+            throw new InvalidOperationException("Changed decision state was executed.");
+        Task? faulted = RunControlSession.TryStartUiChoice(() =>
+        {
+            started++;
+            return Task.FromException(new InvalidOperationException("after-input-fault"));
+        }, () => true, out reason);
+        bool propagated = false;
+        try { await faulted!; }
+        catch (InvalidOperationException ex) when (ex.Message == "after-input-fault") { propagated = true; }
+        if (!propagated || started != 1 || reason != null)
+            throw new InvalidOperationException("Post-input failure was hidden or retried.");
+        evidence.Add(new { test = "changed-state-not-started-and-post-input-fault-propagates", passed = true });
+
+        static Task Start(Func<Task> action) => RunControlSession.TryStartUiChoice(action, () => true, out var reason)
+            ?? throw new InvalidOperationException("Unexpected stale choice: " + reason);
+        static void ExpectStale(Func<Task> action, string expected, Task<int?>? selected)
+        {
+            if (RunControlSession.TryStartUiChoice(action, () => true, out var reason) != null
+                || reason != expected || selected?.IsCompleted == true)
+                throw new InvalidOperationException($"Expected {expected}, got {reason}; selection must not execute.");
         }
     }
 }

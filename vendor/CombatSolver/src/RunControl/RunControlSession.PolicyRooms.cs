@@ -20,16 +20,25 @@ internal sealed partial class RunControlSession
 
     private static Task ClickLegalAsync(NClickableControl button)
     {
-        if (!GodotObject.IsInstanceValid(button) || !button.IsInsideTree()
-            || !button.IsVisibleInTree() || !button.IsEnabled)
-            throw new InvalidOperationException("Selected button is no longer legal.");
+        if (!GodotObject.IsInstanceValid(button)) throw new StaleUiChoiceException("button_freed");
+        if (!button.IsInsideTree() || button.IsQueuedForDeletion()) throw new StaleUiChoiceException("button_detached");
+        if (!button.IsVisibleInTree()) throw new StaleUiChoiceException("button_hidden");
+        if (!button.IsEnabled) throw new StaleUiChoiceException("button_disabled");
         return UiHelper.Click(button);
     }
 
     private async Task SelectUiAsync(string screen, List<UiChoice> options, object? context, IOverlayScreen? owner, CancellationToken ct)
     {
+        AbstractRoom? room = Run.CurrentRoom;
+        string before = System.Text.Json.JsonSerializer.Serialize(State(), RunControlFiles.Json);
         int choice = await ChooseAsync(screen, options.Select(o => o.Data).ToArray(), context, ct);
-        await DrainOperationAsync(options[choice].Execute(), owner, ct);
+        Task? pending = TryStartUiChoice(options[choice].Execute,
+            () => ReferenceEquals(room, Run.CurrentRoom) && (owner == null || IsCurrentSurface(owner))
+                && before == System.Text.Json.JsonSerializer.Serialize(State(), RunControlFiles.Json), out string? staleReason);
+        if (pending == null)
+            Record("stale_ui_choice", new { screen, choice, reason = staleReason, actionStarted = false });
+        else
+            await DrainOperationAsync(pending, owner, ct);
         await Task.Delay(150, ct);
     }
 
