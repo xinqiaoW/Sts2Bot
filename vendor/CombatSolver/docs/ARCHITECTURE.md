@@ -1,5 +1,15 @@
 # CombatSolver 架构与职责地图
 
+## 局外选牌评分（2026-11-01）
+
+- `Runtime/CardAdvisorSnapshot.cs`：主线程读取选牌界面、牌组、保存状态及地图，生成序列化输入；不执行选择、购买或真实升级。
+- `Runtime/CardAdvisorController.cs`：独立持有 HTTP、取消和代次，仅在自身 `_Process` 消费完成任务。过期结果不显示，后台只使用字符串和数值。
+- `UI/CardAdvisorOverlay.cs`：只渲染 `CardAdvisorView/Row`，不读取 Model、RunState 或 HTTP。
+- 外层 `train/advisor_service.py`：输入校验、地图概率估计、模型调用；未知语义显式失败，不进入战斗 Search。
+- `Testing/CardAdvisorSmoke.cs`：显式环境变量启用的合成快照 HTTP/真实 Godot 验证，不冒充真实整局界面捕获验收。
+
+使用及边界见 [选牌评分说明](../../../docs/card-advisor.md)。
+
 本文描述当前源码的所有权边界。它面向维护者和 coding agent；玩家功能说明见根目录 `README.md`，历史重构证据见 `docs/refactoring/`。
 
 职责迁移时优先更新本文，并同步更新 Windows 的 `tools/verify-refactor-boundaries.ps1` 与 Linux 的 `tools/verify-refactor-boundaries.sh`。历史审计记录保留当时结论，不承担当前导航职责。

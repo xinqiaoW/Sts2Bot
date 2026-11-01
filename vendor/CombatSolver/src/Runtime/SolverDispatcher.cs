@@ -18,6 +18,13 @@ internal sealed partial class SolverDispatcher : Node
             return;
         _instance = new SolverDispatcher { Name = "CombatSolverDispatcher" };
         host.AddChild(_instance);
+        if (System.Environment.GetEnvironmentVariable("STS2_CARD_ADVISOR_DISABLED") != "1")
+        {
+            var advisor = new CardAdvisorController { Name = "CardAdvisor" };
+            _instance.AddChild(advisor);
+            if (System.Environment.GetEnvironmentVariable("STS2_CARD_ADVISOR_SMOKE") is { Length: > 0 } fixture)
+                MegaCrit.Sts2.Core.Helpers.TaskHelper.RunSafely(CardAdvisorSmoke.RunAsync(host, advisor, fixture));
+        }
         _instance.SetProcess(true);
     }
 

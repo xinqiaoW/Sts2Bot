@@ -768,6 +768,20 @@ foreach ($runFile in Get-ChildItem -LiteralPath (Join-Path $repositoryRoot 'src/
     }
 }
 
+foreach ($forbidden in @('CardModel', 'RunState', 'HttpClient', 'ModelDb')) {
+    if (Select-String -LiteralPath (Join-Path $repositoryRoot 'src/UI/CardAdvisorOverlay.cs') -SimpleMatch $forbidden -Quiet) {
+        $violations.Add("advisor renderer must consume scalar snapshots only: $forbidden")
+    }
+}
+foreach ($check in @(
+    @{ Path = 'src/Runtime/CardAdvisorController.cs'; Text = '_pendingGeneration == _generation' },
+    @{ Path = 'src/Runtime/CardAdvisorSnapshot.cs'; Text = 'card.MutableClone()' }
+)) {
+    if (-not (Select-String -LiteralPath (Join-Path $repositoryRoot $check.Path) -SimpleMatch $check.Text -Quiet)) {
+        $violations.Add("advisor missing ownership invariant: $($check.Text)")
+    }
+}
+
 if ($violations.Count -gt 0) {
     $violations | ForEach-Object { Write-Error $_ }
     throw "Refactor boundary verification failed with $($violations.Count) violation(s)."

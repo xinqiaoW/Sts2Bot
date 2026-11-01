@@ -32,6 +32,7 @@ description: 重构 CombatSolver 的 Search、Runtime 会话、UI snapshot、无
 - 单次搜索可变状态属于 `SearchRunContext`；中间候选属于 `BeamRetentionPolicy`；终局政策属于 `FinalPlanOrdering`。
 - controller 状态属于 combat/search/deployment session，不回退为并列静态字段。
 - UI renderer 只消费 `SolverOverlay*Snapshot`；结果到 snapshot 的复制发生在主线程边界。
+- 局外选牌由 `CardAdvisorCapture` 在主线程序列化，`CardAdvisorController` 独立持有 HTTP/取消/完成任务并在自身 `_Process` 收口，`CardAdvisorOverlay` 只消费数值 `CardAdvisorView/Row`；不借战斗搜索生命周期，不读取 live 对象进行后台评分。
 - 设置页自身驱动的后台任务使用控件所有者的完成邮箱收口；问题包上传的成功、失败和取消由 `SolverSettingsPanel._Process` 消费，不借用搜索生命周期的 `SolverDispatcher`。
 - unattended 的协议、建局、执行、断言和结果写入分别属于 ProtocolHost、ScenarioBuilder、Executor、Assertions、Writer。
 - 整局控制的 RunState、合法局外交互和决策序号属于 `RunControlSession`；`ProtocolHost` 只分流显式整局请求并保留邮箱与进程静稳所有权。不要调用 AutoSlay 战斗/事件战斗作弊处理器，也不要把整局状态归一化为训练夹具。

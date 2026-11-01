@@ -1,0 +1,25 @@
+{
+  "seed": 20261101,
+  "short_weight": 0.5,
+  "long_weight": 0.5,
+  "short_floor_weights": [1.0, 0.8],
+  "short_reduction": "mean",
+  "depth_schedule": [
+    {"max_floors_to_boss": 2, "depth": 0},
+    {"max_floors_to_boss": 5, "depth": 1},
+    {"max_floors_to_boss": 8, "depth": 2},
+    {"max_floors_to_boss": 11, "depth": 3},
+    {"max_floors_to_boss": null, "depth": 4}
+  ],
+  "samples_per_parent": 32,
+  "keep_per_parent": 4,
+  "rarity_weights": {"Common": 9.0, "Uncommon": 5.0, "Rare": 1.0},
+  "upgrade_probability": 0.0,
+  "pool_card_ids": null,
+  "leaf_top_fraction": 0.25,
+  "leaf_top_k": null,
+  "leaf_rank_power": 1.0,
+  "strict_features": true,
+  "inference_batch_size": 128,
+  "cpu_threads": 4
+}

@@ -619,6 +619,12 @@ for run_file in "$repository_root"/src/RunControl/*.cs; do
     done
 done
 
+for forbidden in 'CardModel' 'RunState' 'HttpClient' 'ModelDb'; do
+    forbid_fixed "$repository_root/src/UI/CardAdvisorOverlay.cs" "$forbidden" 'advisor renderer must consume scalar snapshots only:'
+done
+require_fixed "$repository_root/src/Runtime/CardAdvisorController.cs" '_pendingGeneration == _generation' 'advisor must reject stale completions'
+require_fixed "$repository_root/src/Runtime/CardAdvisorSnapshot.cs" 'card.MutableClone()' 'advisor upgrade must clone before mutation'
+
 if ((${#violations[@]} > 0)); then
     printf '%s\n' "${violations[@]}" >&2
     printf 'Refactor boundary verification failed with %d violation(s).\n' "${#violations[@]}" >&2

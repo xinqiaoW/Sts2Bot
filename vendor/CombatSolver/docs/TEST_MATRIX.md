@@ -1,5 +1,12 @@
 # CombatSolver 测试清单
 
+## 选牌评分开发版（2026-11-01）
+
+- `tests/test_reward_policy.py`、`tests/test_advisor_service.py`：27 项规则/输入 + 1 项真实回环 HTTP 通过。包括任意候选数、具体实例删除/升级、1:5:9 抽样和原有 4^n 展开。
+- `tools/run_card_advisor_smoke.py --fixture <fixture.json>`：专用 Wine/Godot 进程、真实 C# HTTP 客户端和实际模型。奖励/商店/事件加牌/移除/升级五项通过，渲染行数 4/8/3/3/3，清空视图后面板隐藏。
+- 证据：外层 `.local/card-advisor-smoke/fixtures.json.result.json`。输入为合成快照，不证明完整真实对局的界面捕获、视觉布局、鼠标操作；这些仍未验证。
+- 开发安装及配置：[card-advisor.md](../../../docs/card-advisor.md)。
+
 > 表中结果属于所列版本、日期和夹具；保留旧 2 秒试采及其他预设不表示当前生产仍使用它们。本次文档整理未重跑这些测试，现行采集参数见[搜索配置](../../../docs/search-8s.md)。
 
 ## 真实整局控制 M1（2026-09-15）
