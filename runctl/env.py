@@ -22,6 +22,51 @@ def atomic_json(path: Path, value: dict) -> None:
     os.replace(temporary, path)
 
 
+def _read_shared_text(path: Path) -> str:
+    if os.name != "nt":
+        return path.read_text(encoding="utf-8")
+    # The native publisher replaces snapshots atomically. Python's ordinary
+    # open() does not share DELETE on Windows and can obstruct that replacement.
+    import ctypes
+    from ctypes import wintypes
+    import msvcrt
+
+    kernel = ctypes.WinDLL("kernel32", use_last_error=True)
+    create = kernel.CreateFileW
+    create.argtypes = [wintypes.LPCWSTR, wintypes.DWORD, wintypes.DWORD,
+                       wintypes.LPVOID, wintypes.DWORD, wintypes.DWORD, wintypes.HANDLE]
+    create.restype = wintypes.HANDLE
+    close = kernel.CloseHandle
+    close.argtypes = [wintypes.HANDLE]
+    close.restype = wintypes.BOOL
+    handle = create(str(path), 0x80000000, 0x1 | 0x2 | 0x4, None, 3, 0x80, None)
+    if handle == wintypes.HANDLE(-1).value:
+        error = ctypes.WinError(ctypes.get_last_error())
+        error.filename = str(path)
+        raise error
+    try:
+        descriptor = msvcrt.open_osfhandle(handle, os.O_RDONLY | os.O_BINARY)
+    except BaseException:
+        close(handle)
+        raise
+    # open_osfhandle transfers handle ownership to the descriptor.
+    with os.fdopen(descriptor, "r", encoding="utf-8") as stream:
+        return stream.read()
+
+
+def read_protocol_json(path: Path) -> dict:
+    # A Windows rename/delete-pending window (or brief scanner lock) can still
+    # deny an open. Retry reads only; never resend an action or ignore bad JSON.
+    for attempt in range(21):
+        try:
+            return json.loads(_read_shared_text(path))
+        except OSError as exc:
+            if getattr(exc, "winerror", None) not in (2, 3, 5, 32, 33) or attempt == 20:
+                raise
+            time.sleep(0.05)
+    raise AssertionError("Unreachable")
+
+
 class RealRunEnv:
     """One exclusive native process, with reset/step at real legal decisions.
 
@@ -125,7 +170,7 @@ class RealRunEnv:
         while time.monotonic() < self._deadline:
             result_path = self.run_dir / "result.json"
             if result_path.exists():
-                result = json.loads(result_path.read_text(encoding="utf-8"))
+                result = read_protocol_json(result_path)
                 self._identity(result)
                 if result.get("status") != "complete":
                     raise RunControlError(f"{result.get('stage')}: {result.get('error', result)}")
@@ -135,7 +180,7 @@ class RealRunEnv:
                 return result
             decision_path = self.run_dir / "decision.json"
             if decision_path.exists():
-                decision = json.loads(decision_path.read_text(encoding="utf-8"))
+                decision = read_protocol_json(decision_path)
                 self._identity(decision)
                 seq = decision.get("decisionSeq")
                 if type(seq) is not int:

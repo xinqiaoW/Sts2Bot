@@ -88,3 +88,7 @@ python -m runctl.audit --experiment .local/autobot/experiment/report \
 该独立目录机制已经通过 Wine 下 Windows 游戏实测到首个涅奥决策，初始 56/70 HP。这只验证存档隔离与 Mod 启动，不等于完整原生 Windows 对局验收。
 
 准备成功后，双击输出目录的 `启动自动爬塔.bat` 即可。每次启动新的一局并建立独立报告目录；它会使用准备时的 Python 和服务路径。移动服务目录后需重新准备启动器。一次只运行一个机器人；停止时在终端按 Ctrl+C。报错时保留终端文字、报告目录内的 `failure.json` 以及输出目录中的 `native.log`。
+
+若出现 `No space left on device`，将 `--output` 放到游戏所在磁盘的新目录，避免跨盘复制整套游戏；删除确认属于本次失败准备的残留目录可释放空间。模型和 Python 服务目录可以仍在另一磁盘。
+
+0.30.3 首次 Windows 试用发现读取 `decision.json` 的瞬时 `PermissionError`。Python 通信补丁使用允许删除/替换共享的 Windows 文件句柄，并对 Windows 文件占用/替换窗口最多重试约 1 秒；持续权限错误、JSON 损坏和协议身份错误仍失败，不重新发送动作。覆盖服务目录的 `runctl/env.py` 后重新启动机器人即可，无需重装 Mod、模型或独立游戏目录。31 项通信协议回归通过，其中包括瞬时占用、持续拒绝访问和损坏 JSON；Windows 原生使用效果仍待实际验证。

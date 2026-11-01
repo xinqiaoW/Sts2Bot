@@ -229,3 +229,54 @@ def test_stop_failure_retains_ownership_until_cleanup_succeeds(native, monkeypat
         env.close()
     with RealRunEnv(runtime):
         pass
+
+
+def test_windows_snapshot_locks_do_not_duplicate_actions(native, monkeypatch):
+    runtime, game = native
+    original = module._read_shared_text
+    denied = {"decision.json": 3, "result.json": 2}
+
+    def transient_lock(path):
+        if denied.get(path.name, 0):
+            denied[path.name] -= 1
+            error = PermissionError(13, "Snapshot is being replaced", str(path))
+            error.winerror = 5
+            raise error
+        return original(path)
+
+    monkeypatch.setattr(module, "_read_shared_text", transient_lock)
+    with RealRunEnv(runtime) as env:
+        assert env.reset("WINDOWS-LOCK")["decisionSeq"] == 1
+        assert env.step(1)["outcome"] == "death"
+        assert len(game.actions) == 1
+        assert game.actions[0]["choice"] == 1
+        assert denied == {"decision.json": 0, "result.json": 0}
+
+
+def test_permanent_windows_access_denial_is_bounded(tmp_path, monkeypatch):
+    calls = []
+    error = PermissionError(13, "Access denied", str(tmp_path / "decision.json"))
+    error.winerror = 5
+
+    def denied(path):
+        calls.append(path)
+        raise error
+
+    monkeypatch.setattr(module, "_read_shared_text", denied)
+    monkeypatch.setattr(module.time, "sleep", lambda _: None)
+    with pytest.raises(PermissionError) as caught:
+        module.read_protocol_json(tmp_path / "decision.json")
+    assert caught.value is error
+    assert len(calls) == 21
+
+
+def test_corrupt_snapshot_is_not_treated_as_file_contention(tmp_path, monkeypatch):
+    path = tmp_path / "decision.json"
+    path.write_text('{"partial":', encoding="utf-8")
+
+    def unexpected_retry(_):
+        pytest.fail("Malformed JSON must fail immediately")
+
+    monkeypatch.setattr(module.time, "sleep", unexpected_retry)
+    with pytest.raises(json.JSONDecodeError):
+        module.read_protocol_json(path)
