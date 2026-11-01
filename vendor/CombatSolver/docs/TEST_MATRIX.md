@@ -4,8 +4,10 @@
 
 - Python 策略、rollout 和评分服务：130 项普通回归通过；HTTP 项首次被沙箱禁止创建 socket，单独在允许回环网络的环境重跑，1 项通过。合计 131 项，包含 >40 严格边界、最大生命 50/100 不改变阈值、0.28/0.72 权重与已有商店排序。该记录在后续固定深度修改之前取得，后续变化需另记验证。
 - 原生短搜基线：外层 `.local/autobot/boss-setup-0305-baseline/`，0.30.4 Release，固定种子 BOSSSETUP0305，Low、2 秒短搜、DOP1、禁药，首个结果停止。墨影幻灵 Boss：11 回合死亡路线、预计战损 70、已包含灵动步法；普通毛绒伏地虫哨兵：首回合 0 战损击杀，没有多打灵动步法。
-- 候选验证入口：外层 `.venv-train/bin/python tools/run_boss_setup_smoke.py --runtime <专用隔离 runtime.json> --dll <本次 Release DLL> --output <新目录>`。候选结果待该次 Release 构建后的原生执行记录，不能把基线通过当作新行为通过。
+- 候选证据：外层 `.local/autobot/boss-setup-0305-candidate/`，源提交 `26a91e8` 的 Release，两个相同输入场景均 Passed。Boss 仍为 11 回合死亡路线、预计战损 70、最终敌方 HP 135；该样例未显示质量改善。普通战仍为首回合 0 战损击杀、无灵动步法动作，4 expanded/9 transitions 与基线一致。没有用搜索速度或节点微小变化声称性能提升。
+- 复跑入口：外层 `.venv-train/bin/python tools/run_boss_setup_smoke.py --runtime <专用隔离 runtime.json> --dll <本次 Release DLL> --output <新目录>`。这些仅为首个搜索结果检查，不是完整部署或原生 Windows 验收。
 - 后续固定深度策略与 rollout 101 项通过：3/4/5 固定深度、危机 +1、距离 Boss 一层也不缩短、商店/事件保持距离规则、4^5/4^6 叶节点数。原生 payload 的 postCombat 仅由当前已知 CombatRoom 判断。
+- Linux 结构门禁通过；最终 Release 构建 0 错误，1 个 NU1900 告警（NuGet 漏洞数据联网获取失败）。MemoryCleaner 复用同一未变源码/编译输入的已成功 Release 产物。后续只补验证文档，不重复构建或行为场景。
 
 ## 0.30.4 商店选择与可调搜索
 
