@@ -235,6 +235,27 @@ def test_set_transformer_supports_padded_tokens_and_backward(catalog):
     assert any(p.grad is not None and torch.isfinite(p.grad).all() for p in model.parameters())
 
 
+def test_report_ensemble_clips_members_the_same_way_as_inference(tmp_path):
+    import pandas as pd
+    from train.compare import build_report
+    frame = pd.DataFrame({'job_id': ['a', 'b'], 'split': ['test', 'test'], 'pair': [0, 1],
+                          'build_id': ['build-a', 'build-b'], 'hp_loss': [0., 70.],
+                          'max_hp': [70., 70.], 'died': [0., 1.], 'weight': [1., 1.]})
+    for name, values in [('unbounded', [-1., 2.]), ('bounded', [.5, .5])]:
+        directory = tmp_path/name
+        directory.mkdir()
+        predictions = frame.assign(pred_normalized=values, pred_death=[.2, .8])
+        predictions.to_parquet(directory/'predictions.parquet', index=False)
+        metrics = evaluate(predictions, np.asarray(values), np.array([.2, .8]))
+        (directory/'metrics.json').write_text(json.dumps({'validation': metrics, 'test': metrics}))
+        (directory/'artifact.json').write_text(json.dumps({'training_seconds': 1, 'device': 'cpu',
+                                                          'features': 1, 'symbols': 1}))
+    report = build_report(tmp_path, ['unbounded', 'bounded'], {}, tmp_path/'snapshot')
+    # Inference averages [0,1] and [.5,.5], producing [.25,.75].
+    assert report['ensemble']['test']['pair_mae_hp'] == pytest.approx(17.5)
+    assert report['ensemble']['test']['row_mae_hp'] == pytest.approx(17.5)
+
+
 @pytest.mark.parametrize('ensemble', [False, True])
 def test_predictions_compute_unique_inputs_and_restore_every_seed_row(ensemble):
     from types import SimpleNamespace

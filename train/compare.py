@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import argparse
 from datetime import datetime, timezone
+import hashlib
 import json
 from pathlib import Path
 import subprocess
@@ -93,15 +94,18 @@ def build_report(output: Path, models, runs, snapshot):
         for frame in test_predictions.values():
             common = common.intersection(frame.index)
         aligned = [f.loc[common] for f in test_predictions.values()]
-        mean = np.mean([f.pred_normalized.to_numpy() for f in aligned], axis=0)
-        death = np.mean([f.pred_death.to_numpy() for f in aligned], axis=0)
+        # Match train.predict.ensemble: each member exposes bounded predictions.
+        mean = np.mean([np.clip(f.pred_normalized.to_numpy(), 0, 1) for f in aligned], axis=0)
+        death = np.mean([np.clip(f.pred_death.to_numpy(), 0, 1) for f in aligned], axis=0)
         frame = aligned[0].reset_index()
         frame['died'] = frame.died.astype(float)
         metrics = evaluate(frame, mean, death)
         ensemble = {'members': list(test_predictions), 'test': {k: metrics['overall'][k] for k, _ in COLUMNS},
                     'test_by_kind': {kind: {k: v[k] for k, _ in COLUMNS} for kind, v in metrics.get('by_kind', {}).items()}}
     report = {'generated_at_utc': datetime.now(timezone.utc).isoformat(), 'snapshot': str(snapshot), 'output': str(output),
-              'models': rows, 'ensemble': ensemble, 'test_noise_floor': floors, 'runs': runs}
+              'models': rows, 'ensemble': ensemble, 'test_noise_floor': floors, 'runs': runs,
+              'report_code_sha256': {name: hashlib.sha256((ROOT/'train'/name).read_bytes()).hexdigest()
+                                     for name in ['compare.py', 'metrics.py', 'predict.py']}}
     return report
 
 
