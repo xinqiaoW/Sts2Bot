@@ -1,5 +1,13 @@
 # CombatSolver 测试清单
 
+## 0.30.6 Windows 文件共享发布
+
+- 用户粘贴日志的分诊记录：外层 `.local/issue-bundles/runcontrol-windows-publish-20261101/triage/notes.md`。未导入该用户的完整对局或验证其安装版本。
+- 原生 Windows/Wine 失败基线 `.local/autobot/file-sharing-0306/result.json`：独占删除共享的读句柄触发旧 Move 的 UnauthorizedAccessException/error 5；有限重试 Move 可恢复短暂占用，但持续共享删除读句柄仍拒绝，第一轮方案未通过。
+- 最终 `.local/autobot/file-sharing-0306-replace/result.json` 五项通过：短暂占用后成功且仅序列化一次、共享删除读者持有旧完整 JSON 而路径读到新 JSON、持续占用 21 次后明确失败并保留临时完整内容、取消不发布、非目标错误码不重试。无真实对局动作被执行。
+- 重跑：外层 `python tools/run_autobot_file_smoke.py --runtime <专用 Windows/Wine runtime.json> --dll <本次 DLL> --output <新目录>`。每次测试必须使用新的结果目录；真实 Windows 或 Wine，单个原生进程 120 秒上限，内部文件检查 30 秒上限。
+- Debug 构建通过，Linux 结构门禁通过。行为验证后仅提升版本并补文档，再执行最终 Release 构建，不重复上述已通过的文件场景。原生 Windows 用户整局未验证。
+
 ## 0.30.5 Boss 铺垫与 Bot 参数
 
 - Python 策略、rollout 和评分服务：130 项普通回归通过；HTTP 项首次被沙箱禁止创建 socket，单独在允许回环网络的环境重跑，1 项通过。合计 131 项，包含 >40 严格边界、最大生命 50/100 不改变阈值、0.28/0.72 权重与已有商店排序。该记录在后续固定深度修改之前取得，后续变化需另记验证。

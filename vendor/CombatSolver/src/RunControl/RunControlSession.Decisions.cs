@@ -75,7 +75,7 @@ internal sealed partial class RunControlSession
         if (_identicalDecisions >= 3) throw new InvalidOperationException($"Repeated decision without state/UI progress: {screen}");
         object decision = new { schemaVersion = 1, request.RunId, decisionSeq = seq, screen, state, options = indexed, context };
         files.Record("decision", decision);
-        RunControlFiles.AtomicWrite(files.DecisionPath, decision);
+        await RunControlFiles.AtomicWriteAsync(files.DecisionPath, decision, ct);
         using CancellationTokenSource waiting = CancellationTokenSource.CreateLinkedTokenSource(ct);
         waiting.CancelAfter(TimeSpan.FromSeconds(request.ActionTimeoutSeconds));
         while (!File.Exists(files.ActionPath)) await Task.Delay(50, waiting.Token);

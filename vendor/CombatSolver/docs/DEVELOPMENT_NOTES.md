@@ -1,5 +1,13 @@
 # CombatSolver 开发笔记与未来构想
 
+## 0.30.6：Windows 决策文件发布（2026-11-01）
+
+用户 run `6aa00d34aff442aba3d2f99e1f85045c` 在 NRewardsScreen 的下一次决策发布时报 UnauthorizedAccessException，调用点是 File.Move 覆盖既有文件。此前 Python 已使用共享删除读取，但原生发布仍只尝试一次。用户具体占用进程/ACL 和实际安装版本未确认。
+
+最小原生 fixture 实际持有 Windows 读句柄，复现原 File.Move 的错误 5；第一轮仅重试 Move 的方案对持续 DELETE-sharing reader 仍失败。因此最终 Windows 已存在目标使用 File.Replace，首次发布和非 Windows 仍用 File.Move；只对 Windows HRESULT_FROM_WIN32 的 5/32/33 做最多 21 次替换尝试、间隔 50ms 的异步等待。唯一临时文件仅序列化一次，失败保留并在错误中带完整源/目标路径。未知 I/O 错误直接传播，不改权限、不先删除目标、不重复决策/动作。
+
+决策、终局快照和结果发布调用点均 await；决策和快照接受现有取消令牌。新测试 fixture 由显式环境变量 STS2_RUN_CONTROL_FILE_SMOKE 启用，不启动或修改对局。配套测试入口位于外层 tools/run_autobot_file_smoke.py。既有 Python、模型及配置保持不变。
+
 ## 0.30.5：Boss 持续能力保路与 Bot 参数（2026-11-01）
 
 按用户要求提高 Boss 战持续能力铺垫权重。保留原有 PersistentBuffValue 特征、增量封顶及幕末/普通基础权重，仅在不可变根的 EncounterRoomType 为 Boss 时，将 BeamRankScore 的持续增益保路项乘以 1.5。包括第三幕非幕末 Boss；不从后台读取 live 房间，不增加 Beam/时间预算，不修改状态键、模拟效果或完整路线的最终排序。增益按持续效果计算，不按能力牌打出次数堆分；现有该特征还包括充能球引擎。

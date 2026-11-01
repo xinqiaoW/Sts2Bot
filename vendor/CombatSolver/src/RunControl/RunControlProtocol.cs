@@ -72,11 +72,42 @@ internal sealed class RunControlFiles
         JsonSerializer.Serialize(claim, request, Json);
     }
 
-    public static void AtomicWrite(string path, object value)
+    internal static bool IsWindowsReplaceConflict(Exception error)
+        => OperatingSystem.IsWindows()
+            && error is IOException or UnauthorizedAccessException
+            && (uint)(error.HResult & unchecked((int)0xffff0000)) == 0x80070000u
+            && (error.HResult & 0xffff) is 5 or 32 or 33;
+
+    public static async Task AtomicWriteAsync(string path, object value, CancellationToken ct = default)
     {
-        string temp = path + ".tmp";
+        ct.ThrowIfCancellationRequested();
+        path = Path.GetFullPath(path);
+        string temp = path + "." + Guid.NewGuid().ToString("N") + ".tmp";
+        // Serialize once. Only publication is retried, never a game operation.
         File.WriteAllText(temp, JsonSerializer.Serialize(value, Json));
-        File.Move(temp, path, true);
+        for (int attempt = 0; ; attempt++)
+        {
+            ct.ThrowIfCancellationRequested();
+            try
+            {
+                // ReplaceFile supports an existing snapshot's DELETE-sharing
+                // readers; MoveFileEx(REPLACE_EXISTING) can still deny access.
+                if (OperatingSystem.IsWindows() && File.Exists(path))
+                    File.Replace(temp, path, null);
+                else
+                    File.Move(temp, path, true);
+                return;
+            }
+            catch (Exception ex) when (IsWindowsReplaceConflict(ex))
+            {
+                // A reader/scanner can briefly deny DELETE sharing on Windows.
+                // Genuine ACL/read-only failures stay failures after this bound.
+                if (attempt == 20)
+                    throw new IOException($"Could not publish run-control JSON '{path}' after 21 replacement attempts "
+                        + $"(Windows error {ex.HResult & 0xffff}); temporary snapshot retained at '{temp}'.", ex);
+                await Task.Delay(50, ct);
+            }
+        }
     }
 
     public void Record(string kind, object payload)
@@ -89,5 +120,5 @@ internal sealed class RunControlFiles
         File.AppendAllText(Path.Combine(DirectoryPath, "events.jsonl"), line + "\n");
     }
 
-    public void Result(object result) => AtomicWrite(Path.Combine(DirectoryPath, "result.json"), result);
+    public Task ResultAsync(object result) => AtomicWriteAsync(Path.Combine(DirectoryPath, "result.json"), result);
 }

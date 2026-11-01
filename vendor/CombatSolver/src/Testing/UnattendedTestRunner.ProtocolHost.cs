@@ -205,12 +205,12 @@ internal sealed partial class UnattendedTestRunner
                 object result = await session.RunAsync();
                 Reset();
                 await WaitUntilReusableAsync(host);
-                files.Result(result); // Complete is visible only after native quiescence.
+                await files.ResultAsync(result); // Complete is visible only after native quiescence.
                 Entry.Logger.Info($"[CombatSolver/RunControl] COMPLETE run_id={request.RunId} reusable=true");
             }
             catch (Exception ex)
             {
-                files.Result(new { schemaVersion = 1, request.RunId, status = "failed", stage = session.Stage, error = ex.ToString() });
+                await files.ResultAsync(new { schemaVersion = 1, request.RunId, status = "failed", stage = session.Stage, error = ex.ToString() });
                 throw; // Existing protocol boundary retires the failed process.
             }
             finally { Reset(); }

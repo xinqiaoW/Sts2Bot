@@ -18,6 +18,8 @@ internal sealed partial class SolverDispatcher : Node
             return;
         _instance = new SolverDispatcher { Name = "CombatSolverDispatcher" };
         host.AddChild(_instance);
+        if (System.Environment.GetEnvironmentVariable("STS2_RUN_CONTROL_FILE_SMOKE") is { Length: > 0 } fileFixture)
+            MegaCrit.Sts2.Core.Helpers.TaskHelper.RunSafely(RunControlFileSmoke.RunAsync(host, fileFixture));
         if (System.Environment.GetEnvironmentVariable("STS2_RUN_CONTROL_UI_SMOKE") is { Length: > 0 } uiFixture)
             MegaCrit.Sts2.Core.Helpers.TaskHelper.RunSafely(RunControlUiSmoke.RunAsync(host, uiFixture));
         if (System.Environment.GetEnvironmentVariable("STS2_CARD_ADVISOR_DISABLED") != "1")

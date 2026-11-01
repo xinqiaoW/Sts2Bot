@@ -118,6 +118,8 @@ python -m runctl.audit --experiment .local/autobot/experiment/report \
 
 ### 已有 Windows Bot 升级到 0.30.5
 
+0.30.6 提供另一个仅含 Mod 的 Windows 通信修复包，解决发布决策时的文件替换冲突。已有 0.30.5 服务的用户只需退出 Bot 后覆盖独立游戏 `game/mods/CombatSolver` 中的本次文件；不覆盖配置、模型或 Python。短暂占用约 1 秒内有界重试，持续权限问题仍会报告完整目标路径和保留的临时文件；不通过反复发送动作恢复。
+
 先退出 Bot 和对应游戏，将包内 `advisor-service` 合并覆盖原服务目录；备份个人配置，本次默认配置包含新的商店估值。将包内 `CombatSolver` 的 DLL、JSON、NOTICE 和 MemoryCleaner 覆盖到 **独立 Bot 游戏** 的 `game/mods/CombatSolver`。只更新 Downloads 中用来准备的 Mod 文件夹，不会更新已经创建的独立游戏。
 
 例如包解压到 Downloads 后，在 PowerShell 执行（服务文件夹也应已合并覆盖）：

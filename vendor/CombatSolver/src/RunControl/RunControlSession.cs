@@ -119,7 +119,7 @@ internal sealed partial class RunControlSession(NGame host, RunControlRequest re
                         throw new InvalidOperationException("Game-over screen without victory or death.");
                     object final = State();
                     // ToSave reads native history without replaying OnEnded or rewards.
-                    RunControlFiles.AtomicWrite(Path.Combine(files.DirectoryPath, "native-run.json"), RunManager.Instance.ToSave(null));
+                    await RunControlFiles.AtomicWriteAsync(Path.Combine(files.DirectoryPath, "native-run.json"), RunManager.Instance.ToSave(null), ct);
                     Record("run_ended", new { outcome = win ? "victory" : "death" });
                     await host.ReturnToMainMenu().WaitAsync(ct);
                     SolverController.ReleaseUnattendedResultReferencesForTesting();
