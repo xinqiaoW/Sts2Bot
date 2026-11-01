@@ -193,8 +193,9 @@ internal sealed partial class UnattendedTestRunner
             File.Move(requestPath, runningPath, true);
             Activate(new UnattendedTestRequest
             {
-                RunId = request.RunId, ExitOnComplete = false, ForceShortSearchOnly = true,
-                SearchMaxDegreeOfParallelismForTest = 1, ShortSearchBudgetOverrideMilliseconds = 8000,
+                RunId = request.RunId, ExitOnComplete = false, ForceShortSearchOnly = !request.UsePlayerSearchSettings,
+                SearchMaxDegreeOfParallelismForTest = request.UsePlayerSearchSettings ? null : 1,
+                ShortSearchBudgetOverrideMilliseconds = request.UsePlayerSearchSettings ? null : 8000,
             });
             EnableAutomaticTurnSearch();
             RunControlSession session = new(host, request, files);

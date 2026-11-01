@@ -92,6 +92,41 @@ def test_shop_margin_is_independent_of_gold_cost_and_reserve(request_data):
     assert bot.last_report['scores'][3] == 0
 
 
+def test_shop_buys_worthwhile_card_before_higher_scoring_potion(request_data):
+    observation = card_observation(request_data)
+    observation.update(screen='SHOP')
+    observation['state'].update(gold=500, potions=[dict(id=None)])
+    # This fixture has no reachable short-term encounters: gain is .65 * 4.
+    card = dict(observation['options'][0], price=250)
+    observation['options'] = [card, dict(index=1, kind='potion', id='WEAK_POTION', price=50),
+                              dict(index=2, kind='leave')]
+    bot = BotPolicy(FakeScorer(), config={'max_rollout_depth': 0})
+    assert bot.choose(observation) == 0
+    assert bot.last_report['scores'][0] == pytest.approx(.1)
+    assert bot.last_report['scores'][1] == pytest.approx(.5)
+    assert bot.last_report['potions_deferred_for_cards'] == [1]
+    # After the card purchase the same shop is scored again with remaining gold.
+    observation['state']['gold'] = 250
+    observation['options'] = [dict(index=0, kind='potion', id='WEAK_POTION', price=50),
+                              dict(index=1, kind='leave')]
+    assert bot.choose(observation) == 0
+    observation['state']['potions'] = [dict(id='WEAK_POTION')]
+    assert bot.choose(observation) == 1
+
+
+@pytest.mark.parametrize('price,margin', [(450, 1), (0, 4)])
+def test_unworthy_cards_do_not_block_potion_purchase(request_data, price, margin):
+    observation = card_observation(request_data)
+    observation.update(screen='SHOP')
+    observation['state'].update(gold=500, potions=[dict(id=None)])
+    observation['options'] = [dict(observation['options'][0], price=price),
+                              dict(index=1, kind='potion', id='WEAK_POTION', price=50),
+                              dict(index=2, kind='leave')]
+    bot = BotPolicy(FakeScorer(), config={'max_rollout_depth': 0, 'normal_card_min_gain': margin})
+    assert bot.choose(observation) == 1
+    assert bot.last_report['potions_deferred_for_cards'] == []
+
+
 def test_route_risk_and_hidden_payload_independence():
     state = dict(hp=15, maxHp=70, gold=0, map=[
         dict(row=1, col=0, type='Elite', children=[dict(row=2, col=0)]),

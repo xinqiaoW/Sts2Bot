@@ -15,7 +15,7 @@ def main():
     parser.add_argument("--episodes", type=int, default=1)
     parser.add_argument("--seed-prefix", default="RUNCTL")
     parser.add_argument("--policy-seed", type=int, default=0)
-    parser.add_argument("--timeout", type=int, default=3600)
+    parser.add_argument("--timeout", type=int, help="Whole-run deadline; default 1h for evaluation, 4h with player search settings")
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--policy", choices=['model', 'random-map'], default='model')
     parser.add_argument("--policy-config", type=Path)
@@ -24,6 +24,8 @@ def main():
         parser.error("episodes must be positive")
     args.output.mkdir(parents=True, exist_ok=True)
     runtime = json.loads(args.runtime.read_text(encoding="utf-8"))
+    timeout = args.timeout if args.timeout is not None else runtime.get('timeout_seconds',
+        14400 if runtime.get('combat_search_mode') == 'settings' else 3600)
     started = time.time()
     episodes = []
     bot = None
@@ -39,7 +41,7 @@ def main():
             seed = f"{args.seed_prefix}{index}"
             policy = random.Random(args.policy_seed + index)
             try:
-                observation = env.reset(seed, policy_seed=args.policy_seed + index, timeout_seconds=args.timeout,
+                observation = env.reset(seed, policy_seed=args.policy_seed + index, timeout_seconds=timeout,
                                         decision_mode='all' if bot else 'map', action_timeout_seconds=300 if bot else 60)
                 while observation.get("status") != "complete":
                     print(json.dumps({"runId": env.run_id, "decisionSeq": observation["decisionSeq"],

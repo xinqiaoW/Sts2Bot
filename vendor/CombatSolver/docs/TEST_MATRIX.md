@@ -1,5 +1,13 @@
 # CombatSolver 测试清单
 
+## 0.30.4 商店选择与可调搜索
+
+- Python `tests/test_runctl.py` 33 项通过，包含 settings 请求、1800 秒默认等待、边界校验及旧模式不新增协议字段。
+- `tests/test_bot_policy.py` 首次 44 通过、1 个新增用例的价格预期错误；修正用例价格后，3 个相关用例通过（42 deselected）。覆盖卡牌优先于净分更高的药水、卡牌购买后再买药水、满槽不买、未满足门槛/净收益不阻挡药水。45 个当前用例均有通过证据，没有声称单次全量 45 passed。
+- Wine 原生设置测试：`.local/autobot/ui-search-smoke-0304/settings-result.json`，实际 run_started 为 settings、短搜 3000ms、深搜 7000ms、DOP2、forceShortOnly=false。到首个 EVENT 后主动停止，不计完整局或搜索质量验证。
+- Wine 原生网格测试：`.local/autobot/ui-search-smoke-0304-grid2/grid-result.json`，60 张同 ID 不同实例的真实 NDeckCardSelectScreen，分别回收旧 holder 后选择第 1/60 张并确认结果，真实牌组未变，通过。第一次 fixture 未触发原生控件刷新而失败，证据保留；增加原生 AllocateCardHolders 后通过。
+- 复跑入口：外层 `tools/run_autobot_smoke.py --runtime <专用隔离 runtime.json> --dll <本次 DLL> --output <新目录>`；只测网格可加 `--ui-only`。该 fixture 不计正式完整对局，不证明用户 Windows 可见界面与原报错现场已复现。
+
 ## 0.30.3 本地测试包
 
 行为证据复用下面“全流程机器人”章节与外层 `docs/autobot-progress.md`；正式评测行为版本 `cb5c702`，仍在运行。Windows 隔离启动机制已有 Wine 首个决策验证，新增启动器仅做脚本生成检查，原生 Windows 整局未验证。版本元数据变化后只执行一次 Release 构建，不重复已通过的行为测试。

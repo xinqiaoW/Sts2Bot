@@ -77,7 +77,7 @@ def main():
         mod_settings=dict(mods_enabled=True, mod_list=[]))), encoding='utf-8')
     (profile/'combat_solver_settings.json').write_text(json.dumps(dict(enableNoGcRegion=False,
         searchMaxDegreeOfParallelism=1)), encoding='utf-8')
-    runtime = dict(kind='run_control', game_dir=str(target), data_dir=str(profile),
+    runtime = dict(kind='run_control', game_dir=str(target), data_dir=str(profile), combat_search_mode='settings',
         command=[str(target/'SlayTheSpire2.exe'), '--force-steam=off'],
         env=dict(COMBATSOLVER_RUN_CONTROL='1', STS2_CARD_ADVISOR_DISABLED='1'),
         log_path=str(output/'native.log'))

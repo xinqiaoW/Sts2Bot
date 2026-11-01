@@ -280,3 +280,27 @@ def test_corrupt_snapshot_is_not_treated_as_file_contention(tmp_path, monkeypatc
     monkeypatch.setattr(module.time, "sleep", unexpected_retry)
     with pytest.raises(json.JSONDecodeError):
         module.read_protocol_json(path)
+
+
+def test_player_search_settings_are_explicit_and_keep_long_search_deadline(native):
+    runtime, game = native
+    with RealRunEnv({**runtime, 'combat_search_mode': 'settings'}) as env:
+        env.reset('PLAYER-SETTINGS')
+        assert game.requests[-1]['combatSearchMode'] == 'settings'
+        assert game.requests[-1]['combatTimeoutSeconds'] == 1800
+        assert env.step(0)['status'] == 'complete'
+    with RealRunEnv(runtime) as env:
+        env.reset('LEGACY-EVALUATION')
+        assert 'combatSearchMode' not in game.requests[-1]
+        assert game.requests[-1]['combatTimeoutSeconds'] == 120
+        assert env.step(0)['status'] == 'complete'
+
+
+def test_search_configuration_rejects_unknown_mode_and_unbounded_deadline(native):
+    runtime, game = native
+    with pytest.raises(ValueError, match='combat_search_mode'):
+        RealRunEnv({**runtime, 'combat_search_mode': 'typo'})
+    with RealRunEnv({**runtime, 'combat_search_mode': 'settings'}) as env:
+        with pytest.raises(ValueError, match='deadline'):
+            env.reset('BAD-DEADLINE', combat_timeout_seconds=3601)
+    assert game.starts == 0

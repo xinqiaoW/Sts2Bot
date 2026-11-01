@@ -63,7 +63,9 @@ internal sealed partial class RunControlSession(NGame host, RunControlRequest re
         FastModeType originalFast = SaveManager.Instance.PrefsSave.FastMode;
         if (RunManager.Instance.IsInProgress)
             throw new InvalidOperationException("Run control requires an idle, dedicated process.");
-        SolverSettings.ApplyForTesting(SolverSettings.ApplyPerformancePreset(original, SolverPerformancePreset.Medium) with
+        SolverSettingsData searchSettings = request.UsePlayerSearchSettings ? original
+            : SolverSettings.ApplyPerformancePreset(original, SolverPerformancePreset.Medium);
+        SolverSettings.ApplyForTesting(searchSettings with
         {
             SolverDisabled = false, AutomaticCalculationEnabled = true, EnableNoGcRegion = false,
             PotionPolicy = request.DecisionMode == "all" ? SolverPotionPolicy.Smart : SolverPotionPolicy.Disabled,
@@ -93,7 +95,12 @@ internal sealed partial class RunControlSession(NGame host, RunControlRequest re
             if (Run.AscensionLevel != 10 || !Run.ExtraFields.StartedWithNeow)
                 throw new InvalidOperationException("Whole-run startup must preserve A10 and the native Neow start.");
             Record("run_started", new { request.Seed, request.PolicySeed, request.CombatMode,
-                fullContentDiscovery = request.DecisionMode == "all" });
+                fullContentDiscovery = request.DecisionMode == "all", request.CombatSearchMode,
+                shortBudgetMs = SolverSettings.Capture().ShortProfile.SoftTimeBudgetMilliseconds,
+                deepBudgetMs = SolverSettings.Capture().DeepProfile.SoftTimeBudgetMilliseconds,
+                forceShortOnly = UnattendedTestRunner.ForceShortSearchOnly,
+                searchDop = UnattendedTestRunner.SearchMaxDegreeOfParallelismOverride
+                    ?? SolverSettings.Capture().SearchMaxDegreeOfParallelism });
             while (true)
             {
                 ct.ThrowIfCancellationRequested();

@@ -16,6 +16,8 @@ internal sealed record RunControlRequest
     public string CharacterId { get; init; } = "SILENT";
     public int Ascension { get; init; } = 10;
     public string CombatMode { get; init; } = "solver";
+    public string CombatSearchMode { get; init; } = "evaluation8s";
+    [JsonIgnore] public bool UsePlayerSearchSettings => CombatSearchMode == "settings";
     public string DecisionMode { get; init; } = "map";
     public int PolicySeed { get; init; }
     public int TimeoutSeconds { get; init; } = 3600;
@@ -25,10 +27,11 @@ internal sealed record RunControlRequest
     public void Validate()
     {
         if (SchemaVersion != 1 || Kind != "run" || CharacterId != "SILENT" || Ascension != 10
-            || CombatMode != "solver" || DecisionMode is not ("map" or "all") || !Regex.IsMatch(RunId, "^[a-zA-Z0-9_-]{1,80}$")
+            || CombatMode != "solver" || CombatSearchMode is not ("evaluation8s" or "settings")
+            || DecisionMode is not ("map" or "all") || !Regex.IsMatch(RunId, "^[a-zA-Z0-9_-]{1,80}$")
             || string.IsNullOrWhiteSpace(Seed) || Seed.Length > 100
             || TimeoutSeconds is < 1 or > 14400 || ActionTimeoutSeconds is < 1 or > 300
-            || CombatTimeoutSeconds is < 1 or > 120)
+            || CombatTimeoutSeconds < 1 || CombatTimeoutSeconds > (UsePlayerSearchSettings ? 3600 : 120))
             throw new InvalidDataException("Invalid run request: v1 supports Silent A10, solver combat, and bounded deadlines only.");
     }
 }

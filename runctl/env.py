@@ -78,6 +78,11 @@ class RealRunEnv:
     def __init__(self, runtime: dict):
         if runtime.get("kind") != "run_control" or runtime.get("env", {}).get("COMBATSOLVER_RUN_CONTROL") != "1":
             raise ValueError("Use an explicitly isolated run_control runtime configuration")
+        self.combat_search_mode = runtime.get("combat_search_mode", "evaluation8s")
+        if self.combat_search_mode not in ("evaluation8s", "settings"):
+            raise ValueError("combat_search_mode must be evaluation8s or settings")
+        self.combat_timeout_seconds = runtime.get("combat_timeout_seconds",
+            1800 if self.combat_search_mode == "settings" else 120)
         self.data_dir = Path(runtime["data_dir"]).resolve()
         self.data_dir.mkdir(parents=True, exist_ok=True)
         self._lock = (self.data_dir / "runctl.lock").open("a+b")
@@ -108,7 +113,7 @@ class RealRunEnv:
         self._failed = False
 
     def reset(self, seed: str, *, policy_seed: int = 0, timeout_seconds: int = 3600,
-              action_timeout_seconds: int = 60, combat_timeout_seconds: int = 120,
+              action_timeout_seconds: int = 60, combat_timeout_seconds: int | None = None,
               decision_mode: str = "map") -> dict:
         if self._closed or self._failed:
             raise RunControlError("A failed/closed environment cannot be reused")
@@ -116,7 +121,10 @@ class RealRunEnv:
             raise RunControlError("The previous episode has not completed")
         if not isinstance(seed, str) or not seed.strip() or len(seed) > 100:
             raise ValueError("Invalid game seed")
-        for value, maximum in [(timeout_seconds, 14400), (action_timeout_seconds, 300), (combat_timeout_seconds, 120)]:
+        if combat_timeout_seconds is None:
+            combat_timeout_seconds = self.combat_timeout_seconds
+        combat_limit = 3600 if self.combat_search_mode == "settings" else 120
+        for value, maximum in [(timeout_seconds, 14400), (action_timeout_seconds, 300), (combat_timeout_seconds, combat_limit)]:
             if type(value) is not int or not 1 <= value <= maximum:
                 raise ValueError("Invalid deadline")
         if type(policy_seed) is not int or not -(2**31) <= policy_seed < 2**31:
@@ -135,6 +143,9 @@ class RealRunEnv:
                        characterId="SILENT", ascension=10, combatMode="solver", decisionMode=decision_mode, policySeed=policy_seed,
                        timeoutSeconds=timeout_seconds, actionTimeoutSeconds=action_timeout_seconds,
                        combatTimeoutSeconds=combat_timeout_seconds)
+        # Legacy/frozen evaluation requests remain compatible with older DLLs.
+        if self.combat_search_mode != "evaluation8s":
+            request['combatSearchMode'] = self.combat_search_mode
         self._deadline = time.monotonic() + timeout_seconds + 120
         try:
             atomic_json(request_path, request)

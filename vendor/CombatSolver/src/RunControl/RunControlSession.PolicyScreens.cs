@@ -28,6 +28,53 @@ internal sealed partial class RunControlSession
         return Task.CompletedTask;
     }
 
+    internal static async Task PressGridCardAsync(NCardGridSelectionScreen screen, CardModel card, CancellationToken ct)
+    {
+        // Grid holders are pooled and may be hidden, replaced or rebound while
+        // Python scores the choice. Keep the model instance, never the holder.
+        long deadline = System.Environment.TickCount64 + 5000;
+        while (System.Environment.TickCount64 < deadline)
+        {
+            ct.ThrowIfCancellationRequested();
+            if (!GodotObject.IsInstanceValid(screen) || !screen.IsInsideTree()
+                || !ReferenceEquals(NOverlayStack.Instance?.Peek(), screen)
+                || !screen._cards.Any(c => ReferenceEquals(c, card)))
+                throw new InvalidOperationException("Card selection surface or exact candidate changed.");
+            NCardGrid grid = screen._grid;
+            if (!grid.IsVisibleInTree() || grid._needsReinit || grid._cardsAnimatingOutForSetCards || grid.Columns <= 0)
+            {
+                await Task.Delay(50, ct);
+                continue;
+            }
+            int index = grid._cards.FindIndex(c => ReferenceEquals(c, card));
+            if (index < 0) throw new InvalidOperationException("Selected card is no longer in the legal grid.");
+            float center = grid.Size.Y * .5f - (grid.YOffset + 80 + grid._cardSize.Y * .5f
+                + index / grid.Columns * (grid._cardSize.Y + grid.CardPadding));
+            grid.SetScrollPosition(Mathf.Clamp(center, Math.Min(grid.ScrollLimitTop, grid.ScrollLimitBottom),
+                Math.Max(grid.ScrollLimitTop, grid.ScrollLimitBottom)));
+            // SetScrollPosition snaps both current and target positions, so the
+            // native animation loop does not allocate rows for this jump.
+            grid.AllocateCardHolders();
+            await Task.Delay(50, ct); // Let the native grid recycle/reflow its rows.
+            if (!GodotObject.IsInstanceValid(grid) || !GodotObject.IsInstanceValid(screen)
+                || !ReferenceEquals(NOverlayStack.Instance?.Peek(), screen))
+                throw new InvalidOperationException("Card selection surface changed while scrolling.");
+            if (grid._needsReinit || grid._cardsAnimatingOutForSetCards) continue;
+            NGridCardHolder? holder = grid.CurrentlyDisplayedCardHolders.FirstOrDefault(h =>
+                GodotObject.IsInstanceValid(h) && h.IsInsideTree() && h.IsVisibleInTree()
+                && ReferenceEquals(h.CardModel, card) && grid.GetGlobalRect().HasPoint(h.GlobalPosition));
+            if (holder == null) continue;
+            if (!ReferenceEquals(NOverlayStack.Instance?.Peek(), screen))
+                throw new InvalidOperationException("Card selection surface changed before click.");
+            if (screen is NSimpleCardSelectScreen)
+                grid.EmitSignal(NCardGrid.SignalName.HolderPressed, holder);
+            else
+                await PressCardAsync(holder);
+            return;
+        }
+        throw new TimeoutException($"Could not reveal the exact selected card: {card.Id.Entry}.");
+    }
+
     private async Task PolicyOverlayAsync(IOverlayScreen overlay, CancellationToken ct)
     {
         Node node = (Node)overlay;
@@ -145,24 +192,19 @@ internal sealed partial class RunControlSession
             return;
         }
         List<UiChoice> options = [];
-        foreach (var holder in UiHelper.FindAll<NGridCardHolder>(node).Where(h => h.IsVisibleInTree() && !selected.Contains(h.CardModel)))
+        var selection = (NCardGridSelectionScreen)overlay;
+        // The native selector owns the complete player-visible legal list,
+        // including cards currently outside the virtualized scroll viewport.
+        foreach (CardModel card in selection._cards.Where(c => !selected.Contains(c)))
         {
-            CardModel card = holder.CardModel;
             int deckIndex = Me.Deck.Cards.ToList().FindIndex(c => ReferenceEquals(c, card));
             CardModel scored = card;
             if (action == "upgrade")
             {
                 scored = (CardModel)card.MutableClone(); scored.UpgradeInternal(); scored.FinalizeUpgradeInternal();
             }
-            options.Add(new(new { kind = "card", action, deckIndex, card = CardAdvisorCapture.Card(scored) }, () =>
-            {
-                if (overlay is NSimpleCardSelectScreen)
-                {
-                    NCardGrid grid = UiHelper.FindFirst<NCardGrid>(node) ?? throw new InvalidOperationException("Missing card grid.");
-                    grid.EmitSignal(NCardGrid.SignalName.HolderPressed, holder); return Task.CompletedTask;
-                }
-                return PressCardAsync(holder);
-            }));
+            options.Add(new(new { kind = "card", action, deckIndex, card = CardAdvisorCapture.Card(scored) },
+                () => PressGridCardAsync(selection, card, ct)));
         }
         if (prefs.MinSelect == 0 && confirms.Length > 0)
             options.Add(new(new { kind = "skip" }, () => ClickLegalAsync(confirms[^1])));

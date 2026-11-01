@@ -14,6 +14,8 @@ def main():
     mod = root / 'vendor/CombatSolver'
     version = json.loads((mod / 'CombatSolver.json').read_text())['version']
     files = [(mod / '.godot/mono/temp/bin/Release/CombatSolver.dll', 'CombatSolver/CombatSolver.dll'),
+             (mod / 'tools/CombatSolver.MemoryCleaner/bin/Release/net48/CombatSolver.MemoryCleaner.exe',
+              'CombatSolver/CombatSolver.MemoryCleaner.exe'),
              (mod / 'CombatSolver.json', 'CombatSolver/CombatSolver.json'),
              (mod / 'THIRD_PARTY_NOTICES.md', 'CombatSolver/THIRD_PARTY_NOTICES.md'),
              (mod / f'docs/{version}-RELEASE_NOTES.md', '更新说明.md')]
@@ -41,14 +43,21 @@ def main():
 将 advisor-service 文件夹合并到已有评分服务目录，保留 .venv 和 checkpoints/train/selected。
 如果调整过 configs 内的参数，先备份个人配置；本包包含本次测试默认值。
 CombatSolver 文件夹用于准备命令的 --mod 参数。
-如需更新原游戏的人工评分面板，也可覆盖原 Mod 的 DLL、manifest 和 NOTICE；保留现有 MemoryCleaner。
+已有独立 Bot 目录无需重新准备：退出 Bot 后，将本包 CombatSolver 的 DLL、JSON、NOTICE 和 MemoryCleaner
+覆盖到独立目录的 game/mods/CombatSolver（例如 D:/Sts2-Autobot-0303/game/mods/CombatSolver）。
+只更新 Downloads 里的源 Mod 文件夹不会更新已有独立游戏。
+启用可调战斗搜索：将该独立目录 runtime.json 的 combat_search_mode 设为 "settings"，
+完整 PowerShell 更新命令见 advisor-service/docs/autobot.md 的“已有 Windows Bot 升级”章节。
+之后在 Bot 独立游戏的 CombatSolver 设置里调整性能档位/自定义预算，下一局读取。
+如需更新原游戏的人工评分面板，也可覆盖原 Mod 的 DLL、manifest、NOTICE 和 MemoryCleaner。
 更新包默认不重复下载模型或 Python 依赖。首次使用者需要模型及 requirements.txt 依赖。
 
 完整启动命令与参数说明见 advisor-service/docs/autobot.md。
 一次准备后双击输出目录中的“启动自动爬塔.bat”。
 全自动机器人使用独立游戏与存档，无需另开 HTTP 评分服务。
 请使用自己的原版游戏与已安装 RitsuLib；本包不包含第三方游戏和依赖文件。
-100 局质量评测仍在进行；原生 Windows 完整对局等待实际试用。
+旧策略已完成 60 局调参，剩余 40 局独立评估尚未开始；新策略不能沿用旧版胜率结论。
+原生 Windows 完整对局等待实际试用。
 '''
     with zipfile.ZipFile(path, 'x', zipfile.ZIP_DEFLATED) as archive:
         for source, target in files: archive.write(source, target)

@@ -267,4 +267,14 @@ class BotPolicy:
                 if state['gold']-option.get('price', 0) < self.config['shop_reserve_gold']: gain -= 1
             scores[option['index']] = gain
         self.last_report.update(scores=scores, reason='immediate_model_and_visible_resources')
-        return max(scores, key=lambda i: (scores[i], options[i]['kind'] in ('skip', 'leave'), -i))
+        eligible = dict(scores)
+        if screen == 'SHOP':
+            leave_score = max((scores[o['index']] for o in options if o['kind'] == 'leave'), default=0.)
+            # Revisit the shop after every purchase. Potions only compete once
+            # all currently worthwhile, affordable card purchases are exhausted.
+            cards_first = any(o['kind'] == 'card' and scores[o['index']] > leave_score for o in options)
+            deferred = [o['index'] for o in options if cards_first and o['kind'] == 'potion']
+            for index in deferred:
+                eligible.pop(index)
+            self.last_report['potions_deferred_for_cards'] = deferred
+        return max(eligible, key=lambda i: (eligible[i], options[i]['kind'] in ('skip', 'leave'), -i))
