@@ -15,6 +15,18 @@ def event_value(event_id, option, state, config):
     hp_weight = 1 + 2*(1-state['hp']/state['maxHp'])
     value = 0.0
     recognized = False
+    # Maximum HP is a persistent resource, not ordinary heal/damage. In
+    # particular Tablet of Truth's escalating max-HP costs must not disappear
+    # just because its text also promises an upgrade.
+    maximum_pattern = r'(gain|obtain|lose|pay|获得|失去|增加|减少)\s*(\d+)\s*(?:点\s*)?(?:max(?:imum)?\s+(?:hp|health)|最大生命(?:值)?)'
+    for match in re.finditer(maximum_pattern, text):
+        recognized = True
+        amount = int(match[2])
+        negative = match[1] in ('lose', 'pay', '失去', '减少')
+        value += amount * config['event_max_hp_value'] * (-1 if negative else 1)
+        if negative:
+            value -= hp_weight * max(0, state['hp']-(state['maxHp']-amount))
+    text = re.sub(maximum_pattern, '', text)
     for pattern, sign in [(r'(?:heal|recover|恢复|回复)\s*(\d+)', 1),
                           (r'(?:lose|take|失去|受到)\s*(\d+)\s*(?:hp|health|damage|点?生命|点?伤害)', -1)]:
         for match in re.finditer(pattern, text):
@@ -23,14 +35,30 @@ def event_value(event_id, option, state, config):
     for match in re.finditer(r'(gain|obtain|lose|pay|获得|失去|支付)\s*(\d+)\s*(?:gold|金币)', text):
         recognized = True
         value += int(match[2]) * config['gold_hp_value'] * (-1 if match[1] in ('lose', 'pay', '失去', '支付') else 1)
-    for words, benefit in [(['upgrade', '升级'], 5), (['remove', '移除'], 5),
-                           (['enchant', '附魔'], 5), (['relic', '遗物'], 8),
-                           (['curse', '诅咒'], -8), (['transform', '变化'], 3),
-                           (['choose a card', '选择一张牌'], 3)]:
+    for words, benefit in [(['upgrade', '升级'], config['event_upgrade_value']),
+                           (['remove', '移除'], config['event_remove_value']),
+                           (['enchant', '附魔'], config['event_enchant_value']),
+                           (['relic', '遗物'], config['event_relic_value']),
+                           (['curse', '诅咒'], -config['event_curse_cost']),
+                           (['transform', '变化'], config['event_transform_value']),
+                           (['choose a card', '选择一张牌'], config['event_card_value'])]:
         if any(word in text for word in words): value += benefit; recognized = True
     # These rules use static, public event mechanics, never the future result.
+    if event_id == 'WELLSPRING':
+        if key == 'BOTTLE':
+            return (config['potion_value'] if any(p['id'] is None for p in state.get('potions', [])) else 0), 'wellspring_unknown_potion_prior'
+        if key == 'BATHE':
+            return config['event_remove_value']-config['event_curse_cost'], 'wellspring_remove_and_guilty_cost'
+    if event_id == 'TABLET_OF_TRUTH' and key.startswith('DECIPHER'):
+        return value, 'tablet_displayed_escalating_max_hp_cost'
+    if event_id == 'DENSE_VEGETATION' and key == 'REST':
+        # The public event rule guarantees an ensuing fight. Its generated
+        # combat state is not read here; use an explicit conservative prior.
+        return value - config['event_fight_cost'], 'dense_vegetation_rest_then_fight_prior'
+    if event_id == 'UNREST_SITE' and key == 'REST' and not any(w in text for w in ('curse', '诅咒')):
+        return value-config['event_curse_cost'], 'unrest_heal_and_poor_sleep_cost'
     if event_id == 'BRAIN_LEECH' and key == 'SHARE_KNOWLEDGE':
-        return value + 5, 'brain_leech_free_choice_of_five'
+        return value + config['event_card_value'], 'brain_leech_free_choice_of_five'
     if event_id == 'SLIPPERY_BRIDGE':
         # Repeated holds consume increasingly more HP. The currently offered
         # removal is visible; until card hover-tip identities are exported,

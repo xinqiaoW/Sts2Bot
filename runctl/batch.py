@@ -40,16 +40,24 @@ def main():
     parser.add_argument('--episodes', type=int, required=True)
     parser.add_argument('--seed-prefix', required=True)
     parser.add_argument('--policy-config', type=Path)
+    parser.add_argument('--source-revision', default='unrecorded', help='Frozen source commit for experiment provenance')
+    parser.add_argument('--worker-offset', type=int, default=0)
+    parser.add_argument('--workers', type=int, help='Use a disjoint slice of the prepared workers')
     parser.add_argument('--timeout', type=int, default=3600)
     args = parser.parse_args()
-    runtimes = sorted(args.runtime_dir.glob('worker-*/runtime.json'))
+    all_runtimes = sorted(args.runtime_dir.glob('worker-*/runtime.json'))
+    if args.worker_offset < 0 or (args.workers is not None and args.workers < 1):
+        parser.error('Worker offset must be nonnegative and worker count positive')
+    stop = None if args.workers is None else args.worker_offset + args.workers
+    if stop is not None and stop > len(all_runtimes): parser.error('Requested worker slice is not prepared')
+    runtimes = all_runtimes[args.worker_offset:stop]
     if not runtimes or args.episodes < 1: parser.error('Require prepared runtimes and positive episodes')
     args.output.mkdir(parents=True, exist_ok=False)
     configs = [json.loads(p.read_text()) for p in runtimes]
     if len({Path(c['data_dir']).resolve() for c in configs}) != len(configs):
         raise ValueError('Workers must have separate native data directories')
     counts = [args.episodes//len(runtimes) + (i < args.episodes % len(runtimes)) for i in range(len(runtimes))]
-    atomic_json(args.output/'experiment.json', dict(started=time.time(), episodes=args.episodes,
+    atomic_json(args.output/'experiment.json', dict(started=time.time(), episodes=args.episodes, source_revision=args.source_revision,
         seed_prefix=args.seed_prefix, runtimes=[str(p.resolve()) for p in runtimes],
         per_worker=counts, policy_config=str(args.policy_config.resolve()) if args.policy_config else None))
 

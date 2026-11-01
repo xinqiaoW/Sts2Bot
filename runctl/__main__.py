@@ -49,7 +49,7 @@ def main():
                         with (args.output / 'decisions.jsonl').open('a', encoding='utf-8') as log:
                             log.write(json.dumps(dict(runId=env.run_id, seed=seed, **bot.last_report), ensure_ascii=False, allow_nan=False)+'\n')
                     observation = env.step(choice)
-                episodes.append(observation)
+                episodes.append(dict(observation, seed=seed, artifactDirectory=str(env.run_dir)))
                 atomic_json(args.output / "summary.json", dict(started=started, elapsed=time.time()-started,
                             completed=len(episodes), episodes=episodes))
                 print(json.dumps(observation), flush=True)

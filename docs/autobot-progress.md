@@ -37,3 +37,11 @@ RunControlSession 负责真实主线程快照、合法选项、执行与嵌套�
 - 当前 Python：机器人策略 29 项、协议 28 项通过；评分服务 28 项非 HTTP 加 1 项实际回环 HTTP 通过。Linux 结构门禁通过。最新 C# Release 构建 0 警告/错误；该 DLL 已部署到正在重跑的 worker-01。
 
 下一步：先解决诊断暴露的原生流程问题并确认跨幕，然后冻结评测代码/参数，完成 100 局自然终局与参数对比；Windows 原生整局和最终发布包仍未完成。
+
+## 跨幕诊断与正式评测准备
+
+- `pilot-v2/report-v3`：8/8 自然终局，0 个流程失败，均死亡；终局楼层 33、48、33、33、49、49、48、48。完成真实跨幕、商店、奖励、普通事件、篝火及终局清理。这批仍保留新存档的教学/发现顺序，不作为正式质量数据。
+- 正式初始化发现原生 `ApplyDiscoveryOrderModifications` 会受历史存档影响。新 `RunControlUnlockScope` 仅在隔离 all 模式创建新局期间传入原生 `UnlockState.all`，不伪造持久胜负、不更改对局 RNG/队列。运行时断言完整内容发现和作用域释放。
+- `.local/autobot/full-discovery-startup.json`：同种子两次原生启动公开状态与选项完全一致，初始 56 HP、可见 Boss 为 `CEREMONIAL_BEAST_BOSS`，通过；起点验证主动停止，不计完整局。首次未注册补丁被启动断言拒绝，修正后才通过。
+- 第一幕事件补上最大生命成本、命名诅咒代价，事件和药水估值进入配置；已排除模型的卡牌移除不再错指其他实例，附魔候选保留已有叠层。机器人策略 35 项、实验对比 4 项通过。
+- 40 个正式隔离 worker 已准备在 `/data/pl/Sts2Bot-autobot-20261101/evaluation`。正式 20+20+20+40 计划见 `autobot-evaluation-plan.md`；尚未记录任何正式完整局。

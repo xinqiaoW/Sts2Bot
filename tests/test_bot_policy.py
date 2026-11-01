@@ -115,6 +115,31 @@ def test_event_lethal_options_override_model_score(request_data):
     assert BotPolicy(FakeScorer()).choose(observation) == 1
 
 
+@pytest.mark.parametrize('description', ['失去 6 点最大生命。升级一张牌。', 'Lose 6 Max HP. Upgrade a card.'])
+def test_tablet_max_hp_cost_is_not_mistaken_for_free_upgrade(description):
+    config = load_policy_config()
+    state = dict(hp=50, maxHp=70)
+    value, reason = event_value('TABLET_OF_TRUTH', dict(id='DECIPHER', description=description), state, config)
+    assert value == -1 and reason == 'tablet_displayed_escalating_max_hp_cost'
+
+
+def test_max_hp_loss_also_accounts_for_current_hp_clamp():
+    config = load_policy_config()
+    full = dict(hp=70, maxHp=70)
+    value, _ = event_value('ANY', dict(description='失去 10 点最大生命。'), full, config)
+    assert value == -20
+
+
+def test_wellspring_and_unrest_include_named_curse_cost():
+    config = load_policy_config()
+    state = dict(hp=20, maxHp=70, potions=[dict(id=None)])
+    bottle = event_value('WELLSPRING', dict(id='BOTTLE'), state, config)[0]
+    bathe = event_value('WELLSPRING', dict(id='BATHE', description='移除一张牌。获得愧疚。'), state, config)[0]
+    assert bottle == config['potion_value'] and bathe < 0
+    unrest = event_value('UNREST_SITE', dict(id='REST', description='恢复 50 点生命。获得睡眠不佳。'), state, config)[0]
+    assert unrest == pytest.approx(50*(1+2*(1-20/70))-config['event_curse_cost'])
+
+
 def test_visible_event_health_and_gold_costs():
     state = dict(hp=20, maxHp=70)
     config = load_policy_config()
@@ -154,3 +179,31 @@ def test_orobas_candidate_projects_deterministic_starter_replacement(request_dat
     ids = [r.id for r in candidate.relics]
     assert ids[0] == 'RING_OF_THE_DRAKE' and 'RING_OF_THE_SNAKE' not in ids
     assert 'TOUCH_OF_OROBAS' in ids and raw == original
+
+
+def test_removal_of_projected_out_card_never_aliases_an_owned_instance(request_data):
+    observation = card_observation(request_data)
+    cards = observation['state']['build']['cards']
+    cards.insert(0, dict(id='ALCHEMIZE'))
+    cards.append(dict(id='FOOTWORK'))
+    observation.update(screen='CARD_GRID', context=dict(action='remove'), options=[
+        dict(index=0, kind='card', action='remove', card=cards[0], deckIndex=0),
+        dict(index=1, kind='card', action='remove', card=cards[-1], deckIndex=len(cards)-1)])
+    bot = BotPolicy(FakeScorer(), config={'max_rollout_depth': 0})
+    assert bot.choose(observation) == 0
+    assert 'unscored_remove:ALCHEMIZE' in bot.last_report['warnings']
+    assert bot.last_report['scores'][0] > bot.last_report['scores'][1]
+
+
+def test_enchantment_candidate_stacks_and_does_not_mutate_owned_card(request_data):
+    from copy import deepcopy
+    raw = deepcopy(request_data['build'])
+    raw['cards'][0].update(enchantment_id='SHARP', enchantment_amount=2)
+    original = deepcopy(raw)
+    bot = BotPolicy(FakeScorer())
+    result = bot.candidate(raw, dict(kind='card', action='enchant', deckIndex=0),
+                           {'effect': dict(id='SHARP', amount=3)})
+    assert result.cards[0].enchantment_amount == 5 and raw == original
+    with pytest.raises(ValueError, match='different existing enchantment'):
+        bot.candidate(raw, dict(kind='card', action='enchant', deckIndex=0),
+                      {'effect': dict(id='SLITHER', amount=1)})

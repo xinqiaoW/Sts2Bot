@@ -627,6 +627,9 @@ done
 require_fixed "$repository_root/src/RunControl/RunControlSession.PolicyScreens.cs" 'card.MutableClone()' 'autobot upgrade preview must clone owned cards'
 require_fixed "$repository_root/src/RunControl/RunControlSession.Decisions.cs" 'action.DecisionSeq != seq' 'autobot must validate decision ownership'
 require_fixed "$repository_root/src/RunControl/RunControlSession.Decisions.cs" 'current.coord.row >= Run.Map.BossMapPoint.coord.row' 'autobot must advance the visible boss target only at the first boss'
+require_fixed "$repository_root/src/RunControl/RunControlUnlockScope.cs" 'if (!RunControlUnlockScope.Active) return true;' 'full-content startup must leave normal player unlocks untouched'
+require_fixed "$repository_root/src/RunControl/RunControlUnlockScope.cs" 'COMBATSOLVER_RUN_CONTROL' 'full-content startup requires isolated opt-in'
+require_fixed "$repository_root/src/Runtime/Entry.cs" 'patcher.RegisterPatch<RunControlUnlockPatch>();' 'full-content startup patch must be registered'
 
 for forbidden in 'CardModel' 'RunState' 'HttpClient' 'ModelDb'; do
     forbid_fixed "$repository_root/src/UI/CardAdvisorOverlay.cs" "$forbidden" 'advisor renderer must consume scalar snapshots only:'

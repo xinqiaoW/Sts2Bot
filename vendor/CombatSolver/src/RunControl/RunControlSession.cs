@@ -83,12 +83,17 @@ internal sealed partial class RunControlSession(NGame host, RunControlRequest re
         {
             CharacterModel character = ModelDb.AllCharacters.Single(c => c.Id.Entry == request.CharacterId);
             _stage = "start_run";
-            await host.StartNewSingleplayerRun(character, false, ActModel.GetDefaultList().ToList(),
-                [], request.Seed, GameMode.Standard, request.Ascension).WaitAsync(ct);
+            using (var unlockScope = request.DecisionMode == "all" ? new RunControlUnlockScope() : null)
+                await host.StartNewSingleplayerRun(character, false, ActModel.GetDefaultList().ToList(),
+                    [], request.Seed, GameMode.Standard, request.Ascension).WaitAsync(ct);
             _run = RunManager.Instance.DebugOnlyGetState() ?? throw new InvalidOperationException("Run was not created.");
+            if (RunControlUnlockScope.Active || (request.DecisionMode == "all"
+                && (Run.UnlockState.NumberOfRuns <= 0 || !ModelDb.AllEncounters.All(Run.UnlockState.HasSeenEncounter))))
+                throw new InvalidOperationException("Isolated full-content startup did not preserve discovery or release its scope.");
             if (Run.AscensionLevel != 10 || !Run.ExtraFields.StartedWithNeow)
                 throw new InvalidOperationException("Whole-run startup must preserve A10 and the native Neow start.");
-            Record("run_started", new { request.Seed, request.PolicySeed, request.CombatMode });
+            Record("run_started", new { request.Seed, request.PolicySeed, request.CombatMode,
+                fullContentDiscovery = request.DecisionMode == "all" });
             while (true)
             {
                 ct.ThrowIfCancellationRequested();

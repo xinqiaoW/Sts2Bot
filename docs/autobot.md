@@ -1,6 +1,6 @@
 # 模型驱动整局机器人（开发中）
 
-原版单人静默猎手 A10，CombatSolver 执行战斗，Python 处理地图、事件、奖励、卡牌、遗物、商店、篝火、宝箱及嵌套选择。当前正在流程诊断，尚未完成 100 局评测或 Windows 验收；见 [开发进度](autobot-progress.md)。
+原版单人静默猎手 A10、完整内容解锁/发现的统一起点，CombatSolver 执行战斗，Python 处理地图、事件、奖励、卡牌、遗物、商店、篝火、宝箱及嵌套选择。当前正在流程诊断，尚未完成 100 局评测或 Windows 验收；见 [开发进度](autobot-progress.md)。
 
 ## 参数和选牌门槛
 
@@ -16,6 +16,8 @@
 | `crisis_keep_per_parent` | 6 | 艰难局面每个父节点保留数 |
 | `crisis_extra_depth` / `max_rollout_depth` | 1 / 4 | 深度增量和上限，同时受剩余楼层约束 |
 | `gold_hp_value` / `shop_reserve_gold` | 0.04 / 50 | 金币代价与保留金币 |
+| `potion_value` | 5 | 已有空药水槽时的资源估值 |
+| `event_max_hp_value` / `event_curse_cost` | 1 / 8 | 最大生命与诅咒代价；其他 `event_*` 参数同文件 |
 | `rest_hp_fraction` | 0.55 | 篝火回血 HP 风险阈值 |
 | `route_beam_width` / `route_risk_weight` | 64 / 2 | 地图路径保留宽度与低血量代价 |
 

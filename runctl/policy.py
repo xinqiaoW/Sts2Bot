@@ -82,15 +82,20 @@ class BotPolicy:
         return self.model.targets(state['actId'], room, state['visibleBoss'], weak=weak)
 
     def cards(self, state, options, raw, build):
-        explicit, mapping = [], []
+        explicit, mapping, projected_noops = [], [], []
         skip = next((o['index'] for o in options if o['kind'] in ('skip', 'leave') or
                      (o['kind'] == 'alternative' and o.get('id', '').upper() == 'SKIP')), None)
         for option in options:
             if option['kind'] != 'card': continue
             action = option.get('action', 'take')
             card = option['card']
-            if action == 'take' and (card['id'] not in self.model.catalog.cards or card['id'] in self.model.catalog.excluded['cards']):
-                self.model.warnings.append('unscored_offer:' + card['id']); continue
+            if card['id'] not in self.model.catalog.cards or card['id'] in self.model.catalog.excluded['cards']:
+                self.model.warnings.append(f'unscored_{action}:' + card['id'])
+                if action in ('remove', 'upgrade'):
+                    # This owned instance was omitted from model input. Its
+                    # original index must never alias a different modeled card.
+                    projected_noops.append(option['index'])
+                continue
             row = dict(action=action, card=normalize_card(card))
             if action in ('upgrade', 'remove'):
                 index = option['deckIndex']
@@ -119,6 +124,7 @@ class BotPolicy:
             request['rollout_depth'] = min(depth+self.config['crisis_extra_depth'], self.config['max_rollout_depth'], remaining)
             result = RewardSelector(self.model.scorer, expanded).select(request)
         scores = {original: result['candidates'][i]['combined_score'] for i, original in enumerate(mapping)}
+        scores.update((i, result['candidates'][-1]['combined_score']) for i in projected_noops)
         if skip is not None: scores[skip] = result['candidates'][-1]['combined_score']
         # Other explicit alternatives are not silently converted into skip.
         # Heal/sacrifice/reroll receive an explicit resource heuristic.
@@ -170,7 +176,12 @@ class BotPolicy:
             elif action == 'upgrade': value['cards'][index] = deepcopy(option['card'])
             elif action == 'enchant':
                 effect = context['effect']
-                value['cards'][index].update(enchantment_id=effect['id'], enchantment_amount=effect['amount'])
+                if index < 0: raise ValueError('Enchant target is not an owned instance')
+                card = value['cards'][index]
+                if card.get('enchantment_id', '') not in ('', effect['id']):
+                    raise ValueError('Cannot replace a different existing enchantment')
+                card.update(enchantment_id=effect['id'],
+                            enchantment_amount=card.get('enchantment_amount', 0)+effect['amount'])
             elif action != 'select': raise ValueError('Unknown card action: ' + action)
         return self.model.project(value)
 
@@ -201,7 +212,7 @@ class BotPolicy:
                 candidate_raw = deepcopy(raw)
                 candidate_raw['cards'].append(dict(id='CLUMSY'))
                 candidate = self.model.project(candidate_raw)
-                scores[option['index']] = self.config['route_elite_reward'] + baseline - self.model.score([candidate], self.targets(state), state['maxHp'])[0]['expected_hp_loss']
+                scores[option['index']] = self.config['event_relic_value'] + baseline - self.model.score([candidate], self.targets(state), state['maxHp'])[0]['expected_hp_loss']
                 reasons[option['index']] = 'public_clumsy_effect_and_unknown_relic_prior'
             if option.get('lethal'):
                 scores[option['index']], reasons[option['index']] = -1e9, 'visible_lethal_option'
@@ -240,7 +251,7 @@ class BotPolicy:
                 if kind == 'card' and option['card']['id'] in self.model.catalog.excluded['cards']: gain = -1e6
             elif kind == 'gold': gain = option['amount'] * self.config['gold_hp_value']
             elif kind == 'open_cards': gain = 10
-            elif kind == 'potion': gain = .5 if any(p['id'] is None for p in state['potions']) else -1
+            elif kind == 'potion': gain = self.config['potion_value'] if any(p['id'] is None for p in state['potions']) else -1
             elif kind == 'remove': gain = 5  # actual instance is scored on the child screen
             elif kind == 'reward': gain = 1
             elif kind not in ('skip', 'leave'): raise ValueError('Unsupported choice kind: ' + kind)

@@ -37,6 +37,7 @@ description: 重构 CombatSolver 的 Search、Runtime 会话、UI snapshot、无
 - unattended 的协议、建局、执行、断言和结果写入分别属于 ProtocolHost、ScenarioBuilder、Executor、Assertions、Writer。
 - 整局控制的 RunState、合法局外交互和决策序号属于 `RunControlSession`；`ProtocolHost` 只分流显式整局请求并保留邮箱与进程静稳所有权。不要调用 AutoSlay 战斗/事件战斗作弊处理器，也不要把整局状态归一化为训练夹具。
 - 整局 `Decisions` 分片只导出玩家可见状态和地图，`PolicyRooms/PolicyScreens` 分片拥有合法执行与嵌套界面；评分、选牌门槛、事件策略与路线规划属于外部 Python 策略。不得向策略导出未来遭遇、事件、未揭示奖励或游戏 RNG。
+- 完整内容发现的覆盖只属于 `RunControlUnlockScope` 的隔离新局创建作用域；关闭作用域后原生解锁查询恢复，不能写持久胜负计数或修改已创建跑局的遭遇顺序。
 - CoverageCatalog 只消费 `IMethodMirrorRegistryDescriptorProvider`，不反射 registry 私有字段。
 
 ## 3. 实现方式

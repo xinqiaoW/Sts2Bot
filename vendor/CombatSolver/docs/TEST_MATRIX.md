@@ -2,9 +2,11 @@
 
 ## 全流程机器人（开发中，2026-11-01）
 
-- 外层 `tests/test_bot_policy.py` 29 项通过：严格门槛、强制选牌、免费替代选项、商店门槛、实际危机分支扩展、地图风险、公开弱怪计数、失败统计与欧洛巴斯确定性初始遗物替换。
+- 外层 `tests/test_bot_policy.py` 35 项通过：严格门槛、强制选牌、免费替代选项、商店门槛、实际危机分支扩展、地图风险、公开弱怪计数、失败统计与欧洛巴斯确定性初始遗物替换。
 - 外层 `tests/test_runctl.py` 28 项通过：all 模式界面白名单及旧 map 模式拒绝非地图，既有生命周期/错误隔离。
 - Linux 结构门禁通过；Windows 等价门禁规则同步，未在 Windows 执行。当前 Release 构建及原生诊断仍随行为修复推进，最终证据另记。
+- 外层 `tests/test_bot_comparison.py` 4 项通过：同种子配对、完整性、固定代码来源与失败不计死亡。
+- `pilot-v2/report-v3` 8/8 自然死亡终局，跨到第三幕及最后 Boss，0 个流程失败；仅诊断，不计正式评测。完整内容发现作用域的两次同种子公开起点一致性通过，现场 `.local/autobot/full-discovery-startup.json`。
 - 原生 pilot-v1 修复输入字段后 1 局自然死亡：第 11 层精英，33 次决策、5 场战斗。pilot-v2 正在扩展界面覆盖，已发现 Boss 过渡按钮问题；异常不计完成局。现场保留在外层 `.local/autobot/`。
 - 重跑：`PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest tests/test_bot_policy.py tests/test_runctl.py -q`；原生命令见外层 `docs/autobot.md`。
 

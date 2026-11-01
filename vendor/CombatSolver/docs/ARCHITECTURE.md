@@ -191,6 +191,7 @@ renderer 不得重新读取 `SolverResult`、`PlanAction`、`PlanCardChoice` 或
 
 - `src/RunControl/RunControlProtocol.cs`：整局请求与动作校验、每局唯一目录、原子快照与追加事件记录。
 - `RunControlSession.cs`：持有原生 `RunState`，创建 Silent A10 正常跑局、调用 CombatSolver、处理终局并恢复设置。
+- `RunControlUnlockScope.cs`：仅在隔离 all 模式的新局创建期间提供原生完整解锁/发现状态，避免教学遭遇和 Boss 发现顺序改变配对实验；不修改既有跑局、RNG、遭遇队列或持久胜负计数。
 - `RunControlSession.Decisions.cs`：主线程导出玩家已知状态与地图拓扑，拥有决策序号、动作校验及重复无进展检测；不导出未来怪物、事件、未打开的奖励或游戏 RNG。
 - `RunControlSession.Rooms.cs`：事件可见选项、嵌套界面调度及兼容的地图模式随机基线。事件内战斗也交给 CombatSolver，禁止调用会作弊的原版 `CombatRoomHandler`、`EventRoomHandler`。
 - `RunControlSession.PolicyRooms.cs`：商店、篝火、宝箱的合法选项与真实操作；购买等待子界面时由所属会话推进子选择。

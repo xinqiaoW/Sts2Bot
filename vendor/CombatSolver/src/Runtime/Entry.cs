@@ -62,6 +62,7 @@ public static class Entry
         patcher.RegisterPatch<UnattendedTestIsolationPatch>();
         patcher.RegisterPatch<UnattendedHeadlessFtuePatch>();
         patcher.RegisterPatch<UnattendedCombatStartReplayPatch>();
+        patcher.RegisterPatch<RunControlUnlockPatch>();
         RitsuLibFramework.ApplyRequiredPatcher(patcher, DisableMod);
 
         if (Enabled)
