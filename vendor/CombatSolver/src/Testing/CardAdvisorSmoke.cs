@@ -1,6 +1,8 @@
 using System.Text.Json;
 using Godot;
 using MegaCrit.Sts2.Core.Nodes;
+using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Models.Cards;
 
 namespace CombatSolver;
 
@@ -16,6 +18,7 @@ internal static class CardAdvisorSmoke
         {
             client.SetProcess(false);
             await host.GameStartupComplete;
+            VerifyShopFilter();
             using JsonDocument fixture = JsonDocument.Parse(File.ReadAllText(path));
             var overlay = new CardAdvisorOverlay(); host.AddChild(overlay);
             foreach (JsonElement scenario in fixture.RootElement.EnumerateArray())
@@ -49,5 +52,29 @@ internal static class CardAdvisorSmoke
             Entry.Logger.Info($"[CardAdvisor/Smoke] {status} scenarios={evidence.Count}");
             host.GetTree().Quit(status == "passed" ? 0 : 1);
         }
+    }
+
+    private static void VerifyShopFilter()
+    {
+        CardModel first = ModelDb.Card<Footwork>();
+        CardModel second = ModelDb.Card<Backflip>();
+        CardModel ignored = ModelDb.Card<Alchemize>();
+        // Leading/middle/trailing exclusions must not shift the remaining
+        // prices. Use the same native-card adapter as the real shop capture.
+        for (int position = 0; position < 3; position++)
+        {
+            List<CardModel> cards = [first, second];
+            List<int?> prices = [71, 43];
+            cards.Insert(position, ignored); prices.Insert(position, 159);
+            string note = CardAdvisorCapture.FilterShopCards(cards, prices);
+            if (!cards.SequenceEqual(new[] { first, second }) || !prices.SequenceEqual(new int?[] { 71, 43 })
+                || !note.Contains(ignored.Title))
+                throw new InvalidOperationException("Shop filtering shifted card identities/prices or omitted the notice.");
+        }
+        List<CardModel> onlyIgnored = [ignored]; List<int?> onlyPrice = [159];
+        string emptyNote = CardAdvisorCapture.FilterShopCards(onlyIgnored, onlyPrice);
+        if (onlyIgnored.Count != 0 || onlyPrice.Count != 0 || emptyNote.Length == 0)
+            throw new InvalidOperationException("Shop with only Alchemize was not excluded.");
+        Entry.Logger.Info("[CardAdvisor/Smoke] shop_filter passed positions=3 only_ignored=true");
     }
 }

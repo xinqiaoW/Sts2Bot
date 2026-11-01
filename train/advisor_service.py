@@ -6,9 +6,16 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 
 from damage_model.card_state import normalize_state
+from damage_model.catalog import COUNTER_DOMAINS
 from damage_model.schema import Build
 from .reward_policy import RewardSelector, load_config
 from .score import BuildScorer, DEFAULT_CHECKPOINT
+
+
+# ArchaicTooth's saved cards only reconstruct hover tips. AfterObtained
+# transforms the actual deck, which the live snapshot already contains.
+# Keep this field-specific: other non-scalar saved state remains unsupported.
+RELIC_DISPLAY_FIELDS = {'ARCHAIC_TOOTH': frozenset({'StarterCard', 'AncientCard'})}
 
 
 def normalize_card(card):
@@ -17,6 +24,35 @@ def normalize_card(card):
         raise ValueError('Card has unsupported saved fields: ' + card['id'])
     card['persistent_state'] = dict(normalize_state(card['id'], card.get('persistent_state', {})))
     return card
+
+
+def normalize_relic(original):
+    relic = dict(original)
+    rid = relic['id']
+    unsupported = set(relic.pop('unsupported_fields', [])) - RELIC_DISPLAY_FIELDS.get(rid, frozenset())
+    if unsupported:
+        raise ValueError(f'Unsupported relic saved fields: {rid}; {sorted(unsupported)}')
+    state = {}
+    for key, value in relic['state']:
+        if key in state:
+            raise ValueError(f'Invalid relic state: {rid}; duplicate field {key}')
+        state[key] = value
+    # Native RelicModel declares these inherited SavedProperty booleans on
+    # every relic. The training schema represents ordinary, unmelted relics;
+    # only explicit false is equivalent to that schema (not 0 or "false").
+    for key in ('IsWax', 'IsMelted'):
+        if key in state:
+            if state[key] is not False:
+                raise ValueError(f'Unsupported relic state: {rid}; {key}={state[key]!r} '
+                                 '(模型仅支持非蜡制、未融化的遗物)')
+            del state[key]
+    expected = set(COUNTER_DOMAINS.get(rid, {}))
+    if set(state) != expected:
+        raise ValueError(f'Incomplete relic state: {rid}; '
+                         f'missing={sorted(expected - state.keys())}; '
+                         f'unexpected={sorted(state.keys() - expected)}')
+    relic['state'] = [[key, value] for key, value in sorted(state.items())]
+    return relic
 
 
 def evaluate(payload, selector, unknown_combat_probability=0.25):
@@ -35,9 +71,7 @@ def evaluate(payload, selector, unknown_combat_probability=0.25):
         if relic['id'] in selector.catalog.normalized_relic_ids:
             ignored.append(relic['id'])
             continue
-        if relic.pop('unsupported_fields', []):
-            raise ValueError('Unsupported relic saved fields: ' + relic['id'])
-        relics.append(relic)
+        relics.append(normalize_relic(relic))
     build['relics'] = relics
     selector.catalog.validate(Build.from_dict(build))
     options = []

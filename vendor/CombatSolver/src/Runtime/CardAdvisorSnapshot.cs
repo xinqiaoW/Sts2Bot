@@ -93,7 +93,9 @@ internal static class CardAdvisorCapture
                 MerchantCardEntry entry = (MerchantCardEntry)slot.Entry;
                 cards.Add(entry.CreationResult!.Card); prices.Add(entry.Cost);
             }
-            note = "仅比较单张购入的构筑收益，不含金币机会成本。";
+            note = "仅比较单张购入的构筑收益，不含金币机会成本。" + FilterShopCards(cards, prices);
+            if (cards.Count == 0)
+                throw new NotSupportedException(note + "当前没有其他可评分的商店卡牌。");
         }
         else return null;
         if (cards.Count == 0) return null;
@@ -158,6 +160,21 @@ internal static class CardAdvisorCapture
         if (run.Act.HasSecondBoss) note += "当前以本幕首个 Boss 为长期目标。";
         return new CardAdvisorSnapshot(JsonSerializer.Serialize(payload, JsonOptions), title, names.ToArray(),
             "满血构筑评分，越大越好；地图分支及同类敌人等概率估计。" + note);
+    }
+
+    // Keep each price paired with its card while excluding the user's explicit
+    // shop-only exception. This does not change the inventory or owned deck.
+    internal static string FilterShopCards(List<CardModel> cards, List<int?> prices)
+    {
+        if (cards.Count != prices.Count) throw new InvalidOperationException("商店卡牌与价格数量不匹配。");
+        List<string> ignored = [];
+        for (int i = cards.Count - 1; i >= 0; i--)
+        {
+            if (cards[i].Id.Entry != "ALCHEMIZE") continue;
+            ignored.Add(cards[i].Title);
+            cards.RemoveAt(i); prices.RemoveAt(i);
+        }
+        return ignored.Count == 0 ? "" : "已跳过评分：" + string.Join("、", ignored) + "。";
     }
 
     private static object Card(CardModel card)

@@ -1,5 +1,12 @@
 # CombatSolver 测试清单
 
+## 0.30.2 商店炼制药水过滤（2026-11-01）
+
+- `CardAdvisorSmoke.VerifyShopFilter`：真实 Godot 进程中用原生卡牌检查开头/中间/末尾的炼制药水排除、剩余卡牌身份及价格对应、只剩该牌的空列表边界，全部通过。
+- 同进程执行一个商店 fixture，真实 C# HTTP 客户端、当前训练模型和 Godot 渲染返回 7 张支持卡牌加基准共 8 行，关闭后隐藏，通过。
+- 证据：外层 `.local/card-advisor-smoke/shop-alchemize-filter.json.result.json`。该 fixture 分别验证实际捕获所用的过滤方法和 HTTP/渲染；未运行 Windows 可见商店或点击购买。
+- 重跑：外层 `.venv-train/bin/python tools/run_card_advisor_smoke.py --fixture <新的商店 fixture.json>`，fixture 结构沿用选牌评分测试；脚本拒绝覆盖已有结果。
+
 ## 选牌评分开发版（2026-11-01）
 
 - `tests/test_reward_policy.py`、`tests/test_advisor_service.py`：27 项规则/输入 + 1 项真实回环 HTTP 通过。包括任意候选数、具体实例删除/升级、1:5:9 抽样和原有 4^n 展开。
