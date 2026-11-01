@@ -53,6 +53,15 @@ python -m runctl --runtime .local/autobot/experiment/worker-00/runtime.json \
 
 输出含完整配置、逐次决策、原生动作/状态及终局结果。异常和超时写入 `failure.json`，不算死亡，不自动换种子凑次数。诊断局与正式评测分开。
 
+完整批次结束后可核对每次决策是否实际执行、拿牌门槛及 rollout 分支：
+
+```bash
+python -m runctl.audit --experiment .local/autobot/experiment/report \
+  --output .local/autobot/experiment/audit.json
+```
+
+核对要求原生事件、动作和终局原始文件仍在，不只读取汇总胜负。
+
 协议 `decisionMode: all` 启用全流程局外控制，`map` 保留历史基线。CLI 默认 `--policy model`，旧模式须指定 `--policy random-map`。进程和存档必须独占，不能连接玩家正在游玩的游戏或共享采集 worker。
 
 ## Windows 准备入口（原生 Windows 待验收）
