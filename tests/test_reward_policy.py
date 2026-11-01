@@ -62,6 +62,16 @@ def test_each_parent_branches_not_global_beam(request_data, depth):
         assert len({r['build_id'] for r in leaves}) < len(leaves)
 
 
+def test_empty_offers_roll_out_current_build_only(request_data):
+    request_data.update(options=[], rollout_depth=1)
+    result = selector().select(request_data)
+    assert result['recommended_action'] == 'skip'
+    assert result['score_margin'] == 0
+    assert len(result['candidates']) == 1
+    assert result['candidates'][0]['leaf_count'] == 4
+    assert result['stats']['per_depth'][0]['leaves_per_root'] == [4]
+
+
 def test_zero_depth_short_probabilities_and_combination(request_data):
     request_data['rollout_depth'] = 0
     result = selector(short_weight=3, long_weight=1).select(request_data)

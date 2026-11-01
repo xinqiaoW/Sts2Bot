@@ -146,8 +146,8 @@ class RewardSelector:
             raise ValueError('seed must be an integer')
         if 'options' in request:
             options = request['options']
-            if not isinstance(options, list) or not 1 <= len(options) <= 90:
-                raise ValueError('options must contain 1 to 90 explicit card operations')
+            if not isinstance(options, list) or not 0 <= len(options) <= 90:
+                raise ValueError('options must contain 0 to 90 explicit card operations')
         else:
             rewards = request['rewards']
             if not isinstance(rewards, list) or len(rewards) != 3:
@@ -307,7 +307,7 @@ class RewardSelector:
         best = ranked_options[0]
         return dict(recommended_option_index=best['option_index'], recommended_action=best['action'], recommended_card=best['card'],
                     ranking=[r['option_index'] for r in ranked_options],
-                    score_margin=best['combined_score']-ranked_options[1]['combined_score'],
+                    score_margin=best['combined_score']-ranked_options[1]['combined_score'] if len(ranked_options) > 1 else 0.0,
                     rollout_depth=depth, seed=seed, config=c, pool_card_ids=pool, candidates=candidates,
                     untrained_features=sorted(missing), warnings=sorted(warnings), stats=stats,
                     elapsed_seconds=time.perf_counter()-started,

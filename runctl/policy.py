@@ -88,6 +88,31 @@ class BotPolicy:
         weak = None if count is None else count < (3 if state['act'] == 1 else 2)
         return self.model.targets(state['actId'], room, state['visibleBoss'], weak=weak)
 
+    def search_card_builds(self, state, build, explicit):
+        # An empty offer list evaluates only the current build's skip branch.
+        # Shops still need the same rollout risk definition after cards sell out.
+        normal = RewardSelector(self.model.scorer, self.reward_config)
+        remaining = max(0, state['floorsToBoss']-1)
+        depth = min(normal.depth_for(state['floorsToBoss']), self.config['max_rollout_depth'], remaining)
+        request = dict(build=build.to_dict(), max_hp=state['maxHp'], options=explicit,
+            floors_to_boss=state['floorsToBoss'], rollout_depth=depth,
+            next_floors=next_floors(state, lambda r, n: self.targets(state, r, n), self.config['unknown_combat_probability']),
+            boss_targets=self.targets(state, 'Boss'))
+        result = normal.select(request)
+        projected_loss = min(c['long_expected_hp_loss'] for c in result['candidates'])
+        crisis = projected_loss >= self.config['crisis_boss_loss_fraction'] * state['maxHp']
+        if crisis and remaining > 0:
+            expanded = dict(self.reward_config, samples_per_parent=self.config['crisis_samples_per_parent'],
+                            keep_per_parent=self.config['crisis_keep_per_parent'])
+            request['rollout_depth'] = min(depth+self.config['crisis_extra_depth'], self.config['max_rollout_depth'], remaining)
+            result = RewardSelector(self.model.scorer, expanded).select(request)
+        self.model.warnings.extend(result['warnings'])
+        self.model.warnings.extend('untrained_feature:' + k for k in result['untrained_features'])
+        self.last_report.update(crisis=crisis, projected_boss_loss=projected_loss,
+            rollout_depth=result['rollout_depth'], samples_per_parent=result['config']['samples_per_parent'],
+            keep_per_parent=result['config']['keep_per_parent'], stats=result['stats'])
+        return result
+
     def cards(self, state, options, raw, build):
         explicit, mapping, projected_noops = [], [], []
         skip = next((o['index'] for o in options if o['kind'] in ('skip', 'leave') or
@@ -115,21 +140,8 @@ class BotPolicy:
             # run legal with a declared deterministic choice, not a fake score.
             self.model.warnings.append('forced_unmodeled_card_choice')
             return options[0]['index']
-        normal = RewardSelector(self.model.scorer, self.reward_config)
-        remaining = max(0, state['floorsToBoss']-1)
-        depth = min(normal.depth_for(state['floorsToBoss']), self.config['max_rollout_depth'], remaining)
-        request = dict(build=build.to_dict(), max_hp=state['maxHp'], options=explicit,
-            floors_to_boss=state['floorsToBoss'], rollout_depth=depth,
-            next_floors=next_floors(state, lambda r, n: self.targets(state, r, n), self.config['unknown_combat_probability']),
-            boss_targets=self.targets(state, 'Boss'))
-        result = normal.select(request)
-        projected_loss = min(c['long_expected_hp_loss'] for c in result['candidates'])
-        crisis = projected_loss >= self.config['crisis_boss_loss_fraction'] * state['maxHp']
-        if crisis and remaining > 0:
-            expanded = dict(self.reward_config, samples_per_parent=self.config['crisis_samples_per_parent'],
-                            keep_per_parent=self.config['crisis_keep_per_parent'])
-            request['rollout_depth'] = min(depth+self.config['crisis_extra_depth'], self.config['max_rollout_depth'], remaining)
-            result = RewardSelector(self.model.scorer, expanded).select(request)
+        result = self.search_card_builds(state, build, explicit)
+        crisis = self.last_report['crisis']
         scores = {original: result['candidates'][i]['combined_score'] for i, original in enumerate(mapping)}
         scores.update((i, result['candidates'][-1]['combined_score']) for i in projected_noops)
         if skip is not None: scores[skip] = result['candidates'][-1]['combined_score']
@@ -139,12 +151,7 @@ class BotPolicy:
             if option['kind'] == 'alternative' and option['index'] not in scores:
                 gain = min(2, state['maxHp']-state['hp']) if 'HEAL' in option.get('id', '').upper() else .1
                 scores[option['index']] = result['candidates'][-1]['combined_score'] + gain
-        self.model.warnings.extend(result['warnings'])
-        self.model.warnings.extend('untrained_feature:' + k for k in result['untrained_features'])
-        self.last_report.update(crisis=crisis, projected_boss_loss=projected_loss, scores=scores,
-            skip_score=result['candidates'][-1]['combined_score'],
-            rollout_depth=result['rollout_depth'], samples_per_parent=result['config']['samples_per_parent'],
-            keep_per_parent=result['config']['keep_per_parent'], stats=result['stats'])
+        self.last_report.update(scores=scores, skip_score=result['candidates'][-1]['combined_score'])
         # Filter taking cards before comparing other legal alternatives. A
         # blocked card must not hide a useful free heal or a free upgrade.
         margin = self.config['crisis_card_min_gain'] if crisis else self.config['normal_card_min_gain']
@@ -259,7 +266,7 @@ class BotPolicy:
             elif kind == 'gold': gain = option['amount'] * self.config['gold_hp_value']
             elif kind == 'open_cards': gain = 10
             elif kind == 'potion': gain = self.config['potion_value'] if any(p['id'] is None for p in state['potions']) else -1
-            elif kind == 'remove': gain = 5  # actual instance is scored on the child screen
+            elif kind == 'remove': gain = self.config['shop_remove_value']  # actual instance is scored on the child screen
             elif kind == 'reward': gain = 1
             elif kind not in ('skip', 'leave'): raise ValueError('Unsupported choice kind: ' + kind)
             if screen == 'SHOP' and kind != 'leave':
@@ -277,4 +284,15 @@ class BotPolicy:
             for index in deferred:
                 eligible.pop(index)
             self.last_report['potions_deferred_for_cards'] = deferred
+            worthwhile = {o['kind'] for o in options if o['index'] in eligible
+                          and eligible[o['index']] > leave_score}
+            if {'remove', 'potion'} <= worthwhile:
+                if 'crisis' not in self.last_report:
+                    self.search_card_builds(state, build, [])
+                deferred_kind = 'remove' if self.last_report['crisis'] else 'potion'
+                deferred = [o['index'] for o in options if o['kind'] == deferred_kind]
+                for index in deferred:
+                    eligible.pop(index, None)
+                self.last_report.update(shop_resource_priority='potion_before_remove' if self.last_report['crisis']
+                                        else 'remove_before_potion', resource_priority_deferred=deferred)
         return max(eligible, key=lambda i: (eligible[i], options[i]['kind'] in ('skip', 'leave'), -i))

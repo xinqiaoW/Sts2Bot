@@ -127,6 +127,41 @@ def test_unworthy_cards_do_not_block_potion_purchase(request_data, price, margin
     assert bot.last_report['potions_deferred_for_cards'] == []
 
 
+@pytest.mark.parametrize('crisis,remove_price,potion_price,expected', [
+    (False, 75, 50, 0),  # Normal: removal wins despite the cheaper potion.
+    (True, 50, 75, 1),   # Crisis: potion wins despite the cheaper removal.
+    (False, 100, 50, 1), # No positive removal gain: buy the potion.
+    (True, 50, 100, 0),  # No positive potion gain: buy removal.
+])
+def test_shop_resource_order_without_card_offers(request_data, crisis, remove_price, potion_price, expected):
+    observation = card_observation(request_data)
+    observation.update(screen='SHOP', options=[dict(index=0, kind='remove', price=remove_price),
+        dict(index=1, kind='potion', id='WEAK_POTION', price=potion_price), dict(index=2, kind='leave')])
+    observation['state'].update(gold=200, potions=[dict(id=None)])
+    bot = BotPolicy(FakeScorer(), config={'max_rollout_depth': 0, 'crisis_boss_loss_fraction': .1 if crisis else .8})
+    assert bot.config['shop_remove_value'] == bot.config['potion_value'] == 1
+    assert bot.choose(observation) == expected
+    if remove_price < 100 and potion_price < 100:
+        assert bot.last_report['crisis'] is crisis
+        assert bot.last_report['shop_resource_priority'] == ('potion_before_remove' if crisis else 'remove_before_potion')
+    # After completing that purchase, the next snapshot offers the other one.
+    other = dict(observation['options'][1-expected], index=0)
+    observation['state']['gold'] -= observation['options'][expected]['price']
+    if expected == 1:
+        observation['state']['potions'] = [dict(id='WEAK_POTION'), dict(id=None)]
+    observation['options'] = [other, dict(index=1, kind='leave')]
+    assert bot.choose(observation) == (0 if other['price'] < 100 else 1)
+
+
+def test_full_potion_slots_do_not_displace_removal_in_crisis(request_data):
+    observation = card_observation(request_data)
+    observation.update(screen='SHOP', options=[dict(index=0, kind='remove', price=75),
+        dict(index=1, kind='potion', id='WEAK_POTION', price=50), dict(index=2, kind='leave')])
+    observation['state'].update(gold=200, potions=[dict(id='WEAK_POTION')])
+    bot = BotPolicy(FakeScorer(), config={'max_rollout_depth': 0, 'crisis_boss_loss_fraction': .1})
+    assert bot.choose(observation) == 0
+
+
 def test_route_risk_and_hidden_payload_independence():
     state = dict(hp=15, maxHp=70, gold=0, map=[
         dict(row=1, col=0, type='Elite', children=[dict(row=2, col=0)]),

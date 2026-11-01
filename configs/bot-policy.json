@@ -10,6 +10,7 @@
   "max_rollout_depth": 4,
   "gold_hp_value": 0.01,
   "shop_reserve_gold": 0,
+  "shop_remove_value": 1.0,
   "rest_hp_fraction": 0.55,
   "event_max_hp_value": 1.0,
   "event_upgrade_value": 5.0,
