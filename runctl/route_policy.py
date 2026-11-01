@@ -81,7 +81,10 @@ def next_floors(state, target_for, unknown_probability):
     if current is None: return []
     frontier = {((current['row'], current['col']), state.get('normalCombatsCompleted')): 1.0}
     floors = []
-    for _ in range(2):
+    # Normally inspect two map layers. If both have no possible combat,
+    # extend through visible topology until the first possible fight instead
+    # of making short-term strength disappear behind shops/rests/events.
+    for layer in range(len(nodes)+1):
         after = {}
         for (key, count), probability in frontier.items():
             children = nodes.get(key, {}).get('children', [])
@@ -100,8 +103,14 @@ def next_floors(state, target_for, unknown_probability):
             if combat < 1:
                 frontier[(key, count)] = frontier.get((key, count), 0) + probability*(1-combat)
             if room == 'Unknown': room, probability = 'Monster', probability*combat
-            if room not in ('Monster', 'Elite', 'Boss'): continue
+            if probability == 0 or room not in ('Monster', 'Elite', 'Boss'): continue
             for target, weight in target_for(room, count).items():
                 targets[target] = targets.get(target, 0) + probability*weight
-        floors.append(dict(targets=targets, combat_probability=min(1., sum(targets.values()))))
+        floor = dict(targets=targets, combat_probability=min(1., sum(targets.values())))
+        if layer < 2:
+            floors.append(floor)
+        elif targets:
+            floors = [floor]
+        if layer >= 1 and any(f['combat_probability'] > 0 for f in floors):
+            return floors
     return floors

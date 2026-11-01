@@ -40,9 +40,16 @@ class BotPolicy:
         context = observation.get('context') or {}
         if [o['index'] for o in options] != list(range(len(options))): raise ValueError('Invalid option indices')
         self.last_report = dict(screen=screen, decisionSeq=observation['decisionSeq'], config=self.config)
+        free_relics = [o for o in options if o.get('kind') == 'relic']
         if len(options) == 1:
             choice = 0
             self.last_report['reason'] = 'only_legal_option'
+        elif free_relics and (screen in ('REWARDS', 'TREASURE') or screen == 'RELIC' and len(free_relics) == 1):
+            # Ordinary rewards/chest contents are independent free pickups.
+            # Only mutually exclusive relic offers, events and purchases need
+            # comparison. Model limitations must not discard real free relics.
+            choice = free_relics[0]['index']
+            self.last_report['reason'] = 'take_free_relic'
         elif screen == 'CRYSTAL':
             # Reproducible policy randomness; unrelated to the game's seed/RNG.
             seed = f"{self.config['seed']}:{observation['decisionSeq']}"

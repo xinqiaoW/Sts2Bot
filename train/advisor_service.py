@@ -21,6 +21,30 @@ RELIC_DISPLAY_FIELDS = {
     'TOUCH_OF_OROBAS': frozenset({'StarterRelic', 'UpgradedRelic'}),
 }
 
+# Verified against the live 0.111.0 game assembly, not display values. These
+# saved fields accumulate forever while their effects depend on the phase.
+LIVE_COUNTER_MODULI = {
+    'BOOK_OF_FIVE_RINGS': ('CardsAdded', 5),
+    'NUNCHAKU': ('AttacksPlayed', 10),
+    'IRON_CLUB': ('CardsPlayed', 4),
+    'FISHING_ROD': ('CombatsSeen', 3),
+    'PAELS_WING': ('RewardsSacrificed', 2),
+}
+# These are equivalent for the model's single upcoming combat, not modulo
+# counters: treasure count only tests >0/>1; candle only tests remaining >0;
+# an already-redeemed ticket can keep counting combats after reward delivery.
+LIVE_COUNTER_CAPS = {
+    'SILVER_CRUCIBLE': ('TreasureRoomsEntered', 2),
+    'PUMPKIN_CANDLE': ('KindleCount', 5),
+    'WONGOS_MYSTERY_TICKET': ('CombatsFinished', 5),
+}
+
+
+def nonnegative_counter(rid, field, value):
+    if type(value) is not int or not 0 <= value <= 2147483647:
+        raise ValueError(f'Invalid counter value: {rid}.{field}={value!r}; expected a nonnegative Int32')
+    return value
+
 
 def normalize_card(card):
     card = dict(card)
@@ -55,16 +79,20 @@ def normalize_relic(original):
         raise ValueError(f'Incomplete relic state: {rid}; '
                          f'missing={sorted(expected - state.keys())}; '
                          f'unexpected={sorted(state.keys() - expected)}')
-    # Native BookOfFiveRings keeps a cumulative Int32 CardsAdded; both its
-    # display and healing trigger use CardsAdded % 5. Training stores only
-    # that equivalent phase, not the lifetime total. Do not mutate live state
-    # or replay the heal (this scorer starts each simulated fight at full HP).
-    if rid == 'BOOK_OF_FIVE_RINGS':
-        count = state['CardsAdded']
-        if type(count) is not int or not 0 <= count <= 2147483647:
-            raise ValueError(f'Invalid counter value: {rid}.CardsAdded={count!r}; '
-                             'expected a nonnegative Int32')
-        state['CardsAdded'] = count % 5
+    if rid in LIVE_COUNTER_MODULI:
+        field, period = LIVE_COUNTER_MODULI[rid]
+        state[field] = nonnegative_counter(rid, field, state[field]) % period
+    if rid in LIVE_COUNTER_CAPS:
+        field, cap = LIVE_COUNTER_CAPS[rid]
+        state[field] = min(cap, nonnegative_counter(rid, field, state[field]))
+    if rid == 'LASTING_CANDY':
+        field = 'CombatRewardsSeen'
+        count = nonnegative_counter(rid, field, state[field])
+        # Preserve zero separately from subsequent even counts.
+        state[field] = 0 if count == 0 else 1 if count % 2 else 2
+    if rid == 'LAVA_LAMP' and type(state['TookDamageThisCombat']) is bool:
+        # Native AfterRoomEntered resets this before the modeled next combat.
+        state['TookDamageThisCombat'] = False
     for key, value in state.items():
         domain = COUNTER_DOMAINS[rid][key]
         if not any(type(value) is type(allowed) and value == allowed for allowed in domain):
@@ -101,7 +129,11 @@ def evaluate(payload, selector, unknown_combat_probability=0.25):
     boss = payload['boss_targets']
     encounters = selector.catalog.acts[build['act_id']]['encounters']
     floors = []
-    for room_weights in payload['future_room_types']:
+    initial_rooms = payload['future_room_types']
+    extended_short_horizon = False
+    for layer, room_weights in enumerate(initial_rooms + payload.get('short_fallback_room_types', [])):
+        if layer >= len(initial_rooms) and any(f['combat_probability'] > 0 for f in floors):
+            break
         total = sum(room_weights.values())
         if total <= 0 or any(v < 0 for v in room_weights.values()):
             raise ValueError('Invalid reachable map probability distribution')
@@ -111,6 +143,8 @@ def evaluate(payload, selector, unknown_combat_probability=0.25):
             if room == 'Unknown':
                 probability *= unknown_combat_probability
                 room = 'Monster'
+            if probability == 0:
+                continue
             if room in ('Shop', 'Treasure', 'RestSite', 'Ancient'):
                 continue
             if room == 'Boss':
@@ -123,7 +157,13 @@ def evaluate(payload, selector, unknown_combat_probability=0.25):
                 raise ValueError('No encounters for reachable room: ' + room)
             for target in candidates:
                 targets[target] = targets.get(target, 0) + probability / len(candidates)
-        floors.append(dict(targets=targets, combat_probability=min(1.0, sum(targets.values()))))
+        floor = dict(targets=targets, combat_probability=min(1.0, sum(targets.values())))
+        if layer < len(initial_rooms):
+            floors.append(floor)
+        elif targets:
+            floors = [floor]
+            extended_short_horizon = True
+            break
     request = dict(build=build, max_hp=payload['max_hp'], options=options,
                    floors_to_boss=payload['floors_to_boss'], next_floors=floors, boss_targets=boss)
     result = selector.select(request)
@@ -134,6 +174,7 @@ def evaluate(payload, selector, unknown_combat_probability=0.25):
     result['protocol'] = 1
     result['request_id'] = payload['request_id']
     result['normalized_relics'] = ignored
+    result['extended_short_horizon'] = extended_short_horizon
     result['scenario_note'] = '满血构筑评分；地图分支等概率，同类敌人等概率；未知房战斗概率 ' + str(unknown_combat_probability)
     return result
 

@@ -135,7 +135,11 @@ internal static class CardAdvisorCapture
         MapPoint current = run.CurrentMapPoint ?? throw new NotSupportedException("当前地图位置尚未就绪。");
         Dictionary<MapPoint, double> frontier = new() { [current] = 1 };
         List<Dictionary<string, double>> future = [];
-        for (int layer = 0; layer < 2; layer++)
+        List<Dictionary<string, double>> shortFallback = [];
+        // Room types and edges are visible on the map. Export farther layers
+        // separately so the service can find a possible fight when the next
+        // two layers are noncombat, without accessing hidden encounters.
+        for (int layer = 0; layer < run.Map.GetAllMapPoints().Count() + 2; layer++)
         {
             Dictionary<MapPoint, double> next = [];
             foreach (var (point, probability) in frontier)
@@ -145,7 +149,9 @@ internal static class CardAdvisorCapture
             Dictionary<string, double> types = [];
             foreach (var (point, probability) in next)
                 types[point.PointType.ToString()] = types.GetValueOrDefault(point.PointType.ToString()) + probability;
-            future.Add(types); frontier = next;
+            if (layer < 2) future.Add(types);
+            else shortFallback.Add(types);
+            frontier = next;
         }
         var payload = new
         {
@@ -153,7 +159,7 @@ internal static class CardAdvisorCapture
             build = new { act_id = run.Act.Id.Entry, act = run.CurrentActIndex + 1, family = "live-advisor",
                 cards = player.Deck.Cards.Select(Card).ToArray(), relics = player.Relics.Select(Relic).ToArray(), ancient_history = history },
             max_hp = player.Creature.MaxHp, gold = player.Gold,
-            options, future_room_types = future,
+            options, future_room_types = future, short_fallback_room_types = shortFallback,
             floors_to_boss = Math.Max(0, run.Map.BossMapPoint.coord.row - current.coord.row),
             boss_targets = new Dictionary<string, double> { [run.Act.BossEncounter.Id.Entry] = 1 },
         };

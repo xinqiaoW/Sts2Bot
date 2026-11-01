@@ -47,3 +47,24 @@
 计数是标准化输入，不还原真人计数；种子写入来源记录，同一构筑在不同战斗种子下不重新采样。周期余数和代表范围不表示真人状态分布。
 
 玩具盒的蜡制遗物身份、融化与战斗次数相互关联，仍拒绝；黄金罗盘则单独移除，保留剩余构筑。其他展示字段、获得效果和未适配状态按[遗物规则](relic-rules.md)处理。
+
+## 实机评分输入转换（2026-11-01）
+
+此前只有五轮书转换累计数，其他正常累计值可能被拒绝，或在机器人中被错误排除出评分。现在服务和机器人共用 `normalize_relic`，依据当前运行的原版 0.111.0 DLL 实际 IL 转换；不写回游戏、不补缺失字段、不重放获取/回血/奖励。
+
+| 实机字段 | 模型输入 |
+| --- | --- |
+| 双截棍 `AttacksPlayed` | 非负 Int32 模 10 |
+| 铁棒 `CardsPlayed` | 非负 Int32 模 4 |
+| 钓鱼竿 `CombatsSeen` | 非负 Int32 模 3 |
+| 五轮书 `CardsAdded` | 非负 Int32 模 5 |
+| 佩尔之翼 `RewardsSacrificed` | 非负 Int32 模 2 |
+| 吃不完的糖 `CombatRewardsSeen` | 0 保留；正奇数映射 1，正偶数映射 2 |
+| 白银熔炉 `TreasureRoomsEntered` | 非负 Int32 截到 2；保留首次及之后的判断 |
+| 南瓜蜡烛 `KindleCount` | 非负 Int32 截到 5；仅对下一场战斗等价，不声称剩余场数相同 |
+| 旺购神秘券 `CombatsFinished` | 非负 Int32 截到 5；`GaveRelic` 保留并继续校验关联 |
+| 熔岩灯 `TookDamageThisCombat` | 必须为 bool，评分下一场战斗按原生进房重置为 false |
+
+笔尖、开心小花、摆动球、音叉等在原生 setter 或触发结束时已经回到周期内，继续严格检查范围；次数有限的升级/使用次数不按周期取模。负数、布尔冒充整数、浮点、字符串、Int32 溢出及未知字段仍拒绝。
+
+当前测试 DLL 的吃不完的糖字段为 `CombatRewardsSeen`；根目录另一个反编译副本中的 `CombatsSeen` 及触发奇偶不同，不能套用到该版本。实际 DLL 检查结果保留于 `.local/autobot/live-counter-il.txt`，真实训练模型的四组累计值/等价状态比较见 `.local/autobot/live-counter-model-check.json`；同输入的浮点结果容差为 1e-5 HP。

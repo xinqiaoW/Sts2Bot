@@ -7,6 +7,7 @@
 - Linux 结构门禁通过；Windows 等价门禁规则同步，未在 Windows 执行。当前 Release 构建及原生诊断仍随行为修复推进，最终证据另记。
 - 外层 `tests/test_bot_comparison.py` 4 项通过：同种子配对、完整性、固定代码来源与失败不计死亡。
 - `test_owned_sea_glass_character_title_alias_preserves_provenance` 通过：历史角色别名有实际遗物证据才规范化，输入不变，无证据仍拒绝；真实失败快照 `12b4b33858ed4d1e9ca1cee97c26b6b6` 重新评分通过。未更改原生 DLL。
+- 后续计数/短期/免费遗物修正：当前游戏 DLL 的累计周期与非循环状态逐项核实；四组真实模型累计值/等价状态评分容差 1e-5 HP 通过。Python 回归覆盖免费领取不调用模型、互斥遗物比较、地图选项、条件战斗均值、穿过商店/休息扩展、问号概率为 0 的边界；真实 HTTP 通过。新 Release 构建 0 警告/错误，Linux 结构门禁通过；未宣称原生 Windows 可见界面验证。
 - `pilot-v2/report-v3` 8/8 自然死亡终局，跨到第三幕及最后 Boss，0 个流程失败；仅诊断，不计正式评测。完整内容发现作用域的两次同种子公开起点一致性通过，现场 `.local/autobot/full-discovery-startup.json`。
 - 原生 pilot-v1 修复输入字段后 1 局自然死亡：第 11 层精英，33 次决策、5 场战斗。pilot-v2 正在扩展界面覆盖，已发现 Boss 过渡按钮问题；异常不计完成局。现场保留在外层 `.local/autobot/`。
 - 重跑：`PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest tests/test_bot_policy.py tests/test_runctl.py -q`；原生命令见外层 `docs/autobot.md`。

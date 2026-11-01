@@ -115,6 +115,41 @@ def test_event_lethal_options_override_model_score(request_data):
     assert BotPolicy(FakeScorer()).choose(observation) == 1
 
 
+@pytest.mark.parametrize('screen', ['REWARDS', 'TREASURE', 'RELIC'])
+def test_free_relic_is_taken_without_model_scoring(request_data, screen):
+    observation = card_observation(request_data)
+    observation.update(screen=screen, options=[dict(index=0, kind='skip'),
+        dict(index=1, kind='relic', relic=dict(id='NUNCHAKU', state=[['AttacksPlayed', 103]]))])
+    scorer = FakeScorer()
+    def forbidden(*args, **kwargs): raise AssertionError('Free relic must not invoke model scoring')
+    scorer.score_many = forbidden
+    bot = BotPolicy(scorer)
+    assert bot.choose(observation) == 1
+    assert bot.last_report['reason'] == 'take_free_relic'
+
+
+def test_exclusive_relic_choices_still_compare_instant_strength(request_data):
+    observation = card_observation(request_data)
+    observation.update(screen='RELIC', options=[dict(index=0, kind='relic', relic=dict(id='VAJRA', state=[])),
+        dict(index=1, kind='relic', relic=dict(id='ANCHOR', state=[])), dict(index=2, kind='skip')])
+    scorer = FakeScorer()
+    def score(requests, **kwargs):
+        return [dict(expected_hp_loss=10-(3 if any(r['id']=='ANCHOR' for r in q['build']['relics']) else 0),
+                     warnings=[], untrained_features=[]) for q in requests]
+    scorer.score_many = score
+    bot = BotPolicy(scorer)
+    assert bot.choose(observation) == 1
+    assert bot.last_report['reason'] == 'immediate_model_and_visible_resources'
+
+
+def test_map_options_do_not_require_reward_kind(request_data):
+    observation = card_observation(request_data)
+    observation.update(screen='MAP', options=[dict(index=0, row=1, col=0), dict(index=1, row=1, col=1)])
+    observation['state']['map'] = [dict(row=1, col=0, type='Monster', children=[]),
+                                   dict(row=1, col=1, type='Boss', children=[])]
+    assert BotPolicy(FakeScorer()).choose(observation) == 0
+
+
 def test_owned_sea_glass_character_title_alias_preserves_provenance(request_data):
     from copy import deepcopy
     from runctl.model_adapter import ModelAdapter
@@ -185,6 +220,18 @@ def test_short_horizon_uses_public_weak_count_without_peeking_unknown_room():
     floors = next_floors(state, lambda room, count: {'weak' if count < 3 else 'strong': 1}, .25)
     assert floors[0] == dict(targets={'weak': .25}, combat_probability=.25)
     assert floors[1] == dict(targets={'strong': .25, 'weak': .75}, combat_probability=1)
+
+
+def test_short_horizon_extends_past_two_noncombat_rooms():
+    state = dict(normalCombatsCompleted=0, currentNode=dict(row=0, col=0), map=[
+        dict(row=0, col=0, type='Monster', children=[dict(row=1, col=0)]),
+        dict(row=1, col=0, type='Shop', children=[dict(row=2, col=0)]),
+        dict(row=2, col=0, type='RestSite', children=[dict(row=3, col=0)]),
+        dict(row=3, col=0, type='Unknown', children=[dict(row=4, col=0)]),
+        dict(row=4, col=0, type='Boss', children=[])])
+    targets = lambda room, count: {room: 1}
+    assert next_floors(state, targets, .25) == [dict(targets={'Monster': .25}, combat_probability=.25)]
+    assert next_floors(state, targets, 0) == [dict(targets={'Boss': 1}, combat_probability=1)]
 
 
 def test_orobas_candidate_projects_deterministic_starter_replacement(request_data):

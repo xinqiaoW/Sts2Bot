@@ -31,6 +31,34 @@ def test_invalid_counter_error_identifies_other_relic():
         normalize_relic(dict(id='PEN_NIB', state=[['AttacksPlayed', 10]]))
 
 
+@pytest.mark.parametrize('rid,field,count,expected', [
+    ('NUNCHAKU', 'AttacksPlayed', 10, 0), ('NUNCHAKU', 'AttacksPlayed', 129, 9),
+    ('IRON_CLUB', 'CardsPlayed', 95, 3), ('FISHING_ROD', 'CombatsSeen', 19, 1),
+    ('PAELS_WING', 'RewardsSacrificed', 7, 1),
+    ('LASTING_CANDY', 'CombatRewardsSeen', 0, 0),
+    ('LASTING_CANDY', 'CombatRewardsSeen', 7, 1),
+    ('LASTING_CANDY', 'CombatRewardsSeen', 8, 2),
+    ('PUMPKIN_CANDLE', 'KindleCount', 12, 5), ('PUMPKIN_CANDLE', 'KindleCount', 0, 0),
+])
+def test_cumulative_native_relic_state_has_equivalent_model_state(rid, field, count, expected):
+    original = dict(id=rid, state=[[field, count]])
+    before = deepcopy(original)
+    assert normalize_relic(original)['state'] == [[field, expected]]
+    assert original == before
+
+
+@pytest.mark.parametrize('value', [-1, True, 12.0, '12', 2147483648])
+def test_cumulative_normalization_does_not_accept_invalid_types(value):
+    with pytest.raises(ValueError, match='NUNCHAKU.*AttacksPlayed'):
+        normalize_relic(dict(id='NUNCHAKU', state=[['AttacksPlayed', value]]))
+
+
+def test_threshold_states_and_next_combat_reset():
+    assert normalize_relic(dict(id='SILVER_CRUCIBLE', state=[['TimesUsed', 3], ['TreasureRoomsEntered', 7]]))['state'] == [['TimesUsed', 3], ['TreasureRoomsEntered', 2]]
+    assert normalize_relic(dict(id='WONGOS_MYSTERY_TICKET', state=[['CombatsFinished', 16], ['GaveRelic', True]]))['state'] == [['CombatsFinished', 5], ['GaveRelic', True]]
+    assert normalize_relic(dict(id='LAVA_LAMP', state=[['TookDamageThisCombat', True]]))['state'] == [['TookDamageThisCombat', False]]
+
+
 def test_archaic_tooth_tooltips_match_training_state():
     native = dict(id='ARCHAIC_TOOTH', state=[['IsWax', False], ['IsMelted', False]],
                   unsupported_fields=['StarterCard', 'AncientCard'])
@@ -117,10 +145,27 @@ def test_live_bridge_normalization_and_baseline(request_data):
     assert r['request_id'] == 'scene-42'
     assert len(r['candidates']) == 4
     assert r['candidates'][-1]['delta'] == 0
-    assert r['candidates'][-1]['short_expected_hp_loss'] == pytest.approx(10/1.8)
+    assert r['candidates'][-1]['short_expected_hp_loss'] == 10
     assert all('leaves' not in c for c in r['candidates'])
     p['future_room_types'] = [{'Unknown': 1}]
-    assert evaluate(p, s, 0.25)['candidates'][-1]['short_expected_hp_loss'] == 2.5
+    assert evaluate(p, s, 0.25)['candidates'][-1]['short_expected_hp_loss'] == 10
+
+
+def test_advisor_extends_empty_short_window_using_only_public_room_types(request_data):
+    s = selector()
+    s.catalog.acts['OVERGROWTH']['encounters'] = [dict(id='FLYCONID_NORMAL', room_type='Monster')]
+    p = payload(request_data)
+    p['future_room_types'] = [{'Shop': 1}, {'RestSite': 1}]
+    p['short_fallback_room_types'] = [{'Unknown': 1}, {'Boss': 1}]
+    r = evaluate(p, s, .25)
+    assert r['extended_short_horizon']
+    assert r['candidates'][-1]['short_expected_hp_loss'] == 10
+    r = evaluate(p, s, 0)
+    assert r['candidates'][-1]['short_expected_hp_loss'] == 30
+    p['future_room_types'] = [{'Monster': 1}, {'RestSite': 1}]
+    r = evaluate(p, s)
+    assert not r['extended_short_horizon']
+    assert r['candidates'][-1]['short_expected_hp_loss'] == 10
 
 
 def test_reject_other_character_unknown_state_and_room(request_data):

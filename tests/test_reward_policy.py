@@ -66,12 +66,22 @@ def test_zero_depth_short_probabilities_and_combination(request_data):
     request_data['rollout_depth'] = 0
     result = selector(short_weight=3, long_weight=1).select(request_data)
     skip = result['candidates'][3]
-    assert skip['short_expected_hp_loss'] == pytest.approx(10)
+    assert skip['short_expected_hp_loss'] == pytest.approx(20 / 1.5)
     assert skip['long_expected_hp_loss'] == 30
-    assert skip['combined_score'] == -15
+    assert skip['combined_score'] == pytest.approx(-17.5)
     assert result['recommended_card']['id'] == 'FOOTWORK'
     assert skip['selected_leaf_count'] == 1
     assert skip['leaves'][0]['aggregation_weight'] == 1
+
+
+@pytest.mark.parametrize('probability', [1, .25])
+def test_short_mean_counts_battles_not_noncombat_rooms(request_data, probability):
+    request_data.update(rollout_depth=0, next_floors=[{'combat_probability': 0},
+        {'targets': {'FLYCONID_NORMAL': 1, 'BYGONE_EFFIGY_ELITE': 1, 'VANTOM_BOSS': 1},
+         'combat_probability': probability}])
+    skip = selector().select(request_data)['candidates'][-1]
+    assert skip['short_expected_hp_loss'] == pytest.approx((10+20+30)/3)
+    assert skip['short_combat_weight'] == probability
 
 
 def test_top_fraction_k_and_rank_weighting(request_data):

@@ -234,16 +234,21 @@ class RewardSelector:
             self.catalog.validate(b)
         short = [0.0] * root_count
         short_details = [[] for _ in range(root_count)]
+        short_combat_weight = 0.0
         for i, floor in enumerate(future):
             probability = floor.get('combat_probability', 1.0)
+            short_combat_weight += c['short_floor_weights'][i] * probability
             values = losses(root_builds, floor['targets']) if probability else [0.0]*root_count
             for root in range(root_count):
                 expected = probability * values[root]
                 short[root] += c['short_floor_weights'][i] * expected
                 short_details[root].append(dict(expected_hp_loss=expected, combat_probability=probability,
                                                 targets=floor.get('targets', {}), weight=c['short_floor_weights'][i]))
-        if future and c['short_reduction'] == 'mean':
-            short = [s / sum(c['short_floor_weights'][:len(future)]) for s in short]
+        if short_combat_weight and c['short_reduction'] == 'mean':
+            # Conditional mean per possible battle. Shops/rests are not
+            # zero-damage battles; uncertain combat probability contributes
+            # equally to the numerator and the effective battle count.
+            short = [s / short_combat_weight for s in short]
         initial_boss = losses(root_builds, boss)
         frontiers = [[Node(b, [], loss)] for b, loss in zip(root_builds, initial_boss)]
         pool = self.pool() if depth else []
@@ -291,6 +296,7 @@ class RewardSelector:
             combined = (c['short_weight']*short[index] + c['long_weight']*long) / (c['short_weight']+c['long_weight'])
             candidates.append(dict(option_index=index, **choices[index],
                                    short_expected_hp_loss=short[index], short_score=-short[index], short_details=short_details[index],
+                                   short_combat_weight=short_combat_weight,
                                    initial_boss_hp_loss=initial_boss[index], long_expected_hp_loss=long, long_score=-long,
                                    combined_score=-combined, leaf_count=len(leaves), selected_leaf_count=count,
                                    leaves=[dict(build_id=node.build.id, path=node.path, boss_hp_loss=node.loss,
