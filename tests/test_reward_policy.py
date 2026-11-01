@@ -49,7 +49,7 @@ def selector(**overrides):
     return RewardSelector(FakeScorer(), dict(samples_per_parent=4, pool_card_ids=['FOOTWORK', 'BACKFLIP', 'DAGGER_THROW', 'DASH'], **overrides))
 
 
-@pytest.mark.parametrize('depth', range(5))
+@pytest.mark.parametrize('depth', range(7))
 def test_each_parent_branches_not_global_beam(request_data, depth):
     request_data['rollout_depth'] = depth
     result = selector().select(request_data)
@@ -131,7 +131,7 @@ def test_invalid_config(override):
         load_config(None, **override)
 
 
-@pytest.mark.parametrize('override', [dict(rollout_depth=5), dict(floors_to_boss=-1), dict(current_hp=20),
+@pytest.mark.parametrize('override', [dict(rollout_depth=7), dict(floors_to_boss=-1), dict(current_hp=20),
                                     dict(boss_targets={'FLYCONID_NORMAL': 1}), dict(max_hp=0),
                                     dict(boss_targets={'UNKNOWN_BOSS': 1}), dict(rewards=[])])
 def test_invalid_request(request_data, override):

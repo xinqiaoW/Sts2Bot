@@ -30,6 +30,8 @@ internal static class SolverWeights
     // 任意一个生效后立刻饱和，Beam 无法区分完整成长引擎和单张能力。
     public const int PersistentBuffDeltaBeamCap = 32;
     public const double PersistentBuffDeltaBeamValue = 50_000d;
+    // Boss-only setup retention; complete routes still use actual combat loss.
+    public const double BossPersistentBuffBeamMultiplier = 1.5d;
     public const int StandardPersistentBuffDeltaBeamCap = 4;
     public const double StandardPersistentBuffDeltaBeamValue = 150_000d;
     public const int LatentSetupBeamCap = 24;

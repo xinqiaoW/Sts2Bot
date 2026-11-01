@@ -1,5 +1,15 @@
 # CombatSolver 开发笔记与未来构想
 
+## 0.30.5：Boss 持续能力保路与 Bot 参数（2026-11-01）
+
+按用户要求提高 Boss 战持续能力铺垫权重。保留原有 PersistentBuffValue 特征、增量封顶及幕末/普通基础权重，仅在不可变根的 EncounterRoomType 为 Boss 时，将 BeamRankScore 的持续增益保路项乘以 1.5。包括第三幕非幕末 Boss；不从后台读取 live 房间，不增加 Beam/时间预算，不修改状态键、模拟效果或完整路线的最终排序。增益按持续效果计算，不按能力牌打出次数堆分；现有该特征还包括充能球引擎。
+
+外层 Python 的艰难判定改为普通 rollout 最优候选长期 Boss 战损 > 40；恰好 40、不同最大生命边界均有回归。权重改为短期 0.28/长期 0.72，Bot 与人工评分服务默认配置同步。旧 crisis_boss_loss_fraction 配置明确提示弃用，历史调参配置和结果保留，不伪称旧评测使用新策略。
+
+新增外层 tools/run_boss_setup_smoke.py，用固定 2 秒短搜/DOP1/Low 预设验证 Boss 铺垫及普通战立即击杀哨兵，在首个搜索结果停止。构建和原生证据在测试清单记录；未宣称整体胜率或 Windows 实战质量提升。
+
+用户随后限定战后奖励固定深度 3/4/5，默认 3、危机 +1。RunControl 原生卡牌奖励新增公开 postCombat 标志（当前房间为 CombatRoom），避免事件共用奖励页误判。Python 仅该标志为 true 时绕过距离/其他搜索深度上限；明确深度 override 支持 0–6，原有距离表仍限 0–4。其他页面保持旧行为。
+
 ## 0.30.4：商店选牌与 Bot 搜索设置（2026-11-01）
 
 Windows 用户在商店 `NDeckCardSelectScreen` 点击时报旧 holder 不可见。网格控件会回收/重绑定；现在评分持有完整原生合法列表及具体 CardModel 实例，点击时重新按实例查找，滚动到目标并调用原生 AllocateCardHolders 后确认可见。原生 SetScrollPosition 同时更新位置和目标，不会自行触发动画分支的控件刷新；最小 fixture 暴露并补齐此步骤。页面/候选变化仍明确失败，不盲点其他同名牌。

@@ -1,5 +1,12 @@
 # CombatSolver 测试清单
 
+## 0.30.5 Boss 铺垫与 Bot 参数
+
+- Python 策略、rollout 和评分服务：130 项普通回归通过；HTTP 项首次被沙箱禁止创建 socket，单独在允许回环网络的环境重跑，1 项通过。合计 131 项，包含 >40 严格边界、最大生命 50/100 不改变阈值、0.28/0.72 权重与已有商店排序。该记录在后续固定深度修改之前取得，后续变化需另记验证。
+- 原生短搜基线：外层 `.local/autobot/boss-setup-0305-baseline/`，0.30.4 Release，固定种子 BOSSSETUP0305，Low、2 秒短搜、DOP1、禁药，首个结果停止。墨影幻灵 Boss：11 回合死亡路线、预计战损 70、已包含灵动步法；普通毛绒伏地虫哨兵：首回合 0 战损击杀，没有多打灵动步法。
+- 候选验证入口：外层 `.venv-train/bin/python tools/run_boss_setup_smoke.py --runtime <专用隔离 runtime.json> --dll <本次 Release DLL> --output <新目录>`。候选结果待该次 Release 构建后的原生执行记录，不能把基线通过当作新行为通过。
+- 后续固定深度策略与 rollout 101 项通过：3/4/5 固定深度、危机 +1、距离 Boss 一层也不缩短、商店/事件保持距离规则、4^5/4^6 叶节点数。原生 payload 的 postCombat 仅由当前已知 CombatRoom 判断。
+
 ## 0.30.4 商店选择与可调搜索
 
 - Python `tests/test_runctl.py` 33 项通过，包含 settings 请求、1800 秒默认等待、边界校验及旧模式不新增协议字段。

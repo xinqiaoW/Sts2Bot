@@ -13,6 +13,7 @@ using MegaCrit.Sts2.Core.Nodes.Screens;
 using MegaCrit.Sts2.Core.Nodes.Screens.CardSelection;
 using MegaCrit.Sts2.Core.Nodes.Screens.Overlays;
 using MegaCrit.Sts2.Core.Rewards;
+using MegaCrit.Sts2.Core.Rooms;
 
 namespace CombatSolver;
 
@@ -113,7 +114,7 @@ internal sealed partial class RunControlSession
                 if (button.IsEnabled && button.IsVisibleInTree())
                     options.Add(new(new { kind = "alternative", id = alternate.OptionId, title = alternate.Title.GetFormattedText() }, () => ClickLegalAsync(button)));
             }
-            await SelectUiAsync("CARD_REWARD", options, null, overlay, ct);
+            await SelectUiAsync("CARD_REWARD", options, new { postCombat = Run.CurrentRoom is CombatRoom }, overlay, ct);
             return;
         }
         if (overlay is NChooseACardSelectionScreen choose)

@@ -63,6 +63,7 @@ internal sealed partial class CombatBeamSolver
     private sealed class BeamRetentionPolicy(
         SolverSearchProfile _profile,
         bool _isActEndingBoss,
+        bool _isBoss,
         int _initialEnemyCount,
         int _initialPlayerHp,
         int _initialPlayerMaxHp,
@@ -2323,6 +2324,7 @@ internal sealed partial class CombatBeamSolver
             double persistentBuffValue = _isActEndingBoss
                 ? SolverWeights.PersistentBuffDeltaBeamValue
                 : SolverWeights.StandardPersistentBuffDeltaBeamValue;
+            if (_isBoss) persistentBuffValue *= SolverWeights.BossPersistentBuffBeamMultiplier;
             bool useLatentSetup = _isActEndingBoss || _initialEnemyCount > 1;
             int strengthSuppressionHorizon = _isActEndingBoss
                 ? SolverWeights.BossEnemyStrengthSuppressionHorizon

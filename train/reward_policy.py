@@ -139,8 +139,8 @@ class RewardSelector:
         depth = self.depth_for(request['floors_to_boss'])
         if 'rollout_depth' in request:
             depth = request['rollout_depth']
-            if type(depth) is not int or not 0 <= depth <= 4:
-                raise ValueError('rollout_depth must be an integer in [0,4]')
+            if type(depth) is not int or not 0 <= depth <= 6:
+                raise ValueError('rollout_depth must be an integer in [0,6]')
         seed = request.get('seed', c['seed'])
         if type(seed) is not int:
             raise ValueError('seed must be an integer')

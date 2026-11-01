@@ -8,13 +8,15 @@
 
 | 参数 | 默认值 | 含义 |
 | --- | --- | --- |
-| `short_weight` / `long_weight` | 0.35 / 0.65 | 短期与长期权重 |
+| `short_weight` / `long_weight` | 0.28 / 0.72 | 短期与长期权重 |
 | `normal_card_min_gain` | 1 | 正常加牌必须严格超过跳过分加此值 |
 | `crisis_card_min_gain` | 0 | 艰难局面仍要求加牌优于跳过 |
-| `crisis_boss_loss_fraction` | 0.8 | 正常 rollout 最佳长期预期损失达到最大 HP 的此比例则扩大搜索；不是死亡概率 |
+| `crisis_boss_loss_threshold` | 40 | 正常 rollout 最佳长期 Boss 预期掉血严格超过此值则判为艰难并扩大搜索；不按最大 HP 比例计算 |
 | `crisis_samples_per_parent` | 96 | 艰难局面每个父节点抽样数 |
 | `crisis_keep_per_parent` | 6 | 艰难局面每个父节点保留数 |
-| `crisis_extra_depth` / `max_rollout_depth` | 1 / 4 | 深度增量和上限，同时受剩余楼层约束 |
+| `reward_rollout_depth` | 3 | 仅战后奖励选牌使用固定深度，可选 3、4、5，不受剩余层数限制 |
+| `crisis_extra_depth` | 1 | 艰难局面额外深度；战后奖励因此默认搜 4 层，最高 6 层 |
+| `max_rollout_depth` | 4 | 商店、事件、删牌等其他卡牌搜索的上限，仍受剩余层数约束 |
 | `gold_hp_value` / `shop_reserve_gold` | 0.01 / 0 | 每金币扣分与保留金币；默认不为留钱额外扣分 |
 | `potion_value` | 1 | 已有空药水槽时的资源估值 |
 | `shop_remove_value` | 1 | 商店购买删牌服务的固定估值；减去价格代价后参与比较 |
@@ -28,13 +30,27 @@
 
 后续 Python 补丁把商店删牌服务估值从写死的 5 改为可配置的 `shop_remove_value`，默认 1，与药水基础估值相同。是否付费删牌仍用该启发式；进入删牌界面后才用模型和 rollout 比较删哪张。`event_remove_value` 仅用于事件，不控制商店。买牌比较的是加牌综合分减去跳过综合分的增益，再扣金币代价；完成每次操作后根据新牌组、剩余金币及库存重新评分，可在一次进店中连续买牌、删牌和买药水。
 
-在原有卡牌优先于药水的规则之后，若删牌和药水都买得起且净收益大于 0，正常局面暂缓药水、艰难局面暂缓删牌。优先级只在两个选项都有正收益时生效，不强买无收益商品。药水满槽仍不购买。商店没有可评分卡牌时，以当前构筑的跳过分支 rollout 判断风险，沿用 `crisis_boss_loss_fraction` 标准；不会因为卡牌售罄而默认判为正常。遗物仍参加净收益比较，卡牌与删牌之间仍按净收益决定。
+在原有卡牌优先于药水的规则之后，若删牌和药水都买得起且净收益大于 0，正常局面暂缓药水、艰难局面暂缓删牌。优先级只在两个选项都有正收益时生效，不强买无收益商品。药水满槽仍不购买。商店没有可评分卡牌时，以当前构筑的跳过分支 rollout 判断风险，沿用 `crisis_boss_loss_threshold` 的绝对掉血标准；不会因为卡牌售罄而默认判为正常。遗物仍参加净收益比较，卡牌与删牌之间仍按净收益决定。
 
 短期分数现在是可能战斗的平均战损：非战斗房间不计入分母；问号的战斗概率同时进入战损与有效战斗次数。默认两层等权 `[1, 1]`。若下两层没有可能战斗，沿公开地图向后扩展到首个可能战斗层；不会读取该房实际生成的怪。若已无可达战斗，窗口为空，不虚构敌人。
 
 战后奖励和宝箱的普通免费遗物直接领取，单件可领取遗物不因模型评分低而跳过。多个互斥遗物或古代事件选项才比较即时战斗力；商店另考虑价格。支持的累计计数转换为模型等价状态，见 [计数规则](counter-state.md)。
 
 普通 rollout 每个父节点保留 4 个分支，深度 n 对应每个初始候选 4^n 个末端节点；艰难局面默认 6^n。白/蓝/金抽样比 9:5:1。日志保存分数、跳过分、风险状态、深度、实际分支统计及门槛排除项。
+
+战后奖励固定深度以 0.30.5 Mod 导出的 `context.postCombat=true` 为准；事件即使使用相同卡牌奖励页面也不采用固定深度。先按配置的普通深度评估风险，超过 40 则按既有危机采样/分支参数并增加 1 层重新搜索；不因距 Boss 只剩一层而缩短。正常深度 3/4/5 每个候选分别有 64/256/1024 个末端节点，危机深度 4/5/6 在默认分支数 6 下分别有 1296/7776/46656 个末端节点。
+
+当前配置示例（合并到已有 JSON，不重复字段）：
+
+```json
+"short_weight": 0.28,
+"long_weight": 0.72,
+"crisis_boss_loss_threshold": 40.0,
+"reward_rollout_depth": 3,
+"crisis_extra_depth": 1
+```
+
+恰好预计掉血 40 不算艰难；此标准仍基于最佳长期 Boss 预期掉血，未使用当前剩余 HP。旧 `crisis_boss_loss_fraction` 已弃用，加载旧覆盖配置会明确提示该字段被忽略；请使用绝对 HP 阈值。
 
 ## 信息和模型边界
 
@@ -77,7 +93,7 @@ python -m runctl.audit --experiment .local/autobot/experiment/report \
 
 ## Windows 本地试用（原生 Windows 待验收）
 
-0.30.4 测试包先将 `advisor-service` 合并到已有服务目录，保留 `.venv` 和 `checkpoints/train/selected`；`CombatSolver` 是本次 Mod 文件夹。无需重新下载模型、安装依赖或启动 HTTP 评分服务。可先试用，100 局评测尚未完成。
+0.30.5 测试包先将 `advisor-service` 合并到已有服务目录，保留 `.venv` 和 `checkpoints/train/selected`；`CombatSolver` 是本次 Mod 文件夹。无需重新下载模型、安装依赖或启动 HTTP 评分服务。可先试用，100 局评测尚未完成。
 
 在包含训练模型、Python 依赖和本次机器人代码的服务目录执行，替换三个实际路径：
 
@@ -100,7 +116,7 @@ python -m runctl.audit --experiment .local/autobot/experiment/report \
 
 0.30.3 首次 Windows 试用发现读取 `decision.json` 的瞬时 `PermissionError`。Python 通信补丁使用允许删除/替换共享的 Windows 文件句柄，并对 Windows 文件占用/替换窗口最多重试约 1 秒；持续权限错误、JSON 损坏和协议身份错误仍失败，不重新发送动作。覆盖服务目录的 `runctl/env.py` 后重新启动机器人即可，无需重装 Mod、模型或独立游戏目录。31 项通信协议回归通过，其中包括瞬时占用、持续拒绝访问和损坏 JSON；Windows 原生使用效果仍待实际验证。
 
-### 已有 Windows Bot 升级到 0.30.4
+### 已有 Windows Bot 升级到 0.30.5
 
 先退出 Bot 和对应游戏，将包内 `advisor-service` 合并覆盖原服务目录；备份个人配置，本次默认配置包含新的商店估值。将包内 `CombatSolver` 的 DLL、JSON、NOTICE 和 MemoryCleaner 覆盖到 **独立 Bot 游戏** 的 `game/mods/CombatSolver`。只更新 Downloads 中用来准备的 Mod 文件夹，不会更新已经创建的独立游戏。
 
@@ -128,4 +144,6 @@ $runtime | Add-Member -NotePropertyName combat_search_mode -NotePropertyValue 's
 
 在 Bot 游戏中的 CombatSolver 设置调整性能档位/自定义预算，下一局读取该档案。独立档案路径在 `runtime.json` 的 `data_dir`，设置文件是其中的 `combat_solver_settings.json`；原游戏的设置不会自动同步到 Bot。`settings` 默认单场战斗等待上限 1800 秒、整局 14400 秒；这是故障等待上限，不是每次搜索预算。可分别用 runtime 的 `combat_timeout_seconds`（最多 3600）及 CLI `--timeout`（最多 14400）调整。
 
-选牌 rollout 另由服务目录 `configs/reward-policy.json` 的 `depth_schedule`、`samples_per_parent`、`keep_per_parent` 及 `configs/bot-policy.json` 的危机扩展参数控制，与战斗搜索档位独立。修改后重启 Bot。原生日志 `run_started` 记录实际搜索模式、预算与并行度，方便确认设置生效。
+战后选牌深度使用 `configs/bot-policy.json` 的 `reward_rollout_depth`；商店/事件/删牌仍使用 `configs/reward-policy.json` 的 `depth_schedule` 和 Bot 的 `max_rollout_depth`。普通采样/分支数仍为 `samples_per_parent`、`keep_per_parent`，危机扩展参数仍在 `bot-policy.json`。这些与战斗搜索档位独立。修改后重启 Bot。原生日志 `run_started` 记录实际搜索模式、预算与并行度，方便确认设置生效。
+
+0.30.5 的 Boss 战把持续能力增益的中间路线保留加分乘以 1.5；使用已捕获的 Boss 房间类型，包含非幕末 Boss。搜索预算和完整路线最终战损排序不变，不意味着必定先出能力或已经证明整局胜率更高。

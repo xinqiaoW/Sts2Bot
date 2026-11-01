@@ -68,7 +68,9 @@ class BotPolicy:
                 choice, plans = plan_route(state, options, losses, self.config)
                 self.last_report.update(route_plans=plans, encounter_losses=losses)
             elif screen in ('CARD_REWARD', 'CHOOSE_CARD') or (screen == 'CARD_GRID' and context.get('action') in ('take', 'upgrade', 'remove')):
-                choice = self.cards(state, options, raw, build)
+                choice = self.cards(state, options, raw, build,
+                    fixed_depth=self.config['reward_rollout_depth']
+                        if screen == 'CARD_REWARD' and context.get('postCombat') is True else None)
             elif screen == 'REST':
                 normal_loss = self.model.score([build], self.targets(state), state['maxHp'])[0]['expected_hp_loss']
                 urgent = state['hp'] < max(self.config['rest_hp_fraction']*state['maxHp'], normal_loss*1.5)
@@ -88,32 +90,35 @@ class BotPolicy:
         weak = None if count is None else count < (3 if state['act'] == 1 else 2)
         return self.model.targets(state['actId'], room, state['visibleBoss'], weak=weak)
 
-    def search_card_builds(self, state, build, explicit):
+    def search_card_builds(self, state, build, explicit, *, fixed_depth=None):
         # An empty offer list evaluates only the current build's skip branch.
         # Shops still need the same rollout risk definition after cards sell out.
         normal = RewardSelector(self.model.scorer, self.reward_config)
         remaining = max(0, state['floorsToBoss']-1)
-        depth = min(normal.depth_for(state['floorsToBoss']), self.config['max_rollout_depth'], remaining)
+        depth = fixed_depth if fixed_depth is not None else min(
+            normal.depth_for(state['floorsToBoss']), self.config['max_rollout_depth'], remaining)
         request = dict(build=build.to_dict(), max_hp=state['maxHp'], options=explicit,
             floors_to_boss=state['floorsToBoss'], rollout_depth=depth,
             next_floors=next_floors(state, lambda r, n: self.targets(state, r, n), self.config['unknown_combat_probability']),
             boss_targets=self.targets(state, 'Boss'))
         result = normal.select(request)
         projected_loss = min(c['long_expected_hp_loss'] for c in result['candidates'])
-        crisis = projected_loss >= self.config['crisis_boss_loss_fraction'] * state['maxHp']
-        if crisis and remaining > 0:
+        crisis = projected_loss > self.config['crisis_boss_loss_threshold']
+        if crisis and (fixed_depth is not None or remaining > 0):
             expanded = dict(self.reward_config, samples_per_parent=self.config['crisis_samples_per_parent'],
                             keep_per_parent=self.config['crisis_keep_per_parent'])
-            request['rollout_depth'] = min(depth+self.config['crisis_extra_depth'], self.config['max_rollout_depth'], remaining)
+            request['rollout_depth'] = depth+self.config['crisis_extra_depth'] if fixed_depth is not None else min(
+                depth+self.config['crisis_extra_depth'], self.config['max_rollout_depth'], remaining)
             result = RewardSelector(self.model.scorer, expanded).select(request)
         self.model.warnings.extend(result['warnings'])
         self.model.warnings.extend('untrained_feature:' + k for k in result['untrained_features'])
         self.last_report.update(crisis=crisis, projected_boss_loss=projected_loss,
+            rollout_depth_mode='fixed_reward' if fixed_depth is not None else 'distance_to_boss',
             rollout_depth=result['rollout_depth'], samples_per_parent=result['config']['samples_per_parent'],
             keep_per_parent=result['config']['keep_per_parent'], stats=result['stats'])
         return result
 
-    def cards(self, state, options, raw, build):
+    def cards(self, state, options, raw, build, *, fixed_depth=None):
         explicit, mapping, projected_noops = [], [], []
         skip = next((o['index'] for o in options if o['kind'] in ('skip', 'leave') or
                      (o['kind'] == 'alternative' and o.get('id', '').upper() == 'SKIP')), None)
@@ -140,7 +145,7 @@ class BotPolicy:
             # run legal with a declared deterministic choice, not a fake score.
             self.model.warnings.append('forced_unmodeled_card_choice')
             return options[0]['index']
-        result = self.search_card_builds(state, build, explicit)
+        result = self.search_card_builds(state, build, explicit, fixed_depth=fixed_depth)
         crisis = self.last_report['crisis']
         scores = {original: result['candidates'][i]['combined_score'] for i, original in enumerate(mapping)}
         scores.update((i, result['candidates'][-1]['combined_score']) for i in projected_noops)

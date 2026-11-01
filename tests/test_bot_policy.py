@@ -23,20 +23,48 @@ def test_crisis_and_forced_choices():
 
 def test_configured_threshold_and_weights():
     config = load_policy_config(normal_card_min_gain=2)
-    assert config['short_weight'] == .35 and config['long_weight'] == .65
+    assert config['short_weight'] == .28 and config['long_weight'] == .72
     assert choose_card_with_margin({0: 2, 1: 0}, 1, crisis=False, config=config) == 1
     assert choose_card_with_margin({0: 2.01, 1: 0}, 1, crisis=False, config=config) == 0
 
 
+def test_legacy_crisis_fraction_is_explicitly_retired():
+    with pytest.warns(UserWarning, match='obsolete'):
+        config = load_policy_config(crisis_boss_loss_fraction=.8)
+    assert config['crisis_boss_loss_threshold'] == 40
+    assert 'crisis_boss_loss_fraction' not in config
+
+
+@pytest.mark.parametrize('max_hp', [50, 100])
+@pytest.mark.parametrize('boss_loss,expected_crisis', [(39.99, False), (40, False), (40.01, True)])
+def test_absolute_crisis_boundary_ignores_max_hp(request_data, max_hp, boss_loss, expected_crisis):
+    class ShiftedScorer(FakeScorer):
+        def score_many(self, requests, strict=False):
+            rows = super().score_many(requests, strict=strict)
+            for row in rows:
+                row['expected_hp_loss'] += boss_loss - 30
+            return rows
+    observation = card_observation(request_data)
+    observation.update(screen='SHOP', options=[dict(index=0, kind='remove', price=75),
+        dict(index=1, kind='potion', id='WEAK_POTION', price=50), dict(index=2, kind='leave')])
+    observation['state'].update(hp=max_hp, maxHp=max_hp, gold=200, potions=[dict(id=None)])
+    bot = BotPolicy(ShiftedScorer(), config={'max_rollout_depth': 0})
+    assert bot.choose(observation) == (1 if expected_crisis else 0)
+    assert bot.last_report['projected_boss_loss'] == pytest.approx(boss_loss)
+    assert bot.last_report['crisis'] is expected_crisis
+
+
 @pytest.mark.parametrize('overrides', [{'normal_card_min_gain': -1}, {'short_weight': 0, 'long_weight': 0},
     {'crisis_samples_per_parent': 1, 'crisis_keep_per_parent': 4}, {'max_rollout_depth': 5},
-    {'route_beam_width': 0}, {'unknown_combat_probability': 2}, {'seed': True}, {'typo': 1}])
+    {'route_beam_width': 0}, {'unknown_combat_probability': 2}, {'seed': True}, {'typo': 1},
+    {'reward_rollout_depth': 2}, {'reward_rollout_depth': 6}, {'reward_rollout_depth': True},
+    {'reward_rollout_depth': 5, 'crisis_extra_depth': 2}])
 def test_bad_bot_configuration(overrides):
     with pytest.raises(ValueError): load_policy_config(**overrides)
 
 
 def card_observation(request_data):
-    return dict(runId='policy-test', decisionSeq=1, screen='CARD_REWARD', context=None,
+    return dict(runId='policy-test', decisionSeq=1, screen='CARD_REWARD', context={'postCombat': True},
         state=dict(act=1, actId='OVERGROWTH', hp=70, maxHp=70, gold=99, floor=6,
                    build=request_data['build'], visibleBoss='VANTOM_BOSS', floorsToBoss=3,
                    currentNode={'row': 1, 'col': 0}, map=[], potions=[]),
@@ -55,12 +83,43 @@ def test_full_card_policy_enforces_margin_and_forced_selection(request_data):
 
 def test_crisis_expands_actual_search_and_relaxes_margin(request_data):
     observation = card_observation(request_data)
+    observation['screen'] = 'CHOOSE_CARD'  # Event choices retain distance-based depth.
     bot = BotPolicy(FakeScorer(), config={'normal_card_min_gain': 10, 'max_rollout_depth': 1,
-        'crisis_boss_loss_fraction': .1, 'crisis_samples_per_parent': 36, 'crisis_keep_per_parent': 6})
+        'crisis_boss_loss_threshold': 7, 'crisis_samples_per_parent': 36, 'crisis_keep_per_parent': 6})
     assert bot.choose(observation) == 0
     assert bot.last_report['crisis']
     assert bot.last_report['samples_per_parent'] == 36
     assert bot.last_report['stats']['per_depth'][0]['leaves_per_root'] == [6]*4
+
+
+@pytest.mark.parametrize('depth', [3, 4, 5])
+@pytest.mark.parametrize('crisis', [False, True])
+def test_combat_reward_fixed_depth_even_immediately_before_boss(request_data, depth, crisis):
+    observation = card_observation(request_data)
+    observation['state']['floorsToBoss'] = 1
+    bot = BotPolicy(FakeScorer(), config={'reward_rollout_depth': depth, 'max_rollout_depth': 0,
+        'crisis_boss_loss_threshold': 0 if crisis else 40, 'crisis_extra_depth': 1,
+        'crisis_samples_per_parent': 2, 'crisis_keep_per_parent': 2})
+    # Small branches isolate depth semantics; the selector suite verifies 4^n.
+    bot.reward_config.update(samples_per_parent=2, keep_per_parent=2, pool_card_ids=['FOOTWORK'])
+    bot.choose(observation)
+    expected_depth = depth + int(crisis)
+    assert bot.last_report['crisis'] is crisis
+    assert bot.last_report['rollout_depth'] == expected_depth
+    assert bot.last_report['rollout_depth_mode'] == 'fixed_reward'
+    assert bot.last_report['stats']['per_depth'][-1]['leaves_per_root'] == [2**expected_depth]*4
+
+
+@pytest.mark.parametrize('screen,context', [('CHOOSE_CARD', None), ('CARD_GRID', {'action': 'take'}),
+    ('CARD_REWARD', {'postCombat': False}), ('CARD_REWARD', None)])
+def test_noncombat_card_choices_keep_distance_based_depth(request_data, screen, context):
+    observation = card_observation(request_data)
+    observation.update(screen=screen, context=context)
+    observation['state']['floorsToBoss'] = 1
+    bot = BotPolicy(FakeScorer(), config={'reward_rollout_depth': 5})
+    bot.choose(observation)
+    assert bot.last_report['rollout_depth'] == 0
+    assert bot.last_report['rollout_depth_mode'] == 'distance_to_boss'
 
 
 def test_blocked_card_does_not_hide_other_legal_alternative(request_data):
@@ -96,13 +155,13 @@ def test_shop_buys_worthwhile_card_before_higher_scoring_potion(request_data):
     observation = card_observation(request_data)
     observation.update(screen='SHOP')
     observation['state'].update(gold=500, potions=[dict(id=None)])
-    # This fixture has no reachable short-term encounters: gain is .65 * 4.
+    # This fixture has no reachable short-term encounters: gain is .72 * 4.
     card = dict(observation['options'][0], price=250)
     observation['options'] = [card, dict(index=1, kind='potion', id='WEAK_POTION', price=50),
                               dict(index=2, kind='leave')]
     bot = BotPolicy(FakeScorer(), config={'max_rollout_depth': 0})
     assert bot.choose(observation) == 0
-    assert bot.last_report['scores'][0] == pytest.approx(.1)
+    assert bot.last_report['scores'][0] == pytest.approx(.38)
     assert bot.last_report['scores'][1] == pytest.approx(.5)
     assert bot.last_report['potions_deferred_for_cards'] == [1]
     # After the card purchase the same shop is scored again with remaining gold.
@@ -138,7 +197,7 @@ def test_shop_resource_order_without_card_offers(request_data, crisis, remove_pr
     observation.update(screen='SHOP', options=[dict(index=0, kind='remove', price=remove_price),
         dict(index=1, kind='potion', id='WEAK_POTION', price=potion_price), dict(index=2, kind='leave')])
     observation['state'].update(gold=200, potions=[dict(id=None)])
-    bot = BotPolicy(FakeScorer(), config={'max_rollout_depth': 0, 'crisis_boss_loss_fraction': .1 if crisis else .8})
+    bot = BotPolicy(FakeScorer(), config={'max_rollout_depth': 0, 'crisis_boss_loss_threshold': 7 if crisis else 40})
     assert bot.config['shop_remove_value'] == bot.config['potion_value'] == 1
     assert bot.choose(observation) == expected
     if remove_price < 100 and potion_price < 100:
@@ -158,7 +217,7 @@ def test_full_potion_slots_do_not_displace_removal_in_crisis(request_data):
     observation.update(screen='SHOP', options=[dict(index=0, kind='remove', price=75),
         dict(index=1, kind='potion', id='WEAK_POTION', price=50), dict(index=2, kind='leave')])
     observation['state'].update(gold=200, potions=[dict(id='WEAK_POTION')])
-    bot = BotPolicy(FakeScorer(), config={'max_rollout_depth': 0, 'crisis_boss_loss_fraction': .1})
+    bot = BotPolicy(FakeScorer(), config={'max_rollout_depth': 0, 'crisis_boss_loss_threshold': 7})
     assert bot.choose(observation) == 0
 
 
