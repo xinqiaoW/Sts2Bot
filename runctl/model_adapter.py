@@ -21,6 +21,16 @@ class ModelAdapter:
 
     def project(self, raw):
         value = deepcopy(raw)
+        value['ancient_history'] = list(value['ancient_history'])
+        # Native AncientChoiceHistoryEntry stores the penultimate title-key
+        # segment. Sea Glass titles are SEA_GLASS.<character>.title, so its
+        # recorded TextKey is a character ID instead of the relic ID. Resolve
+        # only this known public alias, with the actual owned relic as evidence.
+        for index, (act, ancient, reward) in enumerate(value['ancient_history']):
+            if (ancient == 'OROBAS' and reward in {'IRONCLAD', 'SILENT', 'REGENT', 'NECROBINDER', 'DEFECT'}
+                    and any(r['id'] == 'SEA_GLASS' for r in value['relics'])):
+                value['ancient_history'][index] = [act, ancient, 'SEA_GLASS']
+                self.warnings.append(f'ancient_history_alias:{reward}:SEA_GLASS')
         cards = []
         for card in value['cards']:
             cid = card['id']

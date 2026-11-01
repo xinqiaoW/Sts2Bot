@@ -115,6 +115,25 @@ def test_event_lethal_options_override_model_score(request_data):
     assert BotPolicy(FakeScorer()).choose(observation) == 1
 
 
+def test_owned_sea_glass_character_title_alias_preserves_provenance(request_data):
+    from copy import deepcopy
+    from runctl.model_adapter import ModelAdapter
+    raw = deepcopy(request_data['build'])
+    raw.update(act=2, act_id='HIVE')
+    raw['ancient_history'] = list(raw['ancient_history']) + [[2, 'OROBAS', 'DEFECT']]
+    raw['relics'] = list(raw['relics']) + [dict(id='SEA_GLASS', state=[], unsupported_fields=['CharacterId'])]
+    original = deepcopy(raw)
+    adapter = ModelAdapter(FakeScorer())
+    projected = adapter.project(raw)
+    assert projected.ancient_history[-1] == (2, 'OROBAS', 'SEA_GLASS')
+    assert all(r.id != 'SEA_GLASS' for r in projected.relics)
+    assert 'ancient_history_alias:DEFECT:SEA_GLASS' in adapter.warnings
+    assert raw == original
+    raw['relics'].pop()
+    with pytest.raises(ValueError, match='Illegal ancient provenance'):
+        adapter.project(raw)
+
+
 @pytest.mark.parametrize('description', ['失去 6 点最大生命。升级一张牌。', 'Lose 6 Max HP. Upgrade a card.'])
 def test_tablet_max_hp_cost_is_not_mistaken_for_free_upgrade(description):
     config = load_policy_config()
