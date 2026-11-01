@@ -9,7 +9,27 @@ import json
 import os
 from pathlib import Path
 import shutil
+import sys
 import uuid
+
+
+def write_launcher(output, service_root, python_executable):
+    def literal(value):
+        return "'" + str(value).replace("'", "''") + "'"
+    script = f'''$ErrorActionPreference = 'Stop'
+Set-Location -LiteralPath {literal(service_root)}
+$stamp = Get-Date -Format 'yyyyMMdd-HHmmss-fff'
+$runtime = Join-Path $PSScriptRoot 'runtime.json'
+$report = Join-Path $PSScriptRoot ('reports/' + $stamp)
+& {literal(python_executable)} -m runctl --runtime $runtime --episodes 1 --seed-prefix ('WINDOWS' + $stamp + '-') --policy-config {literal(service_root / 'configs/bot-policy.json')} --output $report
+if ($LASTEXITCODE -ne 0) {{
+    Write-Host ('Bot stopped with an error. Logs: ' + $report) -ForegroundColor Red
+    exit $LASTEXITCODE
+}}
+Write-Host ('Run finished. Logs: ' + $report)
+'''
+    (output/'start-autobot.ps1').write_text(script, encoding='utf-8-sig')
+    (output/'启动自动爬塔.bat').write_text('@echo off\npowershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0start-autobot.ps1"\npause\n', encoding='ascii', newline='\r\n')
 
 
 def link_asset(source, destination):
@@ -63,9 +83,11 @@ def main():
         log_path=str(output/'native.log'))
     path = output/'runtime.json'
     path.write_text(json.dumps(runtime, ensure_ascii=False, indent=2), encoding='utf-8')
+    write_launcher(output, Path(__file__).resolve().parents[1], Path(sys.executable).resolve())
     print(f'Prepared runtime: {path}')
     print(f'Isolated profile: {profile}')
     print(f'Run: python -m runctl --runtime "{path}" --episodes 1 --seed-prefix WINDOWS --output "{output / "report"}"')
+    print(f'One-click launcher: {output / "启动自动爬塔.bat"}')
 
 
 if __name__ == '__main__': main()

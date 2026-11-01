@@ -68,7 +68,9 @@ python -m runctl.audit --experiment .local/autobot/experiment/report \
 
 协议 `decisionMode: all` 启用全流程局外控制，`map` 保留历史基线。CLI 默认 `--policy model`，旧模式须指定 `--policy random-map`。进程和存档必须独占，不能连接玩家正在游玩的游戏或共享采集 worker。
 
-## Windows 准备入口（原生 Windows 待验收）
+## Windows 本地试用（原生 Windows 待验收）
+
+0.30.3 测试包先将 `advisor-service` 合并到已有服务目录，保留 `.venv` 和 `checkpoints/train/selected`；`CombatSolver` 是本次 Mod 文件夹。无需重新下载模型、安装依赖或启动 HTTP 评分服务。可先试用，100 局评测和参数选择仍在进行。
 
 在包含训练模型、Python 依赖和本次机器人代码的服务目录执行，替换三个实际路径：
 
@@ -84,3 +86,5 @@ python -m runctl.audit --experiment .local/autobot/experiment/report \
 `--mod` 应包含本次 DLL、manifest 和 NOTICE。若 RitsuLib 不在原游戏的 `mods/STS2-RitsuLib`，另传 `--ritsu-lib "实际安装目录"`。运行目录必须新建，放在游戏同一磁盘可硬链接资产节省复制。准备脚本建立独立游戏目录、独立 `override.cfg` 和 `%APPDATA%/CombatSolver-Autobot-...` 存档，并仅在该存档启用 Mod；原游戏和玩家存档不修改。
 
 该独立目录机制已经通过 Wine 下 Windows 游戏实测到首个涅奥决策，初始 56/70 HP。这只验证存档隔离与 Mod 启动，不等于完整原生 Windows 对局验收。
+
+准备成功后，双击输出目录的 `启动自动爬塔.bat` 即可。每次启动新的一局并建立独立报告目录；它会使用准备时的 Python 和服务路径。移动服务目录后需重新准备启动器。一次只运行一个机器人；停止时在终端按 Ctrl+C。报错时保留终端文字、报告目录内的 `failure.json` 以及输出目录中的 `native.log`。

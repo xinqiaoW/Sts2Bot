@@ -39,6 +39,7 @@ def main():
         for source, target in files: archive.write(source, target)
         archive.writestr('安装说明.txt', instructions)
     print(path)
+    print(f'{path.stat().st_size / 1024 / 1024:.2f} MiB')
 
 
 if __name__ == '__main__':
