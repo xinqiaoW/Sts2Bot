@@ -32,7 +32,7 @@ RunControlSession 负责真实主线程快照、合法选项、执行与嵌套�
 - `pilot-v1/report-r2`：1 局自然死亡，第 11 层精英；33 次决策、5 场战斗、239.6 秒。不是完整功能验收。
 - `pilot-v2/report`：8 个不同种子均通过第一幕 Boss，随后因旧篝火继续按钮在房间切换时被误点，停在地图并超时；8 个失败，不计死亡或完成局。
 - `pilot-v2/repair-worker01`：同种子重跑采用公开弱怪分布后走了不同路线，第 14 层进入商店时遇到旧商店 UI 已释放；已增加原生地图旅行/转场完成条件和房间实例匹配。
-- `pilot-v2/repair2-worker01`：正在验证完整转场修复。不能提前记作通过。
+- `pilot-v2/repair2-worker01`：商店转场和 Boss 战后奖励已通过；进入第二幕、尚未进入首个节点时，该幕历史列表尚未建立，快照按下标读取报错。已改为该合法空历史状态计 0 场普通战斗，下一批继续验证。
 - Windows 隔离启动：Godot `override.cfg` 自定义 user 目录在 Wine 中生效；新存档需显式启用 Mod。第二次隔离启动到 EVENT/涅奥，56 HP，结果在 `pilot-v2/worker-00/profile-test-result.json`；测试到首个决策即主动结束，不计完整局。worker-00 的 override 已恢复原设置。
 - 当前 Python：机器人策略 29 项、协议 28 项通过；评分服务 28 项非 HTTP 加 1 项实际回环 HTTP 通过。Linux 结构门禁通过。最新 C# Release 构建 0 警告/错误；该 DLL 已部署到正在重跑的 worker-01。
 

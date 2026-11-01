@@ -34,8 +34,10 @@ internal sealed partial class RunControlSession
             act = Run.CurrentActIndex + 1, actId = Run.Act.Id.Entry, floor = Run.TotalFloor,
             actFloor = Run.ActFloor, ascension = Run.AscensionLevel,
             // Count only recorded normal rooms, not event-triggered fights.
-            normalCombatsCompleted = Run.MapPointHistory[Run.CurrentActIndex]
-                .Count(p => p.Rooms.FirstOrDefault()?.RoomType == RoomType.Monster),
+            // Before entering the new act's first node, its history list has
+            // not been created yet; there are exactly zero recorded combats.
+            normalCombatsCompleted = Run.MapPointHistory.ElementAtOrDefault(Run.CurrentActIndex)
+                ?.Count(p => p.Rooms.FirstOrDefault()?.RoomType == RoomType.Monster) ?? 0,
             hp = Me.Creature.CurrentHp, maxHp = Me.Creature.MaxHp, gold = Me.Gold,
             build = new { act_id = Run.Act.Id.Entry, act = Run.CurrentActIndex + 1, family = "autobot",
                 cards = Me.Deck.Cards.Select(CardAdvisorCapture.Card).ToArray(),
