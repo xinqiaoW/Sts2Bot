@@ -220,6 +220,21 @@ def test_streamed_pair_features_equal_the_existing_sized_input_encoding(catalog)
         encode_pairs(vocab, iter(inputs), n_pairs=len(inputs)+1)
 
 
+def test_set_transformer_supports_padded_tokens_and_backward(catalog):
+    from train.models import build_torch_model
+    from train.train import load_model_config, loss_fn
+    inputs = [(sample_build(catalog, i), TARGET, 70) for i in range(4)]
+    vocab = Vocabulary.build(catalog, inputs)
+    encoded = encode_pairs(vocab, inputs)
+    model = build_torch_model('set_transformer', vocab,
+                              load_model_config(ROOT/'train/configs/models.json', 'set_transformer'))
+    output = model(torch.from_numpy(encoded['symbols']).long(), torch.from_numpy(encoded['numerics']))
+    loss = loss_fn(output, torch.full((4,), .2), torch.zeros(4), torch.ones(4), .1)
+    loss.backward()
+    assert output.shape == (4, 2) and torch.isfinite(loss)
+    assert any(p.grad is not None and torch.isfinite(p.grad).all() for p in model.parameters())
+
+
 @pytest.mark.parametrize('ensemble', [False, True])
 def test_predictions_compute_unique_inputs_and_restore_every_seed_row(ensemble):
     from types import SimpleNamespace

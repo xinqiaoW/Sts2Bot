@@ -148,6 +148,7 @@ def train_torch(name, dataset, hparams, device, output, log):
     n = len(train_rows['pair'])
     best, best_state, best_epoch, history = float('inf'), None, 0, []
     validation = dataset.split_rows('validation')
+    prediction_batch_size = hparams.get('prediction_batch_size', 4096)
     started = time.time()
     for epoch in range(1, hparams['epochs'] + 1):
         model.train()
@@ -161,7 +162,7 @@ def train_torch(name, dataset, hparams, device, output, log):
             nn.utils.clip_grad_norm_(model.parameters(), 5.0)
             optimizer.step()
             total += float(loss) * len(indices); count += len(indices)
-        mean, death = predict_rows(model, data, 'validation')
+        mean, death = predict_rows(model, data, 'validation', batch_size=prediction_batch_size)
         metrics = evaluate(validation, mean, death, groupers=())['overall']
         record = {'epoch': epoch, 'train_loss': total / count, 'validation_pair_mae_hp': metrics['pair_mae_hp'],
                   'validation_row_mae_hp': metrics['row_mae_hp'], 'validation_row_rmse_hp': metrics['row_rmse_hp'],
@@ -176,7 +177,7 @@ def train_torch(name, dataset, hparams, device, output, log):
             break
     model.load_state_dict(best_state)
     torch.save(best_state, output / 'weights.pt')
-    predictions = {split: predict_rows(model, data, split) for split in SPLITS}
+    predictions = {split: predict_rows(model, data, split, batch_size=prediction_batch_size) for split in SPLITS}
     return predictions, history, {'best_epoch': best_epoch, 'parameters': n_params}
 
 
@@ -216,6 +217,12 @@ def run(snapshot_dir, name, *, device='cuda:0', output=None, model_config=None, 
         raise ValueError(f'Unknown model {name}; choose from {ALL_MODELS}')
     catalog = catalog or load_catalog()
     hparams = load_model_config(model_config or ROOT / 'train/configs/models.json', name, overrides)
+    if name in TORCH_MODELS and str(device).startswith('cuda') and hparams.get('gpu_memory_limit_gib'):
+        total = torch.cuda.get_device_properties(device).total_memory
+        fraction = float(hparams['gpu_memory_limit_gib']) * 2**30 / total
+        if not 0 < fraction <= 1:
+            raise ValueError('gpu_memory_limit_gib must be positive and fit the selected GPU')
+        torch.cuda.set_per_process_memory_fraction(fraction, device)
     dataset = Dataset.load(snapshot_dir, catalog, log=log)
     summary = dataset.summary()
     log(json.dumps({'event': 'dataset', **summary}, ensure_ascii=False))

@@ -142,6 +142,8 @@ checkpoint_dir=/absolute/path/to/model-comparison
 
 超参数见 [configs/models.json](configs/models.json)，可用 `--set key=value` 覆盖。Torch 损失为 `MSE(标准化掉血) + 0.1·BCE(死亡)`，同一输入的重复种子按 `1/种子数` 加权（与仓库训练一致），早停看验证集 pair MAE。LightGBM 两个头分别按其原生验证指标早停，默认回归头为 L2、死亡头为 binary logloss，实际指标写入 `history.json`。验证和最终预测对每个构筑、目标输入计算一次，再回填全部种子行；训练监督和评估统计覆盖所有有效战斗记录。
 
+在有其他任务的 GPU 上训练时，可设置 `gpu_memory_limit_gib` 限制当前 Torch 进程的显存分配，并用 `prediction_batch_size` 控制验证及最终预测的批量大小（默认 4096）。两项设置写入模型产物的超参数记录；预测批量不改变留出集覆盖或指标口径。GPU 选择应结合剩余显存和实际负载，不必要求整张卡完全空闲。
+
 ## 指标
 
 - `row_*`：逐场对战误差（包含战斗种子带来的波动），单位 HP。
