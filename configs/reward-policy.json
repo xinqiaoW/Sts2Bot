@@ -1,7 +1,7 @@
 {
   "seed": 20261101,
-  "short_weight": 0.5,
-  "long_weight": 0.5,
+  "short_weight": 0.35,
+  "long_weight": 0.65,
   "short_floor_weights": [1.0, 0.8],
   "short_reduction": "mean",
   "depth_schedule": [

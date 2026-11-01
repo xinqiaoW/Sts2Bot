@@ -15,7 +15,11 @@ from .score import BuildScorer, DEFAULT_CHECKPOINT
 # ArchaicTooth's saved cards only reconstruct hover tips. AfterObtained
 # transforms the actual deck, which the live snapshot already contains.
 # Keep this field-specific: other non-scalar saved state remains unsupported.
-RELIC_DISPLAY_FIELDS = {'ARCHAIC_TOOTH': frozenset({'StarterCard', 'AncientCard'})}
+RELIC_DISPLAY_FIELDS = {
+    'ARCHAIC_TOOTH': frozenset({'StarterCard', 'AncientCard'}),
+    # The upgraded starter is already a separate relic in the owned snapshot.
+    'TOUCH_OF_OROBAS': frozenset({'StarterRelic', 'UpgradedRelic'}),
+}
 
 
 def normalize_card(card):

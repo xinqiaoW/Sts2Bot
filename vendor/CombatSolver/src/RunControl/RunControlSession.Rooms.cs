@@ -4,6 +4,7 @@ using MegaCrit.Sts2.Core.AutoSlay.Handlers.Rooms;
 using MegaCrit.Sts2.Core.AutoSlay.Handlers.Screens;
 using MegaCrit.Sts2.Core.AutoSlay.Helpers;
 using MegaCrit.Sts2.Core.Combat;
+using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Nodes.CommonUi;
 using MegaCrit.Sts2.Core.Nodes.Events;
 using MegaCrit.Sts2.Core.Nodes.Events.Custom;
@@ -28,6 +29,11 @@ internal sealed partial class RunControlSession
     private async Task OverlayAsync(IOverlayScreen overlay, CancellationToken ct)
     {
         _stage = "overlay:" + overlay.GetType().Name;
+        if (request.DecisionMode == "all")
+        {
+            await PolicyOverlayAsync(overlay, ct);
+            return;
+        }
         if (!_screens.TryGetValue(overlay.GetType(), out IScreenHandler? handler))
             throw new NotSupportedException($"Unadapted overlay {overlay.GetType().FullName}.");
         string before = System.Text.Json.JsonSerializer.Serialize(State(), RunControlFiles.Json);
@@ -74,6 +80,11 @@ internal sealed partial class RunControlSession
             await EventStepAsync(ct);
             return;
         }
+        if (request.DecisionMode == "all")
+        {
+            await PolicyRoomAsync(room, ct);
+            return;
+        }
         IRoomHandler? handler = room.RoomType switch
         {
             // The outer owner pumps selection screens while a purchase awaits.
@@ -107,7 +118,21 @@ internal sealed partial class RunControlSession
             .Where(b => b.IsEnabled && b.IsVisibleInTree() && !b.Option.IsLocked).ToArray();
         if (options.Length > 0)
         {
-            int choice = _random.NextInt(options.Length);
+            int choice = request.DecisionMode == "all"
+                ? await ChooseAsync("EVENT", options.Select(b => (object)new
+                {
+                    kind = b.Option.Relic == null ? "event" : "relic", id = b.Option.TextKey,
+                    title = b.Option.Title.GetFormattedText(), description = b.Option.Description.GetFormattedText(),
+                    proceed = b.Option.IsProceed, lethal = b.Option.WillKillPlayer?.Invoke(Me) ?? false,
+                    relic = b.Option.Relic == null ? null : CardAdvisorCapture.Relic(b.Option.Relic),
+                    // Hovered cards are explicitly displayed by this option,
+                    // including the precise owned instance on removal events.
+                    cards = b.Option.HoverTips.OfType<CardHoverTip>().Select(t => new {
+                        card = CardAdvisorCapture.Card(t.Card),
+                        deckIndex = Me.Deck.Cards.ToList().FindIndex(c => ReferenceEquals(c, t.Card)),
+                    }).ToArray(),
+                }).ToArray(), new { eventId = options[0].Event.Id.Entry }, ct)
+                : _random.NextInt(options.Length);
             NEventOptionButton selected = options[choice];
             object previous = selected.Option;
             Record("event_choice", new { choice, eventId = selected.Event.Id.Entry,

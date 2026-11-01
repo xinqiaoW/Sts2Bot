@@ -17,6 +17,8 @@ def main():
     parser.add_argument("--policy-seed", type=int, default=0)
     parser.add_argument("--timeout", type=int, default=3600)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--policy", choices=['model', 'random-map'], default='model')
+    parser.add_argument("--policy-config", type=Path)
     args = parser.parse_args()
     if args.episodes < 1:
         parser.error("episodes must be positive")
@@ -24,16 +26,29 @@ def main():
     runtime = json.loads(args.runtime.read_text(encoding="utf-8"))
     started = time.time()
     episodes = []
+    bot = None
+    if args.policy == 'model':
+        import torch
+        from .policy import BotPolicy
+        from .policy_config import load_policy_config
+        torch.set_num_threads(4)
+        bot = BotPolicy(config=load_policy_config(args.policy_config))
+        atomic_json(args.output / 'policy-config.json', bot.config)
     with RealRunEnv(runtime) as env:
         for index in range(args.episodes):
             seed = f"{args.seed_prefix}{index}"
             policy = random.Random(args.policy_seed + index)
             try:
-                observation = env.reset(seed, policy_seed=args.policy_seed + index, timeout_seconds=args.timeout)
+                observation = env.reset(seed, policy_seed=args.policy_seed + index, timeout_seconds=args.timeout,
+                                        decision_mode='all' if bot else 'map', action_timeout_seconds=300 if bot else 60)
                 while observation.get("status") != "complete":
                     print(json.dumps({"runId": env.run_id, "decisionSeq": observation["decisionSeq"],
                                       "state": {k: observation["state"][k] for k in ["act", "floor", "hp", "gold"]}}), flush=True)
-                    observation = env.step(policy.randrange(len(observation["options"])))
+                    choice = bot.choose(observation) if bot else policy.randrange(len(observation['options']))
+                    if bot:
+                        with (args.output / 'decisions.jsonl').open('a', encoding='utf-8') as log:
+                            log.write(json.dumps(dict(runId=env.run_id, seed=seed, **bot.last_report), ensure_ascii=False, allow_nan=False)+'\n')
+                    observation = env.step(choice)
                 episodes.append(observation)
                 atomic_json(args.output / "summary.json", dict(started=started, elapsed=time.time()-started,
                             completed=len(episodes), episodes=episodes))

@@ -39,6 +39,13 @@ def test_archaic_tooth_tooltips_match_training_state():
     assert native == original
 
 
+def test_orobas_starter_tooltips_do_not_duplicate_owned_relic_effect():
+    native = dict(id='TOUCH_OF_OROBAS', state=[], unsupported_fields=['StarterRelic', 'UpgradedRelic'])
+    assert normalize_relic(native) == dict(id='TOUCH_OF_OROBAS', state=[])
+    with pytest.raises(ValueError, match='UnknownRelic'):
+        normalize_relic(dict(native, unsupported_fields=['StarterRelic', 'UnknownRelic']))
+
+
 @pytest.mark.parametrize('rid,fields,invalid', [
     ('ARCHAIC_TOOTH', ['StarterCard', 'AncientCard', 'UnknownCard'], 'UnknownCard'),
     ('PEN_NIB', ['StarterCard'], 'StarterCard'),

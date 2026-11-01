@@ -23,11 +23,11 @@ def atomic_json(path: Path, value: dict) -> None:
 
 
 class RealRunEnv:
-    """One exclusive native process, with reset/step at real map decisions.
+    """One exclusive native process, with reset/step at real legal decisions.
 
-    v1 returns an observation or terminal result dictionary. Other room and
-    selection choices use the recorded native baseline. This is not yet a Gym
-    environment or a standardized F-label producer.
+    decision_mode='all' delegates all supported out-of-combat choices to the
+    client; 'map' preserves the recorded random room baseline. This is not a
+    Gym environment or a standardized F-label producer.
     """
 
     def __init__(self, runtime: dict):
@@ -63,7 +63,8 @@ class RealRunEnv:
         self._failed = False
 
     def reset(self, seed: str, *, policy_seed: int = 0, timeout_seconds: int = 3600,
-              action_timeout_seconds: int = 60, combat_timeout_seconds: int = 120) -> dict:
+              action_timeout_seconds: int = 60, combat_timeout_seconds: int = 120,
+              decision_mode: str = "map") -> dict:
         if self._closed or self._failed:
             raise RunControlError("A failed/closed environment cannot be reused")
         if self.observation is not None and self.observation.get("status") != "complete":
@@ -75,6 +76,9 @@ class RealRunEnv:
                 raise ValueError("Invalid deadline")
         if type(policy_seed) is not int or not -(2**31) <= policy_seed < 2**31:
             raise ValueError("policy_seed must be an int32")
+        if decision_mode not in ('map', 'all'):
+            raise ValueError('decision_mode must be map or all')
+        self._decision_mode = decision_mode
         self.run_id = uuid.uuid4().hex
         self.run_dir = self.data_dir / "combat_solver_runs" / self.run_id
         self._seq = 0
@@ -83,7 +87,7 @@ class RealRunEnv:
         if request_path.exists():
             raise RunControlError("An unaccepted native request already exists; inspect its owning run")
         request = dict(schemaVersion=1, kind="run", runId=self.run_id, seed=seed,
-                       characterId="SILENT", ascension=10, combatMode="solver", policySeed=policy_seed,
+                       characterId="SILENT", ascension=10, combatMode="solver", decisionMode=decision_mode, policySeed=policy_seed,
                        timeoutSeconds=timeout_seconds, actionTimeoutSeconds=action_timeout_seconds,
                        combatTimeoutSeconds=combat_timeout_seconds)
         self._deadline = time.monotonic() + timeout_seconds + 120
@@ -142,7 +146,10 @@ class RealRunEnv:
                     raise RunControlError("Out-of-order decision")
                 else:
                     options = decision.get("options")
-                    if decision.get("screen") != "MAP" or not isinstance(options, list) or not options:
+                    screens = {'MAP'} if self._decision_mode == 'map' else {
+                        'MAP', 'EVENT', 'SHOP', 'REST', 'TREASURE', 'REWARDS', 'CARD_REWARD',
+                        'CHOOSE_CARD', 'RELIC', 'BUNDLE', 'CARD_GRID', 'CRYSTAL'}
+                    if decision.get("screen") not in screens or not isinstance(options, list) or not options:
                         raise RunControlError("Invalid v1 decision")
                     if [o.get("index") for o in options] != list(range(len(options))):
                         raise RunControlError("Invalid option indices")

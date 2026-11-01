@@ -16,6 +16,7 @@ internal sealed record RunControlRequest
     public string CharacterId { get; init; } = "SILENT";
     public int Ascension { get; init; } = 10;
     public string CombatMode { get; init; } = "solver";
+    public string DecisionMode { get; init; } = "map";
     public int PolicySeed { get; init; }
     public int TimeoutSeconds { get; init; } = 3600;
     public int ActionTimeoutSeconds { get; init; } = 60;
@@ -24,7 +25,7 @@ internal sealed record RunControlRequest
     public void Validate()
     {
         if (SchemaVersion != 1 || Kind != "run" || CharacterId != "SILENT" || Ascension != 10
-            || CombatMode != "solver" || !Regex.IsMatch(RunId, "^[a-zA-Z0-9_-]{1,80}$")
+            || CombatMode != "solver" || DecisionMode is not ("map" or "all") || !Regex.IsMatch(RunId, "^[a-zA-Z0-9_-]{1,80}$")
             || string.IsNullOrWhiteSpace(Seed) || Seed.Length > 100
             || TimeoutSeconds is < 1 or > 14400 || ActionTimeoutSeconds is < 1 or > 300
             || CombatTimeoutSeconds is < 1 or > 120)

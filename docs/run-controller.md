@@ -1,5 +1,7 @@
 # RunController：真实游戏整局环境
 
+> 下文记录历史 M1 地图随机基线。当前默认模型全流程模式、选牌门槛、公开信息边界和批量命令见 [autobot.md](autobot.md)，开发验收进度见 [autobot-progress.md](autobot-progress.md)。
+
 局外规则由原版游戏执行，Python 在地图决策点选择合法路线；每场战斗由 CombatSolver 实际执行。已退役的拟合式模拟器保存在[归档目录](历史垃圾箱/sim-v0-fitted/README.md)。
 
 ## 能力范围

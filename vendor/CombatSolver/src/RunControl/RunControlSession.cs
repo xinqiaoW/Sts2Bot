@@ -26,6 +26,7 @@ internal sealed partial class RunControlSession(NGame host, RunControlRequest re
     private readonly Stopwatch _elapsed = Stopwatch.StartNew();
     private readonly Rng _random = new(unchecked((uint)request.PolicySeed));
     private readonly HashSet<object> _handledRooms = [];
+    private readonly HashSet<object> _completedCombatRooms = [];
     private int _decisionSequence;
     private int _combatCount;
     private RunState? _run;
@@ -65,7 +66,8 @@ internal sealed partial class RunControlSession(NGame host, RunControlRequest re
         SolverSettings.ApplyForTesting(SolverSettings.ApplyPerformancePreset(original, SolverPerformancePreset.Medium) with
         {
             SolverDisabled = false, AutomaticCalculationEnabled = true, EnableNoGcRegion = false,
-            PotionPolicy = SolverPotionPolicy.Disabled, PotionDirectives = [],
+            PotionPolicy = request.DecisionMode == "all" ? SolverPotionPolicy.Smart : SolverPotionPolicy.Disabled,
+            PotionDirectives = [],
             DeploymentFastMode = SolverDeploymentFastMode.Instant, DeploymentInterActionDelaySeconds = 0,
             StopFullAutoOnCombatEnd = false, StopFullAutoOnDeathTurn = false,
             StopFullAutoOnWorseRecalculation = false, EnableDetailedDiagnosticLogs = false,
@@ -92,6 +94,11 @@ internal sealed partial class RunControlSession(NGame host, RunControlRequest re
                 ct.ThrowIfCancellationRequested();
                 if (Environment.TickCount64 - _lastProgress > 60_000)
                     throw new TimeoutException($"No progress at {_stage}, floor {Run.TotalFloor}.");
+                if (host.Transition.InTransition || NMapScreen.Instance?.IsTraveling == true)
+                {
+                    await Task.Delay(50, ct);
+                    continue;
+                }
                 if (NOverlayStack.Instance?.Peek() is NGameOverScreen)
                 {
                     _stage = "game_over";
@@ -144,6 +151,7 @@ internal sealed partial class RunControlSession(NGame host, RunControlRequest re
         await WaitHelper.Until(() => CombatManager.Instance.DebugOnlyGetState() != null,
             ct, TimeSpan.FromSeconds(30), "Combat state did not appear.");
         CombatState state = CombatManager.Instance.DebugOnlyGetState()!;
+        object combatRoom = Run.CurrentRoom ?? throw new InvalidOperationException("Combat has no room.");
         int number = ++_combatCount;
         Record("combat_started", new { number, enemies = state.Enemies.Select(e => e.Monster?.Id.Entry).ToArray() });
         bool engaged = false;
@@ -162,6 +170,7 @@ internal sealed partial class RunControlSession(NGame host, RunControlRequest re
         }
         await RunManager.Instance.ActionExecutor.FinishedExecutingActions().WaitAsync(ct);
         Record("combat_ended", new { number, alive = Me.Creature.IsAlive });
+        _completedCombatRooms.Add(combatRoom);
         SolverController.ReleaseUnattendedResultReferencesForTesting();
     }
 
@@ -172,26 +181,16 @@ internal sealed partial class RunControlSession(NGame host, RunControlRequest re
         NMapPoint[] points = UiHelper.FindAll<NMapPoint>(map)
             .Where(p => p.IsEnabled && p.IsTravelable).OrderBy(p => p.Point.coord.row).ThenBy(p => p.Point.coord.col).ToArray();
         if (points.Length == 0) { await Task.Delay(100, ct); return; }
-        int seq = ++_decisionSequence;
-        object decision = new { schemaVersion = 1, request.RunId, decisionSeq = seq, screen = "MAP", state = State(),
-            options = points.Select((p, index) => new { index, row = p.Point.coord.row, col = p.Point.coord.col, type = p.Point.PointType.ToString() }).ToArray() };
-        files.Record("decision", decision);
-        RunControlFiles.AtomicWrite(files.DecisionPath, decision);
-        using CancellationTokenSource waiting = CancellationTokenSource.CreateLinkedTokenSource(ct);
-        waiting.CancelAfter(TimeSpan.FromSeconds(request.ActionTimeoutSeconds));
-        while (!File.Exists(files.ActionPath)) await Task.Delay(50, waiting.Token);
-        RunControlAction action = System.Text.Json.JsonSerializer.Deserialize<RunControlAction>(File.ReadAllText(files.ActionPath), RunControlFiles.Json)
-            ?? throw new InvalidDataException("Empty action.");
-        if (action.SchemaVersion != 1 || action.RunId != request.RunId || action.DecisionSeq != seq
-            || action.Choice < 0 || action.Choice >= points.Length)
-            throw new InvalidDataException("Stale, duplicate, foreign, or invalid action.");
-        File.Move(files.ActionPath, Path.Combine(files.DirectoryPath, $"action-{seq:D5}.json"));
-        NMapPoint point = points[action.Choice];
+        int choice = await ChooseAsync("MAP", points.Select(p => (object)new
+        {
+            row = p.Point.coord.row, col = p.Point.coord.col, type = p.Point.PointType.ToString(),
+        }).ToArray(), null, ct);
+        NMapPoint point = points[choice];
         if (!point.IsTravelable || !point.IsEnabled) throw new InvalidOperationException("Map option is no longer legal.");
-        Record("action", action);
         int floor = Run.TotalFloor;
         await UiHelper.Click(point);
-        await WaitHelper.Until(() => Run.TotalFloor != floor, ct, TimeSpan.FromSeconds(30), "Map action did not enter a floor.");
+        await WaitHelper.Until(() => Run.TotalFloor != floor && !map.IsTraveling && !host.Transition.InTransition,
+            ct, TimeSpan.FromSeconds(30), "Map action did not finish entering a floor.");
         Record("floor_entered", new { point.Point.coord.row, point.Point.coord.col });
     }
 }

@@ -1,6 +1,6 @@
 # RealRunEnv v1
 
-用真实游戏推进整局，Python 选择地图路线，CombatSolver 执行战斗。完整范围与限制见 [设计说明](../docs/run-controller.md)。
+用真实游戏推进整局，Python 决策、CombatSolver 执行战斗。默认模型全流程模式的参数、选牌门槛和批量入口见 [机器人说明](../docs/autobot.md)。旧地图模式与历史证据见 [设计说明](../docs/run-controller.md)。
 
 ## 独立环境
 
@@ -35,7 +35,7 @@ python -m runctl --runtime /absolute/pilot/runtime.json \
   --output /absolute/pilot/reports/example
 ```
 
-多局依次复用一个游戏进程，只有上一局成功完成清理才发送下一局。默认一局最长 3600 秒、每场战斗 120 秒、地图动作等待 60 秒。命令遇到失败即退出，写 `failure.json` 并保留原生现场，不把失败记为死亡；重新启动会产生新的尝试 ID。
+多局依次复用一个游戏进程，只有上一局成功完成清理才发送下一局。默认一局最长 3600 秒、每场战斗 120 秒；模型动作等待 300 秒，旧地图模式等待 60 秒。命令遇到失败即退出，写 `failure.json` 并保留原生现场，不把失败记为死亡；重新启动会产生新的尝试 ID。
 
 ```python
 import json

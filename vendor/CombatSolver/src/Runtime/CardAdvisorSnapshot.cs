@@ -177,7 +177,7 @@ internal static class CardAdvisorCapture
         return ignored.Count == 0 ? "" : "已跳过评分：" + string.Join("、", ignored) + "。";
     }
 
-    private static object Card(CardModel card)
+    internal static object Card(CardModel card)
     {
         SerializableCard saved = card.ToSerializable();
         return new { id = card.Id.Entry, upgrade = card.CurrentUpgradeLevel,
@@ -186,7 +186,7 @@ internal static class CardAdvisorCapture
             unsupported_fields = NonScalar(saved.Props).Concat(saved.Props?.bools?.Select(p => p.name) ?? []).ToArray() };
     }
 
-    private static object Relic(RelicModel relic)
+    internal static object Relic(RelicModel relic)
     {
         // SavedProperties omits default-valued counters. Read all declared
         // saved scalars so zero/false remain explicit in the model input.

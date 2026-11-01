@@ -768,6 +768,24 @@ foreach ($runFile in Get-ChildItem -LiteralPath (Join-Path $repositoryRoot 'src/
     }
 }
 
+foreach ($policyName in @('Decisions', 'PolicyRooms', 'PolicyScreens')) {
+    $policyPath = Join-Path $repositoryRoot "src/RunControl/RunControlSession.$policyName.cs"
+    foreach ($forbidden in @('Run.Rng', 'Run.EventRng', 'GenerateEncounter(', 'GenerateRewards(', 'GetNextEncounter(')) {
+        if (Select-String -LiteralPath $policyPath -SimpleMatch $forbidden -Quiet) {
+            $violations.Add("$policyPath : autobot policy must not inspect hidden future state: $forbidden")
+        }
+    }
+}
+foreach ($check in @(
+    @{ Path = 'src/RunControl/RunControlSession.PolicyScreens.cs'; Text = 'card.MutableClone()' },
+    @{ Path = 'src/RunControl/RunControlSession.Decisions.cs'; Text = 'action.DecisionSeq != seq' },
+    @{ Path = 'src/RunControl/RunControlSession.Decisions.cs'; Text = 'current.coord.row >= Run.Map.BossMapPoint.coord.row' }
+)) {
+    if (-not (Select-String -LiteralPath (Join-Path $repositoryRoot $check.Path) -SimpleMatch $check.Text -Quiet)) {
+        $violations.Add("autobot missing ownership invariant: $($check.Text)")
+    }
+}
+
 foreach ($forbidden in @('CardModel', 'RunState', 'HttpClient', 'ModelDb')) {
     if (Select-String -LiteralPath (Join-Path $repositoryRoot 'src/UI/CardAdvisorOverlay.cs') -SimpleMatch $forbidden -Quiet) {
         $violations.Add("advisor renderer must consume scalar snapshots only: $forbidden")

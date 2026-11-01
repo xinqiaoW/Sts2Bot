@@ -16,6 +16,7 @@ def native(tmp_path, monkeypatch):
         starts = 0
         requests = []
         actions = []
+        screen = 'MAP'
 
         def __init__(self, **kwargs):
             self.process = None
@@ -57,7 +58,7 @@ def native(tmp_path, monkeypatch):
                     if self.behavior == "failed":
                         atomic_json(folder / "result.json", dict(**identity, status="failed", stage="combat", error="native crash"))
                         continue
-                    decision = dict(**identity, decisionSeq=1, screen="MAP", state={}, options=[{"index": 0}, {"index": 1}])
+                    decision = dict(**identity, decisionSeq=1, screen=self.screen, state={}, options=[{"index": 0}, {"index": 1}])
                     if self.behavior == "foreign":
                         decision["runId"] = "old-run"
                     if self.behavior == "sequence":
@@ -96,6 +97,24 @@ def test_reuse_isolates_results_and_restarts_decision_sequence(native):
         assert len(set(ids)) == 2
         assert game.starts == 1
         assert [a["runId"] for a in game.actions] == ids
+
+
+@pytest.mark.parametrize('screen', ['EVENT', 'SHOP', 'REST', 'TREASURE', 'REWARDS', 'CARD_REWARD',
+                                    'CHOOSE_CARD', 'RELIC', 'BUNDLE', 'CARD_GRID', 'CRYSTAL'])
+def test_all_mode_accepts_explicit_noncombat_screens(native, screen):
+    runtime, game = native
+    game.screen = screen
+    with RealRunEnv(runtime) as env:
+        assert env.reset('ALL', decision_mode='all')['screen'] == screen
+        assert game.requests[-1]['decisionMode'] == 'all'
+        assert env.step(0)['status'] == 'complete'
+
+
+def test_map_mode_rejects_nonmap_screen(native):
+    runtime, game = native
+    game.screen = 'EVENT'
+    with RealRunEnv(runtime) as env, pytest.raises(RunControlError, match='Invalid v1 decision'):
+        env.reset('MAP-ONLY')
 
 
 @pytest.mark.parametrize("behavior", ["foreign", "sequence", "failed", "exit"])
