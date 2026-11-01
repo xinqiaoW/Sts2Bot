@@ -21,6 +21,7 @@ def compare_experiments(directories):
         by_seed[name] = dict(zip(seeds, episodes))
         row = {k: summary[k] for k in ('completed', 'wins', 'deaths', 'win_rate', 'win_rate_wilson95', 'mean_floor', 'mean_act')}
         row.update(name=name, directory=str(directory), source_revision=manifest['source_revision'])
+        row.update(failed_attempts=summary.get('failed_attempts', 0), retries=summary.get('retries', []))
         rows.append(row)
     if not rows: raise ValueError('No experiments supplied')
     seed_sets = [set(episodes) for episodes in by_seed.values()]
