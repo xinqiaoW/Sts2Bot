@@ -6,7 +6,7 @@
 
 ## 运行位置与准备条件
 
-训练在准备好依赖、目录和数据的工作副本运行。01 的历史原生数据位于 `/data1/pl/ImageTask/wxq/Projects/Sts2Bot`，模拟器数据位于各实例的 `db/`。训练使用独立环境及完整冻结来源，不与持续采集控制器绑定。
+训练在准备好依赖、目录和数据的工作副本运行，模拟器数据位于各实例的 `db/`。来源数据库路径由训练配置明确列出，不从采集 session 自动发现。训练使用独立环境及完整冻结来源，不与持续采集控制器绑定。
 
 运行前检查训练解释器、依赖、GPU 和各来源文件，尤其是虚拟环境的实际解释器路径，以及封存 real-v3 / mut-v1 的完整标签或已验证导出缓存。`prior_collected_inputs` 用于旧输入去重，不会被训练快照导出器当作完整标签导出；新版库不能单独替代旧库的训练数据。
 
@@ -33,38 +33,80 @@
 | 普通变异补采 | `mutation` | 补采输出目录中的 `collection-mutations-v2.backfill.sqlite` |
 | 专项变异补采 | `mutation` | 补采输出目录中的 `collection-targeted-mutations-v1.backfill.sqlite` |
 
-每项须有唯一的 `name`、正确的 `db` 和 `frozen`。仍在写入的库设为 `frozen: false`；只有不再变化的来源才允许复用冻结缓存。[sources-data1.json](configs/sources-data1.json) 同样只有原四个来源，只调整了部分路径。若只纳入部分来源，应在报告中明确范围。
+每项须有唯一的 `name`、正确的 `db` 和 `frozen`。仍在写入的库设为 `frozen: false`；只有不再变化的来源才允许复用冻结缓存。[sources-data1.json](configs/sources-data1.json) 是绑定特定本机路径的旧部署配置，同样只有原四个来源，不能直接当作当前数据库清单。若只纳入部分来源，应在报告中明确范围。
 
 旧结果与新增种子先按 `(build, target, seed)` 去重，再按共享构筑、源局和变异血缘统一划分。无需所有组合都凑满 24 个有效结果才导出，但应记录每个组合的实际有效样本数。
 
 ## 流程
 
-以下以历史原生执行副本为例；模拟器训练改为已准备好依赖与目录的工作副本。`<stamp>`、`<上次>` 和 `<本次来源配置.json>` 须替换为实际路径。没有可复用缓存时省略 `--reuse`，并确保所有来源库可读取。
+### 全量 8 秒语料训练
+
+[sources-full-8s.json](configs/sources-full-8s.json) 列出原生历史五库、三份种子补采库、模拟器旧三库与当前续采三库，共十四个来源。它是本机部署清单，其他机器须先替换数据库路径。2 秒旧数据不在此配置中。去重优先保留当前模拟器结果，其次为旧模拟器、原生与补采结果；所有有效来源都参与全局源局/血缘分组。
+
+原生冻结导出可以复用，但应先用 `train.verify_cache` 对照原快照的 SHA-256、逐条标签、教师、构筑状态及源局连通组核验缓存：
 
 ```bash
-cd /data1/pl/ImageTask/wxq/Projects/Sts2Bot
+.venv-train/bin/python -m train.verify_cache \
+    --snapshot /absolute/path/to/previous-snapshot \
+    --cache /absolute/path/to/full-corpus/snapshot/sources \
+    --output /absolute/path/to/full-corpus/verified-native-cache.json
+```
 
+`train.stream_export` 使用只读事务和主表 rowid 扫描，避免依赖旧库的损坏状态索引，并分批写入 Parquet。默认遇到错误立即停止；仅配置了 `recover_invalid_rows` 的旧故障批次允许二分定位损坏行、逐条记录拒绝原因，再导出通过相同 HP、起始牌组及后端身份验证的结果。锁等待、临时 I/O 错误不作为坏行丢弃。源局和血缘元数据读取失败仍会中止，避免因遗漏关系产生测试泄漏。恢复模式缺失的历史完成时间保留为 NULL 并计数，不伪造时间，也不影响 HP 监督标签。
+
+机械盘随机读取较慢时，可先将停止写入的来源顺序压缩暂存到 SSD，再只读挂载导出。`export_source(..., read_replica=receipt)` 保留原数据库身份，并记录副本校验凭据；调用方必须先核对主库、WAL、SHM 的逐文件 SHA-256、复制期间来源未变及 WAL 可见数据一致，同时持有该来源的导出锁。使用正常的 `mode=ro` 读取 WAL，不使用 `immutable=1`。这只改变读取位置，标签与血缘校验不变。
+
+全量实验显式使用 `--allow-backend-mixture`：允许合并原生和模拟器来源，同时仍强制相同游戏、求解器、8000 ms 搜索及其他核心设置。此开关不同于忽略所有教师差异；默认的严格兼容检查仍保留。快照及模型保留实验来源标记，报告分别列出后端误差；混合训练不代表模拟器已经通过生产等价验证。
+
+准备好训练环境和已核验的冻结缓存后运行：
+
+```bash
+# 使用包含 WAL 修复的私有 SQLite 模块；此目录应包含 _sqlite3 扩展。
+sqlite_module_dir=/absolute/path/to/private-sqlite-module
+PYTHONPATH="$PWD:$sqlite_module_dir" OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 \
+    .venv-train/bin/python -P -m tools.train_full_corpus \
+    --config train/configs/sources-full-8s.json \
+    --directory /absolute/path/to/full-corpus --gpus 6,7
+```
+
+该流程依次导出尚缺的来源、合并去重并划分、预生成特征，再训练 MLP、TabM 与 LightGBM，最后生成比较和测试样例。实际使用指定列表中显存占用低于 512 MiB、利用率低于 5% 的 GPU；没有空闲卡时等待。LightGBM 使用 8 个 CPU 线程。`--prepare-only` 在特征准备后结束。
+
+运行目录中的 `pipeline-state.json`、`logs/`（各模型在 `logs/models/`）、`snapshot/`、`checkpoints/`、`report/` 分别保存阶段状态、日志、冻结数据、模型和评估。状态中的 PID 须结合实际进程身份判断；失败来源不会被静默跳过。重复运行复用已完成的来源缓存，重新取得活动库快照时应选择新的输出目录。最终数据量以快照中的有效行数及去重清单为准，不用历史心跳总量代替训练样本数。
+
+不同磁盘上的来源可用独立的 `train.stream_export --only ...` 进程同时准备。命令按来源名称取得缓存写锁，等待另一个同名导出完成后复用已发布缓存；完成清单通过原子替换发布。`--force` 显式重新导出已完成的缓存。特征准备使用迭代器逐对构造输入，避免同时保留几十万个展开后的构筑对象。
+
+在已准备好依赖与目录的仓库根目录执行。将以下来源配置、快照和 checkpoint 路径替换为实际位置；没有可复用缓存时省略 `--reuse`，并确保所有来源库可读取。
+
+```bash
 # 1. 导出一致快照（每库一次只读事务；封存库可复用上一次快照的导出）
-.venv-train/bin/python -m train.snapshot --config <本次来源配置.json> --reuse data/train-snapshots/<上次>
+.venv-train/bin/python -m train.snapshot --config /absolute/path/to/sources.json \
+    --reuse /absolute/path/to/previous-snapshot
 # → data/train-snapshots/<UTC 时间戳>/{battles.parquet, builds.json.gz, targets.json, manifest.json, sources/}
 
+# 填入导出所得快照和本次模型输出目录
+snapshot_dir=/absolute/path/to/exported-snapshot
+checkpoint_dir=/absolute/path/to/model-comparison
+
 # 2. 训练单个模型
-.venv-train/bin/python -m train.train --snapshot data/train-snapshots/<stamp> --model tabm --device cuda:0
+.venv-train/bin/python -m train.train --snapshot "$snapshot_dir" --model tabm --device cuda:0
 
 # 3. 多模型比较（torch 模型按 GPU 轮转，LightGBM 在 CPU 并行）
-.venv-train/bin/python -m train.compare --snapshot data/train-snapshots/<stamp> --gpus 0,1
-# → checkpoints/train/<stamp>/<model>/，train/reports/<stamp>/comparison.{md,json}
+.venv-train/bin/python -m train.compare --snapshot "$snapshot_dir" --gpus 0,1 --output "$checkpoint_dir"
+# → $checkpoint_dir/<model>/，train/reports/<快照名>/comparison.{md,json}
 
 # 4. 推理（单个或多个 checkpoint 均值集成）
-.venv-train/bin/python -m train.predict --checkpoint checkpoints/train/<stamp>/tabm \
+.venv-train/bin/python -m train.predict --checkpoint "$checkpoint_dir/tabm" \
     --build build.json --target BOWLBUGS_WEAK --max-hp 70
-.venv-train/bin/python -m train.predict --checkpoint ck/tabm --checkpoint ck/lightgbm --builds-jsonl inputs.jsonl
+.venv-train/bin/python -m train.predict --checkpoint "$checkpoint_dir/tabm" \
+    --checkpoint "$checkpoint_dir/lightgbm" --builds-jsonl inputs.jsonl
 
 # 5. 用更新的快照验证旧 checkpoint（自动排除训练/验证过的构筑及其连通组）
-.venv-train/bin/python -m train.evaluate --snapshot data/train-snapshots/<newer> --checkpoint checkpoints/train/<stamp>/tabm
+.venv-train/bin/python -m train.evaluate --snapshot /absolute/path/to/newer-snapshot \
+    --checkpoint "$checkpoint_dir/tabm"
 
 # 6. 具体样例与误差分析（读各模型的 predictions.parquet，不重新推理）
-.venv-train/bin/python -m train.inspect --snapshot data/train-snapshots/<stamp> --checkpoints checkpoints/train/<stamp> --primary set_transformer
+.venv-train/bin/python -m train.inspect --snapshot "$snapshot_dir" \
+    --checkpoints "$checkpoint_dir" --primary set_transformer
 # → train/reports/<stamp>/examples-test.md（校准表、编组内区分能力 vs “编组均值”基线、按编组/幕/牌数误差、最差高估/低估、模型分歧、随机样例）
 #   默认 --split test：样例全部来自留出的测试连通组，训练/验证集里没有这些构筑及其变异亲属
 
@@ -98,7 +140,9 @@ cd /data1/pl/ImageTask/wxq/Projects/Sts2Bot
 | `set_transformer` | 官方 Set Transformer `modules.py`（Lee 等，ICML 2019） | 加 key padding mask 以批处理变长牌组 |
 | `lightgbm` | LightGBM | 回归 + 死亡二分类两棵 booster，直接吃 CSR |
 
-超参数见 [configs/models.json](configs/models.json)，可用 `--set key=value` 覆盖。损失 `MSE(标准化掉血) + 0.1·BCE(死亡)`，同一输入的重复种子按 `1/种子数` 加权（与仓库训练一致），早停看验证集 pair MAE。
+超参数见 [configs/models.json](configs/models.json)，可用 `--set key=value` 覆盖。Torch 损失为 `MSE(标准化掉血) + 0.1·BCE(死亡)`，同一输入的重复种子按 `1/种子数` 加权（与仓库训练一致），早停看验证集 pair MAE。LightGBM 两个头分别按其原生验证指标早停，默认回归头为 L2、死亡头为 binary logloss，实际指标写入 `history.json`。验证和最终预测对每个构筑、目标输入计算一次，再回填全部种子行；训练监督和评估统计覆盖所有有效战斗记录。
+
+在有其他任务的 GPU 上训练时，可设置 `gpu_memory_limit_gib` 限制当前 Torch 进程的显存分配，并用 `prediction_batch_size` 控制验证及最终预测的批量大小（默认 4096）。两项设置写入模型产物的超参数记录；预测批量不改变留出集覆盖或指标口径。GPU 选择应结合剩余显存和实际负载，不必要求整张卡完全空闲。
 
 ## 指标
 
@@ -109,19 +153,14 @@ cd /data1/pl/ImageTask/wxq/Projects/Sts2Bot
 
 报告生成器目前仍使用历史名称“噪声下限”和 `test_noise_floor` 字段；其统计含义以上述解释为准。这些历史字段名不表示已经测得总体不可约误差。
 
-## 已有固定快照报告
+## 固定快照报告
 
-| 快照 | 有效场次 / 构筑 / 连通组 | 比较与样例 |
-| --- | --- | --- |
-| 20260911-065245 | 552,043 / 54,748 / 1,413 | [模型比较](reports/20260911-065245/comparison.md)、[测试样例](reports/20260911-065245/examples-test.md) |
-| 20260913-121204 | 770,682 / 77,039 / 2,071 | [模型比较](reports/20260913-121204/comparison.md)、[测试样例](reports/20260913-121204/examples-test.md) |
-| 20260915-113849 | 1,048,142 / 105,125 / 3,352 | [模型比较](reports/20260915-113849/comparison.md)、[测试样例](reports/20260915-113849/examples-test.md) |
-| 20260916-054432 | 1,147,592 / 117,814 / 3,697 | [模型比较](reports/20260916-054432/comparison.md)、[测试样例](reports/20260916-054432/examples-test.md) |
+[reports/](reports/) 按快照保存模型比较、样例与实验，指标和数量只描述对应冻结数据。报告实际纳入的来源以其清单为准，不代表默认来源配置已更新。[损失函数与 pair 监督实验](reports/20260916-exp/experiments.md)的训练实现尚未接入标准入口。
 
-最后一批显式纳入了专项库，不代表默认配置已更新。同一快照的[损失函数与 pair 监督实验](reports/20260916-exp/experiments.md)另行保留；其中的实验训练实现尚未接入当前标准入口。不同快照的测试连通组与数据分布不同，不能直接用跨报告 MAE 升降判断模型退步或进步。原指标、训练设置、耗时与快照路径保留作复现依据，不表示当前采集总量。比较优化效果应在同一固定留出集上评估。
+不同快照的测试连通组与分布不同，不能直接用跨报告 MAE 升降判断模型进退；优化效果应在同一固定留出集上比较。保留报告中的指标、设置、耗时和快照身份用于复现。
 
 ## 产物
 
-`checkpoints/train/<stamp>/<model>/`：`artifact.json`（模型、超参、快照文件摘要、老师、覆盖目标、指标摘要）、`vocab.json`、`weights.pt` 或 `*.lgb.txt`、`metrics.json`、`history.json`、`predictions.parquet`、`training-builds.json`。推理只依赖该目录与 `catalogs/`。
+`checkpoints/train/<stamp>/<model>/`：`artifact.json`（模型、超参、代码分支与文件摘要、快照文件摘要、老师、覆盖目标、指标摘要）、`vocab.json`、`weights.pt` 或 `*.lgb.txt`、`metrics.json`、`history.json`、`predictions.parquet`、`training-builds.json`。推理只依赖该目录与 `catalogs/`。全量报告逐来源列出有效导出、无效完成结果、跨库重复及最终保留数量。
 
 推理输出 `normalized_expected_hp_loss`（[0,1]）、`expected_hp_loss`（× max_hp）、`death_probability`、`untrained_features`；目标没有训练覆盖时拒绝，`--strict` 时任何未训练特征也拒绝。

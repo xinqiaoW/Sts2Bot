@@ -152,12 +152,14 @@ class Vocabulary:
         return symbols, numerics, untrained
 
 
-def encode_pairs(vocab: Vocabulary, pairs, progress=None):
+def encode_pairs(vocab: Vocabulary, pairs, progress=None, *, n_pairs=None):
     """Encode many ``(Build, target_id, max_hp)`` inputs into a CSR matrix and padded token tensors."""
     rows, cols, vals, token_parts = [], [], [], []
-    n = len(pairs)
+    n = len(pairs) if n_pairs is None else n_pairs
     untrained_features, untrained_symbols = Counter(), Counter()
     for i, (build, target_id, max_hp) in enumerate(pairs):
+        if i >= n:
+            raise ValueError('More encoding inputs than the declared pair count')
         idx, val, missing = vocab.encode_sparse(build, target_id, max_hp)
         untrained_features.update(missing)
         rows.append(np.full(len(idx), i, dtype=np.int32)); cols.append(idx); vals.append(val)
@@ -166,6 +168,8 @@ def encode_pairs(vocab: Vocabulary, pairs, progress=None):
         token_parts.append((sym, num))
         if progress and (i + 1) % 20000 == 0:
             progress(i + 1, n)
+    if len(token_parts) != n:
+        raise ValueError('Fewer encoding inputs than the declared pair count')
     matrix = sp.csr_matrix((np.concatenate(vals), (np.concatenate(rows), np.concatenate(cols))),
                            shape=(n, vocab.n_features), dtype=np.float32)
     symbols, numerics, lengths = pad_tokens(token_parts)

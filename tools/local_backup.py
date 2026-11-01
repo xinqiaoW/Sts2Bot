@@ -54,14 +54,14 @@ def source_metadata(db):
     return captured
 
 
-def backup_once(db, directory, state_path):
+def backup_once(db, directory, state_path, *, method='backup'):
     directory, state_path = Path(directory), Path(state_path)
     previous = json.loads(state_path.read_text()) if state_path.exists() else {}
     last = previous if previous.get('state') == 'saved' else previous.get('last_success', {})
     slot = 'slot-b' if last.get('slot') == 'slot-a' else 'slot-a'
     target = directory / slot
     metadata = source_metadata(db)
-    manifest = snapshot(db, target)
+    manifest = snapshot(db, target) if method == 'backup' else snapshot(db, target, method=method)
     for relative, content in metadata.items():
         destination = target / relative
         destination.parent.mkdir(parents=True, exist_ok=True)
@@ -86,6 +86,8 @@ def main():
     parser.add_argument('--state', default='data/local-backup.json')
     parser.add_argument('--interval', type=int, default=300)
     parser.add_argument('--once', action='store_true')
+    parser.add_argument('--method', choices=('backup', 'vacuum-into'), default='backup',
+                        help='Independent consistent snapshot method; source stays read-only')
     parser.add_argument('--snapshot-lock', type=Path,
                         help='Shared lock to serialize copy, verification and hashing across databases')
     args = parser.parse_args()
@@ -101,7 +103,7 @@ def main():
                 with snapshot_access(args.snapshot_lock):
                     if shutil.disk_usage(Path(args.db).parent).free < 20 * 1024**3:
                         raise RuntimeError('Less than 20 GiB free; keep the previous backup intact')
-                    state = backup_once(args.db, args.directory, args.state)
+                    state = backup_once(args.db, args.directory, args.state, method=args.method)
                 print(json.dumps(state), flush=True)
                 if args.once:
                     return

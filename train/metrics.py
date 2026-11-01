@@ -18,7 +18,7 @@ def _weighted(values, weights):
     return float((values * weights).sum() / weights.sum())
 
 
-def evaluate(rows, pred_mean, pred_death, *, groupers=('kind', 'act_id', 'source')):
+def evaluate(rows, pred_mean, pred_death, *, groupers=('kind', 'act_id', 'source', 'execution_backend')):
     """``rows`` is a Dataset row frame; ``pred_*`` are aligned 1-D arrays."""
     rows = rows.reset_index(drop=True)
     pred_mean = np.asarray(pred_mean, dtype=np.float64)

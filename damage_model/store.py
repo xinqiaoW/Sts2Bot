@@ -24,9 +24,14 @@ class ClaimBusyBeforeBegin(WriteBusyBeforeBegin):
     """A claim could not start its transaction; no task or attempt changed."""
 
 
+class LeaseNotOwned(ValueError):
+    """Ownership failed inside a rolled-back transaction with no committed effects."""
+
+
 class Store:
     def __init__(self, path):
         self.avoid_build_stores = ()
+        self.write_wait_cancelled = None
         Path(path).parent.mkdir(parents=True, exist_ok=True)
         self.db = sqlite3.connect(path, timeout=30)
         self.db.row_factory = sqlite3.Row
@@ -100,9 +105,32 @@ class Store:
         return added
 
     def _begin_write(self, operation):
+        # Controllers can wait at this exact pre-transaction boundary, without
+        # replaying candidate generation, earlier commits, statements or results.
+        while True:
+            try:
+                self._begin_write_bounded(operation)
+            except WriteBusyBeforeBegin as error:
+                if self.write_wait_cancelled is None:
+                    raise
+                print(json.dumps({'event': 'waiting_for_controller_write_lock',
+                                  'operation': operation,
+                                  'sqlite_errorcode': error.sqlite_errorcode}), flush=True)
+                time.sleep(1)
+                continue
+            if self.write_wait_cancelled is not None and self.write_wait_cancelled():
+                # BEGIN succeeded after a stop arrived. No caller statements
+                # have run, so release only this empty transaction.
+                self.db.rollback()
+                raise KeyboardInterrupt('Controller stopped before writing')
+            return
+
+    def _begin_write_bounded(self, operation):
         # Retry only a BUSY BEGIN before this connection owns a transaction.
         # Never replay statements or commits: their effects may be ambiguous.
         for attempt in range(3):
+            if self.write_wait_cancelled is not None and self.write_wait_cancelled():
+                raise KeyboardInterrupt('Controller stopped while waiting to write')
             try:
                 self.db.execute('BEGIN IMMEDIATE')
                 break
@@ -126,7 +154,7 @@ class Store:
             changed = self.db.execute("UPDATE jobs SET status='pending',lease=NULL,lease_until=NULL WHERE id=? AND lease=? AND status='running'",
                                       (job['id'], job['lease'])).rowcount
             if changed != 1:
-                raise ValueError('Stale interrupted lease')
+                raise LeaseNotOwned('Stale interrupted lease')
             result = canonical(dict(status='CollectorInterrupted', receiptPath=evidence, claim=job,
                                     reason='Owning collector stopped before preserving a result'))
             self.db.execute('INSERT INTO attempts(job_id,lease,status,result,finished) VALUES(?,?,?,?,?)',
@@ -179,7 +207,7 @@ class Store:
         with self.db:
             updated = self.db.execute("UPDATE jobs SET status=?,result=? WHERE id=? AND lease=? AND status='running'",
                          (status, encoded, job['id'], job['lease'])).rowcount
-            if updated != 1: raise ValueError('Stale or already submitted lease')
+            if updated != 1: raise LeaseNotOwned('Stale or already submitted lease')
             self.db.execute('INSERT INTO attempts(job_id,lease,status,result,finished) VALUES(?,?,?,?,?)',
                             (job['id'],job['lease'],status,encoded,time.time()))
         return status
@@ -192,7 +220,7 @@ class Store:
         try:
             row=self.db.execute("SELECT attempts FROM jobs WHERE id=? AND lease=? AND status='running'",
                                 (job['id'],job['lease'])).fetchone()
-            if row is None: raise ValueError('Stale retry lease')
+            if row is None: raise LeaseNotOwned('Stale retry lease')
             if row[0]>=max_attempts:
                 self.db.rollback()
                 return self.finish(job,result)
@@ -225,7 +253,7 @@ class Store:
             row = self.db.execute("SELECT * FROM jobs WHERE id=? AND lease=? AND status='running'",
                                   (job['id'], job['lease'])).fetchone()
             if row is None:
-                raise ValueError('Stale native failure lease')
+                raise LeaseNotOwned('Stale native failure lease')
             attempts = [dict(a) for a in self.db.execute(
                 'SELECT * FROM attempts WHERE job_id=? ORDER BY id', (job['id'],))]
             if len(attempts) != row['attempts'] - 1:

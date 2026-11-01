@@ -77,7 +77,7 @@ class Controller:
     def __init__(self, args):
         self.args = args
         self.db_path = Path(args.db)
-        self.store = Store(args.db)
+        self.store = self.open_store(args.db)
         self.configs = validate_runtimes(args.runtimes)
         self.status_path = self.db_path.with_suffix('.continuous.json')
         self.progress_path = self.db_path.with_suffix('.continuous.progress.json')
@@ -105,7 +105,7 @@ class Controller:
                 raise ValueError('Mutation collection requires collect-only mode')
             from damage_model.mutations import Generator
             from damage_model.priority_store import PriorityStore
-            self.mutation_store = Store(args.mutation_db)
+            self.mutation_store = self.open_store(args.mutation_db)
             self.generator = Generator(self.store, self.mutation_store, self.catalog,
                                        json.loads(teacher), read_json(args.mutation_policy))
             self.queues = PriorityStore(self.store, self.mutation_store, json.loads(teacher))
@@ -113,7 +113,7 @@ class Controller:
             if self.mutation_store is None: raise ValueError('Targeted collection requires the existing mutation queue')
             from damage_model.mutations import Generator
             from damage_model.priority_store import AllocationStore
-            self.targeted_store = Store(args.targeted_db)
+            self.targeted_store = self.open_store(args.targeted_db)
             self.targeted_generator = Generator(self.store, self.targeted_store, self.catalog,
                                                 json.loads(teacher), read_json(args.targeted_policy))
             self.generator.avoid_stores = (self.targeted_store,)
@@ -121,6 +121,15 @@ class Controller:
             self.queues = AllocationStore(self.store, self.mutation_store, self.targeted_store, json.loads(teacher))
         self.store.avoid_build_stores = tuple(
             store for store in (self.mutation_store, self.targeted_store) if store is not None)
+
+    def write_wait_cancelled(self):
+        return (self.stop_requested or self.stop_path.exists()
+                or deadline_reached(self.args.stop_at))
+
+    def open_store(self, path):
+        store = Store(path)
+        store.write_wait_cancelled = self.write_wait_cancelled
+        return store
 
     def work_counts(self):
         return self.queues.counts() if getattr(self, 'mutation_store', None) is not None else self.store.counts()

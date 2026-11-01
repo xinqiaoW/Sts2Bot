@@ -393,6 +393,7 @@ def import_run(store, catalog, teacher, run, run_hash, source, *, reprocess=Fals
         # payload; never rewrite a historical source or turn human DPS into labels.
         incoming = canonical(run)
         if previous['body'] != incoming:
+            store._begin_write('source_equivalence')
             with store.db:
                 store.db.execute('INSERT OR IGNORE INTO source_equivalences VALUES(?,?,?,?,?,?,?)',
                     (run_hash, hashlib.sha256(incoming.encode()).hexdigest(), checksum,
@@ -482,6 +483,7 @@ def import_run(store, catalog, teacher, run, run_hash, source, *, reprocess=Fals
             removed.update(stripped_hp)
             removed_user.update(stripped_user)
             report['normalized_floors'] += 1
+        store._begin_write('source_origins')
         with store.db:
             store.db.execute('INSERT OR IGNORE INTO build_origins VALUES(?,?,?,?)',
                              (build.id, run_hash, state['floor'], canonical(details)))
@@ -493,6 +495,7 @@ def import_run(store, catalog, teacher, run, run_hash, source, *, reprocess=Fals
     report['skipped'] = dict(skipped)
     report['removed_max_hp_relics'] = dict(removed)
     report['removed_user_relics'] = dict(removed_user)
+    store._begin_write('source_import')
     with store.db:
         if previous:
             store.db.execute('INSERT OR IGNORE INTO source_import_history VALUES(?,?,?,?)',

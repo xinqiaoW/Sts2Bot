@@ -52,18 +52,39 @@ def submit(store, directory, job, result, action='finish', *, wait_for_lock=Fals
 
 
 def recover_waiting(store, directory):
-    """Retry only a rejected BEGIN, rechecking receipt ownership every time."""
-    from .store import WriteBusyBeforeBegin
+    """Wait for a rejected BEGIN; archive proven expired results without writing them."""
+    from .store import LeaseNotOwned, WriteBusyBeforeBegin
     while True:
         try:
-            return recover(store, directory)
+            return recover(store, directory, archive_expired=True)
         except WriteBusyBeforeBegin as error:
             print(json.dumps({'event': 'waiting_for_result_lock',
                               'sqlite_errorcode': error.sqlite_errorcode}), flush=True)
             time.sleep(1)
+        except LeaseNotOwned:
+            # A peer can expire/reassign the lease while BEGIN waits, then
+            # release the writer lock before the bounded BEGIN retry succeeds.
+            # The rejected transaction rolled back. Re-read authoritative
+            # attempts/ownership; only the existing proven-expiry path archives.
+            print(json.dumps({'event': 'rechecking_result_lease'}), flush=True)
 
 
-def recover(store, directory):
+def _archive_expired(path, job):
+    # Keep the original receipt bytes on the same filesystem. The expired
+    # attempt remains authoritative; a late result must never become a label.
+    archive = path.parent / 'expired-results'
+    archive.mkdir(exist_ok=True)
+    _sync_directory(path.parent)
+    destination = archive / (job['lease'] + '-' + uuid.uuid4().hex + '.json')
+    os.replace(path, destination)
+    _sync_directory(archive)
+    _sync_directory(path.parent)
+    print(json.dumps(dict(event='expired_result_archived', job=job['id'],
+                          lease=job['lease'], evidence=str(destination))), flush=True)
+    return 'superseded_expired'
+
+
+def recover(store, directory, *, archive_expired=False):
     """Caller must hold the runtime collector lock; pool recovery also holds pool locks."""
     path = path_for(directory)
     if not path.exists():
@@ -89,6 +110,11 @@ def recover(store, directory):
             status = 'recovered_pending'
         else:
             result = receipt['result']
+            if (archive_expired and status == 'expired'
+                    and value == {'status': 'LeaseExpired'}
+                    and row['lease'] != job['lease']
+                    and action in ('finish', 'retry_startup', 'retry_or_quarantine_native')):
+                return _archive_expired(path, job)
             if value != result and not (action == 'finish' and value.get('status') == 'InvalidObservation'
                                         and value.get('native_result') == result):
                 raise ValueError('Existing attempt differs from durable result; retain for review')
@@ -100,8 +126,11 @@ def recover(store, directory):
         owner.abandon_claim(job, evidence=str(path))
         status = 'recovered_pending'
     elif action == 'finish':
+        from .store import LeaseNotOwned
         try:
             status = owner.finish(job, receipt['result'])
+        except LeaseNotOwned:
+            raise
         except ValueError as error:
             status = owner.finish(job, dict(status='InvalidObservation', error=str(error),
                                            native_result=receipt['result']))
