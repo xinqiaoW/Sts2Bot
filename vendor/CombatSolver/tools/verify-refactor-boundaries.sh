@@ -639,6 +639,11 @@ require_fixed "$repository_root/src/Runtime/CardAdvisorSnapshot.cs" 'card.Mutabl
 require_fixed "$repository_root/src/Runtime/CardAdvisorSnapshot.cs" 'CardAdvisorProgress progress = Progress(run);' 'advisor must use shared public stage capture'
 require_fixed "$repository_root/src/RunControl/RunControlSession.Decisions.cs" 'CardAdvisorCapture.Progress(Run)' 'bot must use shared public stage capture'
 
+require_fixed "$repository_root/src/RunControl/RunControlSession.PotionRewards.cs" 'await PotionCmd.Discard(before[slot]!)' 'potion replacement must retain native ownership and completion boundaries'
+require_fixed "$repository_root/src/RunControl/RunControlSession.PotionRewards.cs" 'await button.GetReward()' 'potion replacement must retain native ownership and completion boundaries'
+require_fixed "$repository_root/src/RunControl/RunControlSession.PotionRewards.cs" 'before.SequenceEqual(player.PotionSlots, ReferenceEqualityComparer.Instance)' 'potion replacement must retain native ownership and completion boundaries'
+require_fixed "$repository_root/src/RunControl/RunControlSession.PolicyScreens.cs" 'CapturePotionReplacement(rewards, button, replacement, Me, discardSlot, ct)' 'potion replacement must retain native ownership and completion boundaries'
+
 if ((${#violations[@]} > 0)); then
     printf '%s\n' "${violations[@]}" >&2
     printf 'Refactor boundary verification failed with %d violation(s).\n' "${#violations[@]}" >&2

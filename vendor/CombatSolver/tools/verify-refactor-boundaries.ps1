@@ -805,6 +805,16 @@ foreach ($check in @(
     }
 }
 
+foreach ($token in @('await PotionCmd.Discard(before[slot]!)', 'await button.GetReward()',
+    'before.SequenceEqual(player.PotionSlots, ReferenceEqualityComparer.Instance)')) {
+    if (-not (Select-String -LiteralPath (Join-Path $repositoryRoot 'src/RunControl/RunControlSession.PotionRewards.cs') -SimpleMatch $token -Quiet)) {
+        $violations.Add("potion replacement missing native boundary: $token")
+    }
+}
+if (-not (Select-String -LiteralPath (Join-Path $repositoryRoot 'src/RunControl/RunControlSession.PolicyScreens.cs') -SimpleMatch 'CapturePotionReplacement(rewards, button, replacement, Me, discardSlot, ct)' -Quiet)) {
+    $violations.Add('potion rewards must use the shared replacement boundary')
+}
+
 if ($violations.Count -gt 0) {
     $violations | ForEach-Object { Write-Error $_ }
     throw "Refactor boundary verification failed with $($violations.Count) violation(s)."

@@ -18,12 +18,17 @@ internal sealed partial class RunControlSession
     private sealed record UiChoice(object Data, Func<Task> Execute);
     private readonly HashSet<AbstractRoom> _openedChests = [];
 
-    private static Task ClickLegalAsync(NClickableControl button)
+    private static void RequireLegalButton(NClickableControl button)
     {
         if (!GodotObject.IsInstanceValid(button)) throw new StaleUiChoiceException("button_freed");
         if (!button.IsInsideTree() || button.IsQueuedForDeletion()) throw new StaleUiChoiceException("button_detached");
         if (!button.IsVisibleInTree()) throw new StaleUiChoiceException("button_hidden");
         if (!button.IsEnabled) throw new StaleUiChoiceException("button_disabled");
+    }
+
+    private static Task ClickLegalAsync(NClickableControl button)
+    {
+        RequireLegalButton(button);
         return UiHelper.Click(button);
     }
 

@@ -1,5 +1,13 @@
 # CombatSolver 开发笔记与未来构想
 
+## 0.30.12：满药奖励按用户优先级替换（2026-11-02）
+
+按用户顺序配置15种药水，未列出项全部同级最低。外层 configs/bot-policy.json 的 potion_priority 为高到低的唯一ID列表；policy_config 校验列表，Bot对纯药水奖励不调用构筑模型。有空位先拿高优先级掉落；满药只允许严格优于身上最低档药水的替换，最低档有多个时固定较小槽位；同级保留原药。普通奖励混合金币/卡牌时使用相同资格判断。该顺序不代替战斗中 Smart 用药策略，商店满药不新增购买替换。
+
+原生 PolicyScreens 在满药奖励界面导出 potion_replace（奖励ID、discardSlot、discardId），原生不保存或解释等级。PotionRewards 独占替换动作：捕获完整槽位逐实例引用与奖励实例，在输入前检查界面/按钮/奖励/槽位以及原生 ShouldProcurePotion；用 PotionCmd.Discard 记录原生丢弃历史并执行Hook，再等待奖励按钮 GetReward 的原生同步领取，确认目标槽位确实得到奖励。丢弃后的错误作为失败传播，不回到 stale 重试。全部成功后才登记已处理奖励。候选公布时已知被禁止取得药水的状态不提供替换选项。
+
+UiSmoke 新增真实奖励界面：隐藏/禁用时不丢弃、同ID不同实例的手动替换拒绝、重新捕获后精确替换末尾槽位且其他槽不动、已领不重复，最后正常继续。Python与原生检查均通过，详见 TEST_MATRIX。配套安装器保留已有配置；新优先级字段首次安装自动补入。只做本地提交和ZIP。
+
 ## 0.30.11：双 Boss 取较高预计掉血（2026-11-02）
 
 用户要求双 Boss 按难打者评估。原生 Bot 状态与评分面板共用 CardAdvisorProgress.RemainingBosses，输出公开地图上尚未打败的 Boss；visibleBoss / boss_targets 继续表示短期下一场。第一场未结束时保留两个，结束后只保留第二个。没有读取下一幕隐藏 Boss 或未来 RNG。

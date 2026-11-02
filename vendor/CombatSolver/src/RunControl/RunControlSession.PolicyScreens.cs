@@ -87,6 +87,23 @@ internal sealed partial class RunControlSession
             foreach (var button in UiHelper.FindAll<NRewardButton>(node).Where(b => b.IsEnabled && b.IsVisibleInTree() && b.Reward != null && !_attemptedRewards.Contains(b.Reward)))
             {
                 Reward reward = button.Reward!;
+                if (reward is PotionReward replacement && Me.PotionSlots.All(p => p != null))
+                {
+                    if (!MegaCrit.Sts2.Core.Hooks.Hook.ShouldProcurePotion(Run, Me.Creature.CombatState, replacement.Potion!, Me))
+                        continue;
+                    for (int slot = 0; slot < Me.PotionSlots.Count; slot++)
+                    {
+                        int discardSlot = slot;
+                        var execute = CapturePotionReplacement(rewards, button, replacement, Me, discardSlot, ct);
+                        options.Add(new(new { kind = "potion_replace", id = replacement.Potion!.Id.Entry,
+                            discardSlot, discardId = Me.PotionSlots[slot]!.Id.Entry }, () =>
+                        {
+                            Task pending = execute(); // All stale checks precede any discard.
+                            return CompleteReplacementAsync(pending, reward);
+                        }));
+                    }
+                    continue;
+                }
                 // The reward's closed card offers are not player-visible yet.
                 object data = reward switch
                 {
@@ -172,6 +189,12 @@ internal sealed partial class RunControlSession
             return;
         }
         throw new NotSupportedException($"Unadapted autonomous overlay {overlay.GetType().Name}.");
+    }
+
+    private async Task CompleteReplacementAsync(Task pending, Reward reward)
+    {
+        await pending;
+        _attemptedRewards.Add(reward);
     }
 
     private async Task PolicyGridAsync(Node node, IOverlayScreen overlay, CancellationToken ct)

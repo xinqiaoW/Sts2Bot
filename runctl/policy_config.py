@@ -1,6 +1,7 @@
 """All tunable whole-run policy values; configuration is logged per episode."""
 import json
 import math
+import re
 import warnings
 from pathlib import Path
 
@@ -22,6 +23,11 @@ def load_policy_config(path=None, **overrides):
                     'max_rollout_depth', 'reward_rollout_depth', 'post_boss_rollout_depth', 'route_beam_width', 'seed',
                     'samples_per_parent', 'keep_per_parent', 'lookahead_pairs', 'boss_target_after_act_floor'}
     for key, value in values.items():
+        if key == 'potion_priority':
+            if (not isinstance(value, list) or any(not isinstance(p, str) or not re.fullmatch(r'[A-Z][A-Z0-9_]*', p) for p in value)
+                    or len(set(value)) != len(value)):
+                raise ValueError('potion_priority must list unique potion IDs, highest first; unlisted IDs tie last')
+            continue
         if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value) or value < 0:
             raise ValueError(f'{key} must be finite and nonnegative')
         if key in integer_keys and type(value) is not int:
@@ -53,6 +59,22 @@ def load_policy_config(path=None, **overrides):
     if values['route_beam_width'] < 1:
         raise ValueError('route_beam_width must be positive')
     return values
+
+
+def potion_priority(potion_id, config):
+    order = config['potion_priority']
+    return len(order) - order.index(potion_id) if potion_id in order else 0
+
+
+def potion_reward_eligible(option, slots, config):
+    """Replacement is allowed only for an explicitly offered, lowest occupied slot."""
+    if option['kind'] == 'potion':
+        return any(p['id'] is None for p in slots)
+    if not slots or any(p['id'] is None for p in slots):
+        return False
+    lowest = min(slots, key=lambda p: (potion_priority(p['id'], config), p['slot']))
+    return (option.get('discardSlot') == lowest['slot'] and option.get('discardId') == lowest['id']
+            and potion_priority(option['id'], config) > potion_priority(lowest['id'], config))
 
 
 def choose_card_with_margin(scores, skip_index, *, crisis, config):

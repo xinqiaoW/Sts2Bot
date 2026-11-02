@@ -9,7 +9,7 @@ from train.scoring_horizon import scoring_horizon
 from train.advisor_service import normalize_card
 from .event_policy import event_value, doll_room_options
 from .model_adapter import ModelAdapter
-from .policy_config import load_policy_config
+from .policy_config import load_policy_config, potion_priority, potion_reward_eligible
 from .route_policy import plan_route, next_floors
 
 
@@ -51,6 +51,18 @@ class BotPolicy:
         if screen == 'EVENT' and context.get('eventId') == 'DOLL_ROOM':
             # Apply the explicit ban before the single-option shortcut.
             choice = self.event(state, options, context)
+        elif screen == 'REWARDS' and all(o['kind'] in ('potion', 'potion_replace', 'leave', 'skip') for o in options):
+            # Free potion decisions do not need a card model or the forced-choice shortcut.
+            choices = [o for o in options if o['kind'] in ('potion', 'potion_replace')
+                       and potion_reward_eligible(o, state['potions'], self.config)]
+            if choices:
+                selected = max(choices, key=lambda o: (potion_priority(o['id'], self.config), -o['index']))
+            else:
+                selected = next((o for o in options if o['kind'] in ('leave', 'skip')), None)
+                if selected is None:
+                    raise ValueError('No eligible potion reward or legal leave option')
+            choice = selected['index']
+            self.last_report.update(reason='potion_priority', potion_choice=selected)
         elif len(options) == 1:
             choice = 0
             self.last_report['reason'] = 'only_legal_option'
@@ -306,7 +318,10 @@ class BotPolicy:
                 if kind == 'card' and option['card']['id'] in self.model.catalog.excluded['cards']: gain = -1e6
             elif kind == 'gold': gain = option['amount'] * self.config['gold_hp_value']
             elif kind == 'open_cards': gain = 10
-            elif kind == 'potion': gain = self.config['potion_value'] if any(p['id'] is None for p in state['potions']) else -1
+            elif kind in ('potion', 'potion_replace'):
+                if kind == 'potion_replace' and screen != 'REWARDS':
+                    raise ValueError('Potion replacement is only supported for free rewards')
+                gain = self.config['potion_value'] if potion_reward_eligible(option, state['potions'], self.config) else -1e9
             elif kind == 'remove': gain = self.config['shop_remove_value']  # actual instance is scored on the child screen
             elif kind == 'reward': gain = 1
             elif kind not in ('skip', 'leave'): raise ValueError('Unsupported choice kind: ' + kind)
@@ -336,4 +351,9 @@ class BotPolicy:
                     eligible.pop(index, None)
                 self.last_report.update(shop_resource_priority='potion_before_remove' if self.last_report['crisis']
                                         else 'remove_before_potion', resource_priority_deferred=deferred)
-        return max(eligible, key=lambda i: (eligible[i], options[i]['kind'] in ('skip', 'leave'), -i))
+        selected = max(eligible, key=lambda i: (eligible[i], options[i]['kind'] in ('skip', 'leave'),
+            potion_priority(options[i]['id'], self.config)
+                if screen == 'REWARDS' and options[i]['kind'] in ('potion', 'potion_replace') else 0, -i))
+        if options[selected]['kind'] in ('potion', 'potion_replace'):
+            self.last_report['potion_choice'] = options[selected]
+        return selected

@@ -10,6 +10,8 @@
 - 外层 `train/scoring_horizon.py`：Bot/服务共用的目标池规则；前6层对当前牌组做一次精英风险预测，超过阈值选精英，否则Boss，第7层起强制Boss；本幕结束后投影下一幕公开敌人池重新判断。当前已知双 Boss 使用 max 聚合，外层 RewardSelector 每个候选和 rollout 节点分别预测并取较大掉血；下一幕未知 Boss 池仍为均值。`train/score.py` 在验证真实构筑后单独设置预测敌人幕，不补造古代事件或遗物。
 - `Testing/CardAdvisorSmoke.cs`：显式环境变量启用的合成快照 HTTP/真实 Godot 验证，不冒充真实整局界面捕获验收。
 
+- `RunControl/RunControlSession.PotionRewards.cs`：只执行已公开免费药水奖励的逐实例槽位替换；丢弃前核验快照，经原生 PotionCmd.Discard 与奖励 GetReward 等待真实完成，变更后的错误不重试。优先级仅由外层 runctl/policy_config.py 与 BotPolicy 管理；不影响战斗用药和商店购买。
+
 使用及边界见 [选牌评分说明](../../../docs/card-advisor.md)。
 
 本文描述当前源码的所有权边界。它面向维护者和 coding agent；玩家功能说明见根目录 `README.md`，历史重构证据见 `docs/refactoring/`。

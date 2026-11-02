@@ -3,6 +3,7 @@ using Godot;
 using MegaCrit.Sts2.Core.AutoSlay.Helpers;
 using MegaCrit.Sts2.Core.CardSelection;
 using MegaCrit.Sts2.Core.Context;
+using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.CardRewardAlternatives;
@@ -10,10 +11,14 @@ using MegaCrit.Sts2.Core.Entities.Rewards;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Characters;
 using MegaCrit.Sts2.Core.Nodes;
+using MegaCrit.Sts2.Core.Nodes.CommonUi;
+using MegaCrit.Sts2.Core.Nodes.Rewards;
+using MegaCrit.Sts2.Core.Nodes.Screens;
 using MegaCrit.Sts2.Core.Nodes.Cards.Holders;
 using MegaCrit.Sts2.Core.Nodes.Screens.CardSelection;
 using MegaCrit.Sts2.Core.Nodes.Screens.Overlays;
 using MegaCrit.Sts2.Core.Runs;
+using MegaCrit.Sts2.Core.Rewards;
 using MegaCrit.Sts2.Core.Saves;
 
 namespace CombatSolver;
@@ -62,6 +67,7 @@ internal static class RunControlUiSmoke
                 await Task.Delay(150, deadline.Token);
             }
             await VerifyRewardChoicesAsync(original, evidence, deadline.Token);
+            await VerifyPotionReplacementAsync(player, evidence, deadline.Token);
             if (!original.SequenceEqual(player.Deck.Cards))
                 throw new InvalidOperationException("UI fixture unexpectedly changed the real deck.");
             status = "passed";
@@ -76,6 +82,66 @@ internal static class RunControlUiSmoke
         {
             File.WriteAllText(path, JsonSerializer.Serialize(new { status, error, evidence }));
             host.GetTree().Quit(status == "passed" ? 0 : 1);
+        }
+    }
+
+    private static async Task VerifyPotionReplacementAsync(Player player, List<object> evidence, CancellationToken ct)
+    {
+        foreach (var held in player.PotionSlots.Where(p => p != null).ToArray()) await PotionCmd.Discard(held!);
+        for (int i = 0; i < player.PotionSlots.Count; i++)
+        {
+            var acquired = await PotionCmd.TryToProcure(ModelDb.Potion<MegaCrit.Sts2.Core.Models.Potions.WeakPotion>().ToMutable(), player, i);
+            if (!acquired.success) throw new InvalidOperationException("Fixture could not fill potion slot.");
+        }
+        PotionModel incoming = ModelDb.Potion<MegaCrit.Sts2.Core.Models.Potions.FairyInABottle>().ToMutable();
+        var reward = new PotionReward(incoming, player);
+        var set = new RewardsSet(player, RunManager.Instance.RewardsSetSynchronizer).WithCustomRewards([reward]);
+        Task offered = set.Offer();
+        await Task.Delay(600, ct);
+        var screen = NOverlayStack.Instance!.Peek() as NRewardsScreen
+            ?? throw new InvalidOperationException("Missing potion rewards screen.");
+        var button = UiHelper.FindAll<NRewardButton>(screen).Single(b => ReferenceEquals(b.Reward, reward));
+        int slot = player.PotionSlots.Count - 1;
+        PotionModel?[] before = player.PotionSlots.ToArray();
+        Func<Task> captured = RunControlSession.CapturePotionReplacement(screen, button, reward, player, slot, ct);
+        screen.Visible = false;
+        Reject(captured, "potion_reward_surface_changed");
+        screen.Visible = true;
+        button.Disable();
+        Reject(captured, "button_disabled");
+        button.Enable();
+        if (!before.SequenceEqual(player.PotionSlots, ReferenceEqualityComparer.Instance))
+            throw new InvalidOperationException("Stale preflight discarded a potion.");
+        // Same ID in the same slot is still a different instance after manual replacement.
+        await PotionCmd.Discard(before[slot]!);
+        var sameId = await PotionCmd.TryToProcure(ModelDb.Potion<MegaCrit.Sts2.Core.Models.Potions.WeakPotion>().ToMutable(), player, slot);
+        if (!sameId.success) throw new InvalidOperationException("Fixture same-ID setup failed.");
+        Reject(captured, "potion_inventory_changed");
+        if (!ReferenceEquals(player.PotionSlots[slot], sameId.potion))
+            throw new InvalidOperationException("Same-ID replacement was discarded by stale choice.");
+        Func<Task> fresh = RunControlSession.CapturePotionReplacement(screen, button, reward, player, slot, ct);
+        Task pending = RunControlSession.TryStartUiChoice(fresh, () => true, out var reason)
+            ?? throw new InvalidOperationException("Fresh potion replacement rejected: " + reason);
+        await pending.WaitAsync(ct);
+        if (!ReferenceEquals(player.PotionSlots[slot], incoming) || !ReferenceEquals(reward.ClaimedPotion, incoming)
+            || !before.Take(slot).SequenceEqual(player.PotionSlots.Take(slot), ReferenceEqualityComparer.Instance))
+            throw new InvalidOperationException("Native potion reward did not replace exactly the chosen slot.");
+        if (RunControlSession.TryStartUiChoice(fresh, () => true, out reason) != null)
+            throw new InvalidOperationException("Consumed potion reward was executed twice.");
+        evidence.Add(new { test = "potion-replacement-hidden-disabled-same-id-stale-and-exact-slot-native-pickup", passed = true,
+            discarded = sameId.potion.Id.Entry, acquired = incoming.Id.Entry, slot, other_slots_preserved = true });
+        if (RunControlSession.IsCurrentSurface(screen))
+        {
+            await Task.Delay(250, ct);
+            var proceed = UiHelper.FindAll<NProceedButton>(screen).First(b => b.IsEnabled && b.IsVisibleInTree());
+            await UiHelper.Click(proceed);
+        }
+        await offered.WaitAsync(ct);
+
+        static void Reject(Func<Task> action, string expected)
+        {
+            if (RunControlSession.TryStartUiChoice(action, () => true, out var reason) != null || reason != expected)
+                throw new InvalidOperationException($"Expected {expected}, got {reason}");
         }
     }
 

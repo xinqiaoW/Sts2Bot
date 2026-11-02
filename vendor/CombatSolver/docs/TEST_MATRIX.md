@@ -1,5 +1,12 @@
 # CombatSolver 测试清单
 
+## 0.30.12 药水奖励替换
+
+- Python：test_potion_priority.py、test_bot_policy.py、test_scoring_horizon_update.py 共101项通过；另新增安装优先级默认值/保留自定义顺序测试单独通过。覆盖精确15项顺序、其他同级、严格替换、最低槽选择、同名药水、多个掉落、空位、混合奖励、非法配置与失效槽位。原商店购买与删牌顺序回归通过。
+- Debug构建通过。隔离 Wine/Godot 无界面 fixture `/tmp/sts2bot-potion-0312-native/grid-result.json` 为 passed，共7组。新药水组通过真实原生奖励页面及生产 CapturePotionReplacement：丢弃槽1的虚弱药水并领取瓶中精灵，其他槽保留；隐藏、禁用、同ID实例变化均在丢药前拒绝，已领取动作不重放，原生奖励页面能继续。旧网格/过期奖励哨兵亦通过。
+- 首次沙箱启动被Wine本地socket权限阻止，授权后在隔离runtime运行；未改超时上限（120秒）。不是用户Windows完整局，也不是战斗用药策略验证。
+- Linux/PowerShell结构门禁同步维护原生丢弃、原生领取及逐实例检查边界；本机执行Linux门禁。Release编译与本地配套ZIP，不推送远端。
+
 ## 0.30.11 双 Boss 最差目标
 
 - Python：tests/test_double_boss_target.py、test_scoring_horizon.py、test_elite_risk_target.py、test_reward_policy.py、test_advisor_service.py、test_bot_policy.py，共237项通过；1项HTTP套接字测试排除。

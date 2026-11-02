@@ -44,5 +44,22 @@
   "route_event_value": 2.0,
   "route_shop_value": 4.0,
   "unknown_combat_probability": 0.25,
-  "seed": 20261101
+  "seed": 20261101,
+  "potion_priority": [
+    "FAIRY_IN_A_BOTTLE",
+    "AMBERGRIS",
+    "SHIP_IN_A_BOTTLE",
+    "HEART_OF_IRON",
+    "GAMBLERS_BREW",
+    "GHOST_IN_A_JAR",
+    "FORTIFIER",
+    "STABLE_SERUM",
+    "BLOCK_POTION",
+    "DEXTERITY_POTION",
+    "SWIFT_POTION",
+    "POWER_POTION",
+    "OROBIC_ACID",
+    "CURE_ALL",
+    "ENERGY_POTION"
+  ]
 }

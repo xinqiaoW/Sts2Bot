@@ -52,3 +52,19 @@ def test_missing_native_source_fails_before_any_write(tmp_path):
     assert (target / 'runctl/policy.py').read_text() == '# previous\n'
     assert (mod / 'CombatSolver.dll').read_text() == 'old-native'
     assert not (target / 'update-backups').exists()
+
+
+def test_potion_priority_default_is_added_but_custom_order_is_preserved(tmp_path):
+    source, target, bot, _ = installation(tmp_path)
+    source_config = source / 'configs/bot-policy.json'
+    defaults = json.loads(source_config.read_text())
+    defaults['potion_priority'] = ['FAIRY_IN_A_BOTTLE', 'AMBERGRIS']
+    source_config.write_text(json.dumps(defaults))
+    install(source, target, bot)
+    installed = target / 'configs/bot-policy.json'
+    config = json.loads(installed.read_text())
+    assert config['potion_priority'] == defaults['potion_priority']
+    config['potion_priority'] = ['ENERGY_POTION']
+    installed.write_text(json.dumps(config))
+    install(source, target, bot)
+    assert json.loads(installed.read_text())['potion_priority'] == ['ENERGY_POTION']
