@@ -186,6 +186,7 @@ def evaluate(payload, selector, unknown_combat_probability=0.25):
         if short_targets is not None:
             request['next_floors'] = [dict(targets=short_targets, combat_probability=1.0)] if short_targets else []
         request.update(long_targets=horizon['long_targets'], long_target_room=horizon['long_target_room'],
+                       long_target_aggregation=horizon.get('long_target_aggregation', 'mean'),
                        encounter_act_id=horizon['encounter_act_id'], terminal=horizon['mode'] == 'terminal')
         if horizon['projects_next_act']:
             request['rollout_depth'] = selector.config['post_boss_rollout_depth']
@@ -208,6 +209,8 @@ def evaluate(payload, selector, unknown_combat_probability=0.25):
             'next_act_elite_risk': '；本幕已通关：短期看下一幕弱普通怪，精英预计掉血较高，长期看下一幕精英',
             'next_act_boss': '；本幕已通关：短期看下一幕弱普通怪，长期看下一幕公开 Boss 池',
             'terminal': '；已通关，无未来战斗，选牌收益为零'}[horizon['mode']]
+        if horizon.get('long_target_aggregation') == 'max':
+            result['scenario_note'] += '；双 Boss 分别预测，长期取掉血较多者'
     return result
 
 

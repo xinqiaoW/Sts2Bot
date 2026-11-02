@@ -779,7 +779,7 @@ foreach ($policyName in @('Decisions', 'PolicyRooms', 'PolicyScreens')) {
 foreach ($check in @(
     @{ Path = 'src/RunControl/RunControlSession.PolicyScreens.cs'; Text = 'card.MutableClone()' },
     @{ Path = 'src/RunControl/RunControlSession.Decisions.cs'; Text = 'action.DecisionSeq != seq' },
-    @{ Path = 'src/RunControl/RunControlSession.Decisions.cs'; Text = 'current.coord.row >= Run.Map.BossMapPoint.coord.row' },
+    @{ Path = 'src/RunControl/RunControlSession.Decisions.cs'; Text = 'progress.TargetSecondBoss && Run.Map.SecondBossMapPoint != null' },
     @{ Path = 'src/RunControl/RunControlUnlockScope.cs'; Text = 'if (!RunControlUnlockScope.Active) return true;' },
     @{ Path = 'src/RunControl/RunControlUnlockScope.cs'; Text = 'COMBATSOLVER_RUN_CONTROL' },
     @{ Path = 'src/Runtime/Entry.cs'; Text = 'patcher.RegisterPatch<RunControlUnlockPatch>();' }

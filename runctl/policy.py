@@ -120,6 +120,7 @@ class BotPolicy:
         request = dict(build=build.to_dict(), max_hp=state['maxHp'], options=explicit,
             floors_to_boss=state['floorsToBoss'], rollout_depth=depth,
             next_floors=future, long_targets=horizon['long_targets'], long_target_room=horizon['long_target_room'],
+            long_target_aggregation=horizon.get('long_target_aggregation', 'mean'),
             encounter_act_id=horizon['encounter_act_id'], terminal=horizon['mode'] == 'terminal')
         result = normal.select(request)
         projected_loss = min(c['long_expected_hp_loss'] for c in result['candidates'])

@@ -24,8 +24,7 @@ internal sealed partial class RunControlSession
                 }
         var current = Run.CurrentMapPoint;
         CardAdvisorProgress progress = CardAdvisorCapture.Progress(Run);
-        bool afterFirstBoss = current != null && current.coord.row >= Run.Map.BossMapPoint.coord.row;
-        MapPoint targetBoss = afterFirstBoss && Run.Map.SecondBossMapPoint != null
+        MapPoint targetBoss = progress.TargetSecondBoss && Run.Map.SecondBossMapPoint != null
             ? Run.Map.SecondBossMapPoint : Run.Map.BossMapPoint;
         var visibleBoss = (ReferenceEquals(targetBoss, Run.Map.SecondBossMapPoint)
             ? Run.Act.SecondBossEncounter : Run.Act.BossEncounter)
@@ -45,10 +44,12 @@ internal sealed partial class RunControlSession
                 relics = Me.Relics.Select(CardAdvisorCapture.Relic).ToArray(), ancient_history = history },
             potions = Me.PotionSlots.Select((p, slot) => new { slot, id = p?.Id.Entry }).ToArray(),
             currentNode = current == null ? null : new { row = current.coord.row, col = current.coord.col },
-            // Boss icons are displayed by NBossMapPoint. Switch the scoring
-            // target only after reaching the first boss; normal nodes never
+            // Boss icons are public. Keep the next fight separate from all
+            // remaining Bosses used by long-term scoring. Normal nodes never
             // export their future encounter identity.
             visibleBoss = visibleBoss.Id.Entry,
+            remainingBosses = progress.RemainingBosses(Run.Act.BossEncounter.Id.Entry,
+                Run.Map.SecondBossMapPoint is null ? null : Run.Act.SecondBossEncounter!.Id.Entry),
             floorsToBoss = current == null ? targetBoss.coord.row : Math.Max(0, targetBoss.coord.row - current.coord.row),
             map = Run.Map.GetAllMapPoints().Concat(new[] { Run.Map.StartingMapPoint, Run.Map.BossMapPoint })
                 .Concat(Run.Map.SecondBossMapPoint is { } second ? new[] { second } : Array.Empty<MapPoint>()).Distinct().Select(p => new

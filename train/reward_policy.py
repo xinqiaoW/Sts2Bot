@@ -243,6 +243,9 @@ class RewardSelector:
             raise ValueError('next_floors must contain zero to two floor distributions')
         boss = request.get('long_targets', request.get('boss_targets'))
         long_room = request.get('long_target_room', 'Boss')
+        long_aggregation = request.get('long_target_aggregation', 'mean')
+        if long_aggregation not in ('mean', 'max') or (long_aggregation == 'max' and long_room != 'Boss'):
+            raise ValueError('Long target aggregation must be mean, or max for Boss targets')
         terminal = request.get('terminal', False)
         if type(terminal) is not bool:
             raise ValueError('terminal must be boolean')
@@ -329,7 +332,15 @@ class RewardSelector:
             # zero-damage battles; uncertain combat probability contributes
             # equally to the numerator and the effective battle count.
             short = [s / short_combat_weight for s in short]
-        initial_boss = losses(root_builds, boss)
+        def long_losses(builds):
+            # Re-evaluate the harder Boss for every candidate and rollout node.
+            # Short-term distributions still use their ordinary weighted mean.
+            if long_aggregation == 'max' and not terminal:
+                values = [losses(builds, {target: 1.0}) for target in boss]
+                return [max(row) for row in zip(*values)]
+            return losses(builds, boss)
+
+        initial_boss = long_losses(root_builds)
         frontiers = [[Node(b, [], loss)] for b, loss in zip(root_builds, initial_boss)]
         pool = self.pool() if depth else []
         sample_count = c['samples_per_parent']
@@ -353,7 +364,7 @@ class RewardSelector:
                         b = parent.build if card is None else replace(parent.build, cards=parent.build.cards+(card,))
                         children.append(Node(b, parent.path + [None if card is None else card.to_dict()]))
                     ranges.append((root, start, len(children)))
-            values = losses([node.build for node in children], boss)
+            values = long_losses([node.build for node in children])
             for node, value in zip(children, values):
                 node.loss = value
             return children, ranges
@@ -423,6 +434,7 @@ class RewardSelector:
                     score_margin=best['combined_score']-ranked_options[1]['combined_score'] if len(ranked_options) > 1 else 0.0,
                     rollout_depth=depth, seed=seed, config=c, score_weighting=weighting, pool_card_ids=pool, candidates=candidates,
                     encounter_act_id=encounter_act, long_target_room=long_room, long_targets=boss,
+                    long_target_aggregation=long_aggregation,
                     untrained_features=sorted(missing), warnings=sorted(warnings), stats=stats,
                     elapsed_seconds=time.perf_counter()-started,
                     interpretation='Best/worst tails against the declared Elite/Boss target pool, not an unbiased expectation of future rewards. Full-health model; only adds cards or skips.')

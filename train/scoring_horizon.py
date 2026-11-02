@@ -64,6 +64,7 @@ def scoring_horizon(catalog, trained_targets, state, *, score_elites=None,
         warnings.extend('untrained_feature:' + key for key in probe.get('untrained_features', []))
         reason = 'elite_loss_above_threshold' if elite_loss > elite_loss_threshold else 'elite_loss_at_or_below_threshold'
 
+    aggregation = 'mean'
     if reason == 'elite_loss_above_threshold':
         long_targets, room = elites, 'Elite'
     elif completed:
@@ -71,14 +72,21 @@ def scoring_horizon(catalog, trained_targets, state, *, score_elites=None,
         # generated future state; compare the public next-act Boss mixture.
         long_targets, room = pool('Boss'), 'Boss'
     else:
-        boss = state['visibleBoss']
-        if not any(e['id'] == boss and e['room_type'] == 'Boss' for e in catalog.acts[act_id]['encounters']):
-            raise ValueError('Visible boss is not a Boss encounter of the current act')
-        if f'{act_id}:{boss}' not in trained_targets:
-            raise ValueError(f'Uncovered target: {act_id}:{boss}')
-        long_targets, room = {boss: 1.0}, 'Boss'
+        bosses = state.get('remainingBosses', [state['visibleBoss']])
+        if (not isinstance(bosses, list) or not 1 <= len(bosses) <= 2
+                or any(not isinstance(b, str) for b in bosses) or len(set(bosses)) != len(bosses)
+                or bosses[0] != state['visibleBoss']):
+            raise ValueError('remainingBosses must list one or two distinct Bosses, next visible Boss first')
+        for boss in bosses:
+            if not any(e['id'] == boss and e['room_type'] == 'Boss' for e in catalog.acts[act_id]['encounters']):
+                raise ValueError('Visible boss is not a Boss encounter of the current act')
+            if f'{act_id}:{boss}' not in trained_targets:
+                raise ValueError(f'Uncovered target: {act_id}:{boss}')
+        long_targets, room = dict.fromkeys(bosses, 1.0), 'Boss'
+        aggregation = 'max' if len(bosses) > 1 else 'mean'
     return dict(mode=('next_act_' if completed else '') + ('elite_risk' if room == 'Elite' else 'boss'),
                 projects_next_act=completed, encounter_act_id=act_id, long_target_room=room, long_targets=long_targets,
+                long_target_aggregation=aggregation,
                 short_targets=short_targets, target_reason=reason, estimated_elite_loss=elite_loss,
                 elite_target_loss_threshold=elite_loss_threshold, boss_target_after_act_floor=boss_after_act_floor,
                 evaluated_act_floor=act_floor, warnings=sorted(set(warnings)))

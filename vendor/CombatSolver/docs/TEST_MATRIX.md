@@ -1,5 +1,13 @@
 # CombatSolver 测试清单
 
+## 0.30.11 双 Boss 最差目标
+
+- Python：tests/test_double_boss_target.py、test_scoring_horizon.py、test_elite_risk_target.py、test_reward_policy.py、test_advisor_service.py、test_bot_policy.py，共237项通过；1项HTTP套接字测试排除。
+- 新增确定性模型用例：基准双Boss损失40/10，抓FOOTWORK后5/30，抓BACKFLIP后25/25；max选择BACKFLIP，均值选择FOOTWORK。逐个检查深度2叶子的双Boss最大损失，验证短期仍为均值，Bot和面板均传递max。非法列表与第二Boss无训练覆盖显式拒绝，单Boss与旧快照兼容。
+- 原生纯生产helper fixture：CardAdvisorProgressSmoke共10项通过，含首Boss未结束仍保留两个、首Boss结束只剩第二个、单Boss与通关阶段。无需游戏。
+- Linux结构门禁同步为共用阶段边界检查后通过；PowerShell同等更新但本机未执行。
+- 未执行Windows完整对局、实际双Boss战斗或HTTP套接字测试；未重跑未改变的安装器。Release构建用于原生接线与版本验证。
+
 ## 0.30.10 精英风险目标
 
 - 233 项离线目标/奖励/Bot/服务/动态权重测试通过，1项HTTP套接字测试未执行；另新增4项非法精英预测与1项缺本幕楼层处理测试通过，共238项。

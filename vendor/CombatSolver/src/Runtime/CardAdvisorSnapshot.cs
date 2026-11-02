@@ -176,6 +176,8 @@ internal static class CardAdvisorCapture
             floors_to_boss = progress.FloorsToBoss,
             boss_targets = new Dictionary<string, double> { [visibleBoss!.Id.Entry] = 1 },
             scoring_state = new { actFloor = run.ActFloor, normalCombatsCompleted = progress.NormalCombatsCompleted,
+                remainingBosses = progress.RemainingBosses(run.Act.BossEncounter.Id.Entry,
+                    run.Map.SecondBossMapPoint is null ? null : run.Act.SecondBossEncounter!.Id.Entry),
                 actBossDefeated = progress.ActBossDefeated, visibleBoss = visibleBoss.Id.Entry },
         };
         return new CardAdvisorSnapshot(JsonSerializer.Serialize(payload, JsonOptions), title, names.ToArray(),

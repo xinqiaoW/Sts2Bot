@@ -1,5 +1,13 @@
 # CombatSolver 开发笔记与未来构想
 
+## 0.30.11：双 Boss 取较高预计掉血（2026-11-02）
+
+用户要求双 Boss 按难打者评估。原生 Bot 状态与评分面板共用 CardAdvisorProgress.RemainingBosses，输出公开地图上尚未打败的 Boss；visibleBoss / boss_targets 继续表示短期下一场。第一场未结束时保留两个，结束后只保留第二个。没有读取下一幕隐藏 Boss 或未来 RNG。
+
+scoring_horizon 对当前已知双 Boss 标记 long_target_aggregation=max。RewardSelector 对每个候选及每个 rollout 节点分别预测两个 Boss，取较大损失后再保路及进行原有前后尾部聚合；不固定原始牌组最难的那个，也不取两者平均或相加。短期仍使用原战斗分布均值；下一幕尚未公开的 Boss 池与精英池仍使用均值。旧快照缺 remainingBosses 时兼容单一 visibleBoss，升级须同时安装原生与 Python。
+
+未更改精英风险目标切换、动态权重、搜索宽深、配置默认值或用户配置。配套安装器复用现有备份及只补缺失键流程。本地提交及 ZIP，无外部上传；验证见 TEST_MATRIX。
+
 ## 0.30.10：按精英风险选择长期目标（2026-11-02）
 
 用户决定不安装 0.30.9 的固定弱怪阶段规则，改为前期评估当前牌组对精英的预计掉血；严格大于可配置阈值时目标为精英，否则目标为 Boss。本幕第 6 层之后强制 Boss。用户已选择初始精英阈值 20 点。
