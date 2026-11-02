@@ -643,6 +643,8 @@ require_fixed "$repository_root/src/RunControl/RunControlSession.PotionRewards.c
 require_fixed "$repository_root/src/RunControl/RunControlSession.PotionRewards.cs" 'await button.GetReward()' 'potion replacement must retain native ownership and completion boundaries'
 require_fixed "$repository_root/src/RunControl/RunControlSession.PotionRewards.cs" 'before.SequenceEqual(player.PotionSlots, ReferenceEqualityComparer.Instance)' 'potion replacement must retain native ownership and completion boundaries'
 require_fixed "$repository_root/src/RunControl/RunControlSession.PolicyScreens.cs" 'CapturePotionReplacement(rewards, button, replacement, Me, discardSlot, ct)' 'potion replacement must retain native ownership and completion boundaries'
+require_fixed "$repository_root/src/RunControl/RunControlSession.Rooms.cs" 'b.Option.HoverTips.OfType<CardHoverTip>()' 'event policy requires publicly displayed card previews'
+require_fixed "$repository_root/src/RunControl/RunControlSession.Rooms.cs" 'FindIndex(c => ReferenceEquals(c, t.Card))' 'event removal policy requires the exact owned card instance'
 
 require_fixed "$repository_root/src/Runtime/CardAdvisorSnapshot.cs" 'scoring_state = new { hp = player.Creature.CurrentHp' 'advisor survival budget must capture public current HP'
 

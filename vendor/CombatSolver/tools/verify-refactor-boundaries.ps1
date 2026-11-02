@@ -814,6 +814,12 @@ foreach ($token in @('await PotionCmd.Discard(before[slot]!)', 'await button.Get
 if (-not (Select-String -LiteralPath (Join-Path $repositoryRoot 'src/RunControl/RunControlSession.PolicyScreens.cs') -SimpleMatch 'CapturePotionReplacement(rewards, button, replacement, Me, discardSlot, ct)' -Quiet)) {
     $violations.Add('potion rewards must use the shared replacement boundary')
 }
+foreach ($token in @('b.Option.HoverTips.OfType<CardHoverTip>()', 'FindIndex(c => ReferenceEquals(c, t.Card))')) {
+    if (-not (Select-String -LiteralPath (Join-Path $repositoryRoot 'src/RunControl/RunControlSession.Rooms.cs') -SimpleMatch $token -Quiet)) {
+        $violations.Add("event policy requires public card previews and exact owned identity: $token")
+    }
+}
+
 
 if (-not (Select-String -LiteralPath (Join-Path $repositoryRoot 'src/Runtime/CardAdvisorSnapshot.cs') -SimpleMatch 'scoring_state = new { hp = player.Creature.CurrentHp' -Quiet)) {
     $violations.Add('advisor survival budget must capture public current HP')

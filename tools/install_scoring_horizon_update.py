@@ -7,7 +7,7 @@ import shutil
 
 
 SOURCES = ('train/reward_policy.py', 'train/scoring_horizon.py', 'train/score.py', 'train/advisor_service.py',
-           'runctl/policy.py', 'runctl/policy_config.py', 'runctl/event_policy.py', 'runctl/__main__.py', 'runctl/env.py')
+           'runctl/policy.py', 'runctl/policy_config.py', 'runctl/event_policy.py', 'runctl/event_combat.py', 'runctl/__main__.py', 'runctl/env.py')
 CONFIGS = ('configs/bot-policy.json', 'configs/reward-policy.json')
 NATIVE = ('CombatSolver.dll', 'CombatSolver.json', 'CombatSolver.MemoryCleaner.exe', 'THIRD_PARTY_NOTICES.md')
 
@@ -27,7 +27,7 @@ def install(source, target, bot):
         data = (source / name).read_bytes()
         compile(data, name, 'exec')
         dest = target / name
-        if name != 'train/scoring_horizon.py' and not dest.is_file():
+        if name not in ('train/scoring_horizon.py', 'runctl/event_combat.py') and not dest.is_file():
             raise FileNotFoundError(dest)
         updates[dest] = (Path('advisor-service') / name, data)
     for name in CONFIGS:

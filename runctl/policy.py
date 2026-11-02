@@ -8,6 +8,7 @@ from train.score import BuildScorer
 from train.scoring_horizon import scoring_horizon
 from train.advisor_service import normalize_card
 from .event_policy import event_value, doll_room_options
+from .event_combat import adjust_event_cards
 from .model_adapter import ModelAdapter
 from .policy_config import load_policy_config, potion_priority, potion_reward_eligible
 from .route_policy import plan_route, next_floors
@@ -268,12 +269,6 @@ class BotPolicy:
             if option['index'] not in scores:
                 scores[option['index']], reasons[option['index']] = event_value(context['eventId'], option, state, self.config)
             key = option.get('id', '').upper().split('.')[-1]
-            if context['eventId'] == 'SLIPPERY_BRIDGE' and key == 'OVERCOME':
-                previews = [p for p in option.get('cards', []) if p['deckIndex'] >= 0]
-                if len(previews) == 1:
-                    candidate = self.candidate(raw, dict(kind='card', action='remove', **previews[0]))
-                    scores[option['index']] = baseline - self.model.score([candidate], self.targets(state), state['maxHp'])[0]['expected_hp_loss']
-                    reasons[option['index']] = 'visible_owned_card_removal_model'
             if context['eventId'] == 'THIS_OR_THAT' and key == 'ORNATE':
                 # The random relic remains unknown. Only the explicitly shown
                 # curse can be projected, with a declared random-relic prior.
@@ -284,8 +279,11 @@ class BotPolicy:
                 reasons[option['index']] = 'public_clumsy_effect_and_unknown_relic_prior'
             if option.get('lethal'):
                 scores[option['index']], reasons[option['index']] = -1e9, 'visible_lethal_option'
+        options_by_index = {o['index']: o for o in options}
+        rejected = adjust_event_cards(self, state, options, context, raw, scores, reasons)
         self.last_report.update(scores=scores, reasons=reasons)
-        return max(scores, key=lambda i: (scores[i], -i))
+        return max((i for i in scores if i not in rejected),
+                   key=lambda i: (scores[i], options_by_index[i].get('proceed', False), -i))
 
     def immediate(self, state, options, raw, build, screen, context):
         targets = self.targets(state)

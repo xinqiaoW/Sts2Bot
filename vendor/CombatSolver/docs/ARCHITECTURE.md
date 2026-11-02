@@ -201,6 +201,7 @@ renderer 不得重新读取 `SolverResult`、`PlanAction`、`PlanCardChoice` 或
 - `RunControlSession.PolicyRooms.cs`：商店、篝火、宝箱的合法选项与真实操作；购买等待子界面时由所属会话推进子选择。
 - `RunControlSession.PolicyScreens.cs`：奖励、选牌、遗物、卡牌组、牌组操作与水晶球的可见选项；卡牌升级预览使用克隆。未知界面显式失败。
 - 根目录 `runctl/policy.py`、`model_adapter.py`、`route_policy.py`、`event_policy.py`：分别拥有决策组合、模型输入投影、可见路线规划与事件启发式。只消费序列化公开快照；被排除的模型输入记录警告，不修改游戏库存。参数在 `configs/bot-policy.json`。
+- 根目录 `runctl/event_combat.py`：只在外层进行事件公开加牌、精确实例删牌的当前构筑反事实；共用scoring_horizon/survival_budget，评分不做未来抓牌rollout。原生事件入口仍仅导出选项文字与CardHoverTip及deckIndex，不替Python选择或读取隐藏随机结果。
 - `ProtocolHost` 继续拥有邮箱和进程静稳检查；清理成功后才公布整局 `complete`。异常保存 `failed` 并退出进程，不伪造自然死亡。
 
 整局控制不调用单场 `ScenarioBuilder` 注入状态，不向 F 标签库写入数据，不拥有 Search/Mirror 政策。Python 客户端与范围见仓库根部 [RunController 说明](../../../docs/run-controller.md)。两套结构门禁禁止在整局控制目录施加作弊 Power、直接杀怪或设置生命值。

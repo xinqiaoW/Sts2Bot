@@ -13,7 +13,7 @@ def installation(tmp_path):
     mod.mkdir(parents=True)
     for name in SOURCES:
         p = source / name; p.parent.mkdir(parents=True, exist_ok=True); p.write_text('# updated\n')
-        if name != 'train/scoring_horizon.py':
+        if name not in ('train/scoring_horizon.py', 'runctl/event_combat.py'):
             p = target / name; p.parent.mkdir(parents=True, exist_ok=True); p.write_text('# previous\n')
     for name in CONFIGS:
         p = source / name; p.parent.mkdir(parents=True, exist_ok=True)
