@@ -25,9 +25,11 @@ def main():
     paths = ['catalogs/game-0.111.0.raw.json', 'configs/real-runs-8s.json',
              'configs/mutations-targeted-8s.json', 'configs/reward-policy.json', 'configs/bot-policy.json',
              'tools/prepare_windows_autobot.py', 'tools/prepare_autobot_runtime.py',
+             'tools/install_bot_update.py', 'tools/install_scoring_horizon_update.py',
+             'docs/policy-configuration.md', 'docs/policy-cleanup-20261102.md',
+             'docs/history/autobot-progress-20261101.md',
              'docs/autobot.md', 'docs/autobot-progress.md', 'docs/autobot-evaluation-plan.md',
              'docs/counter-state.md', 'docs/card-advisor.md', 'docs/relic-rules.md']
-    paths.extend(p.relative_to(root).as_posix() for p in sorted((root / 'configs/bot-tuning').glob('*.json')))
     report = root / 'docs/autobot-evaluation.md'
     if report.exists(): paths.append(report.relative_to(root).as_posix())
     if args.include_model:
@@ -40,14 +42,12 @@ def main():
     path = args.output / f'CombatSolver-{version}-autobot-{"full" if args.include_model else "update"}.zip'
     instructions = f'''CombatSolver {version} 全流程机器人本地测试版
 
-将 advisor-service 文件夹合并到已有评分服务目录，保留 .venv 和 checkpoints/train/selected。
-如果调整过 configs 内的参数，先备份个人配置；本包包含本次测试默认值。
+首次安装可使用包内 advisor-service。已有安装请关闭 Bot 和游戏，使用统一安装器保留参数：
+python advisor-service/tools/install_bot_update.py --target <已安装advisor-service目录> --bot <含runtime.json的Bot目录>
+安装器备份旧文件、只补缺失配置，不覆盖已有值；不要整目录覆盖 configs。
 CombatSolver 文件夹用于准备命令的 --mod 参数。
-已有独立 Bot 目录无需重新准备：退出 Bot 后，将本包 CombatSolver 的 DLL、JSON、NOTICE 和 MemoryCleaner
-覆盖到独立目录的 game/mods/CombatSolver（例如 D:/Sts2-Autobot-0303/game/mods/CombatSolver）。
-只更新 Downloads 里的源 Mod 文件夹不会更新已有独立游戏。
-启用可调战斗搜索：将该独立目录 runtime.json 的 combat_search_mode 设为 "settings"，
-完整 PowerShell 更新命令见 advisor-service/docs/autobot.md 的“已有 Windows Bot 升级”章节。
+已有独立 Bot 目录无需重新准备；安装器读取 runtime.json 的 game_dir 定位实际 Mod。
+战斗搜索通过独立目录 runtime.json 的 combat_search_mode="settings" 启用玩家设置。
 之后在 Bot 独立游戏的 CombatSolver 设置里调整性能档位/自定义预算，下一局读取。
 如需更新原游戏的人工评分面板，也可覆盖原 Mod 的 DLL、manifest、NOTICE 和 MemoryCleaner。
 更新包默认不重复下载模型或 Python 依赖。首次使用者需要模型及 requirements.txt 依赖。
@@ -56,8 +56,7 @@ CombatSolver 文件夹用于准备命令的 --mod 参数。
 一次准备后双击输出目录中的“启动自动爬塔.bat”。
 全自动机器人使用独立游戏与存档，无需另开 HTTP 评分服务。
 请使用自己的原版游戏与已安装 RitsuLib；本包不包含第三方游戏和依赖文件。
-旧策略已完成 60 局调参，剩余 40 局独立评估尚未开始；新策略不能沿用旧版胜率结论。
-原生 Windows 完整对局等待实际试用。
+当前评测状态见 docs/autobot-progress.md。历史版本的结果不代表当前版本胜率。
 '''
     with zipfile.ZipFile(path, 'x', zipfile.ZIP_DEFLATED) as archive:
         for source, target in files: archive.write(source, target)

@@ -92,17 +92,46 @@ def test_bot_and_panel_propagate_max_and_short_next_boss(request_data):
     observation['state'].update(state(s))
     observation['state']['floorsToBoss'] = 1
     observation['state']['map'] = [dict(row=1, col=0, type='RestSite', children=[dict(row=2,col=0)]),
-        dict(row=2,col=0,type='Boss',children=[])]
+        dict(row=2,col=0,type='Boss',children=[dict(row=3,col=0)]),
+        dict(row=3,col=0,type='RestSite',children=[dict(row=4,col=0)]),
+        dict(row=4,col=0,type='Boss',children=[])]
     bot = BotPolicy(s, config=dict(samples_per_parent=1, keep_per_parent=1, lookahead_pairs=0))
     result = bot.search_card_builds(observation['state'], bot.model.project(bot.raw_build(observation['state'])), [], fixed_depth=0)
     assert result['long_target_aggregation'] == 'max'
     assert result['candidates'][-1]['initial_long_hp_loss'] == 40
     p = payload(request_data)
     p.update(scoring_state=dict(state(s), hp=70), boss_targets={s.bosses[0]: 1}, floors_to_boss=0,
-             future_room_types=[{'Boss': 1}])
+             future_room_types=[{'Boss': 1}, {'RestSite': 1}])
     result = evaluate(p, RewardSelector(s))
     assert result['scoring_horizon'] == bot.last_report['scoring_horizon']
     assert result['long_target_aggregation'] == 'max'
     assert result['candidates'][-1]['initial_long_hp_loss'] == 40
     assert result['candidates'][-1]['short_details'][0]['targets'] == {s.bosses[0]: 1}
     assert '取掉血较多者' in result['scenario_note']
+
+
+def two_boss_map():
+    return [dict(row=1, col=0, type='RestSite', children=[dict(row=2, col=0)]),
+            dict(row=2, col=0, type='Boss', children=[dict(row=3, col=0)]),
+            dict(row=3, col=0, type='Boss', children=[])]
+
+
+def test_route_and_short_window_use_each_remaining_boss_once():
+    from runctl.route_policy import next_floors, plan_route
+    from runctl.policy_config import load_policy_config
+    s = SwitchingBossScorer()
+    st = dict(state(s), map=two_boss_map(), currentNode=dict(row=1, col=0),
+              maxHp=100, hp=100, gold=0)
+    original = deepcopy(st)
+    def fallback(room, count):
+        raise AssertionError('Known public Boss must be matched to its own map node')
+    floors = next_floors(st, fallback, .25)
+    assert [f['targets'] for f in floors] == [{s.bosses[0]: 1.}, {s.bosses[1]: 1.}]
+    losses = dict(Boss=10, BossById=dict(zip(s.bosses, [10, 40])))
+    _, routes = plan_route(st, [dict(index=0, row=2, col=0)], losses, load_policy_config())
+    assert routes[0]['estimated_hp'] == 50
+    assert st == original
+    st.update(visibleBoss=s.bosses[1], remainingBosses=[s.bosses[1]], currentNode=dict(row=2, col=0))
+    assert next_floors(st, fallback, .25)[0]['targets'] == {s.bosses[1]: 1.}
+    _, routes = plan_route(st, [dict(index=0, row=3, col=0)], losses, load_policy_config())
+    assert routes[0]['estimated_hp'] == 60

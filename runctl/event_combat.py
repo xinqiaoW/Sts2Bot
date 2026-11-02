@@ -2,7 +2,7 @@
 from copy import deepcopy
 import math
 
-from train.advisor_service import normalize_card
+from train.live_state import normalize_card
 from train.reward_policy import score_weighting
 from train.scoring_horizon import scoring_horizon, survival_budget
 from .route_policy import next_floors
@@ -47,7 +47,7 @@ class EventCombat:
             self.cache[key] = loss
         return self.cache[key]
 
-    def losses(self, build):
+    def losses(self, build, *, reduction="mean"):
         short, count = 0., 0.
         for i, floor in enumerate(self.future):
             weight = floor.get('combat_probability', 1.) * self.policy.reward_config['short_floor_weights'][i]
@@ -57,10 +57,10 @@ class EventCombat:
         long = (max(self.loss(build, {t: 1.}, self.act) for t in self.targets)
                 if self.horizon.get('long_target_aggregation') == 'max'
                 else self.loss(build, self.targets, self.act)) if self.targets else 0.
-        return (short / count if count else None), long
+        return ((short / count if reduction == "mean" else short) if count else None), long
 
     def evaluate(self, build):
-        short, long = self.losses(build)
+        short, long = self.losses(build, reduction=self.policy.reward_config['short_reduction'])
         return dict(short_expected_hp_loss=short, long_expected_hp_loss=long,
                     score=-(short or 0.) * self.weights['short_weight'] - long * self.weights['long_weight'])
 

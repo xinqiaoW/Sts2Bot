@@ -1,5 +1,19 @@
 """Beam planning over visible map topology and public encounter mixtures only."""
 from dataclasses import dataclass
+from train.scoring_horizon import remaining_boss_ids
+
+
+def boss_targets_by_node(state):
+    """Match public Boss icons to the remaining fights; never inspect hidden rooms."""
+    if 'remainingBosses' not in state:
+        return {}  # Older snapshots expose only the next Boss.
+    bosses = remaining_boss_ids(state)
+    nodes = sorted((p['row'], p['col']) for p in state['map'] if p['type'] == 'Boss')
+    if not nodes:
+        return {}
+    if len(nodes) < len(bosses):
+        raise ValueError('Public map is missing a remaining Boss node')
+    return dict(zip(nodes[-len(bosses):], bosses))
 
 
 @dataclass(frozen=True)
@@ -14,6 +28,7 @@ class PathState:
 def plan_route(state, options, losses, config):
     nodes = {(p['row'], p['col']): p for p in state['map']}
     hp_max = state['maxHp']
+    boss_nodes = boss_targets_by_node(state)
 
     def visit(previous, key):
         point = nodes[key]
@@ -21,6 +36,8 @@ def plan_route(state, options, losses, config):
         hp, value, normal_count = previous.hp, previous.value, previous.normal_count
         if room in ('Monster', 'Elite', 'Boss', 'Unknown'):
             loss = losses.get(room, 0)
+            if room == 'Boss' and 'BossById' in losses:
+                loss = losses['BossById'][boss_nodes[key]]
             if room in ('Monster', 'Unknown'):
                 weak_fraction = min(1, max(0, (3 if state.get('act', 1) == 1 else 2)-normal_count))
                 loss = weak_fraction*losses.get('MonsterWeak', losses['Monster']) + (1-weak_fraction)*losses['Monster']
@@ -81,6 +98,7 @@ def next_floors(state, target_for, unknown_probability):
     if current is None: return []
     frontier = {((current['row'], current['col']), state.get('normalCombatsCompleted')): 1.0}
     floors = []
+    boss_nodes = boss_targets_by_node(state)
     # Normally inspect two map layers. If both have no possible combat,
     # extend through visible topology until the first possible fight instead
     # of making short-term strength disappear behind shops/rests/events.
@@ -104,7 +122,8 @@ def next_floors(state, target_for, unknown_probability):
                 frontier[(key, count)] = frontier.get((key, count), 0) + probability*(1-combat)
             if room == 'Unknown': room, probability = 'Monster', probability*combat
             if probability == 0 or room not in ('Monster', 'Elite', 'Boss'): continue
-            for target, weight in target_for(room, count).items():
+            distribution = {boss_nodes[key]: 1.0} if room == 'Boss' and key in boss_nodes else target_for(room, count)
+            for target, weight in distribution.items():
                 targets[target] = targets.get(target, 0) + probability*weight
         floor = dict(targets=targets, combat_probability=min(1., sum(targets.values())))
         if layer < 2:

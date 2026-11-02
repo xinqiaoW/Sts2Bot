@@ -170,3 +170,17 @@ def test_cross_act_config_depth_applies_only_without_fixed_reward_override(reque
     result = bot.search_card_builds(state, build, [], fixed_depth=3)
     assert result['rollout_depth'] == 3
     assert bot.last_report['rollout_depth_mode'] == 'fixed_reward'
+
+
+def test_crisis_post_boss_depth_does_not_use_finished_act_distance(request_data):
+    state = card_observation(request_data)['state']
+    state.update(actBossDefeated=True, normalCombatsCompleted=10, floorsToBoss=0, hp=20)
+    bot = BotPolicy(PoolScorer(elite_loss=60), config=dict(post_boss_rollout_depth=2,
+        samples_per_parent=1, keep_per_parent=1, lookahead_pairs=0,
+        crisis_samples_per_parent=1, crisis_keep_per_parent=1, crisis_extra_depth=1))
+    result = bot.search_card_builds(state, bot.model.project(bot.raw_build(state)), [])
+    assert bot.last_report['crisis'] is True
+    assert bot.last_report['crisis_target_room'] == 'Elite'
+    assert bot.last_report['rollout_depth_mode'] == 'post_boss'
+    assert result['rollout_depth'] == 3
+    assert len(result['stats']['per_depth']) == 3

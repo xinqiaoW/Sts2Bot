@@ -6,7 +6,7 @@ decision log; unsupported acquisition state is not silently fabricated.
 from copy import copy, deepcopy
 
 from damage_model.schema import Build
-from train.advisor_service import normalize_card, normalize_relic
+from train.live_state import normalize_card, normalize_relic
 
 
 class ModelAdapter:

@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 from dataclasses import dataclass, replace
+from copy import deepcopy
 import hashlib
 import json
 import math
@@ -14,6 +15,7 @@ from damage_model.schema import Build, Card, canonical
 from . import ROOT
 from .score import BuildScorer, DEFAULT_CHECKPOINT
 from .scoring_horizon import survival_budget
+from .policy_defaults import REWARD_DEFAULTS
 
 DEFAULT_CONFIG = ROOT / 'configs/reward-policy.json'
 
@@ -24,8 +26,15 @@ def positive(value, name, *, zero=False):
 
 
 def load_config(path=DEFAULT_CONFIG, **overrides):
-    config = json.loads(Path(DEFAULT_CONFIG).read_text())
-    supplied = json.loads(Path(path).read_text()) if path else {}
+    config = deepcopy(REWARD_DEFAULTS)
+    supplied = json.loads(Path(DEFAULT_CONFIG).read_text())
+    if not isinstance(supplied, dict):
+        raise ValueError('Reward configuration must be a JSON object')
+    if path is not None and Path(path).resolve() != Path(DEFAULT_CONFIG).resolve():
+        extra = json.loads(Path(path).read_text())
+        if not isinstance(extra, dict):
+            raise ValueError('Reward configuration must be a JSON object')
+        supplied.update(extra)
     supplied.update(overrides)
     if supplied.keys() - config.keys():
         raise ValueError(f'Unknown config keys: {supplied.keys() - config.keys()}')

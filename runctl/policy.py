@@ -3,30 +3,22 @@ from copy import deepcopy
 import hashlib
 import time
 
-from train.reward_policy import RewardSelector, load_config
 from train.score import BuildScorer
-from train.scoring_horizon import scoring_horizon
-from train.advisor_service import normalize_card
+from train.scoring_horizon import remaining_boss_ids
+from train.live_state import normalize_card
 from .event_policy import event_value, doll_room_options, forbidden_event_reward
 from .event_combat import adjust_event_cards
 from .model_adapter import ModelAdapter
-from .policy_config import load_policy_config, potion_priority, potion_reward_eligible
-from .route_policy import plan_route, next_floors
+from .policy_config import load_policy_config, potion_priority, potion_reward_eligible, reward_config_for_bot
+from .route_policy import plan_route
+from .card_search import search_card_builds
 
 
 class BotPolicy:
     def __init__(self, scorer=None, config=None):
         self.config = load_policy_config(**(config or {}))
         self.model = ModelAdapter(scorer or BuildScorer())
-        self.reward_config = load_config(None, short_weight=self.config['short_weight'],
-                                        long_weight=self.config['long_weight'], strict_features=False,
-                                        **{k: self.config[k] for k in
-                                           ('short_strength_loss_threshold', 'elite_safety_margin', 'boss_safety_margin',
-                                            'weak_short_weight', 'weak_long_weight', 'post_boss_rollout_depth',
-                                            'elite_target_loss_threshold', 'boss_target_after_act_floor',
-                                            'samples_per_parent', 'keep_per_parent', 'lookahead_pairs', 'rollout_max_upgrades',
-                                            'leaf_top_fraction', 'leaf_bottom_fraction',
-                                            'leaf_top_weight', 'leaf_bottom_weight', 'leaf_rank_power')})
+        self.reward_config = reward_config_for_bot(self.config)
         self.run_id = None
         self.pending_ancient = None
         self.last_report = {}
@@ -87,6 +79,10 @@ class BotPolicy:
             if screen == 'MAP':
                 losses = {room: self.model.score([build], self.targets(state, room, normal_count=99), state['maxHp'])[0]['expected_hp_loss']
                           for room in ('Monster', 'Elite', 'Boss')}
+                if 'remainingBosses' in state:
+                    losses['BossById'] = {boss: losses['Boss'] if boss == state['visibleBoss'] else
+                        self.model.score([build], {boss: 1.0}, state['maxHp'])[0]['expected_hp_loss']
+                                          for boss in remaining_boss_ids(state)}
                 if 'normalCombatsCompleted' in state and state['normalCombatsCompleted'] < (3 if state['act'] == 1 else 2):
                     losses['MonsterWeak'] = self.model.score([build], self.targets(state, 'Monster', normal_count=0), state['maxHp'])[0]['expected_hp_loss']
                 choice, plans = plan_route(state, options, losses, self.config)
@@ -115,54 +111,7 @@ class BotPolicy:
         return self.model.targets(state['actId'], room, state['visibleBoss'], weak=weak)
 
     def search_card_builds(self, state, build, explicit, *, fixed_depth=None):
-        # An empty offer list evaluates only the current build's skip branch.
-        # Shops still need the same rollout risk definition after cards sell out.
-        normal = RewardSelector(self.model.scorer, self.reward_config)
-        horizon = scoring_horizon(self.model.catalog, self.model.scorer.predictor.trained_targets, state,
-            elite_loss_threshold=self.config['elite_target_loss_threshold'],
-            elite_safety_margin=self.config['elite_safety_margin'],
-            short_floors=lambda: next_floors(state, lambda r, n: self.targets(state, r, n), self.config['unknown_combat_probability']),
-            boss_after_act_floor=self.config['boss_target_after_act_floor'],
-            score_elites=lambda act_id, targets: self.model.scorer.score_many([
-                dict(build=build.to_dict(), max_hp=state['maxHp'], targets=targets, encounter_act_id=act_id)], strict=False)[0])
-        future = horizon['next_floors']
-        remaining = max(0, state['floorsToBoss']-1)
-        depth = fixed_depth if fixed_depth is not None else min(
-            normal.depth_for(state['floorsToBoss']), self.config['max_rollout_depth'], remaining)
-        if horizon['projects_next_act'] and fixed_depth is None:
-            depth = self.reward_config['post_boss_rollout_depth']
-        request = dict(build=build.to_dict(), max_hp=state['maxHp'], budget_hp=state['hp'], options=explicit,
-            floors_to_boss=state['floorsToBoss'], rollout_depth=depth,
-            next_floors=future, long_targets=horizon['long_targets'], long_target_room=horizon['long_target_room'],
-            long_target_aggregation=horizon.get('long_target_aggregation', 'mean'),
-            encounter_act_id=horizon['encounter_act_id'], terminal=horizon['mode'] == 'terminal')
-        result = normal.select(request)
-        projected_loss = min(c['long_expected_hp_loss'] for c in result['candidates'])
-        crisis = projected_loss > self.config['crisis_boss_loss_threshold']
-        if crisis and (fixed_depth is not None or remaining > 0):
-            expanded = dict(self.reward_config, samples_per_parent=self.config['crisis_samples_per_parent'],
-                            keep_per_parent=self.config['crisis_keep_per_parent'])
-            request['rollout_depth'] = depth+self.config['crisis_extra_depth'] if fixed_depth is not None else min(
-                depth+self.config['crisis_extra_depth'], self.config['max_rollout_depth'], remaining)
-            result = RewardSelector(self.model.scorer, expanded).select(request)
-        self.model.warnings.extend(result['warnings'])
-        self.model.warnings.extend('untrained_feature:' + k for k in result['untrained_features'])
-        self.model.warnings.extend(horizon['warnings'])
-        self.last_report.update(crisis=crisis, projected_long_loss=projected_loss,
-            projected_boss_loss=projected_loss if horizon['long_target_room'] == 'Boss' else None,
-            scoring_horizon=horizon,
-            rollout_depth_mode='terminal' if horizon['mode'] == 'terminal' else 'fixed_reward' if fixed_depth is not None
-                else 'post_boss' if horizon['projects_next_act'] else 'distance_to_boss',
-            rollout_depth=result['rollout_depth'], samples_per_parent=result['config']['samples_per_parent'],
-            keep_per_parent=result['config']['keep_per_parent'],
-            lookahead_pairs=result['config']['lookahead_pairs'], rollout_max_upgrades=result['config']['rollout_max_upgrades'],
-            stats=result['stats'],
-            score_weighting=result['score_weighting'],
-            long_tail_summaries=[{k: c[k] for k in ('option_index', 'action', 'card',
-                'top_expected_hp_loss', 'bottom_expected_hp_loss', 'long_expected_hp_loss',
-                'top_leaf_count', 'bottom_leaf_count', 'selected_leaf_count')}
-                for c in result['candidates']])
-        return result
+        return search_card_builds(self, state, build, explicit, fixed_depth=fixed_depth)
 
     def cards(self, state, options, raw, build, *, fixed_depth=None):
         explicit, mapping, projected_noops = [], [], []

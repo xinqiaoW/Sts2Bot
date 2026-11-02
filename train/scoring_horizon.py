@@ -2,6 +2,16 @@
 import math
 
 
+def remaining_boss_ids(state):
+    """Validate public remaining Boss identities, next fight first."""
+    bosses = state.get('remainingBosses', [state['visibleBoss']])
+    if (not isinstance(bosses, list) or not 1 <= len(bosses) <= 2
+            or any(not isinstance(b, str) for b in bosses) or len(set(bosses)) != len(bosses)
+            or bosses[0] != state['visibleBoss']):
+        raise ValueError('remainingBosses must list one or two distinct Bosses, next visible Boss first')
+    return bosses
+
+
 def survival_budget(current_hp, future, targets, score, *, safety_margin=0.0, sequential=False):
     """Expected loss budget, independent of scoring floor weights/mean reduction.
 
@@ -158,11 +168,7 @@ def scoring_horizon(catalog, trained_targets, state, *, score_elites=None,
         # generated future state; compare the public next-act Boss mixture.
         long_targets, room = pool('Boss'), 'Boss'
     else:
-        bosses = state.get('remainingBosses', [state['visibleBoss']])
-        if (not isinstance(bosses, list) or not 1 <= len(bosses) <= 2
-                or any(not isinstance(b, str) for b in bosses) or len(set(bosses)) != len(bosses)
-                or bosses[0] != state['visibleBoss']):
-            raise ValueError('remainingBosses must list one or two distinct Bosses, next visible Boss first')
+        bosses = remaining_boss_ids(state)
         for boss in bosses:
             if not any(e['id'] == boss and e['room_type'] == 'Boss' for e in catalog.acts[act_id]['encounters']):
                 raise ValueError('Visible boss is not a Boss encounter of the current act')

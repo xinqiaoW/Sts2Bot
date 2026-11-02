@@ -86,7 +86,7 @@ def main():
     write_launcher(output, Path(__file__).resolve().parents[1], Path(sys.executable).resolve())
     print(f'Prepared runtime: {path}')
     print(f'Isolated profile: {profile}')
-    print(f'Run: python -m runctl --runtime "{path}" --episodes 1 --seed-prefix WINDOWS --output "{output / "report"}"')
+    print(f'Run: python -m runctl --runtime "{path}" --episodes 1 --output "{output / "report"}"')
     print(f'One-click launcher: {output / "启动自动爬塔.bat"}')
 
 

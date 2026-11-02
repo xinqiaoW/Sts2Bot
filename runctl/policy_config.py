@@ -3,14 +3,23 @@ import json
 import math
 import re
 import warnings
+from copy import deepcopy
 from pathlib import Path
+from train.policy_defaults import BOT_DEFAULTS, BOT_REWARD_KEYS
 
 DEFAULT_CONFIG = Path(__file__).resolve().parents[1] / 'configs/bot-policy.json'
 
 
 def load_policy_config(path=None, **overrides):
-    values = json.loads(DEFAULT_CONFIG.read_text())
-    supplied = json.loads(Path(path).read_text()) if path else {}
+    values = deepcopy(BOT_DEFAULTS)
+    supplied = json.loads(DEFAULT_CONFIG.read_text())
+    if not isinstance(supplied, dict):
+        raise ValueError('Bot configuration must be a JSON object')
+    if path is not None and Path(path).resolve() != DEFAULT_CONFIG.resolve():
+        extra = json.loads(Path(path).read_text())
+        if not isinstance(extra, dict):
+            raise ValueError('Bot configuration must be a JSON object')
+        supplied.update(extra)
     supplied.update(overrides)
     if 'crisis_boss_loss_fraction' in supplied:
         supplied.pop('crisis_boss_loss_fraction')
@@ -61,6 +70,12 @@ def load_policy_config(path=None, **overrides):
     if values['route_beam_width'] < 1:
         raise ValueError('route_beam_width must be positive')
     return values
+
+
+def reward_config_for_bot(config):
+    """Bot values win for shared keys; reward-only knobs remain configurable."""
+    from train.reward_policy import load_config
+    return load_config(None, **{key: config[key] for key in BOT_REWARD_KEYS}, strict_features=False)
 
 
 def potion_priority(potion_id, config):

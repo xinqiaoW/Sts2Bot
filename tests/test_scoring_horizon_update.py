@@ -68,3 +68,20 @@ def test_potion_priority_default_is_added_but_custom_order_is_preserved(tmp_path
     installed.write_text(json.dumps(config))
     install(source, target, bot)
     assert json.loads(installed.read_text())['potion_priority'] == ['ENERGY_POTION']
+
+
+def test_full_package_layout_installs_new_shared_modules(tmp_path):
+    import shutil
+    from tools.install_bot_update import install as canonical_install
+    assert install is canonical_install
+    source, target, bot, _ = installation(tmp_path)
+    service = source / 'advisor-service'
+    for folder in ('train', 'runctl', 'configs'):
+        service.mkdir(exist_ok=True)
+        shutil.move(str(source / folder), service / folder)
+    for name in ('train/policy_defaults.py', 'train/live_state.py', 'runctl/card_search.py'):
+        (target / name).unlink()
+    # This is the layout reached by executing advisor-service/tools/install_bot_update.py.
+    install(service, target, bot)
+    assert (target / 'train/live_state.py').read_text() == '# updated\n'
+    assert (target / 'runctl/card_search.py').read_text() == '# updated\n'

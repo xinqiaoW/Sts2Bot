@@ -227,3 +227,20 @@ def test_bridge_large_removal_penalty_cannot_force_unsafe_reroll(request_data):
     bot = BotPolicy(Critical())
     assert bot.choose(bridge(request_data, hp=12)) == 0
     assert bot.last_report['event_rejected_options'] == [1]
+
+
+def test_event_sum_uses_same_reduction_as_reward_without_changing_budget(request_data):
+    from runctl.event_combat import EventCombat
+    obs = observation(request_data, 'ZEN_WEAVER', [])
+    # Two real upcoming combats, both against the same ordinary encounter pool.
+    obs['state']['map'] = [
+        dict(row=1, col=0, type='RestSite', children=[dict(row=2, col=0)]),
+        dict(row=2, col=0, type='Monster', children=[dict(row=3, col=0)]),
+        dict(row=3, col=0, type='Monster', children=[])]
+    bot = BotPolicy(FakeScorer())
+    mean = EventCombat(bot, obs['state'], bot.raw_build(obs['state']))
+    bot.reward_config['short_reduction'] = 'sum'
+    summed = EventCombat(bot, obs['state'], bot.raw_build(obs['state']))
+    assert summed.baseline['short_expected_hp_loss'] == pytest.approx(2 * mean.baseline['short_expected_hp_loss'])
+    assert summed.weights == mean.weights
+    assert summed.budget == mean.budget

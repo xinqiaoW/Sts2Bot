@@ -49,9 +49,10 @@ def main():
         import torch
         from .policy import BotPolicy
         from .policy_config import load_policy_config
-        torch.set_num_threads(4)
         bot = BotPolicy(config=load_policy_config(args.policy_config))
+        torch.set_num_threads(bot.reward_config['cpu_threads'])
         atomic_json(args.output / 'policy-config.json', bot.config)
+        atomic_json(args.output / 'reward-config.json', bot.reward_config)
     with RealRunEnv(runtime) as env:
         for index in range(args.episodes):
             seed = args.seed if args.seed is not None else (f"{args.seed_prefix}{index}" if args.seed_prefix is not None
