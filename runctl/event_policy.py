@@ -7,9 +7,10 @@ import re
 
 
 def forbidden_event_reward(option):
-    """Explicit user ban: Storybook grants Brightest Flame on acquisition."""
-    return ((option.get('relic') or {}).get('id') == 'STORYBOOK'
-            or option.get('id', '').upper().split('.')[-1] == 'STORYBOOK')
+    """Ban Storybook and Neow's Ambergris-plus-curse offer, not the potion."""
+    banned = {'STORYBOOK', 'NEOWS_SACRIFICE'}
+    return ((option.get('relic') or {}).get('id') in banned
+            or option.get('id', '').upper().split('.')[-1] in banned)
 
 
 def doll_room_options(options):

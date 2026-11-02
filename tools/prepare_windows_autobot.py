@@ -21,7 +21,7 @@ Set-Location -LiteralPath {literal(service_root)}
 $stamp = Get-Date -Format 'yyyyMMdd-HHmmss-fff'
 $runtime = Join-Path $PSScriptRoot 'runtime.json'
 $report = Join-Path $PSScriptRoot ('reports/' + $stamp)
-& {literal(python_executable)} -m runctl --runtime $runtime --episodes 1 --seed-prefix ('WINDOWS' + $stamp + '-') --policy-config {literal(service_root / 'configs/bot-policy.json')} --output $report
+& {literal(python_executable)} -m runctl --runtime $runtime --episodes 1 --policy-config {literal(service_root / 'configs/bot-policy.json')} --output $report
 if ($LASTEXITCODE -ne 0) {{
     Write-Host ('Bot stopped with an error. Logs: ' + $report) -ForegroundColor Red
     exit $LASTEXITCODE

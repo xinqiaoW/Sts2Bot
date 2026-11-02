@@ -254,9 +254,9 @@ class BotPolicy:
         banned = [o['index'] for o in options if forbidden_event_reward(o)]
         if banned:
             options = [o for o in options if o['index'] not in banned]
-            self.last_report.update(forbidden_event_options=banned, reason='forbid_storybook_brightest_flame')
+            self.last_report.update(forbidden_event_options=banned, reason='forbid_event_reward')
             if not options:
-                raise ValueError('STORYBOOK is forbidden: no alternative event option is available')
+                raise ValueError('Event reward is forbidden: no alternative event option is available')
             if len(options) == 1:
                 return options[0]['index']
         if context['eventId'] == 'DOLL_ROOM':

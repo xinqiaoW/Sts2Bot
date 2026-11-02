@@ -4,6 +4,7 @@ import argparse
 import json
 from pathlib import Path
 import random
+import secrets
 import time
 
 from .env import RealRunEnv, atomic_json
@@ -22,7 +23,9 @@ def main():
     parser = argparse.ArgumentParser(description="Run the real-game M1 environment in a dedicated runtime")
     parser.add_argument("--runtime", required=True, type=Path)
     parser.add_argument("--episodes", type=int, default=1)
-    parser.add_argument("--seed-prefix", default="RUNCTL")
+    seeds = parser.add_mutually_exclusive_group()
+    seeds.add_argument("--seed", help="Exact shared game seed (one episode)")
+    seeds.add_argument("--seed-prefix", help="Legacy deterministic batch prefix; episode index is appended")
     parser.add_argument("--policy-seed", type=int, default=0)
     parser.add_argument("--timeout", type=int, help="Whole-run deadline; default 1h for evaluation, 4h with player search settings")
     parser.add_argument("--action-timeout", type=int, help="Seconds to wait for each policy decision; overrides runtime action_timeout_seconds")
@@ -32,6 +35,8 @@ def main():
     args = parser.parse_args()
     if args.episodes < 1:
         parser.error("episodes must be positive")
+    if args.seed is not None and args.episodes != 1:
+        parser.error("--seed requires --episodes 1")
     args.output.mkdir(parents=True, exist_ok=True)
     runtime = json.loads(args.runtime.read_text(encoding="utf-8"))
     timeout = args.timeout if args.timeout is not None else runtime.get('timeout_seconds',
@@ -49,11 +54,15 @@ def main():
         atomic_json(args.output / 'policy-config.json', bot.config)
     with RealRunEnv(runtime) as env:
         for index in range(args.episodes):
-            seed = f"{args.seed_prefix}{index}"
+            seed = args.seed if args.seed is not None else (f"{args.seed_prefix}{index}" if args.seed_prefix is not None
+                else ''.join(secrets.choice('0123456789ABCDEFGHJKLMNPQRSTUVWXYZ') for _ in range(12)))
+            seed = seed.upper().replace('O', '0').replace('I', '1').strip()
             policy = random.Random(args.policy_seed + index)
             try:
                 observation = env.reset(seed, policy_seed=args.policy_seed + index, timeout_seconds=timeout,
                                         decision_mode='all' if bot else 'map', action_timeout_seconds=decision_timeout)
+                print(json.dumps(dict(runId=env.run_id, seed=seed, character='SILENT', ascension=10,
+                    startingAct=observation.get('state', {}).get('actId')), ensure_ascii=False), flush=True)
                 while observation.get("status") != "complete":
                     print(json.dumps({"runId": env.run_id, "decisionSeq": observation["decisionSeq"],
                                       "screen": observation.get("screen"), "actionTimeoutSeconds": decision_timeout,

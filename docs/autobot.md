@@ -250,3 +250,15 @@ Bot配置 configs/bot-policy.json；独立评分服务 configs/reward-policy.jso
 ## 故事书禁选（0.30.16）
 
 按用户要求，先古事件中禁止STORYBOOK（故事书），避免获得会损失最大生命的至亮之焰。禁选优先于唯一选项和模型评分；无其他合法选项时明确停止。已持有的卡和遗物不修改，战斗出牌规则未变；该牌原本已不在普通rollout抽样池中。
+
+## 分享与复现游戏种子
+
+Bot 默认生成随机种子；控制台开局行与 summary.json 记录规范化后的实际种子。游戏输入会将 O 转成 0、I 转成 1 并转大写，新 Bot 同样处理。旧版 WINDOWS 前缀直接参与 RNG，与手工输入后的 W1ND0WS 不等价，旧局不能按新规则宣称复现。
+
+指定一局精确种子（不会追加 0）：
+
+```powershell
+.\.venv\Scripts\python.exe -m runctl --runtime 'D:\Sts2-Autobot-0303\runtime.json' --episodes 1 --seed '你的种子' --policy-config configs\bot-policy.json --output 'D:\Sts2-Autobot-0303\reports\seed-check'
+```
+
+当前 Bot 固定静默猎手 A10，使用全解锁、全部遭遇已发现的完整内容条件；第一幕按原版 act_selection 随机流选择。人类复现需同游戏版本、同角色难度、完整内容条件、无额外自定义词条且第一幕选择随机。种子固定随机流，并不保证不同路线/操作之后的所有奖励仍一致。未解锁内容或初见安排在原版就可能改变生成，不能对任意新手存档保证相同。

@@ -121,6 +121,9 @@ class RealRunEnv:
             raise RunControlError("The previous episode has not completed")
         if not isinstance(seed, str) or not seed.strip() or len(seed) > 100:
             raise ValueError("Invalid game seed")
+        # Match the native seed-entry UI before both act selection and run RNG.
+        seed = seed.upper().replace('O', '0').replace('I', '1').strip()
+        self.seed = seed
         if combat_timeout_seconds is None:
             combat_timeout_seconds = self.combat_timeout_seconds
         combat_limit = 3600 if self.combat_search_mode == "settings" else 120

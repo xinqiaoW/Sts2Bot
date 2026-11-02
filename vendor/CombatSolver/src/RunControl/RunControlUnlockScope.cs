@@ -1,5 +1,8 @@
 using MegaCrit.Sts2.Core.Saves;
 using MegaCrit.Sts2.Core.Unlocks;
+using MegaCrit.Sts2.Core.Helpers;
+using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Random;
 using STS2RitsuLib;
 using STS2RitsuLib.Patching.Models;
 
@@ -21,6 +24,17 @@ internal sealed class RunControlUnlockScope : IDisposable
     }
 
     public void Dispose() => Active = false;
+
+    internal static List<ActModel> SelectActs(string seed)
+    {
+        // Match the fully discovered native lobby's act_selection stream.
+        // Fresh isolated profiles must not force the undiscovered alternate
+        // act every time; do not modify persistent discovery to avoid that.
+        Rng rng = new(StringHelper.GetDeterministicHashCode(seed), "act_selection");
+        return ModelDb.ActsByIndex.Select(pool => rng.NextItem(
+            pool.Where(act => act.IsUnlocked(UnlockState.all)).ToList())
+            ?? throw new InvalidOperationException("No unlocked act in evaluation pool.")).ToList();
+    }
 }
 
 internal sealed class RunControlUnlockPatch : IPatchMethod

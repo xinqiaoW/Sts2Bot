@@ -1,5 +1,13 @@
 # CombatSolver 测试清单
 
+## 0.30.18 随机幕与种子规范化
+
+Python事件/药水/Bot回归136项通过；runctl协议与配套安装回归43项通过。Debug编译及Linux结构门禁通过。
+
+隔离原生首屏检查 .local/autobot/tuning-20261102/startup-check/result.json 为passed：3个预先冻结的种子分别产生密林、暗港、密林；重复首个种子仍为密林。随后增加种子规范化，最小原生 .local/autobot/tuning-20261102/seed-alias-check/result.json 为passed：输入含小写/O/I/首尾空格与规范化种子，run_started实际seed均为W1ND0WS20261102，首屏state（含公开地图和牌组）、options、context完全相等。所有检查仅运行到首个选项，主动停止，不计整局输赢。
+
+尚未进行人工Windows输入种子的端到端比对，也不将Bot自身两次首屏一致称为人机全程相等。原版选幕算法与全发现分支经当前0.111.0程序集定向核对；后续不同路线/出牌可能改变RNG消耗。对局参数搜索使用新版本独立记录，不继承旧固定密林版本的胜率。
+
 ## 0.30.17 商店退出
 
 Debug构建通过。隔离Wine/Godot UI fixture /tmp/sts2bot-shop-0317-native/grid-result.json为passed，共8组。新商店组断言old_would_skip_close=true；禁用Back的300ms内事务未完成、库存仍开、Proceed仍禁用；恢复Back后production LeaveShopAsync依次记录requested/inventory_closed/map_open，库存关闭且真实NMapScreen.IsOpen=true。原有网格实例、失效奖励、药水领取哨兵同批通过。

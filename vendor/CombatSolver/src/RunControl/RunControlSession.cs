@@ -6,6 +6,7 @@ using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.Entities.Multiplayer;
 using MegaCrit.Sts2.Core.Entities.Players;
+using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Nodes.Screens.GameOverScreen;
@@ -84,17 +85,21 @@ internal sealed partial class RunControlSession(NGame host, RunControlRequest re
         try
         {
             CharacterModel character = ModelDb.AllCharacters.Single(c => c.Id.Entry == request.CharacterId);
+            string seed = SeedHelper.CanonicalizeSeed(request.Seed);
             _stage = "start_run";
             using (var unlockScope = request.DecisionMode == "all" ? new RunControlUnlockScope() : null)
-                await host.StartNewSingleplayerRun(character, false, ActModel.GetDefaultList().ToList(),
-                    [], request.Seed, GameMode.Standard, request.Ascension).WaitAsync(ct);
+                await host.StartNewSingleplayerRun(character, false,
+                    request.DecisionMode == "all" ? RunControlUnlockScope.SelectActs(seed) : ActModel.GetDefaultList().ToList(),
+                    [], seed, GameMode.Standard, request.Ascension).WaitAsync(ct);
             _run = RunManager.Instance.DebugOnlyGetState() ?? throw new InvalidOperationException("Run was not created.");
             if (RunControlUnlockScope.Active || (request.DecisionMode == "all"
                 && (Run.UnlockState.NumberOfRuns <= 0 || !ModelDb.AllEncounters.All(Run.UnlockState.HasSeenEncounter))))
                 throw new InvalidOperationException("Isolated full-content startup did not preserve discovery or release its scope.");
             if (Run.AscensionLevel != 10 || !Run.ExtraFields.StartedWithNeow)
                 throw new InvalidOperationException("Whole-run startup must preserve A10 and the native Neow start.");
-            Record("run_started", new { request.Seed, request.PolicySeed, request.CombatMode,
+            Record("run_started", new { seed = Run.Rng.StringSeed, requestedSeed = request.Seed, request.PolicySeed, request.CombatMode,
+                startingAct = Run.Act.Id.Entry,
+                actSelection = request.DecisionMode == "all" ? "seeded_full_discovery" : "default",
                 fullContentDiscovery = request.DecisionMode == "all", request.CombatSearchMode,
                 shortBudgetMs = SolverSettings.Capture().ShortProfile.SoftTimeBudgetMilliseconds,
                 deepBudgetMs = SolverSettings.Capture().DeepProfile.SoftTimeBudgetMilliseconds,

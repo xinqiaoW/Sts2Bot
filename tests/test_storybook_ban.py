@@ -22,8 +22,24 @@ def test_storybook_banned_before_scoring(request_data,data,index):
 def test_single_forbidden_option_cannot_bypass_ban(request_data):
     obs=card_observation(request_data)
     obs.update(screen='EVENT',context=dict(eventId='DARV'),options=[dict(index=0,kind='relic',relic=dict(id='STORYBOOK'))])
-    with pytest.raises(ValueError,match='STORYBOOK is forbidden'):
+    with pytest.raises(ValueError,match='reward is forbidden'):
         BotPolicy(FakeScorer()).choose(obs)
+
+
+@pytest.mark.parametrize('data', [dict(relic=dict(id='NEOWS_SACRIFICE')),
+                                dict(id='NEOW.pages.INITIAL.options.NEOWS_SACRIFICE')])
+def test_neow_ambergris_offer_banned(request_data, data):
+    obs = card_observation(request_data)
+    obs.update(screen='EVENT', context=dict(eventId='NEOW'), options=[
+        dict(index=0, kind='event', **data), dict(index=1, kind='event', id='LEAVE', proceed=True)])
+    assert BotPolicy(FakeScorer()).choose(obs) == 1
+    obs['options'] = obs['options'][:1]
+    with pytest.raises(ValueError, match='reward is forbidden'):
+        BotPolicy(FakeScorer()).choose(obs)
+
+
+def test_ambergris_potion_is_not_banned():
+    assert not forbidden_event_reward(dict(kind='potion', id='AMBERGRIS'))
 
 
 def test_other_relics_and_unrelated_hover_remain_allowed():

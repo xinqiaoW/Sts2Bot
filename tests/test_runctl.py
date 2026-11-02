@@ -99,6 +99,14 @@ def test_reuse_isolates_results_and_restarts_decision_sequence(native):
         assert [a["runId"] for a in game.actions] == ids
 
 
+def test_shared_seed_uses_native_entry_normalization(native):
+    runtime, game = native
+    with RealRunEnv(runtime) as env:
+        env.reset('  Windows20261102  ')
+        assert game.requests[-1]['seed'] == 'W1ND0WS20261102'
+        assert env.seed == 'W1ND0WS20261102'
+
+
 @pytest.mark.parametrize('screen', ['EVENT', 'SHOP', 'REST', 'TREASURE', 'REWARDS', 'CARD_REWARD',
                                     'CHOOSE_CARD', 'RELIC', 'BUNDLE', 'CARD_GRID', 'CRYSTAL'])
 def test_all_mode_accepts_explicit_noncombat_screens(native, screen):
