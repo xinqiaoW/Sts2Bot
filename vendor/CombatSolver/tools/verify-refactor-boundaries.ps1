@@ -815,6 +815,10 @@ if (-not (Select-String -LiteralPath (Join-Path $repositoryRoot 'src/RunControl/
     $violations.Add('potion rewards must use the shared replacement boundary')
 }
 
+if (-not (Select-String -LiteralPath (Join-Path $repositoryRoot 'src/Runtime/CardAdvisorSnapshot.cs') -SimpleMatch 'scoring_state = new { hp = player.Creature.CurrentHp' -Quiet)) {
+    $violations.Add('advisor survival budget must capture public current HP')
+}
+
 if ($violations.Count -gt 0) {
     $violations | ForEach-Object { Write-Error $_ }
     throw "Refactor boundary verification failed with $($violations.Count) violation(s)."

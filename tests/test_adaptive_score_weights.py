@@ -86,10 +86,11 @@ def test_bot_forwards_custom_gate_and_reports_final_weights(request_data):
     observation['state']['map'] = [
         dict(row=1, col=0, type='Monster', children=[dict(row=2, col=0)]),
         dict(row=2, col=0, type='Monster', children=[])]
-    bot = BotPolicy(TradeoffScorer(20), config=dict(short_strength_loss_threshold=15,
+    bot = BotPolicy(TradeoffScorer(20), config=dict(short_strength_loss_threshold=15, boss_safety_margin=20,
         weak_short_weight=9, weak_long_weight=1, samples_per_parent=1, keep_per_parent=1,
         max_rollout_depth=0, crisis_boss_loss_threshold=1000))
     bot.choose(observation)
-    assert bot.reward_config['short_strength_loss_threshold'] == 15
+    assert bot.reward_config['boss_safety_margin'] == 20
+    assert bot.last_report['score_weighting']['survival_budget']['remaining_hp'] == 20
     assert bot.last_report['score_weighting']['mode'] == 'insufficient'
     assert bot.last_report['score_weighting']['short_weight'] == .9

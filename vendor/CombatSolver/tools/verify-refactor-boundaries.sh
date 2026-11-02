@@ -644,6 +644,8 @@ require_fixed "$repository_root/src/RunControl/RunControlSession.PotionRewards.c
 require_fixed "$repository_root/src/RunControl/RunControlSession.PotionRewards.cs" 'before.SequenceEqual(player.PotionSlots, ReferenceEqualityComparer.Instance)' 'potion replacement must retain native ownership and completion boundaries'
 require_fixed "$repository_root/src/RunControl/RunControlSession.PolicyScreens.cs" 'CapturePotionReplacement(rewards, button, replacement, Me, discardSlot, ct)' 'potion replacement must retain native ownership and completion boundaries'
 
+require_fixed "$repository_root/src/Runtime/CardAdvisorSnapshot.cs" 'scoring_state = new { hp = player.Creature.CurrentHp' 'advisor survival budget must capture public current HP'
+
 if ((${#violations[@]} > 0)); then
     printf '%s\n' "${violations[@]}" >&2
     printf 'Refactor boundary verification failed with %d violation(s).\n' "${#violations[@]}" >&2

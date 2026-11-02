@@ -2,8 +2,73 @@
 import math
 
 
+def survival_budget(current_hp, future, targets, score, *, safety_margin=0.0, sequential=False):
+    """Expected loss budget, independent of scoring floor weights/mean reduction.
+
+    `score` predicts the unchanged full-health build against a distribution.
+    One target fight (or every known consecutive Boss) is counted once when
+    it also appears in the short window. No speculative healing is credited.
+    """
+    def nonnegative(value, name):
+        if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value) or value < 0:
+            raise ValueError(f'{name} must be finite and nonnegative')
+        return value
+
+    nonnegative(current_hp, 'Budget HP')
+    nonnegative(safety_margin, 'Safety margin')
+    if not isinstance(targets, dict) or not targets:
+        raise ValueError('Budget targets must be nonempty')
+
+    def weights(distribution):
+        if not distribution:
+            raise ValueError('Budget battle distribution must be nonempty')
+        for value in distribution.values():
+            nonnegative(value, 'Budget encounter weight')
+            if value == 0:
+                raise ValueError('Budget encounter weight must be positive')
+        total = sum(distribution.values())
+        if not math.isfinite(total):
+            raise ValueError('Budget encounter weight sum must be finite')
+        return total
+
+    def loss(distribution):
+        weights(distribution)
+        return nonnegative(score(distribution), 'Budget expected loss')
+
+    target_loss = sum(loss({t: 1.0}) for t in targets) if sequential else loss(targets)
+    # A pool represents one uncertain encounter; known consecutive Bosses
+    # represent several distinct fights. Repeated elites are not all erased.
+    overlap_left = float(len(targets) if sequential else 1)
+    short_loss = overlap_loss = 0.0
+    for floor in future:
+        probability = nonnegative(floor.get('combat_probability', 1.0), 'Budget combat probability')
+        if probability > 1:
+            raise ValueError('Budget combat probability must be <= 1')
+        if not probability:
+            continue
+        distribution = floor['targets']
+        total = weights(distribution)
+        short_loss += probability * loss(distribution)
+        overlapping = {t: w for t, w in distribution.items() if t in targets}
+        if overlapping and overlap_left > 0:
+            count = min(overlap_left, probability * sum(overlapping.values()) / total)
+            overlap_loss += count * loss(overlapping)
+            overlap_left -= count
+    before_target = max(0.0, short_loss - overlap_loss)
+    remaining = current_hp - before_target - target_loss
+    # Normalized pool weights can put an exact zero a few ulps above zero.
+    if math.isclose(remaining, safety_margin, rel_tol=0.0, abs_tol=1e-9):
+        remaining = safety_margin
+    return dict(current_hp=current_hp, short_total_expected_hp_loss=short_loss,
+                short_target_overlap_expected_hp_loss=overlap_loss,
+                short_before_target_expected_hp_loss=before_target,
+                target_expected_hp_loss=target_loss, target_aggregation='sum' if sequential else 'mean',
+                remaining_hp=remaining, safety_margin=safety_margin, sufficient=remaining > safety_margin)
+
+
 def scoring_horizon(catalog, trained_targets, state, *, score_elites=None,
-                    elite_loss_threshold=20.0, boss_after_act_floor=6):
+                    elite_loss_threshold=20.0, boss_after_act_floor=6, short_floors=None,
+                    elite_safety_margin=0.0):
     act_id, act = state['actId'], state['act']
     if catalog.acts[act_id]['act'] != act:
         raise ValueError('Scoring horizon act mismatch')
@@ -27,7 +92,7 @@ def scoring_horizon(catalog, trained_targets, state, *, score_elites=None,
             if act != max(value['act'] for value in catalog.acts.values()):
                 raise ValueError('Next act is missing from the encounter catalog')
             return dict(mode='terminal', encounter_act_id=act_id, long_target_room=None,
-                        long_targets={}, short_targets={}, projects_next_act=False, warnings=[],
+                        long_targets={}, short_targets={}, next_floors=[], projects_next_act=False, warnings=[],
                         target_reason='terminal', estimated_elite_loss=None)
         if len(next_acts) != 1:
             raise ValueError('Next act public pool is ambiguous; an explicit mixture is required')
@@ -46,6 +111,15 @@ def scoring_horizon(catalog, trained_targets, state, *, score_elites=None,
 
     # The ordinary-monster pool is independent of the long-term target switch.
     short_targets = pool('Monster', True) if weak else None
+    future = ([dict(targets=short_targets, combat_probability=1.0)] if short_targets else []) if short_targets is not None else (
+        short_floors() if callable(short_floors) else short_floors if short_floors is not None else [])
+    budget_hp = state.get('hp')
+    if budget_hp is not None and (isinstance(budget_hp, bool) or not isinstance(budget_hp, (int, float))
+            or not math.isfinite(budget_hp) or budget_hp < 0 or budget_hp > state.get('maxHp', float('inf'))):
+        raise ValueError('Budget HP must be finite, nonnegative and no greater than maxHp')
+    if budget_hp is None:
+        warnings.append('missing_current_hp:legacy_elite_threshold')
+    elite_budget = None
     elite_loss = None
     if act_floor is None:
         reason = 'missing_act_floor'
@@ -56,16 +130,28 @@ def scoring_horizon(catalog, trained_targets, state, *, score_elites=None,
         if score_elites is None:
             raise ValueError('Early-act target selection requires an elite loss estimate')
         elites = pool('Elite')
-        probe = score_elites(act_id, elites)
+        cache = {}
+        def probe_targets(targets):
+            key = tuple(sorted(targets.items()))
+            if key not in cache:
+                cache[key] = score_elites(act_id, targets)
+                warnings.extend(cache[key].get('warnings', []))
+                warnings.extend('untrained_feature:' + k for k in cache[key].get('untrained_features', []))
+            return cache[key]
+
+        probe = probe_targets(elites)
         elite_loss = probe['expected_hp_loss']
         if isinstance(elite_loss, bool) or not isinstance(elite_loss, (int, float)) or not math.isfinite(elite_loss) or elite_loss < 0:
             raise ValueError('Elite expected loss must be finite and nonnegative')
-        warnings.extend(probe.get('warnings', []))
-        warnings.extend('untrained_feature:' + key for key in probe.get('untrained_features', []))
-        reason = 'elite_loss_above_threshold' if elite_loss > elite_loss_threshold else 'elite_loss_at_or_below_threshold'
+        if budget_hp is not None:
+            elite_budget = survival_budget(budget_hp, future, elites,
+                lambda targets: probe_targets(targets)['expected_hp_loss'], safety_margin=elite_safety_margin)
+            reason = 'elite_budget_sufficient' if elite_budget['sufficient'] else 'elite_budget_insufficient'
+        else:
+            reason = 'elite_loss_above_threshold' if elite_loss > elite_loss_threshold else 'elite_loss_at_or_below_threshold'
 
     aggregation = 'mean'
-    if reason == 'elite_loss_above_threshold':
+    if reason in ('elite_loss_above_threshold', 'elite_budget_insufficient'):
         long_targets, room = elites, 'Elite'
     elif completed:
         # The next Boss is not public yet. Never use the old Boss or peek at
@@ -87,6 +173,7 @@ def scoring_horizon(catalog, trained_targets, state, *, score_elites=None,
     return dict(mode=('next_act_' if completed else '') + ('elite_risk' if room == 'Elite' else 'boss'),
                 projects_next_act=completed, encounter_act_id=act_id, long_target_room=room, long_targets=long_targets,
                 long_target_aggregation=aggregation,
+                elite_survival_budget=elite_budget, next_floors=future,
                 short_targets=short_targets, target_reason=reason, estimated_elite_loss=elite_loss,
                 elite_target_loss_threshold=elite_loss_threshold, boss_target_after_act_floor=boss_after_act_floor,
                 evaluated_act_floor=act_floor, warnings=sorted(set(warnings)))

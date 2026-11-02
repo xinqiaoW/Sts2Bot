@@ -58,12 +58,13 @@ def test_single_unchanged_deck_probe_and_bot_service_configuration_agree(request
     bot = BotPolicy(scorer, config=config)
     bot.choose(observation)
     horizon = bot.last_report['scoring_horizon']
-    assert horizon['long_target_room'] == 'Boss'  # Equality uses Boss.
+    assert horizon['long_target_room'] == 'Boss'  # HP 70 - short 8 - elite 25 is sufficient.
+    assert horizon['target_reason'] == 'elite_budget_sufficient'
     assert len(scorer.requests[0]['build']['cards']) == len(request_data['build']['cards'])
     elite_requests = [r for r in scorer.requests if all(t.endswith('_ELITE') for t in r['targets'])]
     assert len(elite_requests) == 1  # No candidate-specific probe or rollout probe.
     p = payload(request_data)
-    p['scoring_state'] = dict(actFloor=5, normalCombatsCompleted=0, visibleBoss='VANTOM_BOSS')
+    p['scoring_state'] = dict(hp=70, actFloor=5, normalCombatsCompleted=0, visibleBoss='VANTOM_BOSS')
     service = evaluate(p, RewardSelector(PoolScorer(elite_loss=25), config))
     assert service['scoring_horizon'] == horizon
 

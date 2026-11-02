@@ -13,6 +13,7 @@ import time
 from damage_model.schema import Build, Card, canonical
 from . import ROOT
 from .score import BuildScorer, DEFAULT_CHECKPOINT
+from .scoring_horizon import survival_budget
 
 DEFAULT_CONFIG = ROOT / 'configs/reward-policy.json'
 
@@ -30,7 +31,8 @@ def load_config(path=DEFAULT_CONFIG, **overrides):
         raise ValueError(f'Unknown config keys: {supplied.keys() - config.keys()}')
     config.update(supplied)
     for key in ('short_weight', 'long_weight', 'weak_short_weight', 'weak_long_weight',
-                'short_strength_loss_threshold', 'elite_target_loss_threshold', 'leaf_rank_power', 'leaf_top_weight', 'leaf_bottom_weight'):
+                'short_strength_loss_threshold', 'elite_target_loss_threshold', 'elite_safety_margin', 'boss_safety_margin',
+                'leaf_rank_power', 'leaf_top_weight', 'leaf_bottom_weight'):
         positive(config[key], key, zero=True)
     positive(config['short_weight'] + config['long_weight'], 'total score weight')
     positive(config['weak_short_weight'] + config['weak_long_weight'], 'total weak score weight')
@@ -88,15 +90,17 @@ def load_config(path=DEFAULT_CONFIG, **overrides):
     return config
 
 
-def score_weighting(baseline_short_mean, config):
+def score_weighting(baseline_short_mean, config, *, budget=None):
     """One common pair for every candidate, based only on the unchanged deck."""
     if baseline_short_mean is not None and not math.isfinite(baseline_short_mean):
         raise ValueError('Baseline short loss must be finite')
-    weak = baseline_short_mean is not None and baseline_short_mean > config['short_strength_loss_threshold']
+    weak = not budget['sufficient'] if budget is not None else (
+        baseline_short_mean is not None and baseline_short_mean > config['short_strength_loss_threshold'])
     prefix = 'weak_' if weak else ''
     short, long = config[prefix + 'short_weight'], config[prefix + 'long_weight']
     total = short + long
-    return dict(mode='no_short_combat' if baseline_short_mean is None else 'insufficient' if weak else 'sufficient',
+    return dict(mode='no_short_combat' if baseline_short_mean is None and budget is None else 'insufficient' if weak else 'sufficient',
+                basis='survival_budget' if budget is not None else 'legacy_short_loss_threshold', survival_budget=budget,
                 baseline_short_expected_hp_loss=baseline_short_mean,
                 short_strength_loss_threshold=config['short_strength_loss_threshold'],
                 short_weight=short / total, long_weight=long / total)
@@ -194,6 +198,11 @@ class RewardSelector:
         self.catalog.validate(build)
         hp = request['max_hp']
         positive(hp, 'max_hp')
+        budget_hp = request.get('budget_hp')
+        if 'budget_hp' in request:
+            positive(budget_hp, 'budget_hp', zero=True)
+            if budget_hp > hp:
+                raise ValueError('budget_hp must not exceed max_hp')
         depth = self.depth_for(request['floors_to_boss'])
         if 'rollout_depth' in request:
             depth = request['rollout_depth']
@@ -325,8 +334,14 @@ class RewardSelector:
                 short_details[root].append(dict(expected_hp_loss=expected, combat_probability=probability,
                                                 targets=floor.get('targets', {}), weight=c['short_floor_weights'][i]))
         # The final root is always the unchanged deck, even for forced choices.
-        # Gate on loss per battle, independent of mean/sum scoring reduction.
-        weighting = score_weighting(short[-1] / short_combat_weight if short_combat_weight else None, c)
+        # Health is used only for this policy budget, never as a model input.
+        # Count expected battle losses, without the scoring floor weights.
+        budget = None
+        if budget_hp is not None and not terminal:
+            budget = survival_budget(budget_hp, future, boss, lambda targets: losses([build], targets)[0],
+                safety_margin=c['elite_safety_margin'] if long_room == 'Elite' else c['boss_safety_margin'],
+                sequential=long_room == 'Boss' and long_aggregation == 'max')
+        weighting = score_weighting(short[-1] / short_combat_weight if short_combat_weight else None, c, budget=budget)
         if short_combat_weight and c['short_reduction'] == 'mean':
             # Conditional mean per possible battle. Shops/rests are not
             # zero-damage battles; uncertain combat probability contributes

@@ -4,6 +4,8 @@
   "long_weight": 0.72,
   "short_strength_loss_threshold": 10.0,
   "elite_target_loss_threshold": 20.0,
+  "elite_safety_margin": 0.0,
+  "boss_safety_margin": 0.0,
   "boss_target_after_act_floor": 6,
   "weak_short_weight": 0.72,
   "weak_long_weight": 0.28,

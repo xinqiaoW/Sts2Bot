@@ -91,12 +91,14 @@ def test_bot_and_panel_propagate_max_and_short_next_boss(request_data):
     observation = card_observation(request_data)
     observation['state'].update(state(s))
     observation['state']['floorsToBoss'] = 1
+    observation['state']['map'] = [dict(row=1, col=0, type='RestSite', children=[dict(row=2,col=0)]),
+        dict(row=2,col=0,type='Boss',children=[])]
     bot = BotPolicy(s, config=dict(samples_per_parent=1, keep_per_parent=1, lookahead_pairs=0))
     result = bot.search_card_builds(observation['state'], bot.model.project(bot.raw_build(observation['state'])), [], fixed_depth=0)
     assert result['long_target_aggregation'] == 'max'
     assert result['candidates'][-1]['initial_long_hp_loss'] == 40
     p = payload(request_data)
-    p.update(scoring_state=state(s), boss_targets={s.bosses[0]: 1}, floors_to_boss=0,
+    p.update(scoring_state=dict(state(s), hp=70), boss_targets={s.bosses[0]: 1}, floors_to_boss=0,
              future_room_types=[{'Boss': 1}])
     result = evaluate(p, RewardSelector(s))
     assert result['scoring_horizon'] == bot.last_report['scoring_horizon']

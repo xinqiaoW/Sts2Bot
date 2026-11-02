@@ -81,7 +81,7 @@ class PoolScorer(FakeScorer):
 def test_bot_and_service_share_horizon_and_owned_state(request_data, count, completed, mode):
     observation = card_observation(request_data)
     act_floor = 1 if count == 0 else 7
-    observation['state'].update(normalCombatsCompleted=count, actBossDefeated=completed, actFloor=act_floor)
+    observation['state'].update(normalCombatsCompleted=count, actBossDefeated=completed, actFloor=act_floor, hp=30)
     original = deepcopy(observation)
     scorer = PoolScorer()
     bot = BotPolicy(scorer, config=dict(samples_per_parent=1, keep_per_parent=1, lookahead_pairs=0))
@@ -90,7 +90,7 @@ def test_bot_and_service_share_horizon_and_owned_state(request_data, count, comp
     assert horizon['mode'] == mode
     assert observation == original
     p = payload(request_data)
-    p.update(scoring_state=dict(normalCombatsCompleted=count, actBossDefeated=completed, actFloor=act_floor, visibleBoss='VANTOM_BOSS'),
+    p.update(scoring_state=dict(hp=30, normalCombatsCompleted=count, actBossDefeated=completed, actFloor=act_floor, visibleBoss='VANTOM_BOSS'),
              future_room_types=[])
     result = evaluate(p, RewardSelector(PoolScorer(), dict(samples_per_parent=1, keep_per_parent=1, lookahead_pairs=0)))
     assert result['scoring_horizon'] == horizon

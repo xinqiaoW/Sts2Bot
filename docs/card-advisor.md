@@ -78,7 +78,7 @@ HTTP 测试需允许本地套接字。`tools/run_card_advisor_smoke.py --fixture
 27 项离线服务测试通过；实际模型验证累计数 0、1、5、6、10 均返回 4 个候选分数，且 0/5/10 结果相同、1/6 结果相同，原始输入未被修改。本次未重跑 Windows 可见游戏或 HTTP 套接字测试。`advisor-service-book-fix.zip` 只更新服务脚本，包含此前普通遗物及古老牙齿修复，保留 Mod 0.30.2 的商店过滤与自定义权重配置。
 
 
-## 根据近期战斗力切换权重（2026-11-02）
+## 旧规则：根据近期战斗力切换权重（缺当前血量的旧输入兼容）
 
 使用当前牌组（不拿牌/不改变构筑的基准分支）的近期每场平均预期掉血判断，一次决策内所有候选使用同一组权重。默认不超过 10 点时，短期/长期为 0.28/0.72；严格超过 10 点时为 0.72/0.28。即使某张牌能让近期战损降到阈值以内，也不为它单独切换权重，避免候选比较口径不同。
 
@@ -108,7 +108,7 @@ Bot 的战后选牌仍使用 reward_rollout_depth（默认 3）与危机额外�
 Windows 使用 Sts2Bot-0.30.9-scoring-horizon.zip，退出游戏、Bot、评分服务后，执行包内 tools/install_scoring_horizon_update.py --target <advisor-service目录> --bot <含runtime.json的Bot目录>。安装器读取 runtime.game_dir 定位真实 Mod，备份旧文件并更新两端；只补缺失配置，不覆盖已有值，不改 runtime.json。包括既有玩偶室、动态权重和 0.30.8 超时修复。不需要重新下载模型或重建游戏副本。
 
 
-## 当前规则：精英风险决定长期目标（0.30.10，替代0.30.9的固定弱怪规则）
+## 旧规则：精英固定掉血阈值（0.30.10，缺当前血量的旧输入兼容）
 
 每幕前6层：对未拿候选牌、未rollout的当前构筑估计精英池平均掉血。严格大于 elite_target_loss_threshold（默认20）时，长期目标为本幕精英；小于或等于20时为本幕Boss。actFloor > boss_target_after_act_floor（默认6）后强制Boss，即第7层起生效。全局楼层不参与这个判断。
 
@@ -124,3 +124,24 @@ Bot配置 configs/bot-policy.json；独立评分服务 configs/reward-policy.jso
 若用了自定义 --policy-config，请修改对应文件。日志 scoring_horizon 包含 estimated_elite_loss、target_reason、evaluated_act_floor、阈值、所用目标池；因楼层强制Boss时 estimated_elite_loss=null，表示未额外探测。旧面板缺actFloor会记录明确的兼容警告并使用Boss；配套更新两端可启用新规则。
 
 安装包 Sts2Bot-0.30.10-elite-risk-target.zip 可以直接更新，不必先安装0.30.9。退出Bot、游戏和评分服务后，执行包内 tools/install_scoring_horizon_update.py --target <advisor-service> --bot <含runtime.json的Bot目录>；备份原文件、读取真实game_dir更新DLL和Python、保留已有配置值并补齐新字段。
+
+
+## 当前规则：当前血量预算决定目标与权重（0.30.13）
+
+定义：预计剩余血量 = 当前HP − 短期预计总掉血（扣除重叠目标）− 目标战斗预计掉血。严格大于对应安全余量才算充足，等于余量按不足处理（边界仅有1e-9浮点容差）。全部预测使用未拿候选牌、未rollout的真实牌组，一次决策所有候选共用目标和权重。
+
+前6层先对精英预算：不足则长期目标为精英，充足则Boss；第7层起仍强制Boss。随后对所选目标计算预算，充足使用short_weight/long_weight（默认0.28/0.72），不足使用weak_short_weight/weak_long_weight（默认0.72/0.28）。这是独立于crisis_boss_loss_threshold的动态权重规则，危机搜索宽深和拿牌门槛保持原配置。
+
+短期预算按可能战斗的概率累加损失，忽略short_floor_weights和评分mean/sum设置；短期卡牌评分本身保持原来的每场平均规则。商店/休息等零战斗房不增加损失。短期中已出现目标时，只将该场从短期预算扣除后单列目标；连续两场精英仍计两场。双Boss的选牌长期评分继续逐构筑取最大损失，但生存预算累计两个未击败Boss的损失；第一场完成后仅剩第二场。下一幕尚未公开Boss时仍为公开Boss池均值，不视作全部必须连续打。
+
+Bot读取state.hp；面板快照新增scoring_state.hp，Python使用budget_hp只作政策计算，不传给满血模型，不改变模型输入或真实HP。不预支未来篝火、遗物或幕末回血，采用捕获当时的实际HP；该预算覆盖短期窗口及目标，不是整条路线的生存概率。跨幕保留既有下一幕池与阶段规则，最终通关无未来评分。
+
+配置：Bot用configs/bot-policy.json，独立面板服务用configs/reward-policy.json：
+```json
+"elite_safety_margin": 0.0,
+"boss_safety_margin": 0.0,
+"boss_target_after_act_floor": 6
+```
+两个余量独立可调。旧short_strength_loss_threshold与elite_target_loss_threshold只在缺HP的兼容输入中生效，有HP时不参与新判断。缺HP时日志明确标记legacy，配套升级Mod与Python后使用新规则。
+
+日志：scoring_horizon.elite_survival_budget说明前期目标选择；score_weighting.basis=survival_budget与score_weighting.survival_budget说明最终权重，包含current_hp、short_total_expected_hp_loss、short_target_overlap_expected_hp_loss、short_before_target_expected_hp_loss、target_expected_hp_loss、remaining_hp、safety_margin及sufficient。
