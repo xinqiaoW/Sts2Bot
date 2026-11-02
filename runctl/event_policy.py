@@ -6,6 +6,12 @@ Unknown option text is logged as a heuristic instead of claiming model parity.
 import re
 
 
+def forbidden_event_reward(option):
+    """Explicit user ban: Storybook grants Brightest Flame on acquisition."""
+    return ((option.get('relic') or {}).get('id') == 'STORYBOOK'
+            or option.get('id', '').upper().split('.')[-1] == 'STORYBOOK')
+
+
 def doll_room_options(options):
     """User rule: reveal two dolls, then never take Bing Bong.
 

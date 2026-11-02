@@ -1,5 +1,9 @@
 # CombatSolver 测试清单
 
+## 0.30.16 故事书禁选
+
+故事书、玩偶房、事件策略与Bot回归通过。专项覆盖结构化遗物ID、完整选项键、重排位置、唯一选项不可绕过、无关选项不误杀及原rollout池已排除至亮之焰。原生仅版本更新，Release构建检查；未运行Windows整局。
+
 ## 0.30.15 rollout敲牌
 
 - tests/test_rollout_upgrades.py、test_reward_policy.py、test_bot_policy.py、test_double_boss_target.py、test_scoring_horizon_update.py共165项通过。包含升级前劣势卡/升级后优势卡改变选择，抓牌后再升级，0/1/2升级上限，逐路径精确重建Build ID，K^n宽深保持，0深度不提前升级，同名不同升级/附魔实例，全部已升满无伪造分支、配置校验与Bot转发。原两步配合、奖励、商店、双Boss与安装回归通过。

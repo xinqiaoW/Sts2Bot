@@ -7,7 +7,7 @@ from train.reward_policy import RewardSelector, load_config
 from train.score import BuildScorer
 from train.scoring_horizon import scoring_horizon
 from train.advisor_service import normalize_card
-from .event_policy import event_value, doll_room_options
+from .event_policy import event_value, doll_room_options, forbidden_event_reward
 from .event_combat import adjust_event_cards
 from .model_adapter import ModelAdapter
 from .policy_config import load_policy_config, potion_priority, potion_reward_eligible
@@ -50,7 +50,7 @@ class BotPolicy:
         if [o['index'] for o in options] != list(range(len(options))): raise ValueError('Invalid option indices')
         self.last_report = dict(screen=screen, decisionSeq=observation['decisionSeq'], config=self.config)
         free_relics = [o for o in options if o.get('kind') == 'relic']
-        if screen == 'EVENT' and context.get('eventId') == 'DOLL_ROOM':
+        if screen == 'EVENT' and (context.get('eventId') == 'DOLL_ROOM' or any(forbidden_event_reward(o) for o in options)):
             # Apply the explicit ban before the single-option shortcut.
             choice = self.event(state, options, context)
         elif screen == 'REWARDS' and all(o['kind'] in ('potion', 'potion_replace', 'leave', 'skip') for o in options):
@@ -251,6 +251,14 @@ class BotPolicy:
         return self.model.project(value)
 
     def event(self, state, options, context):
+        banned = [o['index'] for o in options if forbidden_event_reward(o)]
+        if banned:
+            options = [o for o in options if o['index'] not in banned]
+            self.last_report.update(forbidden_event_options=banned, reason='forbid_storybook_brightest_flame')
+            if not options:
+                raise ValueError('STORYBOOK is forbidden: no alternative event option is available')
+            if len(options) == 1:
+                return options[0]['index']
         if context['eventId'] == 'DOLL_ROOM':
             options, reason = doll_room_options(options)
             self.last_report.update(reason=reason, allowed_options=[o['index'] for o in options])

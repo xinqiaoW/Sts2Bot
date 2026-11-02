@@ -246,3 +246,7 @@ Bot配置 configs/bot-policy.json；独立评分服务 configs/reward-policy.jso
 若用了自定义 --policy-config，请修改对应文件。日志 scoring_horizon 包含 estimated_elite_loss、target_reason、evaluated_act_floor、阈值、所用目标池；因楼层强制Boss时 estimated_elite_loss=null，表示未额外探测。旧面板缺actFloor会记录明确的兼容警告并使用Boss；配套更新两端可启用新规则。
 
 安装包 Sts2Bot-0.30.10-elite-risk-target.zip 可以直接更新，不必先安装0.30.9。退出Bot、游戏和评分服务后，执行包内 tools/install_scoring_horizon_update.py --target <advisor-service> --bot <含runtime.json的Bot目录>；备份原文件、读取真实game_dir更新DLL和Python、保留已有配置值并补齐新字段。
+
+## 故事书禁选（0.30.16）
+
+按用户要求，先古事件中禁止STORYBOOK（故事书），避免获得会损失最大生命的至亮之焰。禁选优先于唯一选项和模型评分；无其他合法选项时明确停止。已持有的卡和遗物不修改，战斗出牌规则未变；该牌原本已不在普通rollout抽样池中。
