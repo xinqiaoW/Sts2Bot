@@ -66,5 +66,6 @@
   ],
   "event_card_min_gain": 1.0,
   "event_unknown_card_cost": 3.0,
-  "bridge_key_card_loss_threshold": 3.0
+  "bridge_key_card_loss_threshold": 3.0,
+  "rollout_max_upgrades": 1
 }

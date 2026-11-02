@@ -24,6 +24,7 @@
   "lookahead_pairs": 1,
   "rarity_weights": {"Common": 9.0, "Uncommon": 5.0, "Rare": 1.0},
   "upgrade_probability": 0.0,
+  "rollout_max_upgrades": 1,
   "pool_card_ids": null,
   "leaf_top_fraction": 0.25,
   "leaf_bottom_fraction": 0.25,

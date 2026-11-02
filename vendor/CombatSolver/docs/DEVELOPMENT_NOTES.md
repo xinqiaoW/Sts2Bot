@@ -1,5 +1,15 @@
 # CombatSolver 开发笔记与未来构想
 
+## 0.30.15：卡牌rollout增加敲牌分支（2026-11-02）
+
+train/reward_policy在每个允许升级的父节点枚举牌组可升级实例，按当前长期目标预测选出最佳一次升级，作为额外一条候选，与抽样抓牌、跳过竞争原keep_per_parent名额；不额外增加保留宽度。升级消耗一层真实rollout深度，不增加牌数，默认每条未来路径最多一次（rollout_max_upgrades=1，范围0–6；0关闭）。刚拿的奖励牌、后续模拟抓入的牌以及原有牌均可升级；当前实际短期分数、初始长期分数不提前计入未来升级。
+
+升级复制Card并只增加upgrade，保留附魔和持久状态；相同完整Card状态去重，路径保留精确deck_index；缓存按完整有序Build，不以无序ID混淆重复实例。升级候选批量预测，经已有分布缓存复用；新增upgrade_candidates/upgrade_branches统计。双Boss每个升级构筑分别取较难者。两步展开继续在两次未来动作后剪枝。
+
+path保持原抓牌字典与None，新增{action:upgrade,deck_index,card}操作字典；每个leaf额外记录upgrade_count。消费者必须识别操作字典，不能把每个非空路径项都追加到牌组。该分支代表假设存在的未来敲牌机会，不承诺真实地图一定有可用篝火，也不计休息机会成本。upgrade_probability仍仅是随机奖励本身带升级的概率，两者独立。
+
+Bot配置转发到RewardSelector；评分面板使用reward-policy配置，均默认启用且可关闭。先前事件直接构筑保护不受本功能影响。原生仅版本元数据，无战斗或输入语义变化。验证见TEST_MATRIX；本地配套包保留旧参数、补充新默认值。
+
 ## 0.30.14：事件强制加牌与木桥关键牌保护（2026-11-02）
 
 外层新增 runctl/event_combat.py，以当前构筑直接比较短期平均掉血和精英/Boss掉血，不用未来抓牌rollout掩盖即刻构筑损害。沿用scoring_horizon公开目标及survival_budget共同权重；双Boss评分max、预算sum。所有候选使用基准构筑权重，不读取未来事件结果。

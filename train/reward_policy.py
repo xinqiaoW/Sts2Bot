@@ -42,6 +42,8 @@ def load_config(path=DEFAULT_CONFIG, **overrides):
             raise ValueError(f'{key} must be a positive integer')
     if config['keep_per_parent'] > config['samples_per_parent'] + 1:
         raise ValueError('keep_per_parent exceeds sampled cards plus skip')
+    if type(config['rollout_max_upgrades']) is not int or not 0 <= config['rollout_max_upgrades'] <= 6:
+        raise ValueError('rollout_max_upgrades must be an integer in [0,6]')
     if type(config['lookahead_pairs']) is not int or not 0 <= config['lookahead_pairs'] <= 3:
         raise ValueError('lookahead_pairs must be an integer in [0,3]')
     if type(config['post_boss_rollout_depth']) is not int or not 0 <= config['post_boss_rollout_depth'] <= 6:
@@ -111,6 +113,7 @@ class Node:
     build: Build
     path: list
     loss: float = 0.0
+    upgrades: int = 0
 
 
 def aggregate_leaf_losses(ranked_losses, config):
@@ -292,7 +295,8 @@ class RewardSelector:
                 validate_targets(floor['targets'])
 
         cache, missing, warnings = {}, set(), set()
-        stats = {'scored_build_distributions': 0, 'cache_hits': 0, 'per_depth': []}
+        stats = {'scored_build_distributions': 0, 'cache_hits': 0, 'upgrade_candidates': 0,
+                 'upgrade_branches': 0, 'per_depth': []}
 
         def losses(builds, targets):
             if terminal:
@@ -364,7 +368,43 @@ class RewardSelector:
         if depth and max(len(b.cards) for b in root_builds) + depth > self.catalog.config['max_deck_size']:
             raise ValueError('Rollout could exceed model deck-size limit; reduce rollout_depth')
 
+        # One upgrade branch per parent, selected by current target loss.
+        # Cache by the full ordered build: deck_index in the path must still
+        # identify the same owned instance when equal IDs have different state.
+        upgrade_cache = {}
+
+        def best_upgrades(frontiers):
+            probes, spans = [], []
+            seen = set()
+            for parents in frontiers:
+                for parent in parents:
+                    if parent.upgrades >= c['rollout_max_upgrades']:
+                        continue
+                    b = parent.build
+                    if b in upgrade_cache or b in seen:
+                        continue
+                    seen.add(b)
+                    start = len(probes)
+                    instances = set()
+                    for index, card in enumerate(b.cards):
+                        if card in instances or card.upgrade >= self.catalog.cards[card.id]['max_upgrade_level']:
+                            continue
+                        instances.add(card)
+                        upgraded = replace(card, upgrade=card.upgrade+1)
+                        cards = list(b.cards)
+                        cards[index] = upgraded
+                        candidate = replace(b, cards=tuple(cards))
+                        self.catalog.validate(candidate)
+                        probes.append((candidate, index, upgraded))
+                    spans.append((b, start, len(probes)))
+            values = long_losses([row[0] for row in probes]) if probes else []
+            stats['upgrade_candidates'] += len(probes)
+            for b, start, end in spans:
+                best = min(range(start, end), key=lambda i: (values[i], probes[i][1])) if start < end else None
+                upgrade_cache[b] = probes[best] if best is not None else None
+
         def expand(frontiers, level):
+            best_upgrades(frontiers)
             children, ranges = [], []
             for root, parents in enumerate(frontiers):
                 for parent_index, parent in enumerate(parents):
@@ -377,7 +417,14 @@ class RewardSelector:
                     start = len(children)
                     for card in options:
                         b = parent.build if card is None else replace(parent.build, cards=parent.build.cards+(card,))
-                        children.append(Node(b, parent.path + [None if card is None else card.to_dict()]))
+                        children.append(Node(b, parent.path + [None if card is None else card.to_dict()],
+                                             upgrades=parent.upgrades))
+                    upgrade = upgrade_cache.get(parent.build) if parent.upgrades < c['rollout_max_upgrades'] else None
+                    if upgrade is not None:
+                        b, index, card = upgrade
+                        children.append(Node(b, parent.path + [dict(action='upgrade', deck_index=index,
+                            card=card.to_dict())], upgrades=parent.upgrades+1))
+                        stats['upgrade_branches'] += 1
                     ranges.append((root, start, len(children)))
             values = long_losses([node.build for node in children])
             for node, value in zip(children, values):
@@ -389,7 +436,7 @@ class RewardSelector:
             children, ranges = expand(frontiers, level)
             paired = level < 2*c['lookahead_pairs'] and level+1 < depth
             if paired:
-                # Delay pruning until both additions have been evaluated. All
+                # Delay pruning until both future actions have been evaluated. All
                 # roots get the same offers by positional path, independently
                 # of their scores. The second step is part of the real depth,
                 # not a phantom bonus or an extra card beyond the horizon.
@@ -417,7 +464,7 @@ class RewardSelector:
                 continue
             frontiers = [[] for _ in range(root_count)]
             for root, start, end in ranges:
-                # Stable ties prefer skip, then deterministic sampled order.
+                # Stable ties prefer skip, sampled cards, then the upgrade.
                 frontiers[root].extend(sorted(children[start:end], key=lambda node: node.loss)[:c['keep_per_parent']])
             stats['per_depth'].append(dict(depth=level+1, evaluated_paths=len(children),
                                            leaves_per_root=[len(f) for f in frontiers], pruning='one_step'))
@@ -437,7 +484,7 @@ class RewardSelector:
                                    initial_long_hp_loss=initial_boss[index], **tails, long_score=-long,
                                    top_score=-tails['top_expected_hp_loss'], bottom_score=-tails['bottom_expected_hp_loss'],
                                    combined_score=-combined, leaf_count=len(leaves),
-                                   leaves=[dict(build_id=node.build.id, path=node.path, target_hp_loss=node.loss,
+                                   leaves=[dict(build_id=node.build.id, path=node.path, upgrade_count=node.upgrades, target_hp_loss=node.loss,
                                                 boss_hp_loss=node.loss if long_room == 'Boss' else None,
                                                 aggregation_weight=weights[i])
                                            for i, node in enumerate(ranked)]))
@@ -452,7 +499,7 @@ class RewardSelector:
                     long_target_aggregation=long_aggregation,
                     untrained_features=sorted(missing), warnings=sorted(warnings), stats=stats,
                     elapsed_seconds=time.perf_counter()-started,
-                    interpretation='Best/worst tails against the declared Elite/Boss target pool, not an unbiased expectation of future rewards. Full-health model; only adds cards or skips.')
+                    interpretation='Best/worst tails against the declared Elite/Boss target pool, not an unbiased expectation of future rewards. Full-health model; future steps add cards, skip or upgrade one owned card. Upgrade opportunities are hypothetical, bounded by rollout_max_upgrades.')
 
 
 def main():

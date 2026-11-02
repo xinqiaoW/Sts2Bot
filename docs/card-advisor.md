@@ -145,3 +145,7 @@ Bot读取state.hp；面板快照新增scoring_state.hp，Python使用budget_hp�
 两个余量独立可调。旧short_strength_loss_threshold与elite_target_loss_threshold只在缺HP的兼容输入中生效，有HP时不参与新判断。缺HP时日志明确标记legacy，配套升级Mod与Python后使用新规则。
 
 日志：scoring_horizon.elite_survival_budget说明前期目标选择；score_weighting.basis=survival_budget与score_weighting.survival_budget说明最终权重，包含current_hp、short_total_expected_hp_loss、short_target_overlap_expected_hp_loss、short_before_target_expected_hp_loss、target_expected_hp_loss、remaining_hp、safety_margin及sufficient。
+
+## 未来敲牌分支（0.30.15）
+
+评分服务使用configs/reward-policy.json的rollout_max_upgrades，Bot使用configs/bot-policy.json同名值，默认1、范围0–6，0关闭。每层额外比较最佳一次升级候选，升级占深度并与抓牌/跳过竞争原保留名额，不增加牌组张数。允许新拿的牌后续再升级，实际短期评分仍按未升级牌组。该机会是有界假设，并未证明地图上必有可用篝火；upgrade_probability仍只控制抽到升级卡的概率。具体路径/统计格式见[Bot说明](autobot.md)。

@@ -21,7 +21,7 @@ def load_policy_config(path=None, **overrides):
     values.update(supplied)
     integer_keys = {'crisis_samples_per_parent', 'crisis_keep_per_parent', 'crisis_extra_depth',
                     'max_rollout_depth', 'reward_rollout_depth', 'post_boss_rollout_depth', 'route_beam_width', 'seed',
-                    'samples_per_parent', 'keep_per_parent', 'lookahead_pairs', 'boss_target_after_act_floor'}
+                    'samples_per_parent', 'keep_per_parent', 'lookahead_pairs', 'boss_target_after_act_floor', 'rollout_max_upgrades'}
     for key, value in values.items():
         if key == 'potion_priority':
             if (not isinstance(value, list) or any(not isinstance(p, str) or not re.fullmatch(r'[A-Z][A-Z0-9_]*', p) for p in value)
@@ -54,6 +54,8 @@ def load_policy_config(path=None, **overrides):
         raise ValueError('Invalid crisis branching parameters')
     if values['samples_per_parent'] < 1 or not 1 <= values['keep_per_parent'] <= values['samples_per_parent'] + 1:
         raise ValueError('Invalid normal branching parameters')
+    if not 0 <= values['rollout_max_upgrades'] <= 6:
+        raise ValueError('rollout_max_upgrades must be in [0,6]')
     if not 0 <= values['lookahead_pairs'] <= 3:
         raise ValueError('lookahead_pairs must be in [0,3]')
     if values['route_beam_width'] < 1:

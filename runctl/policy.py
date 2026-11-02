@@ -24,7 +24,7 @@ class BotPolicy:
                                            ('short_strength_loss_threshold', 'elite_safety_margin', 'boss_safety_margin',
                                             'weak_short_weight', 'weak_long_weight', 'post_boss_rollout_depth',
                                             'elite_target_loss_threshold', 'boss_target_after_act_floor',
-                                            'samples_per_parent', 'keep_per_parent', 'lookahead_pairs',
+                                            'samples_per_parent', 'keep_per_parent', 'lookahead_pairs', 'rollout_max_upgrades',
                                             'leaf_top_fraction', 'leaf_bottom_fraction',
                                             'leaf_top_weight', 'leaf_bottom_weight', 'leaf_rank_power')})
         self.run_id = None
@@ -155,7 +155,8 @@ class BotPolicy:
                 else 'post_boss' if horizon['projects_next_act'] else 'distance_to_boss',
             rollout_depth=result['rollout_depth'], samples_per_parent=result['config']['samples_per_parent'],
             keep_per_parent=result['config']['keep_per_parent'],
-            lookahead_pairs=result['config']['lookahead_pairs'], stats=result['stats'],
+            lookahead_pairs=result['config']['lookahead_pairs'], rollout_max_upgrades=result['config']['rollout_max_upgrades'],
+            stats=result['stats'],
             score_weighting=result['score_weighting'],
             long_tail_summaries=[{k: c[k] for k in ('option_index', 'action', 'card',
                 'top_expected_hp_loss', 'bottom_expected_hp_loss', 'long_expected_hp_loss',
