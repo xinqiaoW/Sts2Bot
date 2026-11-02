@@ -1,5 +1,11 @@
 # CombatSolver 测试清单
 
+## 0.30.8 决策等待期限
+
+- Python：`PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv-train/bin/python -m pytest tests/test_runctl.py -q`，39 passed。覆盖配置优先级、默认值、settings 1800/3600 接受与 3601 拒绝、evaluation8s 300 接受与 301 拒绝。
+- 独立 C#：`dotnet run --project vendor/CombatSolver/tools/RunControlWaitSmoke/RunControlWaitSmoke.csproj -c Release`（PowerShell/bash 通用），直接编译生产等待辅助方法，4 项 PASS：决策超时上下文、父取消不混为决策超时、期限内收到动作、已有动作不能覆盖父取消。fixture 总取消上限 10 秒，决策测试期限 1 秒，无游戏/搜索。
+- 未回放用户第 155 次商店决策，未验证 Windows 完整局；不据此声明搜索性能提升。
+
 ## 0.30.7 奖励选择失效恢复
 
 - Debug 编译通过。原生 Wine/Godot 测试 `/tmp/sts2bot-ui-stale-0307/grid-result.json`：6 组 Passed，真实玩家牌组未改变。

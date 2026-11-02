@@ -146,6 +146,10 @@ internal sealed partial class RunControlSession(NGame host, RunControlRequest re
                 await Task.Delay(100, ct);
             }
         }
+        catch (OperationCanceledException ex) when (ct.IsCancellationRequested)
+        {
+            throw new TimeoutException($"Whole-run timeout: timeoutSeconds={request.TimeoutSeconds}, stage={_stage}.", ex);
+        }
         finally
         {
             SolverSettings.ApplyForTesting(original);

@@ -9,6 +9,15 @@ import time
 from .env import RealRunEnv, atomic_json
 
 
+def action_timeout(runtime, policy, override=None):
+    maximum = 3600 if runtime.get('combat_search_mode') == 'settings' else 300
+    default = min(1800, maximum) if policy == 'model' else 60
+    value = override if override is not None else runtime.get('action_timeout_seconds', default)
+    if type(value) is not int or not 1 <= value <= maximum:
+        raise ValueError(f'action_timeout_seconds must be an integer in 1..{maximum}')
+    return value
+
+
 def main():
     parser = argparse.ArgumentParser(description="Run the real-game M1 environment in a dedicated runtime")
     parser.add_argument("--runtime", required=True, type=Path)
@@ -16,6 +25,7 @@ def main():
     parser.add_argument("--seed-prefix", default="RUNCTL")
     parser.add_argument("--policy-seed", type=int, default=0)
     parser.add_argument("--timeout", type=int, help="Whole-run deadline; default 1h for evaluation, 4h with player search settings")
+    parser.add_argument("--action-timeout", type=int, help="Seconds to wait for each policy decision; overrides runtime action_timeout_seconds")
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--policy", choices=['model', 'random-map'], default='model')
     parser.add_argument("--policy-config", type=Path)
@@ -26,6 +36,7 @@ def main():
     runtime = json.loads(args.runtime.read_text(encoding="utf-8"))
     timeout = args.timeout if args.timeout is not None else runtime.get('timeout_seconds',
         14400 if runtime.get('combat_search_mode') == 'settings' else 3600)
+    decision_timeout = action_timeout(runtime, args.policy, args.action_timeout)
     started = time.time()
     episodes = []
     bot = None
@@ -42,11 +53,15 @@ def main():
             policy = random.Random(args.policy_seed + index)
             try:
                 observation = env.reset(seed, policy_seed=args.policy_seed + index, timeout_seconds=timeout,
-                                        decision_mode='all' if bot else 'map', action_timeout_seconds=300 if bot else 60)
+                                        decision_mode='all' if bot else 'map', action_timeout_seconds=decision_timeout)
                 while observation.get("status") != "complete":
                     print(json.dumps({"runId": env.run_id, "decisionSeq": observation["decisionSeq"],
+                                      "screen": observation.get("screen"), "actionTimeoutSeconds": decision_timeout,
                                       "state": {k: observation["state"][k] for k in ["act", "floor", "hp", "gold"]}}), flush=True)
+                    decision_started = time.monotonic()
                     choice = bot.choose(observation) if bot else policy.randrange(len(observation['options']))
+                    print(json.dumps({"runId": env.run_id, "decisionSeq": observation["decisionSeq"],
+                                      "choice": choice, "policyElapsedSeconds": round(time.monotonic() - decision_started, 3)}), flush=True)
                     if bot:
                         with (args.output / 'decisions.jsonl').open('a', encoding='utf-8') as log:
                             log.write(json.dumps(dict(runId=env.run_id, seed=seed, **bot.last_report), ensure_ascii=False, allow_nan=False)+'\n')

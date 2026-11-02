@@ -30,7 +30,8 @@ internal sealed record RunControlRequest
             || CombatMode != "solver" || CombatSearchMode is not ("evaluation8s" or "settings")
             || DecisionMode is not ("map" or "all") || !Regex.IsMatch(RunId, "^[a-zA-Z0-9_-]{1,80}$")
             || string.IsNullOrWhiteSpace(Seed) || Seed.Length > 100
-            || TimeoutSeconds is < 1 or > 14400 || ActionTimeoutSeconds is < 1 or > 300
+            || TimeoutSeconds is < 1 or > 14400 || ActionTimeoutSeconds < 1
+            || ActionTimeoutSeconds > (UsePlayerSearchSettings ? 3600 : 300)
             || CombatTimeoutSeconds < 1 || CombatTimeoutSeconds > (UsePlayerSearchSettings ? 3600 : 120))
             throw new InvalidDataException("Invalid run request: v1 supports Silent A10, solver combat, and bounded deadlines only.");
     }

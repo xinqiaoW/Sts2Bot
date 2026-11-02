@@ -124,7 +124,8 @@ class RealRunEnv:
         if combat_timeout_seconds is None:
             combat_timeout_seconds = self.combat_timeout_seconds
         combat_limit = 3600 if self.combat_search_mode == "settings" else 120
-        for value, maximum in [(timeout_seconds, 14400), (action_timeout_seconds, 300), (combat_timeout_seconds, combat_limit)]:
+        action_limit = 3600 if self.combat_search_mode == "settings" else 300
+        for value, maximum in [(timeout_seconds, 14400), (action_timeout_seconds, action_limit), (combat_timeout_seconds, combat_limit)]:
             if type(value) is not int or not 1 <= value <= maximum:
                 raise ValueError("Invalid deadline")
         if type(policy_seed) is not int or not -(2**31) <= policy_seed < 2**31:

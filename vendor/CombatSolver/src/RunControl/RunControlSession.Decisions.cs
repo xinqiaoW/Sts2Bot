@@ -76,9 +76,7 @@ internal sealed partial class RunControlSession
         object decision = new { schemaVersion = 1, request.RunId, decisionSeq = seq, screen, state, options = indexed, context };
         files.Record("decision", decision);
         await RunControlFiles.AtomicWriteAsync(files.DecisionPath, decision, ct);
-        using CancellationTokenSource waiting = CancellationTokenSource.CreateLinkedTokenSource(ct);
-        waiting.CancelAfter(TimeSpan.FromSeconds(request.ActionTimeoutSeconds));
-        while (!File.Exists(files.ActionPath)) await Task.Delay(50, waiting.Token);
+        await RunControlActionWait.WaitAsync(files.ActionPath, request.ActionTimeoutSeconds, screen, seq, ct);
         RunControlAction action = JsonSerializer.Deserialize<RunControlAction>(File.ReadAllText(files.ActionPath), RunControlFiles.Json)
             ?? throw new InvalidDataException("Empty action.");
         if (action.SchemaVersion != 1 || action.RunId != request.RunId || action.DecisionSeq != seq

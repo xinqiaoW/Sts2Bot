@@ -304,3 +304,34 @@ def test_search_configuration_rejects_unknown_mode_and_unbounded_deadline(native
         with pytest.raises(ValueError, match='deadline'):
             env.reset('BAD-DEADLINE', combat_timeout_seconds=3601)
     assert game.starts == 0
+
+
+@pytest.mark.parametrize('mode,value,valid', [
+    ('settings', 1800, True), ('settings', 3600, True), ('settings', 3601, False),
+    ('evaluation8s', 300, True), ('evaluation8s', 301, False),
+])
+def test_action_deadline_protocol_bounds(native, mode, value, valid):
+    runtime, game = native
+    with RealRunEnv({**runtime, 'combat_search_mode': mode}) as env:
+        if valid:
+            env.reset('ACTION-DEADLINE', action_timeout_seconds=value)
+            assert game.requests[-1]['actionTimeoutSeconds'] == value
+            assert env.step(0)['status'] == 'complete'
+        else:
+            with pytest.raises(ValueError, match='deadline'):
+                env.reset('ACTION-DEADLINE', action_timeout_seconds=value)
+            assert game.starts == 0
+
+
+def test_action_deadline_configuration_precedence():
+    from runctl.__main__ import action_timeout
+    settings = {'combat_search_mode': 'settings'}
+    assert action_timeout(settings, 'model') == 1800
+    assert action_timeout({}, 'model') == 300
+    assert action_timeout(settings, 'random-map') == 60
+    custom = {**settings, 'action_timeout_seconds': 900}
+    assert action_timeout(custom, 'model') == 900
+    assert action_timeout(custom, 'model', 2400) == 2400
+    for value in (0, -1, 3601, True, 1.5, '1800', None):
+        with pytest.raises(ValueError, match='action_timeout_seconds'):
+            action_timeout({**settings, 'action_timeout_seconds': value}, 'model')

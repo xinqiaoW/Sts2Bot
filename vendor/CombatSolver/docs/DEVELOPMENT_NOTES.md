@@ -1,5 +1,15 @@
 # CombatSolver 开发笔记与未来构想
 
+## 0.30.8：可配置的 Bot 决策等待（2026-11-02）
+
+用户在已确认加载 0.30.7 的 run 800e3cfc0b454d7b98eef79645a1e20d 中，SHOP 第 155 次决策发布到失败为 300.1 秒；accepted.json 的 actionTimeoutSeconds=300、timeoutSeconds=14400。证据确认单次决策期限触发，不能单凭此证明 Python 始终在正常计算。
+
+settings 模式的 actionTimeoutSeconds 上限从 300 放宽为 3600；evaluation8s 保持 300。配套 Python CLI 在 settings+model 时默认 1800，支持 runtime.json 的 action_timeout_seconds 和更优先的 --action-timeout。普通 RealRunEnv 调用默认仍为 60。整局上限保持 14400，搜索参数与评分算法不变。
+
+决策等待提取为独立辅助方法：单次到期报 TimeoutException 并携带 screen、decisionSeq、配置秒数与 action 路径；父令牌取消继续传播，由会话边界报告整局超时。即使已有 action，取消也先于接收处理。Python 控制台输出评分前的界面与上限，以及评分后的实际耗时。
+
+验证：test_runctl.py 39 passed；独立 C# fixture 4 项通过（1 秒决策超时、父取消、正常到达、取消后已有动作）。用户 Windows 完整局及商店现场未复现；增加等待不等于解决计算性能或 Python 停滞。
+
 ## 0.30.7：Bot 奖励选择过期检查（2026-11-02）
 
 用户 run bccc98ad4cc541c6aec02fc78d7748b0 在 NCardRewardSelectionScreen 执行替代选项时报 Selected button is no longer legal；评分日志为 choice=3、旧 96/6 配置。用户表示可能在计算期间有手动操作，实际 DLL 版本与完整原生事件未取得，不能认定其唯一触发原因。
