@@ -91,7 +91,8 @@ def test_archaic_tooth_still_rejects_wax_state():
 
 def test_native_relic_base_flags_match_training_input(request_data):
     s = selector()
-    s.catalog.acts['OVERGROWTH']['encounters'] = [dict(id='FLYCONID_NORMAL', room_type='Monster')]
+    s.catalog.acts['OVERGROWTH']['encounters'] = [dict(id='FLYCONID_NORMAL', room_type='Monster', weak=False),
+        dict(id='VANTOM_BOSS', room_type='Boss', weak=False)]
     p = payload(request_data)
     p['build']['relics'] = [dict(id='RING_OF_THE_SNAKE', state=[]),
                            dict(id='PRECISE_SCISSORS', state=[]),
@@ -139,7 +140,8 @@ def test_live_bridge_normalization_and_baseline(request_data):
     s = selector()
     # Service expands room categories to catalog enemies: use only its known
     # catalog encounters and verify the resulting mean independently.
-    s.catalog.acts['OVERGROWTH']['encounters'] = [dict(id='FLYCONID_NORMAL', room_type='Monster')]
+    s.catalog.acts['OVERGROWTH']['encounters'] = [dict(id='FLYCONID_NORMAL', room_type='Monster', weak=False),
+        dict(id='VANTOM_BOSS', room_type='Boss', weak=False)]
     p = payload(request_data)
     r = evaluate(p, s)
     assert r['request_id'] == 'scene-42'
@@ -153,7 +155,8 @@ def test_live_bridge_normalization_and_baseline(request_data):
 
 def test_advisor_extends_empty_short_window_using_only_public_room_types(request_data):
     s = selector()
-    s.catalog.acts['OVERGROWTH']['encounters'] = [dict(id='FLYCONID_NORMAL', room_type='Monster')]
+    s.catalog.acts['OVERGROWTH']['encounters'] = [dict(id='FLYCONID_NORMAL', room_type='Monster', weak=False),
+        dict(id='VANTOM_BOSS', room_type='Boss', weak=False)]
     p = payload(request_data)
     p['future_room_types'] = [{'Shop': 1}, {'RestSite': 1}]
     p['short_fallback_room_types'] = [{'Unknown': 1}, {'Boss': 1}]
@@ -183,7 +186,8 @@ def test_reject_other_character_unknown_state_and_room(request_data):
 def test_http_protocol_and_error_responses(request_data):
     s = selector()
     s.scorer.predictor.name = 'test-model'
-    s.catalog.acts['OVERGROWTH']['encounters'] = [dict(id='FLYCONID_NORMAL', room_type='Monster')]
+    s.catalog.acts['OVERGROWTH']['encounters'] = [dict(id='FLYCONID_NORMAL', room_type='Monster', weak=False),
+        dict(id='VANTOM_BOSS', room_type='Boss', weak=False)]
     server = HTTPServer(('127.0.0.1', 0), make_handler(s, 0.25))
     thread = Thread(target=server.serve_forever, daemon=True); thread.start()
     try:

@@ -10,6 +10,7 @@ from damage_model.catalog import COUNTER_DOMAINS
 from damage_model.schema import Build
 from .reward_policy import RewardSelector, load_config
 from .score import BuildScorer, DEFAULT_CHECKPOINT
+from .scoring_horizon import scoring_horizon
 
 
 # ArchaicTooth's saved cards only reconstruct hover tips. AfterObtained
@@ -127,6 +128,7 @@ def evaluate(payload, selector, unknown_combat_probability=0.25):
             option['card'] = normalize_card(row['card'])
         options.append(option)
     boss = payload['boss_targets']
+    stage = payload.get('scoring_state')
     encounters = selector.catalog.acts[build['act_id']]['encounters']
     floors = []
     initial_rooms = payload['future_room_types']
@@ -150,7 +152,10 @@ def evaluate(payload, selector, unknown_combat_probability=0.25):
             if room == 'Boss':
                 candidates = list(boss)
             elif room in ('Monster', 'Elite'):
-                candidates = [e['id'] for e in encounters if e['room_type'] == room]
+                count = stage.get('normalCombatsCompleted') if stage else None
+                weak = count < (3 if build['act'] == 1 else 2) if count is not None else None
+                candidates = [e['id'] for e in encounters if e['room_type'] == room
+                              and (room != 'Monster' or weak is None or e['weak'] == weak)]
             else:
                 raise ValueError('Unsupported map node: ' + room)
             if not candidates:
@@ -164,8 +169,21 @@ def evaluate(payload, selector, unknown_combat_probability=0.25):
             floors = [floor]
             extended_short_horizon = True
             break
+    # Older snapshots retain their explicitly supplied Boss until the updated
+    # native capture provides completed combat counts and act-end evidence.
+    horizon = None
     request = dict(build=build, max_hp=payload['max_hp'], options=options,
                    floors_to_boss=payload['floors_to_boss'], next_floors=floors, boss_targets=boss)
+    if stage is not None:
+        horizon = scoring_horizon(selector.catalog, selector.scorer.predictor.trained_targets,
+                                  dict(stage, act=build['act'], actId=build['act_id']))
+        short_targets = horizon['short_targets']
+        if short_targets is not None:
+            request['next_floors'] = [dict(targets=short_targets, combat_probability=1.0)] if short_targets else []
+        request.update(long_targets=horizon['long_targets'], long_target_room=horizon['long_target_room'],
+                       encounter_act_id=horizon['encounter_act_id'], terminal=horizon['mode'] == 'terminal')
+        if horizon['mode'] == 'next_act_weak_pool':
+            request['rollout_depth'] = selector.config['post_boss_rollout_depth']
     result = selector.select(request)
     baseline = result['candidates'][-1]['combined_score']
     for row in result['candidates']:
@@ -175,7 +193,15 @@ def evaluate(payload, selector, unknown_combat_probability=0.25):
     result['request_id'] = payload['request_id']
     result['normalized_relics'] = ignored
     result['extended_short_horizon'] = extended_short_horizon
+    result['scoring_horizon'] = horizon
+    if horizon:
+        result['warnings'] = sorted(set(result['warnings'] + horizon['warnings']))
     result['scenario_note'] = '满血构筑评分；地图分支等概率，同类敌人等概率；未知房战斗概率 ' + str(unknown_combat_probability)
+    if horizon:
+        result['scenario_note'] += {'weak_pool': '；弱怪池阶段：短期看弱普通怪，长期看本幕精英',
+            'boss': '；长期目标：本幕待战 Boss',
+            'next_act_weak_pool': '；本幕已通关：短期看下一幕弱普通怪，长期看下一幕精英',
+            'terminal': '；已通关，无未来战斗，选牌收益为零'}[horizon['mode']]
     return result
 
 

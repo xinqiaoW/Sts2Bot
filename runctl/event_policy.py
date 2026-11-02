@@ -6,6 +6,44 @@ Unknown option text is logged as a heuristic instead of claiming model parity.
 import re
 
 
+def doll_room_options(options):
+    """User rule: reveal two dolls, then never take Bing Bong.
+
+    Native DollRoom options can have relic=None and a localized TextKey.
+    Match explicit public identities, never their position or hidden rewards.
+    """
+    def key(option):
+        return option.get('id', '').upper().split('.')[-1]
+
+    initial = {'RANDOM', 'TAKE_SOME_TIME', 'EXAMINE'}
+    if any(key(o) in initial for o in options):
+        allowed = [o for o in options if key(o) == 'TAKE_SOME_TIME' and not o.get('lethal')]
+        if len(allowed) != 1:
+            raise ValueError('DOLL_ROOM: required TAKE_SOME_TIME option is unavailable or lethal; refusing random doll')
+        return allowed, 'doll_room_take_some_time'
+
+    def identity(option):
+        relic_id = (option.get('relic') or {}).get('id')
+        if relic_id:
+            return relic_id
+        aliases = {'宾邦': 'BING_BONG', '冰邦': 'BING_BONG', 'Bing Bong': 'BING_BONG',
+                   '风的女儿': 'DAUGHTER_OF_THE_WIND', 'Daughter of the Wind': 'DAUGHTER_OF_THE_WIND',
+                   '抱抱先生': 'MR_STRUGGLES', 'Mr. Struggles': 'MR_STRUGGLES'}
+        for value in (option.get('id', ''), option.get('title', '')):
+            value = re.sub(r'\[[^\]]+\]|<[^>]+>', '', value).strip()
+            if value in aliases:
+                return aliases[value]
+            if value in ('BING_BONG', 'DAUGHTER_OF_THE_WIND', 'MR_STRUGGLES'):
+                return value
+        return None
+
+    allowed = [o for o in options if not o.get('lethal') and identity(o) != 'BING_BONG'
+               and (identity(o) in ('DAUGHTER_OF_THE_WIND', 'MR_STRUGGLES') or o.get('proceed'))]
+    if not allowed:
+        raise ValueError('DOLL_ROOM: no recognized safe option; BING_BONG is forbidden')
+    return allowed, 'doll_room_exclude_bing_bong'
+
+
 def event_value(event_id, option, state, config):
     if option.get('lethal'):
         return -1e9, 'visible_lethal_option'

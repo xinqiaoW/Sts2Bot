@@ -1,5 +1,13 @@
 # CombatSolver 测试清单
 
+## 0.30.9 阶段目标与跨幕预测
+
+- Python 目标测试 tests/test_scoring_horizon.py 覆盖两种第一幕、第二幕、第三幕的弱怪临界次数；第一/二幕跨幕、双 Boss 已知目标、终局无目标；Bot/服务同源规则、跨幕不改真实历史/牌组/遗物、非法历史仍拒绝、无精英训练覆盖不回退 Boss。终局 RewardSelector 不调用模型、不 rollout、全部零分且推荐跳过。
+- 原奖励策略、Bot、服务离线测试 190 项最终通过（初跑 3 个旧服务 fixture 缺失 Boss 元数据，补齐测试目录后通过）；另有动态权重与玩偶室 24 项、目标终局/空覆盖 2 项、配套安装器 2 项通过。HTTP 套接字与用户 Windows 实机本轮未测。
+- 独立 C#：dotnet run --project vendor/CombatSolver/tools/CardAdvisorProgressSmoke/CardAdvisorProgressSmoke.csproj -c Release，直接编译生产阶段 helper，8 个边界通过，含未开始/未结束 Boss、单 Boss 完成、双 Boss 首场/中间/末场。无需游戏和延长 fixture 时间。
+- 选定真实模型深度 1 冒烟：.local/scoring-horizon-smoke/model-results.json。当前牌组原地不变，第一幕弱怪/普通阶段/幕末三种公开阶段分别使用 OVERGROWTH 精英 / CEREMONIAL_BEAST_BOSS / HIVE 精英；跨幕同时使用 HIVE 弱怪池，报告 cross_act_projection_without_future_rewards。不是实机连续对局或完整搜索质量比较。
+- Debug 编译通过（既有 NU1900 漏洞索引联网告警）。Linux 结构门禁验证共用捕获入口；PowerShell 同步维护但本机未安装 pwsh，未执行。
+
 ## 0.30.8 决策等待期限
 
 - Python：`PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv-train/bin/python -m pytest tests/test_runctl.py -q`，39 passed。覆盖配置优先级、默认值、settings 1800/3600 接受与 3601 拒绝、evaluation8s 300 接受与 301 拒绝。

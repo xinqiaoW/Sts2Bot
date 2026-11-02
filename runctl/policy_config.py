@@ -19,25 +19,37 @@ def load_policy_config(path=None, **overrides):
         raise ValueError(f'Unknown bot configuration: {sorted(supplied.keys() - values.keys())}')
     values.update(supplied)
     integer_keys = {'crisis_samples_per_parent', 'crisis_keep_per_parent', 'crisis_extra_depth',
-                    'max_rollout_depth', 'reward_rollout_depth', 'route_beam_width', 'seed'}
+                    'max_rollout_depth', 'reward_rollout_depth', 'post_boss_rollout_depth', 'route_beam_width', 'seed',
+                    'samples_per_parent', 'keep_per_parent', 'lookahead_pairs'}
     for key, value in values.items():
         if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value) or value < 0:
             raise ValueError(f'{key} must be finite and nonnegative')
         if key in integer_keys and type(value) is not int:
             raise ValueError(f'{key} must be an integer')
-    if values['short_weight'] + values['long_weight'] <= 0:
-        raise ValueError('Score weights must have positive total')
-    for key in ['rest_hp_fraction', 'unknown_combat_probability']:
+    for prefix in ('', 'weak_'):
+        total = values[prefix+'short_weight'] + values[prefix+'long_weight']
+        if not math.isfinite(total) or total <= 0:
+            raise ValueError('Score weights must have finite positive total')
+    total_tail_weight = values['leaf_top_weight'] + values['leaf_bottom_weight']
+    if not math.isfinite(total_tail_weight) or total_tail_weight <= 0:
+        raise ValueError('Tail weights must have finite positive total')
+    for key in ['rest_hp_fraction', 'unknown_combat_probability', 'leaf_top_fraction', 'leaf_bottom_fraction']:
         if not 0 < values[key] <= 1:
             raise ValueError(f'{key} must be in (0,1]')
     if not 0 <= values['max_rollout_depth'] <= 4:
         raise ValueError('max_rollout_depth must be in [0,4]')
     if values['reward_rollout_depth'] not in (3, 4, 5):
         raise ValueError('reward_rollout_depth must be 3, 4 or 5')
+    if not 0 <= values['post_boss_rollout_depth'] <= 6:
+        raise ValueError('post_boss_rollout_depth must be in [0,6]')
     if values['reward_rollout_depth'] + values['crisis_extra_depth'] > 6:
         raise ValueError('Reward crisis rollout depth must not exceed 6')
     if not 1 <= values['crisis_keep_per_parent'] <= values['crisis_samples_per_parent'] + 1:
         raise ValueError('Invalid crisis branching parameters')
+    if values['samples_per_parent'] < 1 or not 1 <= values['keep_per_parent'] <= values['samples_per_parent'] + 1:
+        raise ValueError('Invalid normal branching parameters')
+    if not 0 <= values['lookahead_pairs'] <= 3:
+        raise ValueError('lookahead_pairs must be in [0,3]')
     if values['route_beam_width'] < 1:
         raise ValueError('route_beam_width must be positive')
     return values

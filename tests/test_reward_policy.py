@@ -8,7 +8,7 @@ import pytest
 
 from damage_model.schema import Build, Card, Relic
 from train.data import load_catalog
-from train.reward_policy import RewardSelector, load_config, sample_card_ids
+from train.reward_policy import RewardSelector, load_config, sample_card_ids, aggregate_leaf_losses
 
 
 class FakeScorer:
@@ -46,7 +46,10 @@ def request_data():
 
 
 def selector(**overrides):
-    return RewardSelector(FakeScorer(), dict(samples_per_parent=4, pool_card_ids=['FOOTWORK', 'BACKFLIP', 'DAGGER_THROW', 'DASH'], **overrides))
+    config = dict(samples_per_parent=4, keep_per_parent=4,
+                  pool_card_ids=['FOOTWORK', 'BACKFLIP', 'DAGGER_THROW', 'DASH'])
+    config.update(overrides)
+    return RewardSelector(FakeScorer(), config)
 
 
 @pytest.mark.parametrize('depth', range(7))
@@ -74,7 +77,7 @@ def test_empty_offers_roll_out_current_build_only(request_data):
 
 def test_zero_depth_short_probabilities_and_combination(request_data):
     request_data['rollout_depth'] = 0
-    result = selector(short_weight=3, long_weight=1).select(request_data)
+    result = selector(short_weight=3, long_weight=1, weak_short_weight=3, weak_long_weight=1).select(request_data)
     skip = result['candidates'][3]
     assert skip['short_expected_hp_loss'] == pytest.approx(20 / 1.5)
     assert skip['long_expected_hp_loss'] == 30
@@ -96,13 +99,60 @@ def test_short_mean_counts_battles_not_noncombat_rooms(request_data, probability
 
 def test_top_fraction_k_and_rank_weighting(request_data):
     request_data['rollout_depth'] = 2
-    result = selector(leaf_top_fraction=0.5, leaf_top_k=3, leaf_rank_power=1).select(request_data)
+    result = selector(leaf_top_fraction=0.5, leaf_top_k=3, leaf_rank_power=1, leaf_bottom_weight=0).select(request_data)
     for option in result['candidates']:
         assert option['selected_leaf_count'] == 3
         leaves = option['leaves']
         assert [l['aggregation_weight'] for l in leaves[:3]] == pytest.approx([6/11, 3/11, 2/11])
         assert all(l['aggregation_weight'] == 0 for l in leaves[3:])
         assert option['long_expected_hp_loss'] == pytest.approx(sum(l['boss_hp_loss']*l['aggregation_weight'] for l in leaves))
+
+
+def test_best_and_worst_quarters_are_mixed():
+    losses = [1, 3, 4, 5, 6, 8, 10, 30]
+    result = aggregate_leaf_losses(losses, load_config(None))
+    assert result['top_expected_hp_loss'] == pytest.approx(5/3)
+    assert result['bottom_expected_hp_loss'] == pytest.approx(70/3)
+    assert result['long_expected_hp_loss'] == pytest.approx(12.5)
+    assert result['weights'] == pytest.approx([1/3, 1/6, 0, 0, 0, 0, 1/6, 1/3])
+    assert result['selected_leaf_count'] == 4
+
+
+@pytest.mark.parametrize('top,bottom,expected', [(1, 0, 2), (0, 1, 20), (3, 1, 6.5)])
+def test_tail_weights_normalized_and_uniform_group_means(top, bottom, expected):
+    r = aggregate_leaf_losses([1, 3, 4, 5, 6, 8, 10, 30], load_config(None,
+        leaf_top_weight=top, leaf_bottom_weight=bottom, leaf_rank_power=0))
+    assert r['long_expected_hp_loss'] == pytest.approx(expected)
+    assert sum(r['weights']) == pytest.approx(1)
+
+
+@pytest.mark.parametrize('losses', [[7], [2, 4, 8]])
+def test_overlapping_small_frontier_tails_still_normalize(losses):
+    r = aggregate_leaf_losses(losses, load_config(None, leaf_top_fraction=.75, leaf_bottom_fraction=.75))
+    assert sum(r['weights']) == pytest.approx(1)
+    assert r['selected_leaf_count'] == len(losses)
+    assert r['long_expected_hp_loss'] == pytest.approx(sum(w*l for w,l in zip(r['weights'], losses)))
+
+
+def test_selector_exposes_tail_losses_and_all_leaf_contributions(request_data):
+    request_data['rollout_depth'] = 2
+    r = selector().select(request_data)
+    for candidate in r['candidates']:
+        assert candidate['top_leaf_count'] == candidate['bottom_leaf_count'] == 4
+        assert candidate['selected_leaf_count'] == 8
+        assert candidate['long_expected_hp_loss'] == pytest.approx(
+            .5*candidate['top_expected_hp_loss'] + .5*candidate['bottom_expected_hp_loss'])
+        assert sum(l['aggregation_weight'] for l in candidate['leaves']) == pytest.approx(1)
+        assert candidate['long_expected_hp_loss'] == pytest.approx(
+            sum(l['aggregation_weight']*l['boss_hp_loss'] for l in candidate['leaves']))
+
+
+@pytest.mark.parametrize('override', [dict(leaf_bottom_fraction=0), dict(leaf_bottom_fraction=1.1),
+    dict(leaf_top_weight=0, leaf_bottom_weight=0), dict(leaf_bottom_weight=-1),
+    dict(leaf_bottom_weight=True), dict(leaf_bottom_weight=float('nan'))])
+def test_invalid_tail_config(override):
+    with pytest.raises(ValueError):
+        load_config(None, **override)
 
 
 def test_reproducibility_and_reward_order(request_data):
@@ -165,6 +215,50 @@ def test_sampling_replacement_missing_categories_and_seed():
     assert sample_card_ids(['white'], cards, weights, 32, random.Random(1)) == ['white']*32
     with pytest.raises(ValueError):
         sample_card_ids([], cards, weights, 32, random.Random(1))
+
+
+@pytest.mark.parametrize('pairs', [0, 1, 2, 3])
+def test_two_step_retains_delayed_synergy_without_extra_cards(request_data, monkeypatch, pairs):
+    class SynergyScorer(FakeScorer):
+        def score_many(self, requests, strict=False):
+            rows = super().score_many(requests, strict)
+            for request, row in zip(requests, rows):
+                counts = Counter(c['id'] for c in request['build']['cards'])
+                # Both setup cards are individually bad, together excellent.
+                paired = counts['ACCURACY'] and counts['BLADE_DANCE']
+                row['expected_hp_loss'] = 5 if paired else (
+                    30 + counts['ACCURACY'] + counts['BLADE_DANCE'] - counts['BACKFLIP'])
+            return rows
+
+    monkeypatch.setattr('train.reward_policy.sample_card_ids',
+                        lambda *args: ['ACCURACY', 'BLADE_DANCE', 'BACKFLIP'])
+    s = RewardSelector(SynergyScorer(), dict(samples_per_parent=3, keep_per_parent=1,
+        lookahead_pairs=pairs, pool_card_ids=['ACCURACY', 'BLADE_DANCE', 'BACKFLIP']))
+    request_data.update(options=[], rollout_depth=2)
+    r = s.select(request_data)
+    leaf = r['candidates'][0]['leaves'][0]
+    assert len(leaf['path']) == 2
+    assert leaf['boss_hp_loss'] == (5 if pairs else 28)
+    if pairs:
+        assert {c['id'] for c in leaf['path']} == {'ACCURACY', 'BLADE_DANCE'}
+    request_data['rollout_depth'] = 1
+    one = s.select(request_data)['candidates'][0]['leaves'][0]
+    assert len(one['path']) == 1
+    assert one['boss_hp_loss'] == 29  # No combination beyond the horizon.
+
+
+@pytest.mark.parametrize('pairs', [0, 2, 3])
+def test_multiple_pairs_preserve_branch_counts(request_data, pairs):
+    request_data['rollout_depth'] = 5
+    result = selector(samples_per_parent=2, keep_per_parent=2, lookahead_pairs=pairs).select(request_data)
+    assert [s['leaves_per_root'] for s in result['stats']['per_depth']] == [[2**i]*4 for i in range(1, 6)]
+    assert all(len(leaf['path']) == 5 for c in result['candidates'] for leaf in c['leaves'])
+
+
+@pytest.mark.parametrize('value', [-1, 4, 1.5, True])
+def test_invalid_lookahead(value):
+    with pytest.raises(ValueError, match='lookahead_pairs'):
+        load_config(None, lookahead_pairs=value)
 
 
 def test_arbitrary_shop_options_and_exact_instance_operations(request_data):

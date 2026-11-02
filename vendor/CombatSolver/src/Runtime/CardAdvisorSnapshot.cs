@@ -11,6 +11,7 @@ using MegaCrit.Sts2.Core.Nodes.Screens.CardSelection;
 using MegaCrit.Sts2.Core.Nodes.Screens.Overlays;
 using MegaCrit.Sts2.Core.Nodes.Screens.Shops;
 using MegaCrit.Sts2.Core.Runs;
+using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Saves.Runs;
 
 namespace CombatSolver;
@@ -21,6 +22,16 @@ internal sealed record CardAdvisorSnapshot(string Json, string Title, string[] N
 internal static class CardAdvisorCapture
 {
     internal static readonly JsonSerializerOptions JsonOptions = new() { IncludeFields = true };
+
+    internal static CardAdvisorProgress Progress(RunState run)
+    {
+        int count = run.MapPointHistory.ElementAtOrDefault(run.CurrentActIndex)
+            ?.Count(p => p.Rooms.FirstOrDefault()?.RoomType == RoomType.Monster) ?? 0;
+        bool finishedBoss = run.CurrentRoom?.RoomType == RoomType.Boss
+            && !CombatManager.Instance.IsInProgress && !CombatManager.Instance.IsStarting;
+        return CardAdvisorProgress.Evaluate(run.CurrentMapPoint?.coord.row, run.Map.BossMapPoint.coord.row,
+            run.Map.SecondBossMapPoint?.coord.row, finishedBoss, count);
+    }
 
     internal static IEnumerable<T> Descendants<T>(Node node) where T : Node
     {
@@ -153,6 +164,8 @@ internal static class CardAdvisorCapture
             else shortFallback.Add(types);
             frontier = next;
         }
+        CardAdvisorProgress progress = Progress(run);
+        var visibleBoss = progress.TargetSecondBoss ? run.Act.SecondBossEncounter : run.Act.BossEncounter;
         var payload = new
         {
             protocol = 1, character = player.Character.Id.Entry, ascension = run.AscensionLevel,
@@ -160,10 +173,11 @@ internal static class CardAdvisorCapture
                 cards = player.Deck.Cards.Select(Card).ToArray(), relics = player.Relics.Select(Relic).ToArray(), ancient_history = history },
             max_hp = player.Creature.MaxHp, gold = player.Gold,
             options, future_room_types = future, short_fallback_room_types = shortFallback,
-            floors_to_boss = Math.Max(0, run.Map.BossMapPoint.coord.row - current.coord.row),
-            boss_targets = new Dictionary<string, double> { [run.Act.BossEncounter.Id.Entry] = 1 },
+            floors_to_boss = progress.FloorsToBoss,
+            boss_targets = new Dictionary<string, double> { [visibleBoss!.Id.Entry] = 1 },
+            scoring_state = new { normalCombatsCompleted = progress.NormalCombatsCompleted,
+                actBossDefeated = progress.ActBossDefeated, visibleBoss = visibleBoss.Id.Entry },
         };
-        if (run.Act.HasSecondBoss) note += "当前以本幕首个 Boss 为长期目标。";
         return new CardAdvisorSnapshot(JsonSerializer.Serialize(payload, JsonOptions), title, names.ToArray(),
             "满血构筑评分，越大越好；地图分支及同类敌人等概率估计。" + note);
     }

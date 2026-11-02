@@ -1,4 +1,4 @@
-"""Reward selection: near-term loss plus an optimistic branching Boss rollout."""
+"""Reward selection: near-term loss plus best/worst retained target rollout tails."""
 from __future__ import annotations
 
 import argparse
@@ -29,14 +29,21 @@ def load_config(path=DEFAULT_CONFIG, **overrides):
     if supplied.keys() - config.keys():
         raise ValueError(f'Unknown config keys: {supplied.keys() - config.keys()}')
     config.update(supplied)
-    for key in ('short_weight', 'long_weight', 'leaf_rank_power'):
+    for key in ('short_weight', 'long_weight', 'weak_short_weight', 'weak_long_weight',
+                'short_strength_loss_threshold', 'leaf_rank_power', 'leaf_top_weight', 'leaf_bottom_weight'):
         positive(config[key], key, zero=True)
     positive(config['short_weight'] + config['long_weight'], 'total score weight')
+    positive(config['weak_short_weight'] + config['weak_long_weight'], 'total weak score weight')
+    positive(config['leaf_top_weight'] + config['leaf_bottom_weight'], 'total tail weight')
     for key in ('samples_per_parent', 'keep_per_parent', 'inference_batch_size', 'cpu_threads'):
         if type(config[key]) is not int or config[key] < 1:
             raise ValueError(f'{key} must be a positive integer')
     if config['keep_per_parent'] > config['samples_per_parent'] + 1:
         raise ValueError('keep_per_parent exceeds sampled cards plus skip')
+    if type(config['lookahead_pairs']) is not int or not 0 <= config['lookahead_pairs'] <= 3:
+        raise ValueError('lookahead_pairs must be an integer in [0,3]')
+    if type(config['post_boss_rollout_depth']) is not int or not 0 <= config['post_boss_rollout_depth'] <= 6:
+        raise ValueError('post_boss_rollout_depth must be an integer in [0,6]')
     if type(config['seed']) is not int or type(config['strict_features']) is not bool:
         raise ValueError('seed must be integer and strict_features must be boolean')
     if config['short_reduction'] not in ('mean', 'sum'):
@@ -46,8 +53,9 @@ def load_config(path=DEFAULT_CONFIG, **overrides):
     for w in config['short_floor_weights']:
         positive(w, 'short_floor_weight')
     positive(config['leaf_top_fraction'], 'leaf_top_fraction')
+    positive(config['leaf_bottom_fraction'], 'leaf_bottom_fraction')
     positive(config['upgrade_probability'], 'upgrade_probability', zero=True)
-    if config['leaf_top_fraction'] > 1 or config['upgrade_probability'] > 1:
+    if config['leaf_top_fraction'] > 1 or config['leaf_bottom_fraction'] > 1 or config['upgrade_probability'] > 1:
         raise ValueError('Fractions/probabilities must be <= 1')
     k = config['leaf_top_k']
     if k is not None and (type(k) is not int or k < 1):
@@ -78,11 +86,59 @@ def load_config(path=DEFAULT_CONFIG, **overrides):
     return config
 
 
+def score_weighting(baseline_short_mean, config):
+    """One common pair for every candidate, based only on the unchanged deck."""
+    if baseline_short_mean is not None and not math.isfinite(baseline_short_mean):
+        raise ValueError('Baseline short loss must be finite')
+    weak = baseline_short_mean is not None and baseline_short_mean > config['short_strength_loss_threshold']
+    prefix = 'weak_' if weak else ''
+    short, long = config[prefix + 'short_weight'], config[prefix + 'long_weight']
+    total = short + long
+    return dict(mode='no_short_combat' if baseline_short_mean is None else 'insufficient' if weak else 'sufficient',
+                baseline_short_expected_hp_loss=baseline_short_mean,
+                short_strength_loss_threshold=config['short_strength_loss_threshold'],
+                short_weight=short / total, long_weight=long / total)
+
+
 @dataclass
 class Node:
     build: Build
     path: list
     loss: float = 0.0
+
+
+def aggregate_leaf_losses(ranked_losses, config):
+    """Mix best/worst tails of ascending losses, not the unpruned future distribution.
+
+    Existing rank weights are mirrored: the worst leaf has rank 1 within the
+    bottom tail. For small frontiers tails may overlap; their contributions add
+    to one normalized weight per leaf (including the depth-zero singleton).
+    """
+    size = len(ranked_losses)
+    if not size or any(not math.isfinite(x) for x in ranked_losses):
+        raise ValueError('Leaf losses must be nonempty and finite')
+    top_count = max(1, math.ceil(size * config['leaf_top_fraction']))
+    if config['leaf_top_k'] is not None:
+        top_count = min(top_count, config['leaf_top_k'])
+    bottom_count = max(1, math.ceil(size * config['leaf_bottom_fraction']))
+    total = config['leaf_top_weight'] + config['leaf_bottom_weight']
+    weights = [0.0] * size
+    tail_losses = []
+    for indices, mass in ((range(top_count), config['leaf_top_weight'] / total),
+                          (range(size-1, size-bottom_count-1, -1), config['leaf_bottom_weight'] / total)):
+        raw = [(rank+1) ** -config['leaf_rank_power'] for rank in range(len(indices))]
+        norm = sum(raw)
+        tail_loss = 0.0
+        for index, weight in zip(indices, raw):
+            weight /= norm
+            tail_loss += weight * ranked_losses[index]
+            weights[index] += mass * weight
+        tail_losses.append(tail_loss)
+    return dict(top_expected_hp_loss=tail_losses[0], bottom_expected_hp_loss=tail_losses[1],
+                top_leaf_count=top_count, bottom_leaf_count=bottom_count,
+                selected_leaf_count=sum(w > 0 for w in weights),
+                long_expected_hp_loss=sum(w * loss for w, loss in zip(weights, ranked_losses)),
+                weights=weights)
 
 
 def sample_card_ids(pool, cards, rarity_weights, count, rng):
@@ -183,20 +239,36 @@ class RewardSelector:
         future = request['next_floors']
         if not isinstance(future, list) or len(future) > 2:
             raise ValueError('next_floors must contain zero to two floor distributions')
-        boss = request['boss_targets']
+        boss = request.get('long_targets', request.get('boss_targets'))
+        long_room = request.get('long_target_room', 'Boss')
+        terminal = request.get('terminal', False)
+        if type(terminal) is not bool:
+            raise ValueError('terminal must be boolean')
+        encounter_act = request.get('encounter_act_id', build.act_id)
+        if encounter_act not in self.catalog.acts or (encounter_act != build.act_id
+                and self.catalog.acts[encounter_act]['act'] != build.act + 1):
+            raise ValueError('Encounter projection must be the current or next act')
+        if terminal:
+            if boss or future or build.act != max(a['act'] for a in self.catalog.acts.values()):
+                raise ValueError('Terminal scoring requires the final act and no future targets')
+            depth = 0
+        elif long_room not in ('Elite', 'Boss'):
+            raise ValueError('Long target must be Elite or Boss')
 
-        def validate_targets(weights, boss_only=False):
+        def validate_targets(weights, room=None):
             if not isinstance(weights, dict) or not weights:
                 raise ValueError('Encounter distribution must be nonempty')
             for target, w in weights.items():
                 positive(w, 'encounter weight')
-                if f'{build.act_id}:{target}' not in self.scorer.predictor.trained_targets:
-                    raise ValueError(f'Uncovered target: {build.act_id}:{target}')
-                if boss_only and not target.endswith('_BOSS'):
-                    raise ValueError('boss_targets must contain Boss encounters')
+                if f'{encounter_act}:{target}' not in self.scorer.predictor.trained_targets:
+                    raise ValueError(f'Uncovered target: {encounter_act}:{target}')
+                if room and not any(e['id'] == target and e['room_type'] == room
+                                    for e in self.catalog.acts[encounter_act]['encounters']):
+                    raise ValueError(f'Long targets must contain {room} encounters')
             positive(sum(weights.values()), 'encounter weight sum')
 
-        validate_targets(boss, True)
+        if not terminal:
+            validate_targets(boss, long_room)
         for floor in future:
             p = floor.get('combat_probability', 1.0)
             positive(p, 'combat_probability', zero=True)
@@ -209,6 +281,8 @@ class RewardSelector:
         stats = {'scored_build_distributions': 0, 'cache_hits': 0, 'per_depth': []}
 
         def losses(builds, targets):
+            if terminal:
+                return [0.0] * len(builds)
             distribution = canonical(targets)
             keys = [(b.id, distribution) for b in builds]
             pending = {}
@@ -220,7 +294,8 @@ class RewardSelector:
             entries = list(pending.items())
             for start in range(0, len(entries), c['inference_batch_size']):
                 batch = entries[start:start+c['inference_batch_size']]
-                results = self.scorer.score_many([dict(build=b.to_dict(), max_hp=hp, targets=targets)
+                projection = {'encounter_act_id': encounter_act} if encounter_act != build.act_id else {}
+                results = self.scorer.score_many([dict(build=b.to_dict(), max_hp=hp, targets=targets, **projection)
                                                   for _, b in batch], strict=c['strict_features'])
                 for (key, _), result in zip(batch, results):
                     cache[key] = result['expected_hp_loss']
@@ -244,6 +319,9 @@ class RewardSelector:
                 short[root] += c['short_floor_weights'][i] * expected
                 short_details[root].append(dict(expected_hp_loss=expected, combat_probability=probability,
                                                 targets=floor.get('targets', {}), weight=c['short_floor_weights'][i]))
+        # The final root is always the unchanged deck, even for forced choices.
+        # Gate on loss per battle, independent of mean/sum scoring reduction.
+        weighting = score_weighting(short[-1] / short_combat_weight if short_combat_weight else None, c)
         if short_combat_weight and c['short_reduction'] == 'mean':
             # Conditional mean per possible battle. Shops/rests are not
             # zero-damage battles; uncertain combat probability contributes
@@ -258,7 +336,7 @@ class RewardSelector:
         if depth and max(len(b.cards) for b in root_builds) + depth > self.catalog.config['max_deck_size']:
             raise ValueError('Rollout could exceed model deck-size limit; reduce rollout_depth')
 
-        for level in range(depth):
+        def expand(frontiers, level):
             children, ranges = [], []
             for root, parents in enumerate(frontiers):
                 for parent_index, parent in enumerate(parents):
@@ -276,31 +354,64 @@ class RewardSelector:
             values = losses([node.build for node in children], boss)
             for node, value in zip(children, values):
                 node.loss = value
+            return children, ranges
+
+        level = 0
+        while level < depth:
+            children, ranges = expand(frontiers, level)
+            paired = level < 2*c['lookahead_pairs'] and level+1 < depth
+            if paired:
+                # Delay pruning until both additions have been evaluated. All
+                # roots get the same offers by positional path, independently
+                # of their scores. The second step is part of the real depth,
+                # not a phantom bonus or an extra card beyond the horizon.
+                unpruned = [[] for _ in range(root_count)]
+                for root, start, end in ranges:
+                    unpruned[root].extend(children[start:end])
+                grandchildren, grand_ranges = expand(unpruned, level+1)
+                retained = [sorted(grandchildren[start:end], key=lambda n: n.loss)[:c['keep_per_parent']]
+                            for _, start, end in grand_ranges]
+                # grand_ranges follows the same root/parent order as children.
+                frontiers = [[] for _ in range(root_count)]
+                first_counts = [0]*root_count
+                for root, start, end in ranges:
+                    best = sorted(range(start, end),
+                                  key=lambda i: (retained[i][0].loss, children[i].loss))[:c['keep_per_parent']]
+                    first_counts[root] += len(best)
+                    for i in best:
+                        frontiers[root].extend(retained[i])
+                stats['per_depth'].extend([
+                    dict(depth=level+1, evaluated_paths=len(children), leaves_per_root=first_counts,
+                         pruning='two_step'),
+                    dict(depth=level+2, evaluated_paths=len(grandchildren),
+                         leaves_per_root=[len(f) for f in frontiers], pruning='two_step')])
+                level += 2
+                continue
             frontiers = [[] for _ in range(root_count)]
             for root, start, end in ranges:
                 # Stable ties prefer skip, then deterministic sampled order.
                 frontiers[root].extend(sorted(children[start:end], key=lambda node: node.loss)[:c['keep_per_parent']])
             stats['per_depth'].append(dict(depth=level+1, evaluated_paths=len(children),
-                                           leaves_per_root=[len(f) for f in frontiers]))
+                                           leaves_per_root=[len(f) for f in frontiers], pruning='one_step'))
+            level += 1
 
         candidates = []
         for index, leaves in enumerate(frontiers):
             ranked = sorted(leaves, key=lambda node: node.loss)
-            count = max(1, math.ceil(len(ranked) * c['leaf_top_fraction']))
-            if c['leaf_top_k'] is not None:
-                count = min(count, c['leaf_top_k'])
-            weights = [(rank+1) ** -c['leaf_rank_power'] for rank in range(count)]
-            total = sum(weights)
-            weights = [w / total for w in weights]
-            long = sum(w * node.loss for w, node in zip(weights, ranked[:count]))
-            combined = (c['short_weight']*short[index] + c['long_weight']*long) / (c['short_weight']+c['long_weight'])
+            tails = aggregate_leaf_losses([node.loss for node in ranked], c)
+            weights = tails.pop('weights')
+            long = tails['long_expected_hp_loss']
+            combined = weighting['short_weight']*short[index] + weighting['long_weight']*long
             candidates.append(dict(option_index=index, **choices[index],
                                    short_expected_hp_loss=short[index], short_score=-short[index], short_details=short_details[index],
                                    short_combat_weight=short_combat_weight,
-                                   initial_boss_hp_loss=initial_boss[index], long_expected_hp_loss=long, long_score=-long,
-                                   combined_score=-combined, leaf_count=len(leaves), selected_leaf_count=count,
-                                   leaves=[dict(build_id=node.build.id, path=node.path, boss_hp_loss=node.loss,
-                                                aggregation_weight=weights[i] if i < count else 0.0)
+                                   initial_boss_hp_loss=initial_boss[index] if long_room == 'Boss' else None,
+                                   initial_long_hp_loss=initial_boss[index], **tails, long_score=-long,
+                                   top_score=-tails['top_expected_hp_loss'], bottom_score=-tails['bottom_expected_hp_loss'],
+                                   combined_score=-combined, leaf_count=len(leaves),
+                                   leaves=[dict(build_id=node.build.id, path=node.path, target_hp_loss=node.loss,
+                                                boss_hp_loss=node.loss if long_room == 'Boss' else None,
+                                                aggregation_weight=weights[i])
                                            for i, node in enumerate(ranked)]))
         # Stable root ties favor skip; no random tie-breaking by reward order.
         ranked_options = sorted(candidates, key=lambda r: (-r['combined_score'], r['action'] != 'skip', r['option_index']))
@@ -308,10 +419,11 @@ class RewardSelector:
         return dict(recommended_option_index=best['option_index'], recommended_action=best['action'], recommended_card=best['card'],
                     ranking=[r['option_index'] for r in ranked_options],
                     score_margin=best['combined_score']-ranked_options[1]['combined_score'] if len(ranked_options) > 1 else 0.0,
-                    rollout_depth=depth, seed=seed, config=c, pool_card_ids=pool, candidates=candidates,
+                    rollout_depth=depth, seed=seed, config=c, score_weighting=weighting, pool_card_ids=pool, candidates=candidates,
+                    encounter_act_id=encounter_act, long_target_room=long_room, long_targets=boss,
                     untrained_features=sorted(missing), warnings=sorted(warnings), stats=stats,
                     elapsed_seconds=time.perf_counter()-started,
-                    interpretation='Optimistic build potential, not an unbiased expectation of future rewards. Full-health model; only adds cards or skips.')
+                    interpretation='Best/worst tails against the declared Elite/Boss target pool, not an unbiased expectation of future rewards. Full-health model; only adds cards or skips.')
 
 
 def main():

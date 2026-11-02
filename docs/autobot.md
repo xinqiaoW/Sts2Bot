@@ -8,12 +8,20 @@
 
 | 参数 | 默认值 | 含义 |
 | --- | --- | --- |
-| `short_weight` / `long_weight` | 0.28 / 0.72 | 短期与长期权重 |
+| `short_weight` / `long_weight` | 0.28 / 0.72 | 近期战斗力充足时的短期与长期权重 |
+| `short_strength_loss_threshold` | 10 | 当前牌组近期每场平均预计掉血超过此值，视为战斗力不足 |
+| `weak_short_weight` / `weak_long_weight` | 0.72 / 0.28 | 近期战斗力不足时的短期与长期权重 |
 | `normal_card_min_gain` | 1 | 正常加牌必须严格超过跳过分加此值 |
 | `crisis_card_min_gain` | 0 | 艰难局面仍要求加牌优于跳过 |
 | `crisis_boss_loss_threshold` | 40 | 正常 rollout 最佳长期 Boss 预期掉血严格超过此值则判为艰难并扩大搜索；不按最大 HP 比例计算 |
-| `crisis_samples_per_parent` | 96 | 艰难局面每个父节点抽样数 |
-| `crisis_keep_per_parent` | 6 | 艰难局面每个父节点保留数 |
+| `samples_per_parent` | 64 | 普通局面每个父节点抽样数，另加跳过 |
+| `keep_per_parent` | 6 | 普通局面每个父节点保留数 |
+| `lookahead_pairs` | 1 | 最前面几组使用两步展开后剪枝，范围 0–3；0 恢复逐层剪枝 |
+| `leaf_top_fraction` / `leaf_bottom_fraction` | 0.25 / 0.25 | 分别取末尾路径中评分最好和最差的比例 |
+| `leaf_top_weight` / `leaf_bottom_weight` | 0.5 / 0.5 | 两组长期分数的权重，按总和归一化；后者为 0 可恢复只看较好组 |
+| `leaf_rank_power` | 1 | 每组内部按 1/排名^此值加权；较差组从最差开始排名，0 为组内普通平均 |
+| `crisis_samples_per_parent` | 128 | 艰难局面每个父节点抽样数 |
+| `crisis_keep_per_parent` | 8 | 艰难局面每个父节点保留数 |
 | `reward_rollout_depth` | 3 | 仅战后奖励选牌使用固定深度，可选 3、4、5，不受剩余层数限制 |
 | `crisis_extra_depth` | 1 | 艰难局面额外深度；战后奖励因此默认搜 4 层，最高 6 层 |
 | `max_rollout_depth` | 4 | 商店、事件、删牌等其他卡牌搜索的上限，仍受剩余层数约束 |
@@ -25,6 +33,16 @@
 | `route_beam_width` / `route_risk_weight` | 64 / 2 | 地图路径保留宽度与低血量代价 |
 
 分数越大越好。例如跳过 -20：卡牌 -19 时跳过，-18.99 才允许拿牌。可放弃的奖励、事件加牌、商店均执行门槛；商店另扣价格代价。强制选牌不伪造跳过，免费回血、升级、删牌不套用加牌的 +1 门槛。
+
+两步剪枝先展开一张未来牌（或跳过），再对每个候选展开下一张，按第二步最佳战损给第一步候选排序；保留前 K 个第一步候选，以及每个候选最好的 K 个第二步后继。弱单卡组成的强配合因此有机会留下。第二步实际计入深度和最终路径，不凭空给组合加分；末尾只剩一步时正常单步剪枝。默认仅前两次未来加牌使用两步展开，后续逐层剪枝。初始奖励选项和跳过均使用相同位置的随机采样，不指定任何必拿搭配。金/蓝/白概率仍为 1:5:9。
+
+每个初始选项的末尾路径数仍为 K^深度：默认普通局面 6³=216、艰难局面 8⁴=4096。两步展开会额外评估随后被丢弃的分支；提高深度、保留宽度或 `lookahead_pairs` 会显著增加时间与内存。日志 `stats.per_depth` 的 `pruning` 标明 `two_step` 或 `one_step`，`evaluated_paths` 包含未保留的实际评估路径。
+
+长期评分现在同时使用较好与较差的末尾路径：默认前 25% 和后 25% 各占 50%。这里“前”按分数从高到低（掉血从低到高）排序。4096 条路径时每组各取 1024 条；组内仍使用排名权重，较差组中最差路径权重最大。深度 0 等小集合可能出现两组重叠，每个节点的贡献相加，总权重仍为 1；不制造额外末尾节点。高级参数 `leaf_top_k` 仍仅限制较好组的条数，默认 null。
+
+Bot 选牌日志的 `long_tail_summaries` 分别列出两组和混合后的预计掉血，以及参与计分的路径数；其中 `option_index` 是模型候选序号，若有不支持的候选被投影排除，不保证等于原 UI 选项序号。评分服务结果直接包含 `top_expected_hp_loss` / `bottom_expected_hp_loss`。艰难局面的 40 血阈值也使用混合后的正常 rollout 长期值，所以此修改可能使更多局面触发额外搜索。两组都是已经过择优剪枝的末尾路径，后 25% 不代表所有未来坏情况，也不是实际获得卡牌的概率分布。
+
+安装独立选牌搜索补丁时，先停止 Bot 和评分服务，把补丁解压到新文件夹，使用已安装服务的 Python 执行补丁内的 `tools/install_card_search_update.py --target <advisor-service 路径>`。最新安装器备份原文件至目标目录的 `update-backups/card-search-*`，把前后组比例设置为 25%/25%、权重设置为 50%/50%，保留已有搜索宽度、两步剪枝设置、长短期权重、深度及门槛；旧版本缺失的搜索字段补默认值。若启动命令通过 `--policy-config` 指向另一个文件，需要同步修改那个文件的参数。此补丁不包含 DLL 或模型。
 
 商店每次购买后重新评分。只要还有买得起、满足加牌门槛且扣除金币代价后优于离开的卡牌，药水暂不参与竞争；之后才用剩余金币考虑药水。遗物和删牌仍按原有分数参与比较。100 金币现在扣 1 分，原来扣 4 分；药水有空槽时的净分为 `1 - 价格 × 0.01`，无空槽仍不买，不为花光金币强行买负收益商品。
 
@@ -146,6 +164,43 @@ $runtime | Add-Member -NotePropertyName combat_search_mode -NotePropertyValue 's
 
 在 Bot 游戏中的 CombatSolver 设置调整性能档位/自定义预算，下一局读取该档案。独立档案路径在 `runtime.json` 的 `data_dir`，设置文件是其中的 `combat_solver_settings.json`；原游戏的设置不会自动同步到 Bot。`settings` 默认单场战斗等待上限 1800 秒、整局 14400 秒；这是故障等待上限，不是每次搜索预算。可分别用 runtime 的 `combat_timeout_seconds`（最多 3600）及 CLI `--timeout`（最多 14400）调整。
 
-战后选牌深度使用 `configs/bot-policy.json` 的 `reward_rollout_depth`；商店/事件/删牌仍使用 `configs/reward-policy.json` 的 `depth_schedule` 和 Bot 的 `max_rollout_depth`。普通采样/分支数仍为 `samples_per_parent`、`keep_per_parent`，危机扩展参数仍在 `bot-policy.json`。这些与战斗搜索档位独立。修改后重启 Bot。原生日志 `run_started` 记录实际搜索模式、预算与并行度，方便确认设置生效。
+战后选牌深度使用 `configs/bot-policy.json` 的 `reward_rollout_depth`；商店/事件/删牌仍使用 `configs/reward-policy.json` 的 `depth_schedule` 和 Bot 的 `max_rollout_depth`。Bot 的普通采样、保留数、两步剪枝和艰难扩展参数现在统一在 `bot-policy.json`；单独启动评分服务使用 `reward-policy.json` 中的普通宽度和两步剪枝参数。两步剪枝和宽度适用于各类卡牌搜索，固定深度仍仅用于战后奖励。这些与战斗搜索档位独立。修改后重启 Bot。原生日志 `run_started` 记录实际搜索模式、预算与并行度，方便确认设置生效。
 
 0.30.5 的 Boss 战把持续能力增益的中间路线保留加分乘以 1.5；使用已捕获的 Boss 房间类型，包含非幕末 Boss。搜索预算和完整路线最终战损排序不变，不意味着必定先出能力或已经证明整局胜率更高。
+
+
+### 玩偶室固定策略（2026-11-02）
+
+初始页按公开选项 ID 固定选择第二项 `TAKE_SOME_TIME`（花点时间慢慢来）；后续排除宾邦 `BING_BONG`，包括原生 `relic=null`、仅带本地化 TextKey/title 的页面。其余候选仍按原评分比较，继续按钮正常处理。指定选项不可用/会致死、只有宾邦或未知页面时明确失败，不自动改选随机项。策略在单选快捷路径之前执行。
+
+小补丁 `Sts2Bot-doll-room-update.zip` 的安装器 `tools/install_doll_room_update.py --target <advisor-service>` 自动备份并只修补事件入口，不覆盖宽度、深度、长短期权重、尾部分数或等待期限。92 项相关策略测试及 2 项安装器测试通过；Windows 事件现场未验证。
+
+
+## 根据近期战斗力切换权重（2026-11-02）
+
+使用当前牌组（不拿牌/不改变构筑的基准分支）的近期每场平均预期掉血判断，一次决策内所有候选使用同一组权重。默认不超过 10 点时，短期/长期为 0.28/0.72；严格超过 10 点时为 0.72/0.28。即使某张牌能让近期战损降到阈值以内，也不为它单独切换权重，避免候选比较口径不同。
+
+配置键：`short_strength_loss_threshold` 是掉血阈值；`short_weight` / `long_weight` 是充足时的权重；`weak_short_weight` / `weak_long_weight` 是不足时的权重。两组分别归一化，设为相同即可保持固定权重。Bot 使用 configs/bot-policy.json（或 --policy-config 指定文件），独立评分服务使用 configs/reward-policy.json。
+
+平均值按实际可能发生的战斗权重计算，商店/篝火不作零损战斗计入分母；沿用现有无近期战斗时的路线延伸策略。判定始终使用每场平均损失，即使短期评分配置为 sum。若输入完全没有可评分的近期战斗，记录 no_short_combat，不把未知情况宣称为战斗力充足，并使用原 short_weight/long_weight。
+
+输出的 score_weighting 记录 mode（sufficient/insufficient/no_short_combat）、baseline_short_expected_hp_loss、阈值及实际归一化后的权重。Bot 的 decisions.jsonl 也记录该字段。判定复用已有模型结果，不增加推理/rollout。Boss 预计战损超过 40 的艰难局面判定、搜索深度、留牌门槛与尾部分数聚合均保持独立。
+
+模型仍以满血构筑预测；本阈值是战斗能力启发式，不是当前血量下的死亡概率。离线验证覆盖阈值等号、候选排序真实切换、共同权重、mean/sum 判定一致、无战斗输入、配置合法性及 Bot 记录；未验证 Windows 实机效果。
+
+更新包 Sts2Bot-adaptive-weights-update.zip：停止 Bot 和评分服务后，用已安装 Python 执行 tools/install_adaptive_weights_update.py --target <advisor-service>，自动备份并补齐缺失配置，保留已有宽度/深度/权重/阈值。包含玩偶室规则，保留 0.30.8 超时相关文件，无需更新 DLL 或模型。
+
+
+## 弱怪池与 Boss 战后选牌（0.30.9）
+
+所有幕统一：已完成普通战斗数第一幕 <3、后续幕 <2 时，短期评估本幕弱普通怪池，长期 rollout 用本幕精英池。完成最后一场弱怪后的奖励页开始以本幕可见 Boss 为长期目标，短期恢复原来的可见路线近战窗口；无战斗房间不计入平均分母。
+
+本幕最后一个 Boss 战后，短期改用下一幕弱普通怪池，长期改用下一幕精英池。双 Boss 第一场结束不跨幕，目标为第二 Boss。最终通关后没有未来战斗，评分归零并倾向跳过。池内等概率；缺训练覆盖的目标显式报告，整个精英池无覆盖时失败，不偷偷回退 Boss。
+
+跨幕保留当前真实牌组、遗物和古代事件历史，只修改模型的敌人幕上下文；不假设获得下一幕古代遗物，不读取下一幕实际怪物序列或 Boss。日志报告 cross_act_projection_without_future_rewards，这属于当前构筑面对下一幕敌人的外推。
+
+Bot 的战后选牌仍使用 reward_rollout_depth（默认 3）与危机额外深度。独立面板跨幕用 configs/reward-policy.json 的 post_boss_rollout_depth（默认 3，可设 0–6），避免已通关幕的距离为零导致完全不 rollout；Bot 非战后选牌的跨幕备选深度对应 configs/bot-policy.json 同名键。宽度、前后尾部分数组合、动态长短期权重均沿用原配置。
+
+日志新增 scoring_horizon（mode、encounter_act_id、long_target_room、long_targets、short_targets）。模型叶子损失看 target_hp_loss；兼容字段 boss_hp_loss 只在 Boss 目标时非空。crisis_boss_loss_threshold 保留旧名称，实际比较当前长期目标的预测损失；projected_long_loss 总是报告该损失，projected_boss_loss 仅在目标为 Boss 时非空。
+
+Windows 使用 Sts2Bot-0.30.9-scoring-horizon.zip，退出游戏、Bot、评分服务后，执行包内 tools/install_scoring_horizon_update.py --target <advisor-service目录> --bot <含runtime.json的Bot目录>。安装器读取 runtime.game_dir 定位真实 Mod，备份旧文件并更新两端；只补缺失配置，不覆盖已有值，不改 runtime.json。包括既有玩偶室、动态权重和 0.30.8 超时修复。不需要重新下载模型或重建游戏副本。

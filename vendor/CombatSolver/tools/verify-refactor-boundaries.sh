@@ -636,6 +636,8 @@ for forbidden in 'CardModel' 'RunState' 'HttpClient' 'ModelDb'; do
 done
 require_fixed "$repository_root/src/Runtime/CardAdvisorController.cs" '_pendingGeneration == _generation' 'advisor must reject stale completions'
 require_fixed "$repository_root/src/Runtime/CardAdvisorSnapshot.cs" 'card.MutableClone()' 'advisor upgrade must clone before mutation'
+require_fixed "$repository_root/src/Runtime/CardAdvisorSnapshot.cs" 'CardAdvisorProgress progress = Progress(run);' 'advisor must use shared public stage capture'
+require_fixed "$repository_root/src/RunControl/RunControlSession.Decisions.cs" 'CardAdvisorCapture.Progress(Run)' 'bot must use shared public stage capture'
 
 if ((${#violations[@]} > 0)); then
     printf '%s\n' "${violations[@]}" >&2

@@ -23,6 +23,7 @@ internal sealed partial class RunControlSession
                     history.Add([act + 1, events[0].ModelId!.Entry, chosen.TextKey]);
                 }
         var current = Run.CurrentMapPoint;
+        CardAdvisorProgress progress = CardAdvisorCapture.Progress(Run);
         bool afterFirstBoss = current != null && current.coord.row >= Run.Map.BossMapPoint.coord.row;
         MapPoint targetBoss = afterFirstBoss && Run.Map.SecondBossMapPoint != null
             ? Run.Map.SecondBossMapPoint : Run.Map.BossMapPoint;
@@ -36,8 +37,8 @@ internal sealed partial class RunControlSession
             // Count only recorded normal rooms, not event-triggered fights.
             // Before entering the new act's first node, its history list has
             // not been created yet; there are exactly zero recorded combats.
-            normalCombatsCompleted = Run.MapPointHistory.ElementAtOrDefault(Run.CurrentActIndex)
-                ?.Count(p => p.Rooms.FirstOrDefault()?.RoomType == RoomType.Monster) ?? 0,
+            normalCombatsCompleted = progress.NormalCombatsCompleted,
+            actBossDefeated = progress.ActBossDefeated,
             hp = Me.Creature.CurrentHp, maxHp = Me.Creature.MaxHp, gold = Me.Gold,
             build = new { act_id = Run.Act.Id.Entry, act = Run.CurrentActIndex + 1, family = "autobot",
                 cards = Me.Deck.Cards.Select(CardAdvisorCapture.Card).ToArray(),

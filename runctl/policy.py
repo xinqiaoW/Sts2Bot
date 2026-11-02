@@ -5,8 +5,9 @@ import time
 
 from train.reward_policy import RewardSelector, load_config
 from train.score import BuildScorer
+from train.scoring_horizon import scoring_horizon
 from train.advisor_service import normalize_card
-from .event_policy import event_value
+from .event_policy import event_value, doll_room_options
 from .model_adapter import ModelAdapter
 from .policy_config import load_policy_config
 from .route_policy import plan_route, next_floors
@@ -17,7 +18,12 @@ class BotPolicy:
         self.config = load_policy_config(**(config or {}))
         self.model = ModelAdapter(scorer or BuildScorer())
         self.reward_config = load_config(None, short_weight=self.config['short_weight'],
-                                        long_weight=self.config['long_weight'], strict_features=False)
+                                        long_weight=self.config['long_weight'], strict_features=False,
+                                        **{k: self.config[k] for k in
+                                           ('short_strength_loss_threshold', 'weak_short_weight', 'weak_long_weight', 'post_boss_rollout_depth',
+                                            'samples_per_parent', 'keep_per_parent', 'lookahead_pairs',
+                                            'leaf_top_fraction', 'leaf_bottom_fraction',
+                                            'leaf_top_weight', 'leaf_bottom_weight', 'leaf_rank_power')})
         self.run_id = None
         self.pending_ancient = None
         self.last_report = {}
@@ -41,7 +47,10 @@ class BotPolicy:
         if [o['index'] for o in options] != list(range(len(options))): raise ValueError('Invalid option indices')
         self.last_report = dict(screen=screen, decisionSeq=observation['decisionSeq'], config=self.config)
         free_relics = [o for o in options if o.get('kind') == 'relic']
-        if len(options) == 1:
+        if screen == 'EVENT' and context.get('eventId') == 'DOLL_ROOM':
+            # Apply the explicit ban before the single-option shortcut.
+            choice = self.event(state, options, context)
+        elif len(options) == 1:
             choice = 0
             self.last_report['reason'] = 'only_legal_option'
         elif free_relics and (screen in ('REWARDS', 'TREASURE') or screen == 'RELIC' and len(free_relics) == 1):
@@ -94,13 +103,19 @@ class BotPolicy:
         # An empty offer list evaluates only the current build's skip branch.
         # Shops still need the same rollout risk definition after cards sell out.
         normal = RewardSelector(self.model.scorer, self.reward_config)
+        horizon = scoring_horizon(self.model.catalog, self.model.scorer.predictor.trained_targets, state)
+        short_targets = horizon['short_targets']
+        future = ([dict(targets=short_targets, combat_probability=1.0)] if short_targets else []) if short_targets is not None else next_floors(
+            state, lambda r, n: self.targets(state, r, n), self.config['unknown_combat_probability'])
         remaining = max(0, state['floorsToBoss']-1)
         depth = fixed_depth if fixed_depth is not None else min(
             normal.depth_for(state['floorsToBoss']), self.config['max_rollout_depth'], remaining)
+        if horizon['mode'] == 'next_act_weak_pool' and fixed_depth is None:
+            depth = self.reward_config['post_boss_rollout_depth']
         request = dict(build=build.to_dict(), max_hp=state['maxHp'], options=explicit,
             floors_to_boss=state['floorsToBoss'], rollout_depth=depth,
-            next_floors=next_floors(state, lambda r, n: self.targets(state, r, n), self.config['unknown_combat_probability']),
-            boss_targets=self.targets(state, 'Boss'))
+            next_floors=future, long_targets=horizon['long_targets'], long_target_room=horizon['long_target_room'],
+            encounter_act_id=horizon['encounter_act_id'], terminal=horizon['mode'] == 'terminal')
         result = normal.select(request)
         projected_loss = min(c['long_expected_hp_loss'] for c in result['candidates'])
         crisis = projected_loss > self.config['crisis_boss_loss_threshold']
@@ -112,10 +127,20 @@ class BotPolicy:
             result = RewardSelector(self.model.scorer, expanded).select(request)
         self.model.warnings.extend(result['warnings'])
         self.model.warnings.extend('untrained_feature:' + k for k in result['untrained_features'])
-        self.last_report.update(crisis=crisis, projected_boss_loss=projected_loss,
-            rollout_depth_mode='fixed_reward' if fixed_depth is not None else 'distance_to_boss',
+        self.model.warnings.extend(horizon['warnings'])
+        self.last_report.update(crisis=crisis, projected_long_loss=projected_loss,
+            projected_boss_loss=projected_loss if horizon['long_target_room'] == 'Boss' else None,
+            scoring_horizon=horizon,
+            rollout_depth_mode='terminal' if horizon['mode'] == 'terminal' else 'fixed_reward' if fixed_depth is not None
+                else 'post_boss' if horizon['mode'] == 'next_act_weak_pool' else 'distance_to_boss',
             rollout_depth=result['rollout_depth'], samples_per_parent=result['config']['samples_per_parent'],
-            keep_per_parent=result['config']['keep_per_parent'], stats=result['stats'])
+            keep_per_parent=result['config']['keep_per_parent'],
+            lookahead_pairs=result['config']['lookahead_pairs'], stats=result['stats'],
+            score_weighting=result['score_weighting'],
+            long_tail_summaries=[{k: c[k] for k in ('option_index', 'action', 'card',
+                'top_expected_hp_loss', 'bottom_expected_hp_loss', 'long_expected_hp_loss',
+                'top_leaf_count', 'bottom_leaf_count', 'selected_leaf_count')}
+                for c in result['candidates']])
         return result
 
     def cards(self, state, options, raw, build, *, fixed_depth=None):
@@ -205,6 +230,11 @@ class BotPolicy:
         return self.model.project(value)
 
     def event(self, state, options, context):
+        if context['eventId'] == 'DOLL_ROOM':
+            options, reason = doll_room_options(options)
+            self.last_report.update(reason=reason, allowed_options=[o['index'] for o in options])
+            if len(options) == 1:
+                return options[0]['index']
         raw = self.raw_build(state)
         scores, reasons = {}, {}
         ancient = context['eventId'] in self.model.catalog.ancients

@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 import json
 import math
+from dataclasses import replace
 from pathlib import Path
 
 from damage_model.schema import Build
@@ -34,6 +35,15 @@ class BuildScorer:
                 raise ValueError('Current HP is unsupported; this model assumes full-health combat')
             build = Build.from_dict(item['build'])
             self.catalog.validate(build)
+            encounter_act_id = item.get('encounter_act_id', build.act_id)
+            if encounter_act_id not in self.catalog.acts:
+                raise ValueError('Unknown encounter act')
+            encounter_act = self.catalog.acts[encounter_act_id]['act']
+            if encounter_act_id != build.act_id and encounter_act != build.act + 1:
+                raise ValueError('Encounter projection must be the current or next act')
+            # Validate the real owned build first. This inference-only context
+            # changes target/act features, never invents the next Ancient reward.
+            projected = replace(build, act_id=encounter_act_id, act=encounter_act)
             hp = item['max_hp']
             if isinstance(hp, bool) or not isinstance(hp, (int, float)) or not math.isfinite(hp) or hp <= 0:
                 raise ValueError('max_hp must be finite and positive')
@@ -48,21 +58,25 @@ class BuildScorer:
             if not math.isfinite(total):
                 raise ValueError('Encounter weight sum must be finite')
             start = len(inputs)
-            inputs.extend((build, target, hp) for target in weights)
-            groups.append((item, build, start, {t: w / total for t, w in weights.items()}))
+            inputs.extend((projected, target, hp) for target in weights)
+            groups.append((item, build, encounter_act_id, start, {t: w / total for t, w in weights.items()}))
         if not inputs:
             return []
         predictions = self.predictor.predict_many(inputs, strict=strict)
         output = []
-        for item, build, start, weights in groups:
+        for item, build, encounter_act_id, start, weights in groups:
             encounters = [dict(target=t, weight=w, **p) for (t, w), p in
                           zip(weights.items(), predictions[start:start + len(weights)])]
             loss = sum(p['weight'] * p['expected_hp_loss'] for p in encounters)
+            warnings = [] if item['max_hp'] == 70 else ['Training uses max_hp=70; other values are numeric extrapolation']
+            if encounter_act_id != build.act_id:
+                warnings.append('cross_act_projection_without_future_rewards')
             output.append(dict(id=item.get('id', build.id), build_id=build.id, act_id=build.act_id,
+                               encounter_act_id=encounter_act_id,
                                max_hp=item['max_hp'], expected_hp_loss=loss, score=-loss,
                                death_probability=sum(p['weight'] * p['death_probability'] for p in encounters),
                                untrained_features=sorted({k for p in encounters for k in p['untrained_features']}),
-                               warnings=[] if item['max_hp'] == 70 else ['Training uses max_hp=70; other values are numeric extrapolation'],
+                               warnings=warnings,
                                assumptions=ASSUMPTIONS, encounters=encounters))
         return output
 

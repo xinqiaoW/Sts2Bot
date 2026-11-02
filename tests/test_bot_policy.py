@@ -28,6 +28,17 @@ def test_configured_threshold_and_weights():
     assert choose_card_with_margin({0: 2.01, 1: 0}, 1, crisis=False, config=config) == 0
 
 
+def test_search_controls_forwarded_to_selector():
+    bot = BotPolicy(FakeScorer(), config=dict(samples_per_parent=10, keep_per_parent=3, lookahead_pairs=2,
+        leaf_top_weight=.7, leaf_bottom_weight=.3, leaf_bottom_fraction=.2, leaf_rank_power=0))
+    assert {k: bot.reward_config[k] for k in ('samples_per_parent', 'keep_per_parent', 'lookahead_pairs')} == {
+        'samples_per_parent': 10, 'keep_per_parent': 3, 'lookahead_pairs': 2}
+    assert bot.reward_config['leaf_top_weight'] == .7
+    assert bot.reward_config['leaf_bottom_weight'] == .3
+    assert bot.reward_config['leaf_bottom_fraction'] == .2
+    assert bot.reward_config['leaf_rank_power'] == 0
+
+
 def test_legacy_crisis_fraction_is_explicitly_retired():
     with pytest.warns(UserWarning, match='obsolete'):
         config = load_policy_config(crisis_boss_loss_fraction=.8)
@@ -58,7 +69,10 @@ def test_absolute_crisis_boundary_ignores_max_hp(request_data, max_hp, boss_loss
     {'crisis_samples_per_parent': 1, 'crisis_keep_per_parent': 4}, {'max_rollout_depth': 5},
     {'route_beam_width': 0}, {'unknown_combat_probability': 2}, {'seed': True}, {'typo': 1},
     {'reward_rollout_depth': 2}, {'reward_rollout_depth': 6}, {'reward_rollout_depth': True},
-    {'reward_rollout_depth': 5, 'crisis_extra_depth': 2}])
+    {'reward_rollout_depth': 5, 'crisis_extra_depth': 2}, {'samples_per_parent': 0},
+    {'keep_per_parent': 66}, {'lookahead_pairs': 4}, {'lookahead_pairs': 1.5},
+    {'leaf_top_weight': 0, 'leaf_bottom_weight': 0}, {'leaf_bottom_fraction': 0},
+    {'leaf_bottom_fraction': 1.1}])
 def test_bad_bot_configuration(overrides):
     with pytest.raises(ValueError): load_policy_config(**overrides)
 

@@ -94,6 +94,8 @@ internal sealed partial class CardAdvisorController : Node
             }
             string excluded = string.Join(", ", root.GetProperty("normalized_relics").EnumerateArray().Select(x => x.GetString()));
             string note = snapshot.Note + (excluded.Length > 0 ? " 模型未计入遗物：" + excluded : "");
+            if (root.TryGetProperty("scenario_note", out JsonElement scenario))
+                note += " " + scenario.GetString();
             note += " " + string.Join("；", root.GetProperty("warnings").EnumerateArray().Select(x => x.GetString()));
             return new CardAdvisorView(snapshot.Title, note, "", rows.ToArray());
         }

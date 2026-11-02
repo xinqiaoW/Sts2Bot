@@ -796,7 +796,9 @@ foreach ($forbidden in @('CardModel', 'RunState', 'HttpClient', 'ModelDb')) {
 }
 foreach ($check in @(
     @{ Path = 'src/Runtime/CardAdvisorController.cs'; Text = '_pendingGeneration == _generation' },
-    @{ Path = 'src/Runtime/CardAdvisorSnapshot.cs'; Text = 'card.MutableClone()' }
+    @{ Path = 'src/Runtime/CardAdvisorSnapshot.cs'; Text = 'card.MutableClone()' },
+    @{ Path = 'src/Runtime/CardAdvisorSnapshot.cs'; Text = 'CardAdvisorProgress progress = Progress(run);' },
+    @{ Path = 'src/RunControl/RunControlSession.Decisions.cs'; Text = 'CardAdvisorCapture.Progress(Run)' }
 )) {
     if (-not (Select-String -LiteralPath (Join-Path $repositoryRoot $check.Path) -SimpleMatch $check.Text -Quiet)) {
         $violations.Add("advisor missing ownership invariant: $($check.Text)")

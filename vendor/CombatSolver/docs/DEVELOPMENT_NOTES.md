@@ -1,5 +1,19 @@
 # CombatSolver 开发笔记与未来构想
 
+## 0.30.9：弱怪池与跨幕选牌目标（2026-11-02）
+
+用户要求所有幕一致：弱怪池阶段长期评估本幕精英，离开弱怪池后使用本幕可见 Boss；本幕最终 Boss 战后奖励短期评估下一幕弱怪、长期评估下一幕精英。此前 Boss 战后仍评估已打败的 Boss，普通幕末短期地图窗口为空。
+
+CardAdvisorCapture.Progress 使用已记录普通战斗次数、公开地图 Boss 行号以及当前 Boss 房是否处于战斗外，供面板和 Bot 共用；没有读取未来遭遇、奖励、下一幕实际 Boss 或 RNG。双 Boss 第一场结束不标记本幕完成；面板同时改用本幕第二 Boss。全部通关后没有未来目标，评分为零并优先跳过。
+
+外层 train/scoring_horizon.py 共用规则：第一幕普通战斗完成数 <3、第二/三幕 <2 时属于弱怪阶段。弱怪阶段短期为弱普通怪池、长期为精英池；完成最后一场弱怪的奖励页开始切回 Boss。跨幕后续幕由公共训练目录确定（当前 HIVE/GLORY 各唯一），未知/歧义显式失败；只用有训练覆盖的池成员，缺项报告警告。
+
+BuildScorer 新增 encounter_act_id：先严格验证原始构筑，再只为模型编码设置敌人幕；保留真实牌组、遗物、古代事件历史，不伪造未来奖励。跨幕属于明确标注的构筑外推。RewardSelector 接受 Elite/Boss 长期目标，兼容原 boss_targets；目标字段 long_targets / long_target_room / encounter_act_id 与日志 scoring_horizon 明确给出目标。叶子统一使用 target_hp_loss；仅真实 Boss 目标保留 boss_hp_loss 数值，否则为 null。旧配置 crisis_boss_loss_threshold 保留兼容，其阈值现在比较实际长期目标损失，日志用 projected_long_loss，并仅在 Boss 目标时填 projected_boss_loss。
+
+Bot 战后奖励沿用配置的固定深度（以及危机额外深度）；独立面板跨幕时使用 post_boss_rollout_depth=3，避免旧 floors_to_boss=0 导致不展开。短期动态权重、尾部聚合及用户已有宽度保留。配套安装器读取目标 Bot 的 runtime.game_dir，同时更新真实 Mod 目录与 Python，先备份全部旧文件，配置只补缺失键，不改 runtime.json。
+
+验证细节见 TEST_MATRIX。未验证用户 Windows 完整局，不将阶段测试或深度 1 模型样例当作胜率证据。
+
 ## 0.30.8：可配置的 Bot 决策等待（2026-11-02）
 
 用户在已确认加载 0.30.7 的 run 800e3cfc0b454d7b98eef79645a1e20d 中，SHOP 第 155 次决策发布到失败为 300.1 秒；accepted.json 的 actionTimeoutSeconds=300、timeoutSeconds=14400。证据确认单次决策期限触发，不能单凭此证明 Python 始终在正常计算。
