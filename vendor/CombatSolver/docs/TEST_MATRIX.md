@@ -1,5 +1,11 @@
 # CombatSolver 测试清单
 
+## 0.30.17 商店退出
+
+Debug构建通过。隔离Wine/Godot UI fixture /tmp/sts2bot-shop-0317-native/grid-result.json为passed，共8组。新商店组断言old_would_skip_close=true；禁用Back的300ms内事务未完成、库存仍开、Proceed仍禁用；恢复Back后production LeaveShopAsync依次记录requested/inventory_closed/map_open，库存关闭且真实NMapScreen.IsOpen=true。原有网格实例、失效奖励、药水领取哨兵同批通过。
+
+fixture总超时仍120秒（原生110秒），无完整随机局回放，不读取未来商店或RNG。Linux结构门禁通过，PowerShell同等更新但未执行。最终Release构建用于版本定版。原生Windows整局与真实动画可见效果尚未验证；玩家包不足以确认Back当时为何不可用。
+
 ## 0.30.16 故事书禁选
 
 故事书、玩偶房、事件策略与Bot回归通过。专项覆盖结构化遗物ID、完整选项键、重排位置、唯一选项不可绕过、无关选项不误杀及原rollout池已排除至亮之焰。原生仅版本更新，Release构建检查；未运行Windows整局。

@@ -643,6 +643,12 @@ require_fixed "$repository_root/src/RunControl/RunControlSession.PotionRewards.c
 require_fixed "$repository_root/src/RunControl/RunControlSession.PotionRewards.cs" 'await button.GetReward()' 'potion replacement must retain native ownership and completion boundaries'
 require_fixed "$repository_root/src/RunControl/RunControlSession.PotionRewards.cs" 'before.SequenceEqual(player.PotionSlots, ReferenceEqualityComparer.Instance)' 'potion replacement must retain native ownership and completion boundaries'
 require_fixed "$repository_root/src/RunControl/RunControlSession.PolicyScreens.cs" 'CapturePotionReplacement(rewards, button, replacement, Me, discardSlot, ct)' 'potion replacement must retain native ownership and completion boundaries'
+require_fixed "$repository_root/src/RunControl/RunControlSession.PolicyRooms.cs" 'await LeaveShopAsync(shop, phase => Record("shop_exit", new { phase }), ct);' 'shop exits must use the confirmed native transition'
+require_fixed "$repository_root/src/RunControl/RunControlSession.Shop.cs" 'if (shop.Inventory.IsOpen) await ClickLegalAsync(back);' 'shop exit must use the native Back action'
+require_fixed "$repository_root/src/RunControl/RunControlSession.Shop.cs" 'await ClickLegalAsync(shop.ProceedButton);' 'shop exit must use the native Proceed action'
+require_fixed "$repository_root/src/RunControl/RunControlSession.Shop.cs" 'NMapScreen.Instance?.IsOpen == true' 'shop exit must confirm map-open state'
+forbid_fixed "$repository_root/src/RunControl/RunControlSession.Shop.cs" '.Enable()' 'shop exit must not force-enable native controls'
+
 require_fixed "$repository_root/src/RunControl/RunControlSession.Rooms.cs" 'b.Option.HoverTips.OfType<CardHoverTip>()' 'event policy requires publicly displayed card previews'
 require_fixed "$repository_root/src/RunControl/RunControlSession.Rooms.cs" 'FindIndex(c => ReferenceEquals(c, t.Card))' 'event removal policy requires the exact owned card instance'
 

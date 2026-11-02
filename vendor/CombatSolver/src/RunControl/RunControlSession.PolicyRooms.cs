@@ -72,7 +72,11 @@ internal sealed partial class RunControlSession
         {
             NMerchantRoom? shop = UiHelper.FindFirst<NMerchantRoom>(container);
             if (shop == null || !ReferenceEquals(shop.Room, room)) return;
-            if (_handledRooms.Contains(room)) { await ProceedAsync(container, ct); return; }
+            if (_handledRooms.Contains(room))
+            {
+                await LeaveShopAsync(shop, phase => Record("shop_exit", new { phase }), ct);
+                return;
+            }
             shop.OpenInventory();
             await Task.Delay(250, ct);
             if (!GodotObject.IsInstanceValid(shop) || !shop.IsInsideTree()
@@ -98,10 +102,8 @@ internal sealed partial class RunControlSession
             }
             options.Add(new(new { kind = "leave" }, async () =>
             {
-                NBackButton? back = UiHelper.FindAll<NBackButton>(shop).FirstOrDefault(b => b.IsEnabled && b.IsVisibleInTree());
-                if (back != null) await ClickLegalAsync(back);
-                _handledRooms.Add(room);
-                await ProceedAsync(container, ct);
+                await LeaveShopAsync(shop, phase => Record("shop_exit", new { phase }), ct);
+                _handledRooms.Add(room); // Only after native inventory close and map-open confirmation.
             }));
             await SelectUiAsync("SHOP", options, null, null, ct);
             return;

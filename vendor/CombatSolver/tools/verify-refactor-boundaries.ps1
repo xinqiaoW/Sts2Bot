@@ -814,6 +814,18 @@ foreach ($token in @('await PotionCmd.Discard(before[slot]!)', 'await button.Get
 if (-not (Select-String -LiteralPath (Join-Path $repositoryRoot 'src/RunControl/RunControlSession.PolicyScreens.cs') -SimpleMatch 'CapturePotionReplacement(rewards, button, replacement, Me, discardSlot, ct)' -Quiet)) {
     $violations.Add('potion rewards must use the shared replacement boundary')
 }
+foreach ($check in @(
+    @{ Path = 'src/RunControl/RunControlSession.PolicyRooms.cs'; Text = 'await LeaveShopAsync(shop, phase => Record("shop_exit", new { phase }), ct);' },
+    @{ Path = 'src/RunControl/RunControlSession.Shop.cs'; Text = 'if (shop.Inventory.IsOpen) await ClickLegalAsync(back);' },
+    @{ Path = 'src/RunControl/RunControlSession.Shop.cs'; Text = 'await ClickLegalAsync(shop.ProceedButton);' },
+    @{ Path = 'src/RunControl/RunControlSession.Shop.cs'; Text = 'NMapScreen.Instance?.IsOpen == true' })) {
+    if (-not (Select-String -LiteralPath (Join-Path $repositoryRoot $check.Path) -SimpleMatch $check.Text -Quiet)) {
+        $violations.Add("shop exit missing native transition boundary: $($check.Text)")
+    }
+}
+if (Select-String -LiteralPath (Join-Path $repositoryRoot 'src/RunControl/RunControlSession.Shop.cs') -SimpleMatch '.Enable()' -Quiet) {
+    $violations.Add('shop exit must not force-enable native controls')
+}
 foreach ($token in @('b.Option.HoverTips.OfType<CardHoverTip>()', 'FindIndex(c => ReferenceEquals(c, t.Card))')) {
     if (-not (Select-String -LiteralPath (Join-Path $repositoryRoot 'src/RunControl/RunControlSession.Rooms.cs') -SimpleMatch $token -Quiet)) {
         $violations.Add("event policy requires public card previews and exact owned identity: $token")

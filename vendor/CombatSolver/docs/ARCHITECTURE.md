@@ -199,6 +199,7 @@ renderer 不得重新读取 `SolverResult`、`PlanAction`、`PlanCardChoice` 或
 - `RunControlSession.Decisions.cs`：主线程导出玩家已知状态与地图拓扑，拥有决策序号、动作校验及重复无进展检测；不导出未来怪物、事件、未打开的奖励或游戏 RNG。
 - `RunControlSession.Rooms.cs`：事件可见选项、嵌套界面调度及兼容的地图模式随机基线。事件内战斗也交给 CombatSolver，禁止调用会作弊的原版 `CombatRoomHandler`、`EventRoomHandler`。
 - `RunControlSession.PolicyRooms.cs`：商店、篝火、宝箱的合法选项与真实操作；购买等待子界面时由所属会话推进子选择。
+- `RunControlSession.Shop.cs`：商店离开事务，等待原生返回按钮可用、确认库存关闭、点击继续并确认地图打开后，调用方才能标记房间已处理；不强制Enable按钮、不绕过原生关闭动作、不静默跳过关闭失败。
 - `RunControlSession.PolicyScreens.cs`：奖励、选牌、遗物、卡牌组、牌组操作与水晶球的可见选项；卡牌升级预览使用克隆。未知界面显式失败。
 - 根目录 `runctl/policy.py`、`model_adapter.py`、`route_policy.py`、`event_policy.py`：分别拥有决策组合、模型输入投影、可见路线规划与事件启发式。只消费序列化公开快照；被排除的模型输入记录警告，不修改游戏库存。参数在 `configs/bot-policy.json`。
 - 根目录 `runctl/event_combat.py`：只在外层进行事件公开加牌、精确实例删牌的当前构筑反事实；共用scoring_horizon/survival_budget，评分不做未来抓牌rollout。原生事件入口仍仅导出选项文字与CardHoverTip及deckIndex，不替Python选择或读取隐藏随机结果。

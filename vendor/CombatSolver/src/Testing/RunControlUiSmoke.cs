@@ -1,5 +1,9 @@
 using System.Text.Json;
 using Godot;
+using MegaCrit.Sts2.Core.Map;
+using MegaCrit.Sts2.Core.Rooms;
+using MegaCrit.Sts2.Core.Nodes.Rooms;
+using MegaCrit.Sts2.Core.Nodes.Screens.Map;
 using MegaCrit.Sts2.Core.AutoSlay.Helpers;
 using MegaCrit.Sts2.Core.CardSelection;
 using MegaCrit.Sts2.Core.Context;
@@ -70,6 +74,7 @@ internal static class RunControlUiSmoke
             await VerifyPotionReplacementAsync(player, evidence, deadline.Token);
             if (!original.SequenceEqual(player.Deck.Cards))
                 throw new InvalidOperationException("UI fixture unexpectedly changed the real deck.");
+            await VerifyShopExitAsync(host, evidence, deadline.Token);
             status = "passed";
         }
         catch (Exception ex)
@@ -83,6 +88,36 @@ internal static class RunControlUiSmoke
             File.WriteAllText(path, JsonSerializer.Serialize(new { status, error, evidence }));
             host.GetTree().Quit(status == "passed" ? 0 : 1);
         }
+    }
+
+    private static async Task VerifyShopExitAsync(NGame host, List<object> evidence, CancellationToken ct)
+    {
+        await RunManager.Instance.EnterRoomDebug(RoomType.Shop, MapPointType.Shop, null);
+        NMerchantRoom? shop = null;
+        await WaitHelper.Until(() =>
+        {
+            shop = UiHelper.FindFirst<NMerchantRoom>(host);
+            return shop != null && shop.IsInsideTree() && !host.Transition.InTransition;
+        }, ct, TimeSpan.FromSeconds(10), "Shop fixture did not enter native merchant room.");
+        shop!.OpenInventory();
+        await Task.Delay(400, ct);
+        var back = shop.Inventory.GetNode<NBackButton>("%BackButton");
+        back.Disable(); // Reproduce the input-blocked interval after purchase.
+        bool oldWouldSkipClose = !UiHelper.FindAll<NBackButton>(shop)
+            .Any(b => b.IsEnabled && b.IsVisibleInTree());
+        if (!oldWouldSkipClose || !shop.Inventory.IsOpen || shop.ProceedButton.IsEnabled)
+            throw new InvalidOperationException("Shop fixture did not reproduce the old leave-without-close boundary.");
+        List<string> phases = [];
+        Task exit = RunControlSession.LeaveShopAsync(shop, phases.Add, ct);
+        await Task.Delay(300, ct);
+        if (exit.IsCompleted || !shop.Inventory.IsOpen || shop.ProceedButton.IsEnabled)
+            throw new InvalidOperationException("Shop exit acted while its Back button was disabled.");
+        back.Enable();
+        await exit.WaitAsync(ct);
+        if (shop.Inventory.IsOpen || NMapScreen.Instance?.IsOpen != true
+            || !phases.SequenceEqual(new[] { "requested", "inventory_closed", "map_open" }))
+            throw new InvalidOperationException("Shop exit did not confirm inventory close and map open.");
+        evidence.Add(new { shop_exit = "delayed_back", old_would_skip_close = oldWouldSkipClose, phases, map_open = true });
     }
 
     private static async Task VerifyPotionReplacementAsync(Player player, List<object> evidence, CancellationToken ct)
