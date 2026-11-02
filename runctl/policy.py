@@ -21,6 +21,7 @@ class BotPolicy:
                                         long_weight=self.config['long_weight'], strict_features=False,
                                         **{k: self.config[k] for k in
                                            ('short_strength_loss_threshold', 'weak_short_weight', 'weak_long_weight', 'post_boss_rollout_depth',
+                                            'elite_target_loss_threshold', 'boss_target_after_act_floor',
                                             'samples_per_parent', 'keep_per_parent', 'lookahead_pairs',
                                             'leaf_top_fraction', 'leaf_bottom_fraction',
                                             'leaf_top_weight', 'leaf_bottom_weight', 'leaf_rank_power')})
@@ -103,14 +104,18 @@ class BotPolicy:
         # An empty offer list evaluates only the current build's skip branch.
         # Shops still need the same rollout risk definition after cards sell out.
         normal = RewardSelector(self.model.scorer, self.reward_config)
-        horizon = scoring_horizon(self.model.catalog, self.model.scorer.predictor.trained_targets, state)
+        horizon = scoring_horizon(self.model.catalog, self.model.scorer.predictor.trained_targets, state,
+            elite_loss_threshold=self.config['elite_target_loss_threshold'],
+            boss_after_act_floor=self.config['boss_target_after_act_floor'],
+            score_elites=lambda act_id, targets: self.model.scorer.score_many([
+                dict(build=build.to_dict(), max_hp=state['maxHp'], targets=targets, encounter_act_id=act_id)], strict=False)[0])
         short_targets = horizon['short_targets']
         future = ([dict(targets=short_targets, combat_probability=1.0)] if short_targets else []) if short_targets is not None else next_floors(
             state, lambda r, n: self.targets(state, r, n), self.config['unknown_combat_probability'])
         remaining = max(0, state['floorsToBoss']-1)
         depth = fixed_depth if fixed_depth is not None else min(
             normal.depth_for(state['floorsToBoss']), self.config['max_rollout_depth'], remaining)
-        if horizon['mode'] == 'next_act_weak_pool' and fixed_depth is None:
+        if horizon['projects_next_act'] and fixed_depth is None:
             depth = self.reward_config['post_boss_rollout_depth']
         request = dict(build=build.to_dict(), max_hp=state['maxHp'], options=explicit,
             floors_to_boss=state['floorsToBoss'], rollout_depth=depth,
@@ -132,7 +137,7 @@ class BotPolicy:
             projected_boss_loss=projected_loss if horizon['long_target_room'] == 'Boss' else None,
             scoring_horizon=horizon,
             rollout_depth_mode='terminal' if horizon['mode'] == 'terminal' else 'fixed_reward' if fixed_depth is not None
-                else 'post_boss' if horizon['mode'] == 'next_act_weak_pool' else 'distance_to_boss',
+                else 'post_boss' if horizon['projects_next_act'] else 'distance_to_boss',
             rollout_depth=result['rollout_depth'], samples_per_parent=result['config']['samples_per_parent'],
             keep_per_parent=result['config']['keep_per_parent'],
             lookahead_pairs=result['config']['lookahead_pairs'], stats=result['stats'],

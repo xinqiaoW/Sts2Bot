@@ -93,7 +93,7 @@ HTTP 测试需允许本地套接字。`tools/run_card_advisor_smoke.py --fixture
 更新包 Sts2Bot-adaptive-weights-update.zip：停止 Bot 和评分服务后，用已安装 Python 执行 tools/install_adaptive_weights_update.py --target <advisor-service>，自动备份并补齐缺失配置，保留已有宽度/深度/权重/阈值。包含玩偶室规则，保留 0.30.8 超时相关文件，无需更新 DLL 或模型。
 
 
-## 弱怪池与 Boss 战后选牌（0.30.9）
+## 旧规则：弱怪池与 Boss 战后选牌（0.30.9，已由0.30.10替代）
 
 所有幕统一：已完成普通战斗数第一幕 <3、后续幕 <2 时，短期评估本幕弱普通怪池，长期 rollout 用本幕精英池。完成最后一场弱怪后的奖励页开始以本幕可见 Boss 为长期目标，短期恢复原来的可见路线近战窗口；无战斗房间不计入平均分母。
 
@@ -106,3 +106,21 @@ Bot 的战后选牌仍使用 reward_rollout_depth（默认 3）与危机额外�
 日志新增 scoring_horizon（mode、encounter_act_id、long_target_room、long_targets、short_targets）。模型叶子损失看 target_hp_loss；兼容字段 boss_hp_loss 只在 Boss 目标时非空。crisis_boss_loss_threshold 保留旧名称，实际比较当前长期目标的预测损失；projected_long_loss 总是报告该损失，projected_boss_loss 仅在目标为 Boss 时非空。
 
 Windows 使用 Sts2Bot-0.30.9-scoring-horizon.zip，退出游戏、Bot、评分服务后，执行包内 tools/install_scoring_horizon_update.py --target <advisor-service目录> --bot <含runtime.json的Bot目录>。安装器读取 runtime.game_dir 定位真实 Mod，备份旧文件并更新两端；只补缺失配置，不覆盖已有值，不改 runtime.json。包括既有玩偶室、动态权重和 0.30.8 超时修复。不需要重新下载模型或重建游戏副本。
+
+
+## 当前规则：精英风险决定长期目标（0.30.10，替代0.30.9的固定弱怪规则）
+
+每幕前6层：对未拿候选牌、未rollout的当前构筑估计精英池平均掉血。严格大于 elite_target_loss_threshold（默认20）时，长期目标为本幕精英；小于或等于20时为本幕Boss。actFloor > boss_target_after_act_floor（默认6）后强制Boss，即第7层起生效。全局楼层不参与这个判断。
+
+所有候选共用一次判断，精英探测为单次构筑分布预测。普通战斗计数只用于短期弱怪/普通怪池，不再决定长期目标；短期充分/不足的0.28/0.72与0.72/0.28权重规则独立保留。
+
+本幕Boss战后按下一幕第0层重新判断：短期仍看下一幕弱普通怪；如果下一幕精英预计掉血超过阈值，长期看下一幕精英，否则看下一幕公开Boss池的平均，不读取实际隐藏Boss。双Boss第一场后仍处于当前幕；最终通关无未来战斗。
+
+Bot配置 configs/bot-policy.json；独立评分服务 configs/reward-policy.json：
+```json
+"elite_target_loss_threshold": 20.0,
+"boss_target_after_act_floor": 6
+```
+若用了自定义 --policy-config，请修改对应文件。日志 scoring_horizon 包含 estimated_elite_loss、target_reason、evaluated_act_floor、阈值、所用目标池；因楼层强制Boss时 estimated_elite_loss=null，表示未额外探测。旧面板缺actFloor会记录明确的兼容警告并使用Boss；配套更新两端可启用新规则。
+
+安装包 Sts2Bot-0.30.10-elite-risk-target.zip 可以直接更新，不必先安装0.30.9。退出Bot、游戏和评分服务后，执行包内 tools/install_scoring_horizon_update.py --target <advisor-service> --bot <含runtime.json的Bot目录>；备份原文件、读取真实game_dir更新DLL和Python、保留已有配置值并补齐新字段。

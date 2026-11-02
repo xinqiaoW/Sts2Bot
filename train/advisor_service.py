@@ -176,13 +176,18 @@ def evaluate(payload, selector, unknown_combat_probability=0.25):
                    floors_to_boss=payload['floors_to_boss'], next_floors=floors, boss_targets=boss)
     if stage is not None:
         horizon = scoring_horizon(selector.catalog, selector.scorer.predictor.trained_targets,
-                                  dict(stage, act=build['act'], actId=build['act_id']))
+            dict(stage, act=build['act'], actId=build['act_id']),
+            elite_loss_threshold=selector.config['elite_target_loss_threshold'],
+            boss_after_act_floor=selector.config['boss_target_after_act_floor'],
+            score_elites=lambda act_id, targets: selector.scorer.score_many([
+                dict(build=build, max_hp=payload['max_hp'], targets=targets, encounter_act_id=act_id)],
+                strict=selector.config['strict_features'])[0])
         short_targets = horizon['short_targets']
         if short_targets is not None:
             request['next_floors'] = [dict(targets=short_targets, combat_probability=1.0)] if short_targets else []
         request.update(long_targets=horizon['long_targets'], long_target_room=horizon['long_target_room'],
                        encounter_act_id=horizon['encounter_act_id'], terminal=horizon['mode'] == 'terminal')
-        if horizon['mode'] == 'next_act_weak_pool':
+        if horizon['projects_next_act']:
             request['rollout_depth'] = selector.config['post_boss_rollout_depth']
     result = selector.select(request)
     baseline = result['candidates'][-1]['combined_score']
@@ -198,9 +203,10 @@ def evaluate(payload, selector, unknown_combat_probability=0.25):
         result['warnings'] = sorted(set(result['warnings'] + horizon['warnings']))
     result['scenario_note'] = '满血构筑评分；地图分支等概率，同类敌人等概率；未知房战斗概率 ' + str(unknown_combat_probability)
     if horizon:
-        result['scenario_note'] += {'weak_pool': '；弱怪池阶段：短期看弱普通怪，长期看本幕精英',
+        result['scenario_note'] += {'elite_risk': '；精英预计掉血超过阈值：长期目标为本幕精英',
             'boss': '；长期目标：本幕待战 Boss',
-            'next_act_weak_pool': '；本幕已通关：短期看下一幕弱普通怪，长期看下一幕精英',
+            'next_act_elite_risk': '；本幕已通关：短期看下一幕弱普通怪，精英预计掉血较高，长期看下一幕精英',
+            'next_act_boss': '；本幕已通关：短期看下一幕弱普通怪，长期看下一幕公开 Boss 池',
             'terminal': '；已通关，无未来战斗，选牌收益为零'}[horizon['mode']]
     return result
 

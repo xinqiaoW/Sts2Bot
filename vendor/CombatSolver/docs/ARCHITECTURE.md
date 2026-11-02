@@ -7,7 +7,7 @@
 - `Runtime/CardAdvisorController.cs`：独立持有 HTTP、取消和代次，仅在自身 `_Process` 消费完成任务。过期结果不显示，后台只使用字符串和数值。
 - `UI/CardAdvisorOverlay.cs`：只渲染 `CardAdvisorView/Row`，不读取 Model、RunState 或 HTTP。
 - 外层 `train/advisor_service.py`：输入校验、地图概率估计、模型调用；未知语义显式失败，不进入战斗 Search。
-- 外层 `train/scoring_horizon.py`：Bot/服务共用的目标池规则；弱怪阶段用精英，本幕结束后用下一幕公开弱怪/精英池。`train/score.py` 在验证真实构筑后单独设置预测敌人幕，不补造古代事件或遗物。
+- 外层 `train/scoring_horizon.py`：Bot/服务共用的目标池规则；前6层对当前牌组做一次精英风险预测，超过阈值选精英，否则Boss，第7层起强制Boss；本幕结束后投影下一幕公开敌人池重新判断。`train/score.py` 在验证真实构筑后单独设置预测敌人幕，不补造古代事件或遗物。
 - `Testing/CardAdvisorSmoke.cs`：显式环境变量启用的合成快照 HTTP/真实 Godot 验证，不冒充真实整局界面捕获验收。
 
 使用及边界见 [选牌评分说明](../../../docs/card-advisor.md)。

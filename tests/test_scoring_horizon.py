@@ -21,14 +21,15 @@ def coverage(catalog):
 
 
 @pytest.mark.parametrize('act_id,act,limit', [('OVERGROWTH', 1, 3), ('UNDERDOCKS', 1, 3), ('HIVE', 2, 2), ('GLORY', 3, 2)])
-def test_every_act_uses_elites_until_last_weak_battle_is_finished(act_id, act, limit):
+def test_early_elite_risk_is_independent_of_weak_pool_count(act_id, act, limit):
     catalog = load_catalog()
     boss = next(e['id'] for e in catalog.acts[act_id]['encounters'] if e['room_type'] == 'Boss')
-    state = dict(actId=act_id, act=act, visibleBoss=boss)
+    state = dict(actId=act_id, act=act, actFloor=6, visibleBoss=boss)
     for count in range(limit+1):
-        result = scoring_horizon(catalog, coverage(catalog), dict(state, normalCombatsCompleted=count))
-        assert result['mode'] == ('weak_pool' if count < limit else 'boss')
-        expected = {e['id'] for e in catalog.acts[act_id]['encounters'] if e['room_type'] == 'Elite'} if count < limit else {boss}
+        result = scoring_horizon(catalog, coverage(catalog), dict(state, normalCombatsCompleted=count),
+                                 score_elites=lambda *args: dict(expected_hp_loss=21))
+        assert result['mode'] == 'elite_risk'
+        expected = {e['id'] for e in catalog.acts[act_id]['encounters'] if e['room_type'] == 'Elite'}
         assert set(result['long_targets']) == expected
         if count < limit:
             assert set(result['short_targets']) == {e['id'] for e in catalog.acts[act_id]['encounters']
@@ -40,8 +41,8 @@ def test_post_boss_uses_only_next_act_public_pools(act_id, act, next_id):
     c = load_catalog()
     state = dict(actId=act_id, act=act, normalCombatsCompleted=10, actBossDefeated=True,
                  visibleBoss='MUST_NOT_READ_OLD_OR_FUTURE_BOSS')
-    result = scoring_horizon(c, coverage(c), state)
-    assert result['mode'] == 'next_act_weak_pool'
+    result = scoring_horizon(c, coverage(c), state, score_elites=lambda *args: dict(expected_hp_loss=21))
+    assert result['mode'] == 'next_act_elite_risk'
     assert result['encounter_act_id'] == next_id
     assert set(result['long_targets']) == {e['id'] for e in c.acts[next_id]['encounters'] if e['room_type'] == 'Elite'}
     assert set(result['short_targets']) == {e['id'] for e in c.acts[next_id]['encounters'] if e['weak']}
@@ -50,7 +51,7 @@ def test_post_boss_uses_only_next_act_public_pools(act_id, act, next_id):
 def test_second_boss_remains_target_and_terminal_has_no_future():
     c = load_catalog()
     boss = next(e['id'] for e in c.acts['GLORY']['encounters'] if e['room_type'] == 'Boss')
-    state = dict(actId='GLORY', act=3, normalCombatsCompleted=8, visibleBoss=boss, actBossDefeated=False)
+    state = dict(actId='GLORY', act=3, actFloor=18, normalCombatsCompleted=8, visibleBoss=boss, actBossDefeated=False)
     assert scoring_horizon(c, coverage(c), state)['long_targets'] == {boss: 1}
     state['actBossDefeated'] = True
     result = scoring_horizon(c, coverage(c), state)
@@ -58,10 +59,11 @@ def test_second_boss_remains_target_and_terminal_has_no_future():
 
 
 class PoolScorer(FakeScorer):
-    def __init__(self):
+    def __init__(self, elite_loss=25):
         super().__init__()
         self.predictor.trained_targets = coverage(self.catalog)
         self.requests = []
+        self.elite_loss = elite_loss
 
     def score_many(self, requests, strict=False):
         self.requests.extend(deepcopy(requests))
@@ -70,15 +72,16 @@ class PoolScorer(FakeScorer):
             self.catalog.validate(Build.from_dict(request['build']))
             act_id = request.get('encounter_act_id', request['build']['act_id'])
             types = {e['id']: e['room_type'] for e in self.catalog.acts[act_id]['encounters']}
-            loss = sum(w*{'Monster': 8, 'Elite': 20, 'Boss': 35}[types[t]] for t, w in request['targets'].items()) / sum(request['targets'].values())
+            loss = sum(w*{'Monster': 8, 'Elite': self.elite_loss, 'Boss': 35}[types[t]] for t, w in request['targets'].items()) / sum(request['targets'].values())
             result.append(dict(expected_hp_loss=loss, untrained_features=[], warnings=[]))
         return result
 
 
-@pytest.mark.parametrize('count,completed,mode', [(0, False, 'weak_pool'), (3, False, 'boss'), (10, True, 'next_act_weak_pool')])
+@pytest.mark.parametrize('count,completed,mode', [(0, False, 'elite_risk'), (3, False, 'boss'), (10, True, 'next_act_elite_risk')])
 def test_bot_and_service_share_horizon_and_owned_state(request_data, count, completed, mode):
     observation = card_observation(request_data)
-    observation['state'].update(normalCombatsCompleted=count, actBossDefeated=completed)
+    act_floor = 1 if count == 0 else 7
+    observation['state'].update(normalCombatsCompleted=count, actBossDefeated=completed, actFloor=act_floor)
     original = deepcopy(observation)
     scorer = PoolScorer()
     bot = BotPolicy(scorer, config=dict(samples_per_parent=1, keep_per_parent=1, lookahead_pairs=0))
@@ -87,7 +90,7 @@ def test_bot_and_service_share_horizon_and_owned_state(request_data, count, comp
     assert horizon['mode'] == mode
     assert observation == original
     p = payload(request_data)
-    p.update(scoring_state=dict(normalCombatsCompleted=count, actBossDefeated=completed, visibleBoss='VANTOM_BOSS'),
+    p.update(scoring_state=dict(normalCombatsCompleted=count, actBossDefeated=completed, actFloor=act_floor, visibleBoss='VANTOM_BOSS'),
              future_room_types=[])
     result = evaluate(p, RewardSelector(PoolScorer(), dict(samples_per_parent=1, keep_per_parent=1, lookahead_pairs=0)))
     assert result['scoring_horizon'] == horizon
@@ -149,8 +152,9 @@ def test_terminal_selector_scores_zero_without_model_or_rollout(request_data):
 def test_empty_elite_coverage_is_not_replaced_by_boss():
     c = load_catalog()
     with pytest.raises(ValueError, match='No trained Elite'):
-        scoring_horizon(c, {'OVERGROWTH:VANTOM_BOSS'}, dict(actId='OVERGROWTH', act=1,
-            normalCombatsCompleted=0, visibleBoss='VANTOM_BOSS'))
+        scoring_horizon(c, {t for t in coverage(c) if not t.endswith('_ELITE')}, dict(actId='OVERGROWTH', act=1,
+            actFloor=1, normalCombatsCompleted=0, visibleBoss='VANTOM_BOSS'),
+            score_elites=lambda *args: dict(expected_hp_loss=30))
 
 
 def test_cross_act_config_depth_applies_only_without_fixed_reward_override(request_data):

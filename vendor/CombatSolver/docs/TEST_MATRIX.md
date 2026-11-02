@@ -1,5 +1,13 @@
 # CombatSolver 测试清单
 
+## 0.30.10 精英风险目标
+
+- 233 项离线目标/奖励/Bot/服务/动态权重测试通过，1项HTTP套接字测试未执行；另新增4项非法精英预测与1项缺本幕楼层处理测试通过，共238项。
+- tests/test_elite_risk_target.py 覆盖4种幕地图的19.9/20/20.01阈值、第6/7层、全局层99不干扰本幕判断、两次跨幕精英轻松时的下一幕Boss池、当前牌组仅探测一次、Bot/服务自定义阈值一致、非法配置/预测不静默回退。
+- tests/test_scoring_horizon.py 保留跨幕真实构筑历史校验、终局零评分和双Boss目标，改为验证普通战斗计数不再决定长期目标。未重跑未改变的C#纯地图边界fixture或安装器。
+- 真实选定模型：.local/elite-risk-smoke/model-results.json。同一初始构筑，actFloor=6时精英预计70点，选择精英；actFloor=7时不探测精英，强制Boss；跨幕HIVE精英预计69.1326点，选择下一幕精英。深度0机制样例，不是完整构筑质量或胜率比较。
+- Linux结构门禁通过。原生变更仅给面板快照添加本幕actFloor，最终Release编译验证；未执行Windows实机完整局或HTTP套接字测试。
+
 ## 0.30.9 阶段目标与跨幕预测
 
 - Python 目标测试 tests/test_scoring_horizon.py 覆盖两种第一幕、第二幕、第三幕的弱怪临界次数；第一/二幕跨幕、双 Boss 已知目标、终局无目标；Bot/服务同源规则、跨幕不改真实历史/牌组/遗物、非法历史仍拒绝、无精英训练覆盖不回退 Boss。终局 RewardSelector 不调用模型、不 rollout、全部零分且推荐跳过。

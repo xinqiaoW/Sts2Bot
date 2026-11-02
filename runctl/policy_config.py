@@ -20,7 +20,7 @@ def load_policy_config(path=None, **overrides):
     values.update(supplied)
     integer_keys = {'crisis_samples_per_parent', 'crisis_keep_per_parent', 'crisis_extra_depth',
                     'max_rollout_depth', 'reward_rollout_depth', 'post_boss_rollout_depth', 'route_beam_width', 'seed',
-                    'samples_per_parent', 'keep_per_parent', 'lookahead_pairs'}
+                    'samples_per_parent', 'keep_per_parent', 'lookahead_pairs', 'boss_target_after_act_floor'}
     for key, value in values.items():
         if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value) or value < 0:
             raise ValueError(f'{key} must be finite and nonnegative')

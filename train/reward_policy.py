@@ -30,7 +30,7 @@ def load_config(path=DEFAULT_CONFIG, **overrides):
         raise ValueError(f'Unknown config keys: {supplied.keys() - config.keys()}')
     config.update(supplied)
     for key in ('short_weight', 'long_weight', 'weak_short_weight', 'weak_long_weight',
-                'short_strength_loss_threshold', 'leaf_rank_power', 'leaf_top_weight', 'leaf_bottom_weight'):
+                'short_strength_loss_threshold', 'elite_target_loss_threshold', 'leaf_rank_power', 'leaf_top_weight', 'leaf_bottom_weight'):
         positive(config[key], key, zero=True)
     positive(config['short_weight'] + config['long_weight'], 'total score weight')
     positive(config['weak_short_weight'] + config['weak_long_weight'], 'total weak score weight')
@@ -44,6 +44,8 @@ def load_config(path=DEFAULT_CONFIG, **overrides):
         raise ValueError('lookahead_pairs must be an integer in [0,3]')
     if type(config['post_boss_rollout_depth']) is not int or not 0 <= config['post_boss_rollout_depth'] <= 6:
         raise ValueError('post_boss_rollout_depth must be an integer in [0,6]')
+    if type(config['boss_target_after_act_floor']) is not int or config['boss_target_after_act_floor'] < 0:
+        raise ValueError('boss_target_after_act_floor must be a nonnegative integer')
     if type(config['seed']) is not int or type(config['strict_features']) is not bool:
         raise ValueError('seed must be integer and strict_features must be boolean')
     if config['short_reduction'] not in ('mean', 'sum'):
