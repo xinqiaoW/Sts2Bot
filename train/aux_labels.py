@@ -13,18 +13,28 @@ The 9 auxiliary supervision signals per battle row are:
 """
 from __future__ import annotations
 
-from concurrent.futures import ProcessPoolExecutor
+import argparse
+from concurrent.futures import ProcessPoolExecutor, as_completed
+from datetime import datetime, timezone
+import fcntl
 import json
 import math
 import os
 from pathlib import Path
+import shutil
+import signal
 import sqlite3
+import subprocess
+import sys
 import time
 
 import numpy as np
 import pandas as pd
+import psutil
 import pyarrow as pa
 import pyarrow.parquet as pq
+
+from . import ROOT
 
 AUX_COLUMNS = (
     'dmg_per_turn',
@@ -315,7 +325,14 @@ def parse_trace_metrics(raw_json: str) -> tuple[float, float, float, float, floa
 
 
 def _worker_scan_range(args):
-    db_path, low, high, recover = args
+    if len(args) == 5:
+        chunk_idx, db_path, low, high, recover = args
+        has_chunk_idx = True
+    else:
+        db_path, low, high, recover = args
+        chunk_idx = None
+        has_chunk_idx = False
+
     out_ids = []
     out_vals = []
     con = sqlite3.connect(f'file:{db_path}?mode=ro', uri=True, timeout=30)
@@ -346,16 +363,51 @@ def _worker_scan_range(args):
                 out_ids.append(jid)
                 out_vals.append(vals)
     con.close()
-    return out_ids, np.asarray(out_vals, dtype=np.float32) if out_vals else np.zeros((0, 8), dtype=np.float32)
+    res_vals = np.asarray(out_vals, dtype=np.float32) if out_vals else np.zeros((0, len(AUX_COLUMNS)), dtype=np.float32)
+    if has_chunk_idx:
+        return chunk_idx, out_ids, res_vals
+    return out_ids, res_vals
 
 
-def build_snapshot_aux_parquet(snapshot_dir: Path, *, workers: int = 24, log=print) -> Path:
+def build_snapshot_aux_parquet(
+    snapshot_dir: Path | str,
+    *,
+    workers: int = 24,
+    checkpoint_dir: Path | str | None = None,
+    resume: bool = True,
+    force: bool = False,
+    log=print,
+) -> Path:
     """Extract auxiliary trace metrics for a snapshot and write ``aux_labels.parquet``."""
-    snapshot_dir = Path(snapshot_dir)
+    snapshot_dir = Path(snapshot_dir).resolve()
     out_path = snapshot_dir / 'aux_labels.parquet'
-    if out_path.exists():
+    if out_path.exists() and not force:
         log(json.dumps({'event': 'aux_labels_cached', 'path': str(out_path)}))
         return out_path
+
+    if checkpoint_dir is None:
+        checkpoint_dir = snapshot_dir / '.aux_checkpoints'
+    else:
+        checkpoint_dir = Path(checkpoint_dir).resolve()
+    checkpoint_dir.mkdir(parents=True, exist_ok=True)
+
+    state_file = checkpoint_dir / 'state.json'
+    state: dict = {}
+    if resume and not force and state_file.exists():
+        try:
+            state = json.loads(state_file.read_text(encoding='utf-8'))
+        except Exception:
+            state = {}
+
+    state.update({
+        'status': 'running',
+        'pid': os.getpid(),
+        'snapshot_dir': str(snapshot_dir),
+        'started_at': state.get('started_at') or datetime.now(timezone.utc).isoformat(),
+        'updated_at': datetime.now(timezone.utc).isoformat(),
+    })
+    state.setdefault('completed_sources', [])
+    state_file.write_text(json.dumps(state, indent=2, ensure_ascii=False), encoding='utf-8')
 
     manifest = json.loads((snapshot_dir / 'manifest.json').read_text(encoding='utf-8'))
     battles = pq.read_table(snapshot_dir / 'battles.parquet', columns=['job_id', 'source', 'finished_turn']).to_pandas()
@@ -369,9 +421,33 @@ def build_snapshot_aux_parquet(snapshot_dir: Path, *, workers: int = 24, log=pri
         name = src['name']
         if not name.startswith('sim-'):
             continue
-        db_path = Path(src['db']).resolve()
+        raw_db = Path(src['db'])
+        db_path = raw_db.resolve() if raw_db.is_absolute() else (ROOT / raw_db).resolve()
         if not db_path.exists():
+            log(json.dumps({'event': 'aux_source_missing_db', 'source': name, 'path': str(db_path)}))
             continue
+
+        source_parquet = checkpoint_dir / f'{name}.parquet'
+        if resume and not force and source_parquet.exists():
+            log(json.dumps({'event': 'aux_source_resumed_from_cache', 'source': name, 'path': str(source_parquet)}))
+            s_table = pq.read_table(source_parquet)
+            m_jids = s_table['job_id'].to_pylist()
+            m_cols = [s_table[c].to_numpy() for c in AUX_COLUMNS]
+            matched = 0
+            for i, jid in enumerate(m_jids):
+                idx = job_to_idx.get(jid)
+                if idx is not None:
+                    for ci in range(len(AUX_COLUMNS)):
+                        aux_matrix[idx, ci] = m_cols[ci][i]
+                    has_trace[idx] = True
+                    matched += 1
+            if name not in state['completed_sources']:
+                state['completed_sources'].append(name)
+            continue
+
+        chunk_dir = checkpoint_dir / name
+        chunk_dir.mkdir(parents=True, exist_ok=True)
+
         recover = bool(src.get('recover_invalid_rows', False))
         t0 = time.time()
         con = sqlite3.connect(f'file:{db_path}?mode=ro', uri=True, timeout=30)
@@ -382,19 +458,115 @@ def build_snapshot_aux_parquet(snapshot_dir: Path, *, workers: int = 24, log=pri
         max_rowid = int(max_row[0])
         n_chunks = max(workers * 4, 32)
         chunk_size = math.ceil(max_rowid / n_chunks)
-        tasks = [
-            (str(db_path), low, min(max_rowid, low + chunk_size - 1), recover)
-            for low in range(1, max_rowid + 1, chunk_size)
+        all_tasks = [
+            (chunk_idx, str(db_path), low, min(max_rowid, low + chunk_size - 1), recover)
+            for chunk_idx, low in enumerate(range(1, max_rowid + 1, chunk_size))
         ]
+
+        completed_chunk_indices = set()
+        if resume and not force:
+            for p in chunk_dir.glob('chunk_*.parquet'):
+                try:
+                    completed_chunk_indices.add(int(p.stem.split('_')[1]))
+                except (IndexError, ValueError):
+                    pass
+
+        pending_tasks = [t for t in all_tasks if t[0] not in completed_chunk_indices]
+        total_chunks = len(all_tasks)
+        chunks_done = len(completed_chunk_indices)
+
+        log(json.dumps({
+            'event': 'aux_source_start',
+            'source': name,
+            'total_chunks': total_chunks,
+            'cached_chunks': chunks_done,
+            'pending_chunks': len(pending_tasks),
+        }, ensure_ascii=False))
+
+        last_progress_log = t0
+        if pending_tasks:
+            with ProcessPoolExecutor(max_workers=workers) as pool:
+                futures = {pool.submit(_worker_scan_range, t): t[0] for t in pending_tasks}
+                for fut in as_completed(futures):
+                    chunk_idx, ids, vals = fut.result()
+                    c_jids = []
+                    c_vals = []
+                    for jid, row_vals in zip(ids, vals):
+                        if jid in job_to_idx:
+                            c_jids.append(jid)
+                            c_vals.append(row_vals)
+
+                    table_dict = {'job_id': pa.array(c_jids, type=pa.string())}
+                    c_vals_arr = np.asarray(c_vals, dtype=np.float32) if c_vals else np.zeros((0, len(AUX_COLUMNS)), dtype=np.float32)
+                    for ci, col in enumerate(AUX_COLUMNS):
+                        table_dict[col] = pa.array(c_vals_arr[:, ci] if len(c_vals) else np.array([], dtype=np.float32), type=pa.float32())
+                    chunk_table = pa.Table.from_arrays(list(table_dict.values()), names=list(table_dict.keys()))
+
+                    chunk_file = chunk_dir / f'chunk_{chunk_idx:05d}.parquet'
+                    tmp_chunk = chunk_file.with_suffix(f'.{os.getpid()}.tmp')
+                    pq.write_table(chunk_table, tmp_chunk, compression='snappy')
+                    tmp_chunk.replace(chunk_file)
+
+                    chunks_done += 1
+                    now = time.time()
+                    elapsed = now - t0
+                    chunks_pending_done = chunks_done - len(completed_chunk_indices)
+                    eta_s = (elapsed / chunks_pending_done) * (total_chunks - chunks_done) if chunks_pending_done > 0 else 0
+
+                    if now - last_progress_log >= 5.0 or chunks_done == total_chunks:
+                        last_progress_log = now
+                        pct = (chunks_done / total_chunks) * 100.0
+                        log(json.dumps({
+                            'event': 'aux_chunk_progress',
+                            'source': name,
+                            'chunks_done': chunks_done,
+                            'total_chunks': total_chunks,
+                            'percent': round(pct, 1),
+                            'elapsed_s': round(elapsed, 1),
+                            'eta_s': round(eta_s, 1),
+                        }, ensure_ascii=False))
+                        state['current_source'] = name
+                        state['current_progress'] = {
+                            'done_chunks': chunks_done,
+                            'total_chunks': total_chunks,
+                            'percent': round(pct, 1),
+                            'elapsed_s': round(elapsed, 1),
+                            'eta_s': round(eta_s, 1),
+                        }
+                        state['updated_at'] = datetime.now(timezone.utc).isoformat()
+                        state_file.write_text(json.dumps(state, indent=2, ensure_ascii=False), encoding='utf-8')
+
+        chunk_files = sorted(chunk_dir.glob('chunk_*.parquet'))
+        tables = [pq.read_table(f) for f in chunk_files]
+        if tables:
+            merged_table = pa.concat_tables(tables)
+        else:
+            merged_table = pa.table({
+                'job_id': pa.array([], type=pa.string()),
+                **{c: pa.array([], type=pa.float32()) for c in AUX_COLUMNS},
+            })
+
+        tmp_src = source_parquet.with_suffix(f'.{os.getpid()}.tmp')
+        pq.write_table(merged_table, tmp_src, compression='snappy')
+        tmp_src.replace(source_parquet)
+
+        m_jids = merged_table['job_id'].to_pylist()
+        m_cols = [merged_table[c].to_numpy() for c in AUX_COLUMNS]
         matched = 0
-        with ProcessPoolExecutor(max_workers=workers) as pool:
-            for ids, vals in pool.map(_worker_scan_range, tasks):
-                for jid, row_vals in zip(ids, vals):
-                    idx = job_to_idx.get(jid)
-                    if idx is not None:
-                        aux_matrix[idx] = row_vals
-                        has_trace[idx] = True
-                        matched += 1
+        for i, jid in enumerate(m_jids):
+            idx = job_to_idx.get(jid)
+            if idx is not None:
+                for ci in range(len(AUX_COLUMNS)):
+                    aux_matrix[idx, ci] = m_cols[ci][i]
+                has_trace[idx] = True
+                matched += 1
+
+        shutil.rmtree(chunk_dir, ignore_errors=True)
+        if name not in state['completed_sources']:
+            state['completed_sources'].append(name)
+        state['updated_at'] = datetime.now(timezone.utc).isoformat()
+        state_file.write_text(json.dumps(state, indent=2, ensure_ascii=False), encoding='utf-8')
+
         log(json.dumps({
             'event': 'aux_source_extracted',
             'source': name,
@@ -412,6 +584,11 @@ def build_snapshot_aux_parquet(snapshot_dir: Path, *, workers: int = 24, log=pri
     tmp_path = out_path.with_suffix(f'.{os.getpid()}.tmp')
     pq.write_table(pa.table(table_dict), tmp_path, compression='snappy')
     tmp_path.replace(out_path)
+
+    state['status'] = 'complete'
+    state['finished_at'] = datetime.now(timezone.utc).isoformat()
+    state_file.write_text(json.dumps(state, indent=2, ensure_ascii=False), encoding='utf-8')
+
     log(json.dumps({
         'event': 'aux_labels_written',
         'path': str(out_path),
@@ -419,3 +596,230 @@ def build_snapshot_aux_parquet(snapshot_dir: Path, *, workers: int = 24, log=pri
         'trace_rows': int(has_trace.sum()),
     }, ensure_ascii=False))
     return out_path
+
+
+def _print_status(snapshot_dir: Path, checkpoint_dir: Path, pid_file: Path, log_file: Path):
+    is_running = False
+    pid = None
+    if pid_file.exists():
+        try:
+            pid = int(pid_file.read_text().strip())
+            if psutil.pid_exists(pid):
+                proc = psutil.Process(pid)
+                if 'aux_labels' in ' '.join(proc.cmdline()):
+                    is_running = True
+        except Exception:
+            pass
+
+    out_file = snapshot_dir / 'aux_labels.parquet'
+    state_file = checkpoint_dir / 'state.json'
+    state = {}
+    if state_file.exists():
+        try:
+            state = json.loads(state_file.read_text(encoding='utf-8'))
+        except Exception:
+            pass
+
+    print("==================================================")
+    print("Auxiliary Labels Extraction Status")
+    print("==================================================")
+    print(f"Snapshot:          {snapshot_dir}")
+    print(f"Status:            {'RUNNING (PID ' + str(pid) + ')' if is_running else state.get('status', 'IDLE / STOPPED')}")
+    print(f"Final Artifact:    {out_file} ({'EXISTS' if out_file.exists() else 'NOT FOUND'})")
+    if state.get('started_at'):
+        print(f"Started At:        {state['started_at']}")
+    if state.get('updated_at'):
+        print(f"Updated At:        {state['updated_at']}")
+    if state.get('completed_sources'):
+        print(f"Completed Sources: {', '.join(state['completed_sources'])}")
+    if state.get('current_source'):
+        print(f"Current Source:    {state['current_source']}")
+    if state.get('current_progress'):
+        prog = state['current_progress']
+        print(f"Current Progress:  {prog.get('done_chunks', 0)}/{prog.get('total_chunks', 0)} chunks ({prog.get('percent', 0):.1f}%), ETA: {prog.get('eta_s', 0):.1f}s")
+    print(f"Log File:          {log_file}")
+    if log_file.exists():
+        print("---------------- Recent Log Output ----------------")
+        try:
+            lines = log_file.read_text(encoding='utf-8', errors='replace').splitlines()
+            for line in lines[-12:]:
+                print(line)
+        except Exception as e:
+            print(f"(Error reading log: {e})")
+    print("==================================================")
+
+
+def _stop_daemon(pid_file: Path):
+    if not pid_file.exists():
+        print("No PID file found. Process is not running.")
+        return
+    try:
+        pid = int(pid_file.read_text().strip())
+    except Exception:
+        print("Invalid PID file.")
+        pid_file.unlink(missing_ok=True)
+        return
+
+    if not psutil.pid_exists(pid):
+        print(f"Process {pid} is not running.")
+        pid_file.unlink(missing_ok=True)
+        return
+
+    proc = psutil.Process(pid)
+    print(f"Stopping extraction process (PID {pid})...")
+    proc.terminate()
+    try:
+        proc.wait(timeout=5)
+        print("Process terminated successfully.")
+    except psutil.TimeoutExpired:
+        print("Process did not terminate within 5s, sending SIGKILL...")
+        proc.kill()
+        proc.wait(timeout=3)
+        print("Process killed.")
+    pid_file.unlink(missing_ok=True)
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        '--snapshot',
+        type=Path,
+        default=Path('/data/pl/Sts2Bot-training-20261031/snapshot'),
+        help='Snapshot directory (default: /data/pl/Sts2Bot-training-20261031/snapshot)',
+    )
+    parser.add_argument(
+        '--workers',
+        type=int,
+        default=24,
+        help='Number of parallel worker processes (default: 24)',
+    )
+    parser.add_argument(
+        '--checkpoint-dir',
+        type=Path,
+        default=None,
+        help='Checkpoint directory (default: <snapshot>/.aux_checkpoints)',
+    )
+    parser.add_argument(
+        '--daemon',
+        action='store_true',
+        help='Launch process detached in background (independent of terminal/chat session)',
+    )
+    parser.add_argument(
+        '--status',
+        action='store_true',
+        help='Query background daemon status and progress',
+    )
+    parser.add_argument(
+        '--stop',
+        action='store_true',
+        help='Stop running background extraction process',
+    )
+    parser.add_argument(
+        '--force',
+        action='store_true',
+        help='Force re-extraction ignoring existing checkpoints and parquet output',
+    )
+    parser.add_argument(
+        '--log-file',
+        type=Path,
+        default=None,
+        help='Path to log file (default: <snapshot>/aux_extraction.log)',
+    )
+    args = parser.parse_args()
+
+    snapshot_dir = args.snapshot.resolve()
+    if not snapshot_dir.exists():
+        print(f"Error: Snapshot directory does not exist: {snapshot_dir}")
+        sys.exit(1)
+
+    checkpoint_dir = (args.checkpoint_dir or (snapshot_dir / '.aux_checkpoints')).resolve()
+    checkpoint_dir.mkdir(parents=True, exist_ok=True)
+
+    pid_file = checkpoint_dir / 'extraction.pid'
+    log_file = (args.log_file or (snapshot_dir / 'aux_extraction.log')).resolve()
+
+    if args.status:
+        _print_status(snapshot_dir, checkpoint_dir, pid_file, log_file)
+        return
+
+    if args.stop:
+        _stop_daemon(pid_file)
+        return
+
+    # Check if process is already running
+    if pid_file.exists():
+        try:
+            pid = int(pid_file.read_text().strip())
+            if pid != os.getpid() and psutil.pid_exists(pid):
+                proc = psutil.Process(pid)
+                if 'aux_labels' in ' '.join(proc.cmdline()):
+                    print(f"Extraction process is already running with PID {pid}.")
+                    print(f"Check status: python -m train.aux_labels --snapshot {snapshot_dir} --status")
+                    return
+        except Exception:
+            pass
+
+    if args.daemon:
+        cmd = [
+            sys.executable, '-u', '-m', 'train.aux_labels',
+            '--snapshot', str(snapshot_dir),
+            '--workers', str(args.workers),
+            '--checkpoint-dir', str(checkpoint_dir),
+            '--log-file', str(log_file),
+        ]
+        if args.force:
+            cmd.append('--force')
+
+        log_file.parent.mkdir(parents=True, exist_ok=True)
+        with open(log_file, 'a', buffering=1) as out:
+            child = subprocess.Popen(
+                cmd,
+                stdin=subprocess.DEVNULL,
+                stdout=out,
+                stderr=subprocess.STDOUT,
+                start_new_session=True,  # detached session (setsid)
+                close_fds=True,
+            )
+        pid_file.write_text(f"{child.pid}\n")
+        print("Extraction daemon successfully started in background.")
+        print(f"PID: {child.pid}")
+        print(f"Snapshot: {snapshot_dir}")
+        print(f"Workers: {args.workers}")
+        print(f"Log: {log_file}")
+        print(f"Check status with: python -m train.aux_labels --snapshot {snapshot_dir} --status")
+        return
+
+    lock_path = checkpoint_dir / 'extraction.lock'
+    lock_fd = open(lock_path, 'a+')
+    fcntl.fcntl(lock_fd.fileno(), fcntl.F_SETFD, fcntl.FD_CLOEXEC)
+    try:
+        fcntl.flock(lock_fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except (BlockingIOError, OSError):
+        print(f"Another extraction process is already running for {snapshot_dir}")
+        sys.exit(1)
+
+    pid_file.write_text(f"{os.getpid()}\n")
+    try:
+        build_snapshot_aux_parquet(
+            snapshot_dir,
+            workers=args.workers,
+            checkpoint_dir=checkpoint_dir,
+            resume=not args.force,
+            force=args.force,
+        )
+    finally:
+        try:
+            if pid_file.exists() and pid_file.read_text().strip() == str(os.getpid()):
+                pid_file.unlink()
+        except Exception:
+            pass
+        try:
+            fcntl.flock(lock_fd, fcntl.LOCK_UN)
+            lock_fd.close()
+        except Exception:
+            pass
+
+
+if __name__ == '__main__':
+    main()
+
