@@ -67,7 +67,7 @@ def code_provenance():
 class DeviceData:
     """Pair encodings and row labels resident on one device."""
 
-    def __init__(self, dataset: Dataset, kind, device):
+    def __init__(self, dataset: Dataset, kind, device, *, use_aux=False):
         self.device = torch.device(device)
         self.kind = kind
         enc = dataset.encoded
@@ -87,12 +87,48 @@ class DeviceData:
         else:
             self.symbols = torch.from_numpy(enc['symbols'].astype(np.int64)).to(self.device)
             self.numerics = torch.from_numpy(enc['numerics']).to(self.device)
+
+        aux_full_y, aux_full_mask = None, None
+        if use_aux:
+            import pyarrow.parquet as pq
+            from .aux_labels import AUX_COLUMNS, build_snapshot_aux_parquet
+            aux_path = build_snapshot_aux_parquet(dataset.snapshot.directory)
+            aux_df = pq.read_table(aux_path).to_pandas()
+            n_total = len(dataset.rows)
+            raw_aux = np.zeros((n_total, 1 + len(AUX_COLUMNS)), dtype=np.float32)
+            mask_aux = np.zeros((n_total, 1 + len(AUX_COLUMNS)), dtype=np.float32)
+            ft = dataset.rows['finished_turn'].fillna(0).to_numpy(dtype=np.float32)
+            raw_aux[:, 0] = np.log1p(np.maximum(0.0, ft))
+            mask_aux[:, 0] = (ft > 0).astype(np.float32)
+            has_tr = aux_df['has_trace'].to_numpy(dtype=bool)
+            for ci, col in enumerate(AUX_COLUMNS, start=1):
+                vals = aux_df[col].to_numpy(dtype=np.float32)
+                valid = has_tr & np.isfinite(vals)
+                raw_aux[valid, ci] = vals[valid]
+                mask_aux[valid, ci] = 1.0
+            # Z-score normalize using training split valid statistics
+            train_pair_mask = (dataset.pairs.split.to_numpy()[dataset.rows.pair.to_numpy()] == 'train')
+            for j in range(raw_aux.shape[1]):
+                v = (mask_aux[:, j] > 0.5) & train_pair_mask
+                if v.any():
+                    mu = float(raw_aux[v, j].mean())
+                    sd = float(raw_aux[v, j].std())
+                    if sd < 1e-6:
+                        sd = 1.0
+                    raw_aux[:, j] = np.where(mask_aux[:, j] > 0.5, (raw_aux[:, j] - mu) / sd, 0.0)
+            aux_full_y, aux_full_mask = raw_aux, mask_aux
+
         self.rows = {}
+        pair_splits = dataset.pairs.split.to_numpy()[dataset.rows.pair.to_numpy()]
         for split in SPLITS:
             rows = dataset.split_rows(split)
             self.rows[split] = {k: torch.as_tensor(rows[c].to_numpy(), device=self.device)
                                 for k, c in (('pair', 'pair'), ('y', 'y'), ('died', 'died'), ('weight', 'weight'))}
             self.rows[split]['pair'] = self.rows[split]['pair'].long()
+            if aux_full_y is not None:
+                smask = (pair_splits == split)
+                self.rows[split]['aux_y'] = torch.from_numpy(aux_full_y[smask]).to(self.device)
+                self.rows[split]['aux_mask'] = torch.from_numpy(aux_full_mask[smask]).to(self.device)
 
     def batch(self, pairs):
         if self.kind == 'sparse':
@@ -139,7 +175,9 @@ def predict_rows(model, data: DeviceData, split, batch_size=4096):
 
 def train_torch(name, dataset, hparams, device, output, log):
     seed_everything(hparams['seed'])
-    data = DeviceData(dataset, input_kind(name), device)
+    use_aux = bool(hparams.get('aux_supervision', False))
+    aux_loss_weight = float(hparams.get('aux_loss_weight', 0.05))
+    data = DeviceData(dataset, input_kind(name), device, use_aux=use_aux)
     model = build_torch_model(name, dataset.vocab, hparams).to(device)
     n_params = sum(p.numel() for p in model.parameters())
     log(json.dumps({'event': 'model', 'name': name, 'parameters': n_params, 'device': str(device)}))
@@ -155,8 +193,19 @@ def train_torch(name, dataset, hparams, device, output, log):
         order = torch.randperm(n, device=data.device)
         total, count = 0.0, 0
         for indices in order.split(hparams['batch_size']):
-            out = forward(model, data, train_rows['pair'][indices])
-            loss = loss_fn(out, train_rows['y'][indices], train_rows['died'][indices], train_rows['weight'][indices], hparams['death_loss_weight'])
+            if use_aux and getattr(model, 'aux_head', None) is not None:
+                out, aux_pred = model(*data.batch(train_rows['pair'][indices]), return_aux=True)
+                primary = loss_fn(out, train_rows['y'][indices], train_rows['died'][indices], train_rows['weight'][indices], hparams['death_loss_weight'])
+                ay = train_rows['aux_y'][indices]
+                am = train_rows['aux_mask'][indices]
+                adiff = nn.functional.smooth_l1_loss(aux_pred, ay, reduction='none', beta=0.5) * am
+                arow = adiff.sum(dim=1) / am.sum(dim=1).clamp_min(1.0)
+                w = train_rows['weight'][indices]
+                aloss = (arow * w).sum() / w.sum()
+                loss = primary + aux_loss_weight * aloss
+            else:
+                out = forward(model, data, train_rows['pair'][indices])
+                loss = loss_fn(out, train_rows['y'][indices], train_rows['died'][indices], train_rows['weight'][indices], hparams['death_loss_weight'])
             optimizer.zero_grad(set_to_none=True)
             loss.backward()
             nn.utils.clip_grad_norm_(model.parameters(), 5.0)

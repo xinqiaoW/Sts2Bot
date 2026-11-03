@@ -31,3 +31,7 @@ decompiled/
 
 # Machine-local simulator release path
 configs/simulator.json
+
+# Build artifacts and training experiment reports
+dist/
+train/reports/

@@ -90,20 +90,29 @@ class SetRegressor(nn.Module):
     with one seed, one SAB, then a linear head, as in the official ``SetTransformer``.
     """
 
-    def __init__(self, n_symbols, n_numerics, d_model=128, num_heads=4, num_inds=0, n_enc=2, ln=True, dropout=0.0):
+    def __init__(self, n_symbols, n_numerics, d_model=128, num_heads=4, num_inds=0, n_enc=2, ln=True, dropout=0.0, *, role_priors=None, n_aux=0):
         super().__init__()
-        self.embed = TokenEmbedding(n_symbols, n_numerics, d_model)
+        self.embed = TokenEmbedding(n_symbols, n_numerics, d_model, role_priors=role_priors)
         make = (lambda: ISAB(d_model, d_model, num_heads, num_inds, ln=ln)) if num_inds else (lambda: SAB(d_model, d_model, num_heads, ln=ln))
         self.enc = nn.ModuleList([make() for _ in range(n_enc)])
         self.pma = PMA(d_model, num_heads, 1, ln=ln)
         self.dec = SAB(d_model, d_model, num_heads, ln=ln)
         self.dropout = nn.Dropout(dropout)
         self.head = nn.Linear(d_model, 2)
+        self.aux_head = nn.Sequential(
+            nn.Linear(d_model, d_model),
+            nn.SiLU(),
+            nn.Linear(d_model, n_aux),
+        ) if n_aux > 0 else None
 
-    def forward(self, symbols, numerics):
+    def forward(self, symbols, numerics, *, return_aux=False):
         mask = symbols[:, :, 0] != PAD  # first slot is always the kind symbol
         X = self.embed(symbols, numerics)
         for block in self.enc:
             X = block(X, mask)
         Z = self.dec(self.pma(X, mask))
-        return self.head(self.dropout(Z[:, 0]))
+        h = self.dropout(Z[:, 0])
+        out = self.head(h)
+        if return_aux and self.aux_head is not None:
+            return out, self.aux_head(h)
+        return out

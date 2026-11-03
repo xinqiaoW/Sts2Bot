@@ -52,13 +52,41 @@ class RepoMLP(nn.Module):
 class TokenEmbedding(nn.Module):
     """Sum of symbol embeddings plus a linear map of the numeric slots."""
 
-    def __init__(self, n_symbols, n_numerics, d_model):
+    def __init__(self, n_symbols, n_numerics, d_model, *, role_priors=None):
         super().__init__()
         self.symbols = nn.Embedding(n_symbols, d_model, padding_idx=PAD)
         self.numerics = nn.Linear(n_numerics, d_model)
+        if role_priors is not None:
+            from ..role_priors import CONTEXT_DIM
+            table_u0, table_u1, upgrade1_idx = role_priors
+            self.register_buffer('prior_u0', torch.as_tensor(table_u0, dtype=torch.float32), persistent=False)
+            self.register_buffer('prior_u1', torch.as_tensor(table_u1, dtype=torch.float32), persistent=False)
+            self.upgrade1_idx = int(upgrade1_idx)
+            in_dim = int(self.prior_u0.shape[1]) + CONTEXT_DIM
+            self.role_mlp = nn.Sequential(
+                nn.Linear(in_dim, d_model),
+                nn.SiLU(),
+                nn.Linear(d_model, d_model),
+            )
+        else:
+            self.prior_u0 = None
+            self.prior_u1 = None
+            self.upgrade1_idx = -1
+            self.role_mlp = None
 
     def forward(self, symbols, numerics):
-        return self.symbols(symbols).sum(dim=2) + self.numerics(numerics)
+        out = self.symbols(symbols).sum(dim=2) + self.numerics(numerics)
+        if self.prior_u0 is not None:
+            from ..role_priors import compute_token_context
+            sym1 = symbols[:, :, 1]
+            if self.upgrade1_idx >= 0:
+                is_up = (symbols[:, :, 2] == self.upgrade1_idx).unsqueeze(-1)
+                priors = torch.where(is_up, self.prior_u1[sym1], self.prior_u0[sym1])
+            else:
+                priors = self.prior_u0[sym1]
+            ctx = compute_token_context(priors)
+            out = out + self.role_mlp(torch.cat([priors, ctx], dim=-1))
+        return out
 
 
 def build_torch_model(name, vocab, hparams) -> nn.Module:
@@ -81,8 +109,17 @@ def build_torch_model(name, vocab, hparams) -> nn.Module:
                          arch_type=hparams.get('arch_type', 'tabm'))
     if name == 'set_transformer':
         from .set_transformer import SetRegressor
+        role_priors = None
+        if hparams.get('role_priors', False):
+            from ..role_priors import build_symbol_prior_tables
+            role_priors = build_symbol_prior_tables(vocab.spec['symbols'])
+        n_aux = 0
+        if hparams.get('aux_supervision', False):
+            from ..aux_labels import NUM_AUX_TARGETS
+            n_aux = NUM_AUX_TARGETS
         return SetRegressor(n_symbols=vocab.n_symbols, n_numerics=vocab.spec['token_numerics'],
                             d_model=hparams.get('d_model', 128), num_heads=hparams.get('num_heads', 4),
                             num_inds=hparams.get('num_inds', 0), n_enc=hparams.get('n_enc', 2),
-                            ln=hparams.get('ln', True), dropout=hparams.get('dropout', 0.0))
+                            ln=hparams.get('ln', True), dropout=hparams.get('dropout', 0.0),
+                            role_priors=role_priors, n_aux=n_aux)
     raise ValueError(f'Unknown torch model: {name}')

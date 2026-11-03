@@ -220,14 +220,15 @@ def test_streamed_pair_features_equal_the_existing_sized_input_encoding(catalog)
         encode_pairs(vocab, iter(inputs), n_pairs=len(inputs)+1)
 
 
-def test_set_transformer_supports_padded_tokens_and_backward(catalog):
+@pytest.mark.parametrize('role_priors', [False, True])
+def test_set_transformer_supports_padded_tokens_and_backward(catalog, role_priors):
     from train.models import build_torch_model
     from train.train import load_model_config, loss_fn
     inputs = [(sample_build(catalog, i), TARGET, 70) for i in range(4)]
     vocab = Vocabulary.build(catalog, inputs)
     encoded = encode_pairs(vocab, inputs)
-    model = build_torch_model('set_transformer', vocab,
-                              load_model_config(ROOT/'train/configs/models.json', 'set_transformer'))
+    hparams = load_model_config(ROOT/'train/configs/models.json', 'set_transformer', {'role_priors': role_priors})
+    model = build_torch_model('set_transformer', vocab, hparams)
     output = model(torch.from_numpy(encoded['symbols']).long(), torch.from_numpy(encoded['numerics']))
     loss = loss_fn(output, torch.full((4,), .2), torch.zeros(4), torch.ones(4), .1)
     loss.backward()
