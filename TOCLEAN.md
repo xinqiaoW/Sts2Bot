@@ -1,7 +1,6 @@
-# 待清理
+# 待清理项
 
-## 控制器内训练的初始面板
+## `tools/collect_continuous.py` 内置训练分支
 
-`tools/collect_continuous.py` 里，`initial_samples` 是为了收集之后直接进入训练，我们希望目前的代码只处理收集逻辑而不包括训练，所以相关内容可以进行清理
-
-旧行为：待领取任务为 0 时，完成数正好等于 `initial_samples`（默认和沙箱都是 6080）就把模型写到 `initial_output`（`checkpoints/v1`）；完成数更大时写到 `output_root/samples-00000xxxx`。进度文件 `*.continuous.progress.json` 记下第一次的 `initial_samples`，重启时数字不一致就拒绝启动，避免旧检查点目录和新规则对不上。
+- **现状**：`Controller` 仍保留非 `--collect-only` 下的 `initial_samples`（默认 6080）、`initial_output`、`output_root`、`validate_or_train` 及 `.continuous.progress.json` 中的 `initial_samples` 一致性校验。
+- **目标**：采集控制器仅负责队列补充与采集调度，模型训练统一由 `train/` 独立流程处理，后续可移除控制器内的旧训练与检查点验证分支。

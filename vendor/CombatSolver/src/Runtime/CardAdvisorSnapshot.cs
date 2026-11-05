@@ -42,14 +42,124 @@ internal static class CardAdvisorCapture
         }
     }
 
+    internal static List<object[]> BuildAncientHistory(RunState run, Player player)
+    {
+        List<object[]> history = [];
+        for (int act = 0; act < run.MapPointHistory.Count; act++)
+            foreach (var point in run.MapPointHistory[act])
+                foreach (var chosen in point.GetEntry(player.NetId).AncientChoices.Where(c => c.WasChosen))
+                {
+                    var events = point.Rooms.Where(r => r.ModelId != null && r.ModelId.ToString().StartsWith("EVENT.", StringComparison.Ordinal)).ToArray();
+                    if (events.Length != 1) throw new NotSupportedException("??????????");
+                    history.Add([act + 1, events[0].ModelId!.Entry, chosen.TextKey]);
+                }
+        return history;
+    }
+
+    internal static CardAdvisorSnapshot? CaptureCombat(RunState run, Player player)
+    {
+        if (player.Character.Id.Entry != "SILENT" || run.AscensionLevel != 10 || run.Modifiers.Count != 0)
+            return null;
+        CombatState? combat = CombatManager.Instance.DebugOnlyGetState();
+        if (combat == null || player.PlayerCombatState == null) return null;
+        string[] enemies = combat.Enemies.Where(e => e.IsAlive && e.Monster != null).Select(e => e.Monster!.Id.Entry).ToArray();
+        if (enemies.Length == 0) return null;
+        string live;
+        try { live = ContinuationStamp.CaptureLive(combat).StateText; }
+        catch { return null; }
+        CardAdvisorProgress progress = Progress(run);
+        var payload = new
+        {
+            protocol = 1,
+            mode = "combat_step",
+            character = player.Character.Id.Entry,
+            ascension = run.AscensionLevel,
+            live,
+            turn = player.PlayerCombatState.TurnNumber,
+            hp = player.Creature.CurrentHp,
+            max_hp = player.Creature.MaxHp,
+            room = run.CurrentRoom?.RoomType.ToString() ?? "Monster",
+            enemies,
+            build = new
+            {
+                act_id = run.Act.Id.Entry,
+                act = run.CurrentActIndex + 1,
+                family = "live-advisor",
+                cards = player.Deck.Cards.Select(Card).ToArray(),
+                relics = player.Relics.Select(Relic).ToArray(),
+                ancient_history = BuildAncientHistory(run, player),
+            },
+            scoring_state = new
+            {
+                hp = player.Creature.CurrentHp,
+                actFloor = run.ActFloor,
+                normalCombatsCompleted = progress.NormalCombatsCompleted,
+            },
+        };
+        return new CardAdvisorSnapshot(
+            JsonSerializer.Serialize(payload, JsonOptions),
+            $"?? ?????? ? ? {player.PlayerCombatState.TurnNumber} ??",
+            [],
+            "???/??/???????????????????");
+    }
+
+    internal static CardAdvisorSnapshot? CaptureBuildRadar(RunState run, Player player)
+    {
+        if (player.Character.Id.Entry != "SILENT" || run.AscensionLevel != 10 || run.Modifiers.Count != 0)
+            return null;
+        if (run.CurrentMapPoint == null) return null;
+        List<object[]> history = BuildAncientHistory(run, player);
+        CardAdvisorProgress progress = Progress(run);
+        var visibleBoss = progress.TargetSecondBoss ? run.Act.SecondBossEncounter : run.Act.BossEncounter;
+        var payload = new
+        {
+            protocol = 1,
+            mode = "build_radar",
+            character = player.Character.Id.Entry,
+            ascension = run.AscensionLevel,
+            build = new
+            {
+                act_id = run.Act.Id.Entry,
+                act = run.CurrentActIndex + 1,
+                family = "live-advisor",
+                cards = player.Deck.Cards.Select(Card).ToArray(),
+                relics = player.Relics.Select(Relic).ToArray(),
+                ancient_history = history,
+            },
+            max_hp = player.Creature.MaxHp,
+            gold = player.Gold,
+            options = Array.Empty<object>(),
+            future_room_types = Array.Empty<object>(),
+            short_fallback_room_types = Array.Empty<object>(),
+            floors_to_boss = progress.FloorsToBoss,
+            boss_targets = new Dictionary<string, double> { [visibleBoss!.Id.Entry] = 1 },
+            scoring_state = new
+            {
+                hp = player.Creature.CurrentHp,
+                actFloor = run.ActFloor,
+                normalCombatsCompleted = progress.NormalCombatsCompleted,
+                remainingBosses = progress.RemainingBosses(run.Act.BossEncounter.Id.Entry,
+                    run.Map.SecondBossMapPoint is null ? null : run.Act.SecondBossEncounter!.Id.Entry),
+                actBossDefeated = progress.ActBossDefeated,
+                visibleBoss = visibleBoss.Id.Entry,
+            },
+        };
+        return new CardAdvisorSnapshot(
+            JsonSerializer.Serialize(payload, JsonOptions),
+            $"?? ???????? ? ? {run.ActFloor} ?",
+            [],
+            "?????????????????????????????");
+    }
+
     internal static CardAdvisorSnapshot? Capture(Node host)
     {
-        if (!Entry.Enabled || CombatManager.Instance.IsInProgress || CombatManager.Instance.IsStarting
-            || !RunManager.Instance.IsInProgress) return null;
+        if (!Entry.Enabled || CombatManager.Instance.IsStarting || !RunManager.Instance.IsInProgress) return null;
         RunState? run = RunManager.Instance.DebugOnlyGetState();
         if (run == null || run.Players.Count != 1) return null;
         Player? player = LocalContext.GetMe(run);
         if (player == null) return null;
+        if (CombatManager.Instance.IsInProgress)
+            return CaptureCombat(run, player);
         object? surface = NOverlayStack.Instance?.Peek();
         List<CardModel> cards = [];
         List<int?> prices = [];
@@ -97,7 +207,7 @@ internal static class CardAdvisorCapture
             NMerchantCard[] slots = Descendants<NMerchantCard>(host)
                 .Where(s => s.IsVisibleInTree() && s.Entry is MerchantCardEntry { IsStocked: true })
                 .ToArray();
-            if (slots.Length == 0) return null;
+            if (slots.Length == 0) return CaptureBuildRadar(run, player);
             title = "商店选牌";
             foreach (NMerchantCard slot in slots)
             {
@@ -108,7 +218,7 @@ internal static class CardAdvisorCapture
             if (cards.Count == 0)
                 throw new NotSupportedException(note + "当前没有其他可评分的商店卡牌。");
         }
-        else return null;
+        else return CaptureBuildRadar(run, player);
         if (cards.Count == 0) return null;
         if (player.Character.Id.Entry != "SILENT" || run.AscensionLevel != 10 || run.Modifiers.Count != 0)
             throw new NotSupportedException("评分模型仅支持无额外修饰的单人静默猎手 A10。");

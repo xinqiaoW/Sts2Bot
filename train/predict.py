@@ -102,6 +102,69 @@ class Predictor:
     def predict(self, build, target_id, max_hp, *, strict=False):
         return self.predict_many([(build, target_id, max_hp)], strict=strict)[0]
 
+    @torch.no_grad()
+    def predict_steps(self, step_inputs, *, batch_size=512):
+        """Predict remaining combat HP loss and immediate-turn metrics from mid-combat live strings.
+
+        ``step_inputs``: list of dicts or tuples ``(live_str, act_id, target_id, relics, max_hp)``.
+        """
+        from .step_snapshots import encode_live_step_tokens, STEP_IMM_TARGET_NAMES
+        from .aux_labels import AUX_TARGET_NAMES
+        parts = []
+        max_hps = []
+        for item in step_inputs:
+            if isinstance(item, dict):
+                live_str = item['live']
+                act_id = item.get('act_id', 'OVERGROWTH')
+                target_id = item.get('target', item.get('target_id', ''))
+                relics = item.get('relics', [])
+                max_hp = float(item.get('max_hp', 70))
+            else:
+                live_str, act_id, target_id, relics = item[0], item[1], item[2], item[3]
+                max_hp = float(item[4] if len(item) > 4 else 70)
+            enc = encode_live_step_tokens(live_str, act_id, target_id, relics, self.vocab.symbol_index)
+            if enc is None:
+                raise ValueError('Failed to parse live step string')
+            parts.append(enc)
+            max_hps.append(max_hp)
+        symbols, numerics, _ = pad_tokens(parts)
+        results = []
+        for start in range(0, len(parts), batch_size):
+            sym_t = torch.from_numpy(symbols[start:start + batch_size].astype(np.int64)).to(self.device)
+            num_t = torch.from_numpy(numerics[start:start + batch_size]).to(self.device)
+            out, aux, imm = self.model(sym_t, num_t, return_step=True)
+            means = out[:, 0].cpu().numpy()
+            deaths = torch.sigmoid(out[:, 1]).cpu().numpy()
+            aux_np = aux.cpu().numpy() if aux is not None else None
+            imm_np = imm.cpu().numpy() if imm is not None else None
+            for i in range(len(means)):
+                mhp = max_hps[start + i]
+                norm_rem = float(np.clip(means[i], 0.0, 1.0))
+                row = {
+                    'model': self.name,
+                    'normalized_expected_remaining_hp_loss': norm_rem,
+                    'expected_remaining_hp_loss': norm_rem * mhp,
+                    'raw_normalized_prediction': float(means[i]),
+                    'death_probability': float(np.clip(deaths[i], 0.0, 1.0)),
+                }
+                if imm_np is not None:
+                    row['step_immediate'] = {
+                        name: float(imm_np[i, j]) for j, name in enumerate(STEP_IMM_TARGET_NAMES)
+                    }
+                    row['rem_hp_loss_per_turn_est'] = float(max(0.0, imm_np[i, 0]) * 10.0)
+                    row['immediate_turn_damage_dealt_est'] = float(max(0.0, imm_np[i, 1]) * 20.0)
+                    row['immediate_turn_block_gained_est'] = float(max(0.0, imm_np[i, 2]) * 20.0)
+                    row['immediate_turn_hp_loss_est'] = float(max(0.0, imm_np[i, 3]) * 15.0)
+                if aux_np is not None:
+                    row['remaining_aux'] = {
+                        name: float(aux_np[i, j]) for j, name in enumerate(AUX_TARGET_NAMES)
+                    }
+                results.append(row)
+        return results
+
+    def predict_step(self, live_str, act_id, target_id, relics, max_hp=70):
+        return self.predict_steps([(live_str, act_id, target_id, relics, max_hp)])[0]
+
 
 def ensemble(predictors, inputs, *, strict=False):
     """Average normalized predictions of several checkpoints (uniform weights)."""

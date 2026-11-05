@@ -20,9 +20,9 @@
 
 “净掉血”是战前血量减战后血量，包含治疗和死亡，不能把零净掉血直接当作无伤。目标均值受各目标的构筑分布影响，不能直接当作敌人难度排名。种子分母来自实际任务，不固定为 4；未整理齐时均值标为暂定。缺失回合不补成 0，战后血上限保留实值。字段一致性检查不会改变原始结果，也不代表模拟器与原生游戏已通过等价验证。
 
-## 固定快照与兼容工具
+## 静态快照导出
 
-静态页面只展示导出时的快照，浏览器刷新不会重新导出数据库。单库一致性导出使用：
+单库一致性导出使用：
 
 ```bash
 .venv/bin/python -m tools.export_snapshot \
@@ -30,8 +30,4 @@
   --output /absolute/path/to/new-export/collected-data.json.gz
 ```
 
-工具输出 gzip 数据和 `source-manifest.json`，不自动生成 `quarantined-jobs.json`；旧组合页面所需的隔离任务清单须另行准备。多个库分别导出，不是同一全局时间点。
-
-旧工具 `tools.prepare_combined_view` 仅接入真实和普通变异两个来源，还依赖既有指针、历史批次及本地化资源，不是空目录首次部署入口。`tools.prepare_snapshot_view` 仍将计划种子数固定为 4，不能用旧页面验收 24 种子的进度或全部补采数量。当前三个实例库优先使用实时查看页。
-
-维护旧静态页面时，先保留已有导出，再生成候选页并检查批次、状态分组、均值和脚本错误，最后更新页面指针。`--freeze-previous` 仅用于明确封存协议批次；不同协议结果不拼成同一批次。页面更新无需重启采集进程。
+工具输出 gzip 数据和 `source-manifest.json`。当前三个实例库优先使用上述 `tools.collection_view` 实时查看页；旧静态快照构建脚本（`tools.prepare_combined_view`、`tools.prepare_snapshot_view`）仅针对早期双库与 4 种子批次保留。

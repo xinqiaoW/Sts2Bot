@@ -1,40 +1,37 @@
 # RunController：真实游戏整局环境
 
-> 下文记录历史 M1 地图随机基线。当前默认模型全流程模式、选牌门槛、公开信息边界和批量命令见 [autobot.md](autobot.md)，开发验收进度见 [autobot-progress.md](autobot-progress.md)。
-
-局外规则由原版游戏执行，Python 在地图决策点选择合法路线；每场战斗由 CombatSolver 实际执行。已退役的拟合式模拟器保存在[归档目录](历史垃圾箱/sim-v0-fitted/README.md)。
+局外规则由原版游戏推进，Python 通过 `runctl.RealRunEnv` 在合法决策点提交动作，每场战斗由 CombatSolver 实际执行。模型全流程策略与启动说明见 [autobot.md](autobot.md) 与 [policy-configuration.md](policy-configuration.md)。已退役的拟合式模拟器保存在[归档目录](历史垃圾箱/sim-v0-fitted/README.md)。
 
 ## 能力范围
 
-- 原版 0.111.0，静默猎手，单人标准 A10，完整原生内容解锁，捏奥开局。
-- 沿用整局实际生命值、牌组、遗物、计数及升级。A10 正常起手为 56/70，不套用独立战斗采集的 70/70 标准化。
-- Python 接管地图合法选项；事件由整局控制器逐项随机选择，奖励、选牌、商店、篝火、宝箱使用原版 AutoSlay 的局外处理器。后者是固定基线，有些行为是拿取所有奖励或购买所有可负担物品，并非所有选项均匀随机。
-- 普通、精英、Boss 及事件内战斗均使用 CombatSolver：Medium、8 秒短搜、DOP 1、禁用药水、关闭 No-GC、Instant 部署。单场上限 120 秒，整局上限默认 3600 秒。
-- 原生奖励仍可能产生药水，库存照实记录，战斗基线不使用药水。
-- `runctl.RealRunEnv` 提供同步 `reset/step/close`。第一版不是完整 Gym/PPO 接口，不提供 F 跳战或整局向量池。
+- 原版 0.111.0，静默猎手，单人标准 A10，完整原生内容解锁与发现，涅奥开局，第一幕按原版 `act_selection` 随机流选择。
+- 沿用整局实际生命值、牌组、遗物、计数及升级（A10 正常起手为 56/70，不套用单场采集的 70/70 标准化）。
+- 支持两种 `decisionMode`：
+  - `all`（CLI `--policy model` 默认）：导出所有已适配局外界面（`MAP`、`EVENT`、`SHOP`、`REST`、`TREASURE`、`REWARDS`、`CARD_REWARD`、`CHOOSE_CARD`、`RELIC`、`BUNDLE`、`CARD_GRID`、`CRYSTAL`），由 Python 策略决策。
+  - `map`（CLI `--policy random-map` 基线）：仅导出 `MAP` 路线选择；事件逐项随机选择，奖励、选牌、商店、篝火、宝箱使用原版 AutoSlay 的局外处理器。
+- 支持两种战斗搜索模式（`combat_search_mode`）：
+  - `evaluation8s`（默认）：固定 Medium、8 秒短搜、DOP 1、禁用药水、关闭 No-GC、Instant 部署；单场上限 120 秒，整局默认 3600 秒，单次决策上限 300 秒。
+  - `settings`：读取独立游戏存档内的 CombatSolver 搜索设置；单场默认 1800 秒（上限 3600 秒），整局默认 14400 秒，单次决策默认 1800 秒（上限 3600 秒）。
+- `runctl.RealRunEnv` 提供同步 `reset/step/close`，不提供 F 跳战。
 
 ## 所有权与隔离
 
-内嵌求解器的 `vendor/CombatSolver/src/Testing/UnattendedTestRunner.ProtocolHost.cs` 独占游戏请求邮箱及进程复用；`vendor/CombatSolver/src/RunControl/RunControlSession*` 拥有单局状态、原生交互、决策序号及日志；同目录的 `RunControlProtocol.cs` 拥有协议校验和文件写入。Search、Mirror、评分及出牌政策保持各自职责。
+内嵌求解器的 `vendor/CombatSolver/src/Testing/UnattendedTestRunner.ProtocolHost.cs` 独占游戏请求邮箱及进程复用；`vendor/CombatSolver/src/RunControl/RunControlSession*` 拥有单局状态、原生交互、决策序号及日志；同目录的 `RunControlProtocol.cs` 拥有协议校验和文件写入。
 
-只有环境变量 `COMBATSOLVER_RUN_CONTROL=1` 的独立进程才能接受整局请求。Python 配置还必须明确 `kind: run_control`。一个环境独占一个用户目录和进程；失败后退出该进程，保留原始尝试，下一次调用使用新的 run ID。自然死亡是完成的对局，超时和异常是失败。
-
-RunController 使用真实游戏和 Wine，与[独立模拟器单场采集](simulator-collection.md)分别准备运行资源。整局试验独占游戏副本和 Wine prefix，不能覆盖其他采集器。
+只有环境变量 `COMBATSOLVER_RUN_CONTROL=1` 的独立进程才能接受整局请求，Python 配置还必须声明 `kind: "run_control"`。一个环境独占一个用户目录和进程；失败后退出该进程，保留原始尝试，下一次调用使用新的 run ID。自然死亡或通关是完成的对局，超时和异常是失败。
 
 ## 原生接入约束
 
-1. **AutoSlayer 整体不是正常玩法。** 原版普通战斗处理器会施加 999 层防御/再生能力；事件战斗处理器还会施加能力、移除敌方阻止战斗结束的能力并杀死敌人。整局控制器不调用这两个处理器，也不调用会结束整个进程的 `AutoSlayer.Start`。
-2. **全新采集存档缺少内容解锁。** 不解锁捏奥时原版会走首次游玩流程，初始层与 A10 开局效果不同。整局请求在独立进程内通过原生 Epoch 接口启用完整内容，再由游戏创建跑局。
-3. **地图和奖励界面可同时留在界面栈里。** 地图已经打开时优先处理可旅行地图，避免对已完成的奖励界面重复点击。
-4. **购买、事件和篝火可能等待嵌套选牌界面。** 控制器在父操作等待期间处理子界面，原生操作自己完成结算。未知界面和反复不推进的操作明确失败。
-5. **反编译目录是参考资料。** 编译以试验游戏副本所用程序集为准；现有参考目录与冻结程序集的 AutoSlay 商店构造参数存在差异，不能只凭参考文本判断可直接调用。
+1. **禁止调用 AutoSlayer 战斗作弊处理器。** 原版普通/事件战斗处理器会施加 999 层能力或直接杀死敌人。整局控制器仅使用 CombatSolver 执行真实战斗，不调用 `AutoSlayer.Start`。
+2. **启用完整内容解锁与发现。** 在独立进程创建跑局期间通过 `RunControlUnlockScope` 启用完整内容，避免新存档进入首次教学流程或缺失遭遇/遗物池。
+3. **界面栈与嵌套选择。** 地图已打开时优先处理可旅行地图；购买、事件和篝火触发子选牌界面时，在父操作等待期间导出并处理子界面，未知界面或反复停滞明确报错。
 
 ## 协议 v1
 
-整局请求复用 `user://combat_solver_test_request.json` 邮箱，以 `kind: run` 分流。单场无人请求版本及训练观察版本保持各自定义，不能混为一个 schema。
+整局请求复用 `user://combat_solver_test_request.json` 邮箱，以 `kind: "run"` 分流：
 
 ```json
-{"schemaVersion":1,"kind":"run","runId":"unique-id","seed":"RUNCTL0","characterId":"SILENT","ascension":10,"combatMode":"solver","policySeed":0,"timeoutSeconds":3600,"actionTimeoutSeconds":60,"combatTimeoutSeconds":120}
+{"schemaVersion":1,"kind":"run","runId":"unique-id","seed":"RUNCTL0","characterId":"SILENT","ascension":10,"combatMode":"solver","decisionMode":"all","policySeed":0,"timeoutSeconds":3600,"actionTimeoutSeconds":300,"combatTimeoutSeconds":120}
 ```
 
 原生接受后，每局文件位于 `user://combat_solver_runs/<runId>/`：
@@ -42,26 +39,20 @@ RunController 使用真实游戏和 Wine，与[独立模拟器单场采集](simu
 | 文件 | 含义 |
 | --- | --- |
 | `accepted.json` | 经校验的请求；同一 ID 只能接受一次 |
-| `decision.json` | 当前地图决策、可选位置、角色状态与递增 `decisionSeq` |
+| `decision.json` | 当前界面（`screen`）、合法候选项（`options`）、角色与地图状态（`state`）及递增 `decisionSeq` |
 | `action.json` | Python 的原子写入；原生消费后转存为 `action-00001.json` 等 |
 | `events.jsonl` | 带递增事件序号的追加日志，含战前/战后、楼层、事件选择及局外操作前后状态 |
-| `native-run.json` | 终局原生 `RunManager.ToSave` 快照，含原生逐层历史；不是 Spire Codex `.run` 导入接口 |
+| `native-run.json` | 终局原生 `RunManager.ToSave` 快照，含原生逐层历史 |
 | `result.json` | 自然死亡/胜利且清理完成后才写 `complete`；异常写 `failed` 与阶段和错误 |
+
+动作格式：
 
 ```json
 {"schemaVersion":1,"runId":"unique-id","decisionSeq":1,"choice":0}
 ```
 
-动作必须包含全部字段，匹配当前 run ID 与决策序号，选项仍须通过原生合法性检查。旧动作、重复动作、缺字段和越界输入不能被当作默认选项执行。
+动作必须包含全部字段，匹配当前 `runId` 与 `decisionSeq`，且 `choice` 为合法选项下标。
 
-状态保存逐张卡牌的 ID、升级、原生附魔与持久字段；遗物保存原生状态，包括计数。原生选择界面目前记录处理前后状态与界面类型，尚不对所有界面导出完整候选集合，因此这些记录不能宣称是完整行为克隆数据集。
+## 使用与数据边界
 
-## 使用和验收
-
-命令与独立环境配置见 [runctl/README.md](../runctl/README.md)，实测结果见[原生验收](run-controller-validation.md)。协议测试覆盖进程复用、ID/序号隔离、非法动作、失败结果、独占锁和超时保留现场。原生测试按开局、战斗、奖励、连续楼层、终局、同进程下一局逐步进行；验收场次和实际覆盖以运行报告为准。
-
-整局日志单独存储。其输入生命值、遗物和内容池不同于标准化战斗采集，不能直接写入现有 F 训练库。
-
-## 接口边界
-
-事件、商店、篝火、奖励及选牌尚未统一导出完整候选；当前接口不提供批量环境或完整强化学习所需的奖励、截断定义。F 跳战也未接入：平均掉血和死亡概率不能单独确定最大生命、回合计数、永久变化与奖励结算。强杀敌人还可能触发爆炸、复活或遗物，不能作为等价结算替代。
+命令与独立环境配置见 [runctl/README.md](../runctl/README.md)，早期 M1 协议验收记录见[原生验收](run-controller-validation.md)。整局日志单独存储，其输入生命值、遗物和内容池不同于 70/70 标准化单场采集，不能直接写入单场 F 训练库。F 跳战未接入：平均掉血和死亡概率不能单独确定最大生命、遗物回合计数、永久牌组变化与奖励结算。

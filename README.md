@@ -65,6 +65,8 @@ export STS2_SIMULATOR_BUNDLE=/absolute/path/to/release
 | 数据页面及支持范围 | [查看与刷新](docs/data-viewer.md) |
 | 验证及已知限制 | [验证与审计](docs/validation.md) |
 | 模型训练和报告 | [训练入口](train/README.md) |
+| 自动爬塔 Bot、人工选牌面板与策略配置 | [自动爬塔 Bot](docs/autobot.md)、[人工选牌面板](docs/card-advisor.md)、[评分与配置规则](docs/policy-configuration.md) |
+| 分布式模拟分片采集 | [分布式分片指南](docs/distributed-collection-shards.md) |
 | 内嵌求解器资料 | [文档范围](vendor/CombatSolver/docs/README.md) |
 
-整局环境 `runctl.RealRunEnv` 用 `reset/step` 控制地图选择，CombatSolver 执行战斗，局外规则由原版处理。范围与限制见 [RunController](docs/run-controller.md)，命令见 [运行入口](runctl/README.md)。已退役的拟合式模拟器见[归档说明](docs/历史垃圾箱/sim-v0-fitted/README.md)。
+整局环境 `runctl.RealRunEnv` 用 `reset/step` 控制局外决策（默认 `decision_mode="all"` 接管地图、事件、奖励、商店和篝火，保留 `decision_mode="map"` 仅控制地图的基线模式），CombatSolver 执行战斗。范围与协议见 [RunController](docs/run-controller.md)，命令见 [运行入口](runctl/README.md)。已退役的拟合式模拟器见[归档说明](docs/历史垃圾箱/sim-v0-fitted/README.md)。

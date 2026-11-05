@@ -50,19 +50,39 @@ class RepoMLP(nn.Module):
 
 
 class TokenEmbedding(nn.Module):
-    """Sum of symbol embeddings plus a linear map of the numeric slots."""
+    """Sum of symbol embeddings plus numeric and role-context branches."""
 
-    def __init__(self, n_symbols, n_numerics, d_model, *, role_priors=None):
+    def __init__(self, n_symbols, n_numerics, d_model, *, role_priors=None, exhaust_idx=-1, balanced_emb=False):
         super().__init__()
         self.symbols = nn.Embedding(n_symbols, d_model, padding_idx=PAD)
-        self.numerics = nn.Linear(n_numerics, d_model)
+        self.exhaust_idx = int(exhaust_idx)
+        self.balanced_emb = bool(balanced_emb)
+        if self.balanced_emb:
+            self.copy_emb = nn.Embedding(16, d_model)
+            self.sym_ln = nn.LayerNorm(d_model)
+            self.numerics = nn.Sequential(
+                nn.Linear(n_numerics + 4, d_model),
+                nn.SiLU(),
+                nn.Linear(d_model, d_model),
+            )
+            self.num_ln = nn.LayerNorm(d_model)
+            self.role_ln = nn.LayerNorm(d_model)
+            self.branch_scale = nn.Parameter(torch.tensor([1.0, 0.75, 0.85], dtype=torch.float32))
+        else:
+            self.copy_emb = None
+            self.sym_ln = None
+            self.numerics = nn.Linear(n_numerics, d_model)
+            self.num_ln = None
+            self.role_ln = None
+            self.branch_scale = None
         if role_priors is not None:
             from ..role_priors import CONTEXT_DIM
             table_u0, table_u1, upgrade1_idx = role_priors
             self.register_buffer('prior_u0', torch.as_tensor(table_u0, dtype=torch.float32), persistent=False)
             self.register_buffer('prior_u1', torch.as_tensor(table_u1, dtype=torch.float32), persistent=False)
             self.upgrade1_idx = int(upgrade1_idx)
-            in_dim = int(self.prior_u0.shape[1]) + CONTEXT_DIM
+            extra_copy_dim = 4 if self.balanced_emb else 0
+            in_dim = int(self.prior_u0.shape[1]) + CONTEXT_DIM + extra_copy_dim
             self.role_mlp = nn.Sequential(
                 nn.Linear(in_dim, d_model),
                 nn.SiLU(),
@@ -74,8 +94,59 @@ class TokenEmbedding(nn.Module):
             self.upgrade1_idx = -1
             self.role_mlp = None
 
+    @staticmethod
+    def compute_copy_features(symbols):
+        B, T, _ = symbols.shape
+        sym0 = symbols[:, :, 0]
+        sym1 = symbols[:, :, 1]
+        sym4 = symbols[:, :, 4]
+        has_entity = (sym1 > 0)
+        same_entity = (
+            (sym0.unsqueeze(2) == sym0.unsqueeze(1))
+            & (sym1.unsqueeze(2) == sym1.unsqueeze(1))
+            & has_entity.unsqueeze(2)
+            & has_entity.unsqueeze(1)
+        )
+        tril = torch.tril(torch.ones((T, T), device=symbols.device, dtype=torch.bool), diagonal=-1)
+        copy_idx = (same_entity & tril).sum(dim=-1)
+        copy_tot = same_entity.sum(dim=-1).clamp(min=1)
+        same_zone = same_entity & (sym4.unsqueeze(2) == sym4.unsqueeze(1))
+        zone_copy_idx = (same_zone & tril).sum(dim=-1)
+        zone_copy_tot = same_zone.sum(dim=-1).clamp(min=1)
+        has_ent_f = has_entity.float()
+        copy_feats = torch.stack([
+            has_ent_f * (copy_idx.float() + 1.0) / copy_tot.float(),
+            has_ent_f * (copy_tot.float() / 5.0),
+            has_ent_f * (zone_copy_idx.float() + 1.0) / zone_copy_tot.float(),
+            (copy_tot > 1).float(),
+        ], dim=-1)
+        return copy_idx, has_ent_f.unsqueeze(-1), copy_feats
+
     def forward(self, symbols, numerics):
-        out = self.symbols(symbols).sum(dim=2) + self.numerics(numerics)
+        if not self.balanced_emb:
+            out = self.symbols(symbols).sum(dim=2) + self.numerics(numerics)
+            if self.prior_u0 is not None:
+                from ..role_priors import compute_token_context
+                sym1 = symbols[:, :, 1]
+                if self.upgrade1_idx >= 0:
+                    is_up = (symbols[:, :, 2] == self.upgrade1_idx).unsqueeze(-1)
+                    priors = torch.where(is_up, self.prior_u1[sym1], self.prior_u0[sym1])
+                else:
+                    priors = self.prior_u0[sym1]
+                if self.exhaust_idx >= 0:
+                    active_mask = (symbols[:, :, 4] != self.exhaust_idx).unsqueeze(-1)
+                    ctx = compute_token_context(priors * active_mask)
+                else:
+                    ctx = compute_token_context(priors)
+                out = out + self.role_mlp(torch.cat([priors, ctx], dim=-1))
+            return out
+
+        copy_idx, has_ent_3d, copy_feats = self.compute_copy_features(symbols)
+        n_active = (symbols != PAD).sum(dim=2, keepdim=True).clamp(min=1).float()
+        sym_raw = (self.symbols(symbols).sum(dim=2) + has_ent_3d * self.copy_emb(copy_idx.clamp(max=15))) / (n_active + has_ent_3d).sqrt()
+        sym_e = self.sym_ln(sym_raw)
+        num_e = self.num_ln(self.numerics(torch.cat([numerics, copy_feats], dim=-1)))
+        out = self.branch_scale[0] * sym_e + self.branch_scale[1] * num_e
         if self.prior_u0 is not None:
             from ..role_priors import compute_token_context
             sym1 = symbols[:, :, 1]
@@ -84,8 +155,13 @@ class TokenEmbedding(nn.Module):
                 priors = torch.where(is_up, self.prior_u1[sym1], self.prior_u0[sym1])
             else:
                 priors = self.prior_u0[sym1]
-            ctx = compute_token_context(priors)
-            out = out + self.role_mlp(torch.cat([priors, ctx], dim=-1))
+            if self.exhaust_idx >= 0:
+                active_mask = (symbols[:, :, 4] != self.exhaust_idx).unsqueeze(-1)
+                ctx = compute_token_context(priors * active_mask)
+            else:
+                ctx = compute_token_context(priors)
+            role_e = self.role_ln(self.role_mlp(torch.cat([priors, ctx, copy_feats], dim=-1)))
+            out = out + self.branch_scale[2] * role_e
         return out
 
 
@@ -117,9 +193,19 @@ def build_torch_model(name, vocab, hparams) -> nn.Module:
         if hparams.get('aux_supervision', False):
             from ..aux_labels import NUM_AUX_TARGETS
             n_aux = NUM_AUX_TARGETS
+        n_step_imm = 0
+        if hparams.get('step_supervision', False):
+            from ..step_snapshots import NUM_STEP_IMM_TARGETS
+            n_step_imm = NUM_STEP_IMM_TARGETS
+        exhaust_idx = vocab.symbol_index.get('zone:exhaust', -1)
         return SetRegressor(n_symbols=vocab.n_symbols, n_numerics=vocab.spec['token_numerics'],
                             d_model=hparams.get('d_model', 128), num_heads=hparams.get('num_heads', 4),
                             num_inds=hparams.get('num_inds', 0), n_enc=hparams.get('n_enc', 2),
                             ln=hparams.get('ln', True), dropout=hparams.get('dropout', 0.0),
-                            role_priors=role_priors, n_aux=n_aux)
+                            role_priors=role_priors, n_aux=n_aux,
+                            exhaust_idx=exhaust_idx, n_step_imm=n_step_imm,
+                            modern_transformer=hparams.get('modern_transformer', False),
+                            ffn_mult=hparams.get('ffn_mult', 4),
+                            num_seeds=hparams.get('num_seeds', 4),
+                            balanced_emb=hparams.get('balanced_emb', False))
     raise ValueError(f'Unknown torch model: {name}')

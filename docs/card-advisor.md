@@ -7,19 +7,19 @@
 适配游戏 0.111.0 与 RitsuLib 0.5.13，模型支持静默猎手 A10。使用配套 CombatSolver Mod、Python 3.11+、requirements.txt 依赖与 `checkpoints/train/selected` 模型。在 advisor-service 中运行：
 
 ```powershell
-.\.venv\Scripts\python.exe -m train.advisor_service --port 53792
+.\.venv\Scripts\python.exe -m train.advisor_service
 ```
 
-默认端口为 18765；上例沿用已在本机确认可绑定的 53792。游戏启动环境须指向同一端口。在 `SlayTheSpire2.exe` 所在目录创建 `启动游戏带评分.bat`：
+默认监听 `http://127.0.0.1:18765`，与 Mod 内置默认地址一致，直接启动游戏即可连接。若用 `--port <端口>` 指定其他端口，需让游戏启动环境中的 `STS2_CARD_ADVISOR_URL` 指向同一端口（例如在 `SlayTheSpire2.exe` 所在目录创建启动脚本）：
 
 ```bat
 @echo off
 cd /d "%~dp0"
-set "STS2_CARD_ADVISOR_URL=http://127.0.0.1:53792/score"
+set "STS2_CARD_ADVISOR_URL=http://127.0.0.1:18765/score"
 start "" "%~dp0SlayTheSpire2.exe"
 ```
 
-服务仅监听回环地址，需与游戏同机；`http://127.0.0.1:53792/health` 可检查服务。游戏已启动后才在另一终端设置变量，不会改变游戏已有环境；需通过上述启动器重新启动。`STS2_CARD_ADVISOR_DISABLED=1` 会关闭面板。
+服务仅监听回环地址，需与游戏同机；`http://127.0.0.1:18765/health` 可检查服务状态。`STS2_CARD_ADVISOR_DISABLED=1` 会关闭面板。
 
 ## 分数与支持场景
 
@@ -37,7 +37,7 @@ start "" "%~dp0SlayTheSpire2.exe"
 
 目标选择、血量预算、长短期权重、尾部聚合和升级 rollout 的当前定义统一见 [配置规则](policy-configuration.md)。独立面板读取 `configs/reward-policy.json`（或 `--config` 指定文件），没有 Bot 的固定战后奖励深度与危机二次扩搜；默认随 Boss 距离选择深度，跨幕用 `post_boss_rollout_depth`。
 
-已知双 Boss 的长期评分取较难者，预算累计两场；第一场后只评剩余 Boss。面板短期输入是房间类型分布，Bot 短期输入是完整公开地图，两者信息精度不同：当前面板在短窗口跨过弱怪池边界、连续双 Boss 时仍有近似，见整理记录，不能声称每个场景分数完全一致。
+已知双 Boss 的长期评分取较难者，预算累计两场；第一场后只评剩余 Boss。面板短期输入是分层房间类型分布，Bot 短期输入是完整公开地图节点，因此在短窗口跨过弱怪池边界或连续双 Boss 时存在输入粒度近似。
 
 ## 状态与信息边界
 

@@ -1,44 +1,29 @@
-# 2026-11-02 代码整理记录
+# 策略与配置架构整理说明
 
-用户暂停整局参数搜索后，整理 Python Bot、模型评分入口、更新脚本与现行说明。原生 CombatSolver 保持 0.30.18；训练权重、用户已有配置、历史诊断包和评测原始数据不改。没有上传代码或启动新整局。
+本页记录 Python Bot、模型评分入口、更新脚本及配置 schema 的统一约束与已知近似边界。当前参数定义见 [当前评分与配置规则](policy-configuration.md)。
 
-## 已修正
+## 统一机制
 
-| 问题 | 修正 |
+| 模块 | 职责与约束 |
 | --- | --- |
-| Bot 的 `seed` 留在策略配置，未进入卡牌 rollout 配置 | 共有字段由单一映射转交，策略采样种子实际生效；仍独立于游戏 RNG |
-| 可编辑 JSON 同时被当作字段白名单，拼错字段可能悄悄成为合法参数 | `train/policy_defaults.py` 管默认值与 schema，旧配置缺项补齐，未知键报错 |
-| Bot 的 CPU 线程数写死 4 | CLI 使用最终评分配置的 `cpu_threads` |
-| 事件短期评分始终取 mean，忽略 `short_reduction=sum` | 事件评分采用配置的聚合方式；预算和权重判定仍沿用原定义 |
-| 正常/危机搜索各有一套深度逻辑，跨幕危机误用已结束幕剩余层数 | `runctl/card_search.py` 统一规划深度；跨幕用自己的深度，战后固定深度仍优先 |
-| 已公开双 Boss 的路线/短期预测会重复使用首 Boss | 按公开地图 Boss 节点与剩余 Boss 顺序对应；长期取较难者、生存预算累计两场的规则保留 |
-| Bot 从 HTTP 服务模块导入实机状态转换 | `train/live_state.py` 成为共同实现，HTTP 旧导入路径保留兼容转发 |
-| 老安装器文件清单遗漏路线模块，拆出的公共模块容易漏装 | `install_bot_update.py` 统一配套文件清单，支持平铺补丁和完整包目录；旧评分安装命令转发到此实现 |
-| 包装说明夹带旧参数和旧评测结论、人工面板包名固定 0.30.1 | 当前说明重新梳理，历史进度归档，面板包名读取实际 manifest 版本 |
-| 实际使用的 reward 专用配置不在整局报告中 | 新增 `reward-config.json`，与 `policy-config.json` 一起留证 |
+| `train/policy_defaults.py` | 维护 `REWARD_DEFAULTS`、`BOT_DEFAULTS` 与共有键 `BOT_REWARD_KEYS`；JSON 配置仅作为覆盖层，缺项自动补齐，未知键报错 |
+| `runctl/card_search.py` | 统一正常与危机搜索深度规划；跨幕评估使用 `post_boss_rollout_depth`，战后奖励固定深度优先 |
+| `train/live_state.py` | 集中实机卡牌与遗物状态转换，供 `runctl` 与 `train.advisor_service` 共享 |
+| `tools/install_bot_update.py` | 统一 Windows Bot 增量更新清单，支持平铺补丁与完整包目录，仅补齐缺失配置键并保留用户已有参数 |
+| `policy-config.json` / `reward-config.json` | 每次 Bot 运行在报告目录同时保存最终 Bot 配置与合并后的实际 rollout 评分配置 |
 
-## 有意保留的兼容逻辑
+## 保留的兼容逻辑
 
-- 旧输入没有当前 HP 时，固定近期掉血阈值、精英掉血阈值仍有用途，日志明确标注 legacy；不是与新预算逻辑并行竞争。
-- `crisis_boss_loss_threshold` 保留字段名，但比较的长期目标可以是精英。新增诊断字段指出危机依据；不更改危机定义。
-- `crisis_boss_loss_fraction` 明确警告并忽略，防止旧实验配置重启时误生效。
-- 原 HTTP 模块对遗物/卡牌转换函数的导出仍保留，调用同一实现。
-- 旧 `install_scoring_horizon_update.py` 只是转发器。其他历史独立补丁与本地未跟踪脚本保留现场，不列作当前升级入口。
-- 更新器只补配置缺项，不把用户已有宽度、权重、安全余量重置为仓库默认值。
+- 旧输入未提供当前 HP（`budget_hp`）时，固定近期掉血阈值（`short_strength_loss_threshold`）与精英掉血阈值（`elite_target_loss_threshold`）作为 legacy 兼容回退，并在日志中显式标注。
+- `crisis_boss_loss_threshold` 保留字段名，但比较的长期目标可为精英或 Boss，日志通过 `crisis_basis`、`crisis_target_room`、`projected_long_loss` 标明实际口径。
+- 已废弃的 `crisis_boss_loss_fraction` 在加载配置时发出警告并忽略，防止旧配置文件报错中止。
+- `train.advisor_service` 保留对 `train.live_state` 转换函数的兼容导出；`tools/install_scoring_horizon_update.py` 转发至 `tools/install_bot_update.py`。
 
-## 尚未改动的策略近似
+## 已知策略近似边界
 
-这些需要单独设计和验证，不应借整理代码改掉：
-
-- rollout 的较差尾部仍来自择优剪枝后的叶子，不代表真实未来最差情况；升级分支没有真实篝火机会约束。
-- Boss 战后跨幕评分使用收到的当前 HP，未把幕间必然回血预先计入预算。长期目标用下一幕公开池，真实牌组不变。
-- Bot 用完整公开地图；人工面板仅有分层房间类型分布，短窗口内跨过弱怪池边界及连续双 Boss 仍存在近似，不能声称两端所有场景完全相同。
-- 路线规划的篝火收益按回血近似，实际篝火可能选择升级；这不是精确的整幕动态规划。
-- “血量预算不足”和“crisis 扩搜”本来就是两种判据。前者取当前构筑，后者取普通 rollout 的最佳候选长期值，现行文档已分开说明。
-- 满血、无药模型无法直接给出当前 HP、实际药水库存下的死亡概率。未因代码整理重训模型。
-
-## 验证
-
-离线回归覆盖评分、遗物转换、双 Boss 地图与短期窗口、跨幕危机深度、配置优先级与种子转交、事件聚合、CLI 线程设置及最终配置留档、旧/新安装命令和完整包布局。分组回归共覆盖 491 个独立测试，均已通过。首轮发现一个双 Boss 测试只构造了单 Boss 地图，按真实公开地图补齐后复测通过；并新增了逐场 Boss 战损与跨幕扩搜等回归。
-
-整局参数实验仍暂停，本轮不据离线测试声称 Windows 全流程已经验收。
+- **Rollout 尾部与升级约束**：`leaf_bottom_fraction` 来自每层择优剪枝后的保留叶子，不代表未剪枝未来的真实最差分布；`rollout_max_upgrades` 升级分支未受真实地图篝火数量与休息代价约束。
+- **跨幕评估血量**：Boss 战后跨幕评分使用收到的当前 HP，未预先计入幕间过渡回血；长期目标使用下一幕公开池均值，真实牌组库存不变。
+- **地图信息粒度**：Bot 使用完整公开地图节点，人工面板（`train.advisor_service`）使用按层汇总的房间类型分布；短期窗口跨过弱怪池边界或连续双 Boss 时两者存在输入粒度近似。
+- **路线规划**：`runctl/route_policy.py` 中篝火收益按回血启发式近似，不是整幕精确动态规划。
+- **生存预算与危机扩搜独立**：生存预算（切换长短期权重与精英/Boss 目标）基于未修改的当前构筑；危机扩搜（`crisis`）基于普通 rollout 所有候选中的最佳长期预期掉血。
+- **满血无药模型假设**：底层预期掉血模型以 70/70 满血、无药水、8 秒求解标签训练，当前 HP 与药水库存仅通过外层策略启发式参与决策。

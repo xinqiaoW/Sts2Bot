@@ -16,7 +16,10 @@ from __future__ import annotations
 import argparse
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from datetime import datetime, timezone
-import fcntl
+try:
+    import fcntl
+except ImportError:
+    fcntl = None
 import json
 import math
 import os
@@ -29,10 +32,20 @@ import sys
 import time
 
 import numpy as np
-import pandas as pd
-import psutil
-import pyarrow as pa
-import pyarrow.parquet as pq
+try:
+    import pandas as pd
+except ImportError:
+    pd = None
+try:
+    import psutil
+except ImportError:
+    psutil = None
+try:
+    import pyarrow as pa
+    import pyarrow.parquet as pq
+except ImportError:
+    pa = None
+    pq = None
 
 from . import ROOT
 
@@ -46,6 +59,7 @@ AUX_COLUMNS = (
     'extra_draw_per_turn',
     'cards_per_turn',
 )
+AUX_TARGET_NAMES = ('turns_norm',) + AUX_COLUMNS
 NUM_AUX_TARGETS = 1 + len(AUX_COLUMNS)  # turns_norm + 8 trace metrics = 9
 
 SHIV_GEN_CARDS = frozenset({'BLADE_DANCE', 'CLOAK_AND_DAGGER', 'HIDDEN_DAGGERS', 'UP_MY_SLEEVE', 'FAN_OF_KNIVES'})
@@ -80,6 +94,30 @@ def _extract_int_var(csk: str, var_prefix: str) -> int:
     while end < n and csk[end].isdigit():
         end += 1
     return int(csk[start:end]) if end > start else 0
+
+
+# Waterfall Giant's early-kill phase displays HP as 999_999_999, then subtracts
+# the real damage from that display. No creature has a million hit points, so
+# anything at or above this floor is that display rather than real HP.
+INFINITE_HP = 1_000_000
+
+
+def _hp_lost(prev_hp: int, hp: int) -> int:
+    """HP removed between two observations.
+
+    A jump from real HP onto the infinite display is the killing blow.
+    Movement that stays inside the display is the real damage dealt during
+    the explosion phase. Leaving the display is not real damage.
+    """
+    if prev_hp >= INFINITE_HP:
+        if hp >= INFINITE_HP and hp < prev_hp:
+            return prev_hp - hp
+        return 0
+    if hp >= INFINITE_HP:
+        return max(0, prev_hp)
+    if hp < prev_hp:
+        return prev_hp - hp
+    return 0
 
 
 def parse_trace_metrics(raw_json: str) -> tuple[float, float, float, float, float, float, float, float] | None:
@@ -217,22 +255,23 @@ def parse_trace_metrics(raw_json: str) -> tuple[float, float, float, float, floa
                                     enemy_last_hp[ecid] = emhp
                                 if ecid in prev_enemies:
                                     p_ehp, _, p_eblk = prev_enemies[ecid]
+                                    lost = _hp_lost(p_ehp, ehp)
                                     if si == 0 and ti > 0:
-                                        if ehp < p_ehp and turn_dmgs:
-                                            # Enemy-turn poison/thorns damage belongs to prev turn or this turn step 0
-                                            t_dmg += (p_ehp - ehp)
+                                        if lost and turn_dmgs:
+                                            # Enemy-turn poison/thorns damage is recorded on this opening step.
+                                            t_dmg += lost
                                     else:
-                                        if ehp < p_ehp:
-                                            t_dmg += (p_ehp - ehp)
+                                        t_dmg += lost
                                         if eblk < p_eblk:
                                             t_dmg += (p_eblk - eblk)
                                 else:
-                                    if ehp < emhp:
-                                        t_dmg += (emhp - ehp)
+                                    t_dmg += _hp_lost(emhp, ehp)
                                 enemy_last_hp[ecid] = ehp
                     for pecid, (p_ehp, _, p_eblk) in prev_enemies.items():
                         if pecid not in cur_enemies and enemy_last_hp.get(pecid, 0) > 0:
-                            t_dmg += enemy_last_hp[pecid] + (p_eblk if si > 0 else 0)
+                            last = enemy_last_hp[pecid]
+                            if last < INFINITE_HP:
+                                t_dmg += last + (p_eblk if si > 0 else 0)
                             enemy_last_hp[pecid] = 0
                     prev_enemies = cur_enemies
             else:
@@ -289,7 +328,9 @@ def parse_trace_metrics(raw_json: str) -> tuple[float, float, float, float, floa
         turn_blks.append(float(t_blk))
 
     if not player_died and turn_dmgs:
-        rem = sum(max(0, ehp) for ehp in enemy_last_hp.values())
+        # A win still shows the enemy's remaining real HP; that HP was dealt on the
+        # last turn. The waterfall giant's infinite-HP sentinel is not remaining HP.
+        rem = sum(hp for hp in enemy_last_hp.values() if 0 < hp < INFINITE_HP)
         turn_dmgs[-1] += float(rem)
 
     inv_t = 1.0 / turns
